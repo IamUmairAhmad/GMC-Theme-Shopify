@@ -1,0 +1,238 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "disclosures": {
+      "type": "disclosures",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "gmc_sticky": {
+      "type": "gmc-sticky-atc",
+      "settings": {
+        "picker": "combined",
+        "price_in_button": false,
+        "img_desktop": true
+      }
+    },
+    "gmc_qb": {
+      "type": "gmc-quantity-breaks",
+      "blocks": {
+        "t1": {
+          "type": "tier",
+          "settings": {
+            "qty": 1,
+            "label": "Buy 1"
+          }
+        },
+        "t2": {
+          "type": "tier",
+          "settings": {
+            "qty": 2,
+            "label": "Buy 2",
+            "percent": 10,
+            "benefit": "You save [amount_saved]",
+            "price_text": "[price] total"
+          }
+        },
+        "t3": {
+          "type": "tier",
+          "settings": {
+            "qty": 3,
+            "label": "Buy 3",
+            "percent": 15,
+            "gift_variant": "67707160363082",
+            "gift_text": "Free gift",
+            "benefit": "You save [amount_saved_rounded]",
+            "caption": "Only [price_each] each for [quantity] items",
+            "badge": "Best value",
+            "compare_text": "was [compare_price]"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "heading": "Buy more, save more",
+        "unit_pickers": true
+      }
+    },
+    "gmc_bd": {
+      "type": "gmc-bundle-deals",
+      "blocks": {
+        "a": {
+          "type": "product",
+          "settings": {
+            "product": "gmc-test-tee"
+          }
+        },
+        "b": {
+          "type": "product",
+          "settings": {
+            "product": "gmc-test-free-gift"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {
+        "heading": "Bundle"
+      }
+    },
+    "gmc_sub": {
+      "type": "gmc-subscription",
+      "settings": {}
+    },
+    "gmc_reviews": {
+      "type": "gmc-reviews",
+      "blocks": {
+        "summary": {
+          "type": "rating_summary",
+          "settings": {}
+        },
+        "btn": {
+          "type": "write_review_button",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "summary",
+        "btn"
+      ],
+      "settings": {}
+    },
+    "pm_test": {
+      "type": "gmc-product-more",
+      "blocks": {
+        "u": {
+          "type": "upsells",
+          "settings": {
+            "products": [
+              "gmc-demo-hoodie",
+              "gmc-test-free-gift"
+            ],
+            "toggle_style": "switch",
+            "discount_type": "percent",
+            "discount_percent": 20,
+            "show_description": true,
+            "layout": "column",
+            "bg": "#f4f4f4",
+            "pad": 12,
+            "radius": 10
+          }
+        }
+      },
+      "block_order": [
+        "u"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "gmc_qb",
+    "pm_test",
+    "gmc_bd",
+    "gmc_sub",
+    "gmc_sticky",
+    "disclosures",
+    "gmc_reviews",
+    "related-products"
+  ]
+}

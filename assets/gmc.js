@@ -325,3 +325,4 @@ document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.
   var inp=it.querySelector('.gmc-ups__in');inp.dataset.gmcUnitadd=s.value;inp.disabled=o.disabled;
   var now=it.querySelector('[data-ups-now]'),old=it.querySelector('.gmc-ups__price s');now.textContent=gmcMoney(n);
   if(n<p){if(!old){old=document.createElement('s');now.parentNode.insertBefore(old,now);now.parentNode.insertBefore(document.createTextNode(' '),now);}old.textContent=gmcMoney(p);}else if(old)old.remove();});
+
