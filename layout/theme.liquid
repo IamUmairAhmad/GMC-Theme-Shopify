@@ -332,7 +332,7 @@
       {%- if settings.gmc_title_lines > 0 -%}.card__heading a,.card__heading{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:{{ settings.gmc_title_lines }};overflow:hidden}{%- endif -%}
     </style>
     <noscript><style>.scroll-trigger.animate--fade-in,.scroll-trigger.animate--slide-in,.scroll-trigger.animate--zoom-in,.scroll-trigger{opacity:1!important;transform:none!important}.gmc-an,.gmc-reveal{opacity:1!important;transform:none!important}</style></noscript>
-    {%- if request.page_type == 'index' -%}<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":{{ shop.name | json }},"url":{{ shop.url | json }},"potentialAction":{"@type":"SearchAction","target":{{ shop.url | append: routes.search_url | append: '?q={search_term_string}' | json }},"query-input":"required name=search_term_string"}}</script>{%- endif -%}
+    
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
