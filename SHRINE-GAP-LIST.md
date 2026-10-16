@@ -300,7 +300,7 @@ Counted help text in the section schemas. Shrine: 21% of settings carry a help l
 | ID | Missing feature | Pri |
 |---|---|---|
 | GD-01 ✅ | **Help line under settings** and short **explanatory notes** at the top of complex blocks (quantity breaks, bundles, upsells, checkpoints, custom fields), stating what a setting does, the allowed formats and the text tokens available. Bring GMC sections to at least Shrine's level. | P2 |
-| GD-02 | **Tutorial links** from tricky settings (Shrine links to a help centre and videos). We have none: a documentation site or README with a page per feature, plus short video guides, linked from the editor. | P2 |
+| GD-02 ✅ | **Tutorial links** from tricky settings (Shrine links to a help centre and videos). We have none: a documentation site or README with a page per feature, plus short video guides, linked from the editor. | P2 |
 | GD-03 ✅ | **Block limits** (for example only one sticky bar per page) on our product blocks, as Shrine has 84, to prevent invalid setups. Ours has 3 on GMC sections. | P3 |
 
 ## 26. Seventeenth pass: page head, SEO and sharing tags
