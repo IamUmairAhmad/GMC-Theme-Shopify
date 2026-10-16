@@ -1,0 +1,6 @@
+{%- if block.settings.link != blank and block.settings.label != blank -%}
+<div style="text-align:{{ block.settings.align }}" {{ block.shopify_attributes }}><a class="button{% if block.settings.secondary %} button--secondary{% endif %}" href="{{ block.settings.link }}">{{ block.settings.label | escape }}</a></div>
+{%- elsif request.design_mode -%}<div {{ block.shopify_attributes }} style="opacity:.6;text-align:center">Add a button label and link</div>{%- endif -%}
+{% schema %}
+{"name":"Button","settings":[{"type":"text","id":"label","label":"Label","default":"Shop now"},{"type":"url","id":"link","label":"Link"},{"type":"checkbox","id":"secondary","label":"Secondary style","default":false},{"type":"text_alignment","id":"align","label":"Alignment","default":"left"}]}
+{% endschema %}

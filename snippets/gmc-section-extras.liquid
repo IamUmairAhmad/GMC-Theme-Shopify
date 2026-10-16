@@ -2,15 +2,23 @@
 {%- assign x_hide = section.settings.gmc_hide_on -%}
 {%- assign x_img = section.settings.gmc_bg_image -%}
 {%- assign x_vid = section.settings.gmc_bg_video -%}
-{%- if x_hide != blank or x_img != blank or x_vid != blank -%}
+{%- assign x_pt = section.settings.gmc_pad_top | default: 0 -%}
+{%- assign x_pb = section.settings.gmc_pad_bottom | default: 0 -%}
+{%- assign x_bgc = section.settings.gmc_bg_color -%}
+{%- assign x_mw = section.settings.gmc_max_width | default: 0 -%}
+{%- if x_hide != blank or x_img != blank or x_vid != blank or x_pt > 0 or x_pb > 0 or x_bgc != blank or x_mw > 0 -%}
 <style>
+  {%- if x_pt > 0 -%}#shopify-section-{{ section.id }}{padding-top:{{ x_pt }}px}{%- endif -%}
+  {%- if x_pb > 0 -%}#shopify-section-{{ section.id }}{padding-bottom:{{ x_pb }}px}{%- endif -%}
+  {%- if x_bgc != blank and x_bgc.alpha > 0 -%}#shopify-section-{{ section.id }}{background:{{ x_bgc }}}{%- endif -%}
+  {%- if x_mw > 0 -%}#shopify-section-{{ section.id }} .page-width{max-width:{{ x_mw }}px}{%- endif -%}
   {%- if x_hide == 'mobile' -%}@media(max-width:749px){#shopify-section-{{ section.id }}{display:none!important}}{%- endif -%}
   {%- if x_hide == 'desktop' -%}@media(min-width:750px){#shopify-section-{{ section.id }}{display:none!important}}{%- endif -%}
   {%- if x_img != blank or x_vid != blank -%}
   #shopify-section-{{ section.id }}{position:relative;overflow:hidden}
   #shopify-section-{{ section.id }}>:not(.gmc-bg){position:relative;z-index:1;background:transparent!important}
   #shopify-section-{{ section.id }} .gmc-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
-  #shopify-section-{{ section.id }} .gmc-bg img,#shopify-section-{{ section.id }} .gmc-bg video{width:100%;height:100%;object-fit:cover;display:block}
+  #shopify-section-{{ section.id }} .gmc-bg img,#shopify-section-{{ section.id }} .gmc-bg video{width:100%;height:100%;object-fit:cover;display:block;object-position:{{ x_img.presentation.focal_point | default: '50% 50%' }}}
   #shopify-section-{{ section.id }} .gmc-bg:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,{{ section.settings.gmc_bg_overlay | divided_by: 100.0 }})}
   {%- endif -%}
 </style>

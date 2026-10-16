@@ -1,0 +1,7 @@
+<div class="gmc-b-text" style="text-align:{{ block.settings.align }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.heading != blank -%}<{{ block.settings.tag }} style="margin:0 0 .6rem">{{ block.settings.heading | escape }}</{{ block.settings.tag }}>{%- endif -%}
+  {%- if block.settings.text != blank -%}<div class="rte">{{ block.settings.text }}</div>{%- endif -%}
+</div>
+{% schema %}
+{"name":"Text","settings":[{"type":"text","id":"heading","label":"Heading","default":"Heading"},{"type":"select","id":"tag","label":"Heading level","options":[{"value":"h2","label":"H2"},{"value":"h3","label":"H3"},{"value":"p","label":"Paragraph"}],"default":"h2"},{"type":"richtext","id":"text","label":"Text","default":"<p>Add your text.</p>"},{"type":"text_alignment","id":"align","label":"Alignment","default":"left"}]}
+{% endschema %}

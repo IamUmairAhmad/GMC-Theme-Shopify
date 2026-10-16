@@ -1,0 +1,4 @@
+{%- comment -%} Shows a helpful placeholder only inside the theme editor, so empty sections never look broken to shoppers. {%- endcomment -%}
+{%- if request.design_mode -%}
+  <div class="page-width" style="padding:2rem 0"><p style="margin:0;padding:1.6rem;border:1px dashed currentColor;border-radius:8px;text-align:center;opacity:.65">{{ msg | default: 'This section has no content yet.' | escape }}</p></div>
+{%- endif -%}

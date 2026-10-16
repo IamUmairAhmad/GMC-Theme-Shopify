@@ -1,0 +1,7 @@
+<div class="gmc-b-it" style="display:flex;gap:1rem;align-items:flex-start" {{ block.shopify_attributes }}>
+  {%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: block.settings.size -%}{%- endif -%}
+  <div><strong>{{ block.settings.title | escape }}</strong>{%- if block.settings.text != blank -%}<p style="margin:.2rem 0 0;opacity:.8">{{ block.settings.text | escape }}</p>{%- endif -%}</div>
+</div>
+{% schema %}
+{"name":"Icon with text","settings":[{"type":"text","id":"icon_name","label":"Icon name","default":"shield-check","info":"See assets/gmc-icon-list.txt"},{"type":"range","id":"size","min":16,"max":64,"step":4,"unit":"px","label":"Icon size","default":32},{"type":"text","id":"title","label":"Title","default":"Title"},{"type":"textarea","id":"text","label":"Text"}]}
+{% endschema %}

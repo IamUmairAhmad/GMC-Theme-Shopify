@@ -1,0 +1,6 @@
+<div class="gmc-b-group" style="display:flex;flex-direction:{{ block.settings.direction }};gap:{{ block.settings.gap }}px;padding:{{ block.settings.pad }}px;background:{{ block.settings.bg }};border-radius:{{ block.settings.radius }}px;align-items:{{ block.settings.align }}" {{ block.shopify_attributes }}>
+  {%- content_for 'blocks' -%}
+</div>
+{% schema %}
+{"name":"Group","blocks":[{"type":"_gmc-text"},{"type":"_gmc-image"},{"type":"_gmc-button"},{"type":"_gmc-icon-text"}],"settings":[{"type":"select","id":"direction","label":"Direction","options":[{"value":"column","label":"Vertical"},{"value":"row","label":"Horizontal"}],"default":"column"},{"type":"range","id":"gap","min":0,"max":60,"step":4,"unit":"px","label":"Gap","default":16},{"type":"range","id":"pad","min":0,"max":60,"step":4,"unit":"px","label":"Padding","default":0},{"type":"color","id":"bg","label":"Background"},{"type":"range","id":"radius","min":0,"max":40,"unit":"px","label":"Corner radius","default":0},{"type":"select","id":"align","label":"Vertical alignment","options":[{"value":"flex-start","label":"Top"},{"value":"center","label":"Middle"},{"value":"flex-end","label":"Bottom"}],"default":"flex-start"}],"presets":[]}
+{% endschema %}

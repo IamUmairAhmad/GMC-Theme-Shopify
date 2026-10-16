@@ -1,3 +1,5 @@
+{%- render 'gmc-section-extras' -%}
+{%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one item block.' -%}{%- endif -%}
 {%- comment -%} GMC Theme: trust badge / icon bar (original code) {%- endcomment -%}
 <div class="page-width gmc-iconbar">
   {%- if section.settings.heading != blank -%}<h2 class="gmc-iconbar__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
@@ -24,23 +26,155 @@
 </style>
 {% schema %}
 {
-  "name": "Icon bar",
-  "tag": "section",
-  "class": "section",
-  "settings": [
-    {"type":"text","id":"heading","label":"Heading"},
-    {"type":"range","id":"columns","min":2,"max":6,"label":"Columns","default":4},
-    {"type":"range","id":"pad","min":0,"max":80,"step":4,"unit":"px","label":"Vertical padding","default":36}
-  ],
-  "blocks": [
-    {"type":"item","name":"Item","settings":[
-      {"type":"text","id":"icon_name","label":"Icon name","info":"From the built-in 2,500-icon library, e.g. truck, shield-check. See assets/gmc-icon-list.txt"},
-      {"type":"image_picker","id":"icon","label":"Or icon image"},
-      {"type":"text","id":"title","label":"Title","default":"Fast shipping"},
-      {"type":"text","id":"text","label":"Description","default":"Delivered in 3-5 days"}
-    ]}
-  ],
-  "max_blocks": 8,
-  "presets": [{"name":"Icon bar","blocks":[{"type":"item"},{"type":"item","settings":{"title":"Easy returns","text":"30-day returns"}},{"type":"item","settings":{"title":"Secure payment","text":"SSL encrypted"}},{"type":"item","settings":{"title":"24/7 support","text":"We're here to help"}}]}]
+ "name": "Icon bar",
+ "tag": "section",
+ "class": "section",
+ "settings": [
+  {
+   "type": "text",
+   "id": "heading",
+   "label": "Heading"
+  },
+  {
+   "type": "range",
+   "id": "columns",
+   "min": 2,
+   "max": 6,
+   "label": "Columns",
+   "default": 4
+  },
+  {
+   "type": "range",
+   "id": "pad",
+   "min": 0,
+   "max": 80,
+   "step": 4,
+   "unit": "px",
+   "label": "Vertical padding",
+   "default": 36
+  },
+  {
+   "type": "header",
+   "content": "Layout (GMC)"
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_top",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space above",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_bottom",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space below",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_max_width",
+   "min": 0,
+   "max": 1600,
+   "step": 50,
+   "unit": "px",
+   "label": "Max content width (0 = theme default)",
+   "default": 0
+  },
+  {
+   "type": "color",
+   "id": "gmc_bg_color",
+   "label": "Section background color"
+  },
+  {
+   "type": "image_picker",
+   "id": "gmc_bg_image",
+   "label": "Background image"
+  },
+  {
+   "type": "video",
+   "id": "gmc_bg_video",
+   "label": "Background video (MP4 upload)"
+  },
+  {
+   "type": "range",
+   "id": "gmc_bg_overlay",
+   "min": 0,
+   "max": 80,
+   "step": 5,
+   "unit": "%",
+   "label": "Background overlay",
+   "default": 0
+  }
+ ],
+ "blocks": [
+  {
+   "type": "item",
+   "name": "Item",
+   "settings": [
+    {
+     "type": "text",
+     "id": "icon_name",
+     "label": "Icon name",
+     "info": "From the built-in 2,500-icon library, e.g. truck, shield-check. See assets/gmc-icon-list.txt"
+    },
+    {
+     "type": "image_picker",
+     "id": "icon",
+     "label": "Or icon image"
+    },
+    {
+     "type": "text",
+     "id": "title",
+     "label": "Title",
+     "default": "Fast shipping"
+    },
+    {
+     "type": "text",
+     "id": "text",
+     "label": "Description",
+     "default": "Delivered in 3-5 days"
+    }
+   ]
+  }
+ ],
+ "max_blocks": 8,
+ "presets": [
+  {
+   "name": "Icon bar",
+   "blocks": [
+    {
+     "type": "item"
+    },
+    {
+     "type": "item",
+     "settings": {
+      "title": "Easy returns",
+      "text": "30-day returns"
+     }
+    },
+    {
+     "type": "item",
+     "settings": {
+      "title": "Secure payment",
+      "text": "SSL encrypted"
+     }
+    },
+    {
+     "type": "item",
+     "settings": {
+      "title": "24/7 support",
+      "text": "We're here to help"
+     }
+    }
+   ]
+  }
+ ]
 }
 {% endschema %}

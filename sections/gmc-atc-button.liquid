@@ -1,3 +1,5 @@
+{%- render 'gmc-section-extras' -%}
+{%- if section.settings.product == blank -%}{%- render 'gmc-empty', msg: 'Choose a product.' -%}{%- endif -%}
 {%- assign p = section.settings.product -%}
 {%- if p != blank -%}
 <div class="page-width gmc-ab {% render 'gmc-vis', hide: section.settings.hide_on %}" style="text-align:{{ section.settings.align }};padding:{{ section.settings.pad }}px 0">
@@ -8,5 +10,152 @@
 </div>
 {%- endif -%}
 {% schema %}
-{"name":"Add to cart button","tag":"section","class":"section","settings":[{"type":"product","id":"product","label":"Product"},{"type":"text","id":"label","label":"Label","default":"Add to cart"},{"type":"checkbox","id":"show_price","label":"Show price in button","default":true},{"type":"range","id":"width","min":200,"max":700,"step":20,"unit":"px","label":"Max width","default":360},{"type":"select","id":"align","label":"Align","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}],"default":"center"},{"type":"range","id":"pad","min":0,"max":60,"step":4,"unit":"px","label":"Spacing","default":20},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"presets":[{"name":"Add to cart button"}]}
+{
+ "name": "Add to cart button",
+ "tag": "section",
+ "class": "section",
+ "settings": [
+  {
+   "type": "product",
+   "id": "product",
+   "label": "Product"
+  },
+  {
+   "type": "text",
+   "id": "label",
+   "label": "Label",
+   "default": "Add to cart"
+  },
+  {
+   "type": "checkbox",
+   "id": "show_price",
+   "label": "Show price in button",
+   "default": true
+  },
+  {
+   "type": "range",
+   "id": "width",
+   "min": 200,
+   "max": 700,
+   "step": 20,
+   "unit": "px",
+   "label": "Max width",
+   "default": 360
+  },
+  {
+   "type": "select",
+   "id": "align",
+   "label": "Align",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left"
+    },
+    {
+     "value": "center",
+     "label": "Center"
+    },
+    {
+     "value": "right",
+     "label": "Right"
+    }
+   ],
+   "default": "center"
+  },
+  {
+   "type": "range",
+   "id": "pad",
+   "min": 0,
+   "max": 60,
+   "step": 4,
+   "unit": "px",
+   "label": "Spacing",
+   "default": 20
+  },
+  {
+   "type": "select",
+   "id": "hide_on",
+   "label": "Hide on",
+   "options": [
+    {
+     "value": "",
+     "label": "Show everywhere"
+    },
+    {
+     "value": "mobile",
+     "label": "Mobile"
+    },
+    {
+     "value": "desktop",
+     "label": "Desktop"
+    }
+   ],
+   "default": ""
+  },
+  {
+   "type": "header",
+   "content": "Layout (GMC)"
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_top",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space above",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_bottom",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space below",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_max_width",
+   "min": 0,
+   "max": 1600,
+   "step": 50,
+   "unit": "px",
+   "label": "Max content width (0 = theme default)",
+   "default": 0
+  },
+  {
+   "type": "color",
+   "id": "gmc_bg_color",
+   "label": "Section background color"
+  },
+  {
+   "type": "image_picker",
+   "id": "gmc_bg_image",
+   "label": "Background image"
+  },
+  {
+   "type": "video",
+   "id": "gmc_bg_video",
+   "label": "Background video (MP4 upload)"
+  },
+  {
+   "type": "range",
+   "id": "gmc_bg_overlay",
+   "min": 0,
+   "max": 80,
+   "step": 5,
+   "unit": "%",
+   "label": "Background overlay",
+   "default": 0
+  }
+ ],
+ "presets": [
+  {
+   "name": "Add to cart button"
+  }
+ ]
+}
 {% endschema %}

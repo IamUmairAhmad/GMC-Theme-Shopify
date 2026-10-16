@@ -1,3 +1,5 @@
+{%- render 'gmc-section-extras' -%}
+{%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one tab block.' -%}{%- endif -%}
 {%- comment -%} GMC Theme: tabbed content (original code) {%- endcomment -%}
 <div class="page-width gmc-tabs" id="gmc-tabs-{{ section.id }}">
   {%- if section.settings.heading != blank -%}<h2 class="gmc-tabs__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
@@ -24,15 +26,120 @@
 </script>
 {% schema %}
 {
-  "name": "Content tabs",
-  "tag": "section",
-  "class": "section",
-  "settings": [{"type":"text","id":"heading","label":"Heading"}],
-  "blocks": [{"type":"tab","name":"Tab","settings":[
-    {"type":"text","id":"title","label":"Tab title","default":"Tab"},
-    {"type":"richtext","id":"content","label":"Content","default":"<p>Tab content goes here.</p>"}
-  ]}],
-  "max_blocks": 8,
-  "presets": [{"name":"Content tabs","blocks":[{"type":"tab","settings":{"title":"Details"}},{"type":"tab","settings":{"title":"Shipping"}},{"type":"tab","settings":{"title":"Returns"}}]}]
+ "name": "Content tabs",
+ "tag": "section",
+ "class": "section",
+ "settings": [
+  {
+   "type": "text",
+   "id": "heading",
+   "label": "Heading"
+  },
+  {
+   "type": "header",
+   "content": "Layout (GMC)"
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_top",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space above",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_bottom",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space below",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_max_width",
+   "min": 0,
+   "max": 1600,
+   "step": 50,
+   "unit": "px",
+   "label": "Max content width (0 = theme default)",
+   "default": 0
+  },
+  {
+   "type": "color",
+   "id": "gmc_bg_color",
+   "label": "Section background color"
+  },
+  {
+   "type": "image_picker",
+   "id": "gmc_bg_image",
+   "label": "Background image"
+  },
+  {
+   "type": "video",
+   "id": "gmc_bg_video",
+   "label": "Background video (MP4 upload)"
+  },
+  {
+   "type": "range",
+   "id": "gmc_bg_overlay",
+   "min": 0,
+   "max": 80,
+   "step": 5,
+   "unit": "%",
+   "label": "Background overlay",
+   "default": 0
+  }
+ ],
+ "blocks": [
+  {
+   "type": "tab",
+   "name": "Tab",
+   "settings": [
+    {
+     "type": "text",
+     "id": "title",
+     "label": "Tab title",
+     "default": "Tab"
+    },
+    {
+     "type": "richtext",
+     "id": "content",
+     "label": "Content",
+     "default": "<p>Tab content goes here.</p>"
+    }
+   ]
+  }
+ ],
+ "max_blocks": 8,
+ "presets": [
+  {
+   "name": "Content tabs",
+   "blocks": [
+    {
+     "type": "tab",
+     "settings": {
+      "title": "Details"
+     }
+    },
+    {
+     "type": "tab",
+     "settings": {
+      "title": "Shipping"
+     }
+    },
+    {
+     "type": "tab",
+     "settings": {
+      "title": "Returns"
+     }
+    }
+   ]
+  }
+ ]
 }
 {% endschema %}
