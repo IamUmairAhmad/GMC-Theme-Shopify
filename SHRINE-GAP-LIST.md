@@ -11,9 +11,9 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | ID | Missing feature | Pri |
 |---|---|---|
 | PP-01 ✅ | **Quantity breaks inside the quantity selector**: up to 4 options, each with quantity, badge, image, label, benefit line, caption, % or fixed discount, price text, compare-price text, preselected option, styles normal/compact/vertical, and a variant picker per unit. Text boxes accept dynamic values (price, saving, quantity). Ours is a separate tier section without these fields. | P1 |
-| PP-02 | **Gifts on quantity**: up to 4 gift products that unlock at a quantity, with locked/unlocked states, images and texts, gift-box colours. | P1 |
-| PP-03 | **Bundle offer block**: pre-made bundle of 2–3 products, "main product" or "separate" type, per-product discount, dynamic total with savings line, per-product description, variant pickers, skip-cart. | P1 |
-| PP-04 | **Product upsells block (multi)**: up to 3 upsell products, toggle styles (switch / checkbox / plus), preselected, per-product image, description, % / fixed discount, stacking row/column/slider, container styling. Ours supports one upsell. | P1 |
+| PP-02 ✅ | **Gifts on quantity**: up to 4 gift products that unlock at a quantity, with locked/unlocked states, images and texts, gift-box colours. | P1 |
+| PP-03 ✅ | **Bundle offer block**: pre-made bundle of 2–3 products, "main product" or "separate" type, per-product discount, dynamic total with savings line, per-product description, variant pickers, skip-cart. | P1 |
+| PP-04 ✅ | **Product upsells block (multi)**: up to 3 upsell products, toggle styles (switch / checkbox / plus), preselected, per-product image, description, % / fixed discount, stacking row/column/slider, container styling. Ours supports one upsell. | P1 |
 | PP-05 ✅ | **Sticky add-to-cart depth**: button function (add to cart, or scroll to info / variants / quantity breaks / pricing table), show always or after scroll, combined or separate variant picker, rating stars, button colour, separate desktop and mobile toggles (image, title, price, badge, picker, full-width, price in button, transparent background). Ours has a label only. | P1 |
 | PP-06 ✅ | **Custom product field** types: text, number, textarea, pills, dropdown. Needs placeholder, max characters, min/max, required with custom error on the ATC button and sticky ATC. Ours is label + required only. | P1 |
 | PP-07 ✅ | **Variant picker options**: type per option (pills / dropdown / swatches / image), custom labels, swatch size and radius, custom swatch colour list or from image alt, full-width dropdowns. | P1 |
@@ -284,7 +284,7 @@ Most differences are colour-scheme names (Shrine uses fixed accent / background 
 Shrine's sections use two editor controls that ours never use:
 | ID | Missing feature | Pri |
 |---|---|---|
-| ST-01 | **Multi-product picker** (`product_list`) used for upsell and gift blocks: choose several products in one field. Ours takes one product per block. Needed for PP-04 and CD-06. | P1 |
+| ST-01 ✅ | **Multi-product picker** (`product_list`) used for upsell and gift blocks: choose several products in one field. Ours takes one product per block. Needed for PP-04 and CD-06. | P1 |
 | ST-02 | **Gradient background picker** (`color_background`) used for section / scheme backgrounds (accent and background gradients). | P3 |
 
 ## 24. Fifteenth pass: "add section" experience (presets)
