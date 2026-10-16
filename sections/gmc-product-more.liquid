@@ -93,6 +93,15 @@
         <button type="button" class="button button--full-width gmc-bnd__btn">{{ bs.button | default: 'Add bundle to cart' | escape }}</button>
         <p class="gmc-bnd__err" role="alert" hidden></p>
       </div>
+      {%- endif -%}{%- when 'qty_gift' -%}
+      {%- assign qg = block.settings.product -%}
+      {%- if qg != blank -%}
+      {%- assign qgv = qg.selected_or_first_available_variant -%}
+      <div class="gmc-qg" data-need="{{ block.settings.unlock_qty }}" data-locked="{{ block.settings.locked_text | default: 'Buy [need] to unlock' | escape }}" data-open="{{ block.settings.unlocked_text | default: 'Unlocked! Free gift added' | escape }}" data-gmc-qgift="{{ qgv.id }}" style="--qg-lock:{{ block.settings.locked_color | default: '#9ca3af' }};--qg-open:{{ block.settings.unlocked_color | default: '#16a34a' }}">
+        {%- if block.settings.show_image and qg.featured_image != blank -%}<span class="gmc-ups__img">{{ qg.featured_image | image_url: width: 140 | image_tag: width: 56, height: 56, loading: 'lazy', alt: qg.title }}</span>{%- endif -%}
+        <span class="gmc-ups__txt"><strong>{{ qg.title | escape }}</strong><small class="gmc-qg__msg"></small></span>
+        <span class="gmc-qg__ic" aria-hidden="true">🔒</span>
+      </div>
       {%- endif -%}{%- when 'clickable_discount' -%}
       <button type="button" class="gmc-pe__code" data-gmc-code="{{ block.settings.code | escape }}"><span>🏷️ {{ block.settings.text | escape }}</span><b>{{ block.settings.code | escape }}</b><small>{{ block.settings.cta | default: 'Click to apply' | escape }}</small></button>{%- when 'popup_page' -%}
       {%- if block.settings.page != blank -%}<button type="button" class="gmc-pe__link" data-gmc-open="gmc-pop-{{ block.id }}">{{ block.settings.label | escape }}</button>
@@ -129,6 +138,7 @@
 .gmc-ups__tgl--plus{border-radius:50%}.gmc-ups__tgl--plus:after{content:"+";font-size:2rem;line-height:1}.gmc-ups__in:checked+.gmc-ups__tgl--plus{background:{{ settings.gmc_accent }};border-color:{{ settings.gmc_accent }};color:#fff}.gmc-ups__in:checked+.gmc-ups__tgl--plus:after{content:"✓";font-size:1.4rem}
 .gmc-ups__in:focus-visible+.gmc-ups__tgl{outline:2px solid currentColor;outline-offset:2px}.gmc-ups__var{margin-top:.6rem;width:100%;padding:.5rem;border-radius:var(--inputs-radius,4px)}
 .gmc-bnd{display:grid;gap:.8rem}.gmc-bnd__list{display:grid;gap:.6rem}.gmc-bnd__item{display:flex;gap:1rem;align-items:center;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:.9rem 1.1rem}.gmc-bnd__item select{margin-top:.4rem;width:100%;padding:.5rem;border-radius:var(--inputs-radius,4px)}.gmc-bnd__sum{display:flex;justify-content:space-between;margin:0;font-weight:700;font-size:1.1em}.gmc-bnd__save{margin:0;color:{{ settings.gmc_accent }};font-weight:600}.gmc-bnd__err{margin:0;color:#b91c1c}
+.gmc-qg{display:flex;gap:1rem;align-items:center;border:2px dashed var(--qg-lock);border-radius:var(--text-boxes-radius);padding:.9rem 1.1rem;transition:.2s}.gmc-qg .gmc-ups__img img{filter:grayscale(1);opacity:.6;transition:.2s}.gmc-qg__ic{font-size:2rem}.gmc-qg[data-state=open]{border:2px solid var(--qg-open);background:color-mix(in srgb,var(--qg-open) 8%,transparent)}.gmc-qg[data-state=open] .gmc-ups__img img{filter:none;opacity:1}.gmc-qg[data-state=open] .gmc-qg__msg{color:var(--qg-open);font-weight:600;opacity:1}
 </style>
 <script>(function(){document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
 {% schema %}
@@ -557,6 +567,69 @@
           "unit": "px",
           "label": "Border",
           "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mb",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Margin below",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "qty_gift",
+      "name": "Gift on quantity",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Gift product",
+          "info": "Price it at 0 or add a 100% automatic discount so it is really free."
+        },
+        {
+          "type": "range",
+          "id": "unlock_qty",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "label": "Unlocks at quantity",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "locked_text",
+          "label": "Locked text",
+          "default": "Buy [need] to unlock",
+          "info": "[need] becomes the quantity still missing, e.g. 1 more."
+        },
+        {
+          "type": "text",
+          "id": "unlocked_text",
+          "label": "Unlocked text",
+          "default": "Unlocked! Free gift added"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_image",
+          "label": "Show gift image",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "locked_color",
+          "label": "Locked box colour",
+          "default": "#9ca3af"
+        },
+        {
+          "type": "color",
+          "id": "unlocked_color",
+          "label": "Unlocked box colour",
+          "default": "#16a34a"
         },
         {
           "type": "range",

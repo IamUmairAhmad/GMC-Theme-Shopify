@@ -135,7 +135,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   }
   document.addEventListener('submit',function(e){
     var f=e.target;if(!f.matches||!f.matches('form[action*="/cart/add"]'))return;
-    gmcQueue=[];gmcUnits=[];qa('[data-gmc-addon]').forEach(function(el){var on=el.type==='checkbox'?el.checked:true;if(on)gmcQueueAddon(el.dataset.gmcAddon);});qa('[data-gmc-unitadd]').forEach(function(el){if(el.checked&&!el.disabled)gmcQueueUnit(el.dataset.gmcUnitadd);});
+    gmcQueue=[];gmcUnits=[];qa('[data-gmc-addon]').forEach(function(el){var on=el.type==='checkbox'?el.checked:true;if(on)gmcQueueAddon(el.dataset.gmcAddon);});qa('[data-gmc-unitadd]').forEach(function(el){if(el.checked&&!el.disabled)gmcQueueUnit(el.dataset.gmcUnitadd);});qa('.gmc-qg[data-state=open]').forEach(function(el){gmcQueueAddon(el.dataset.gmcQgift);});
     /* the quantity-break gift listener runs after this one in the same event, so flush on the next tick when no cart UI will announce success */
     setTimeout(function(){if(!document.querySelector('cart-drawer, cart-notification'))flush();},0);
   },true);
@@ -348,4 +348,13 @@ document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.
     .then(function(){if(b.dataset.skip==='true'){location.href='/checkout';return;}
       return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(sec){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents){cd.renderContents({sections:sec});}else{location.href=(window.GMC&&GMC.cartUrl)||'/cart';}});})
     .catch(function(x){err.textContent=x.message;err.hidden=false;}).finally(function(){btn.disabled=false;render(b);});});
+})();
+
+/* gifts on quantity: locked / unlocked state follows the chosen quantity */
+(function(){
+  function qty(){var c=document.querySelector('.gmc-qb input:checked');if(c)return +c.value||1;var i=document.querySelector('input[name="quantity"]');return i?(+i.value||1):1;}
+  function upd(){var q=qty();document.querySelectorAll('.gmc-qg').forEach(function(g){var need=+g.dataset.need,ok=q>=need;g.dataset.state=ok?'open':'locked';
+    g.querySelector('.gmc-qg__msg').textContent=ok?g.dataset.open:g.dataset.locked.replace('[need]',(need-q)+' more');g.querySelector('.gmc-qg__ic').textContent=ok?'🎁':'🔒';});}
+  upd();['change','input','click'].forEach(function(ev){document.addEventListener(ev,function(e){var t=e.target;if(t&&t.closest&&(t.closest('quantity-input,.gmc-qb')||(t.name==='quantity')))setTimeout(upd,60);},true);});
+  window.addEventListener('load',function(){setTimeout(upd,150);});document.addEventListener('shopify:section:load',upd);
 })();

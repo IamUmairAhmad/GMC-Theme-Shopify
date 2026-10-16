@@ -200,23 +200,16 @@
     "pm_test": {
       "type": "gmc-product-more",
       "blocks": {
-        "b": {
-          "type": "bundle",
+        "a": {
+          "type": "qty_gift",
           "settings": {
-            "bundle_type": "main",
-            "products": [
-              "gmc-demo-hoodie"
-            ],
-            "discount_percent": 15,
-            "pad": 12,
-            "radius": 10,
-            "border": 1,
-            "discount_code": ""
+            "product": "gmc-test-free-gift",
+            "unlock_qty": 3
           }
         }
       },
       "block_order": [
-        "b"
+        "a"
       ],
       "settings": {}
     }
