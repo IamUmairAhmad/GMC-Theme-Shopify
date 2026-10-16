@@ -293,3 +293,12 @@ Shrine's sections use two editor controls that ours never use:
 | ID | Missing feature | Pri |
 |---|---|---|
 | PS-01 | **Ready-made starter content** (sample blocks and text) for the add-section presets of: Bundle deals, Featured on, Instagram stories (Stories), Image & video slider, 3D parallax hero, Shoppable image, TikTok videos. Quick fix, no new logic. | P1 |
+
+## 25. Sixteenth pass: merchant guidance inside the editor
+Counted help text in the section schemas. Shrine: 21% of settings carry a help line and there are 72 explanatory notes. Ours (GMC sections only): 13% and 8 notes.
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| GD-01 | **Help line under settings** and short **explanatory notes** at the top of complex blocks (quantity breaks, bundles, upsells, checkpoints, custom fields), stating what a setting does, the allowed formats and the text tokens available. Bring GMC sections to at least Shrine's level. | P2 |
+| GD-02 | **Tutorial links** from tricky settings (Shrine links to a help centre and videos). We have none: a documentation site or README with a page per feature, plus short video guides, linked from the editor. | P2 |
+| GD-03 | **Block limits** (for example only one sticky bar per page) on our product blocks, as Shrine has 84, to prevent invalid setups. Ours has 3 on GMC sections. | P3 |
