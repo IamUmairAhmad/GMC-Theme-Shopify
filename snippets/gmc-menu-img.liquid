@@ -19,5 +19,5 @@
   endif
 -%}
 {%- if mi_img != blank -%}
-  <span class="gmc-mi gmc-mi--{{ ctx }}" style="--gmc-mi-r:{{ section.settings.gmc_mega_img_ratio }}">{{ mi_img | image_url: width: 400 | image_tag: loading: 'lazy', alt: link.title }}</span>
+  <span class="gmc-mi gmc-mi--{{ ctx }}" style="--gmc-mi-r:{% case section.settings.gmc_mega_img_ratio %}{% when 'portrait' %}4/5{% when 'landscape' %}3/2{% else %}1/1{% endcase %}">{{ mi_img | image_url: width: 400 | image_tag: loading: 'lazy', alt: link.title }}</span>
 {%- endif -%}
