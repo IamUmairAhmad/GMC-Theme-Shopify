@@ -204,6 +204,9 @@
                 sizes: sizes,
                 preload: true
             }}
+            {%- if section.settings.logo_light != blank -%}
+              {{ section.settings.logo_light | image_url: width: 600 | image_tag: class: 'gmc-logo-light', widths: '300, 450, 600', width: settings.logo_width, alt: '', loading: 'lazy' }}
+            {%- endif -%}
           </div>
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
@@ -247,6 +250,9 @@
                 sizes: sizes,
                 preload: true
             }}
+            {%- if section.settings.logo_light != blank -%}
+              {{ section.settings.logo_light | image_url: width: 600 | image_tag: class: 'gmc-logo-light', widths: '300, 450, 600', width: settings.logo_width, alt: '', loading: 'lazy' }}
+            {%- endif -%}
           </div>
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
@@ -500,6 +506,27 @@
 {%- endif -%}
 
 {%- render 'gmc-section-extras' -%}
+{%- if section.settings.gmc_trans != 'off' -%}
+<style>
+  .gmc-hdr-trans .section-header{margin-bottom:calc(-1 * var(--gmc-hh, 0px))}
+  .gmc-hdr-trans:not(.gmc-hdr-solid) .header-wrapper{background:transparent!important;border-bottom-color:transparent!important;box-shadow:none!important}
+  .gmc-hdr-trans:not(.gmc-hdr-solid) .header a,.gmc-hdr-trans:not(.gmc-hdr-solid) .header summary,.gmc-hdr-trans:not(.gmc-hdr-solid) .header button,.gmc-hdr-trans:not(.gmc-hdr-solid) .header .h2,.gmc-hdr-trans:not(.gmc-hdr-solid) .header .header__icon{color:{{ section.settings.gmc_trans_text | default: '#ffffff' }}!important}
+  {%- if section.settings.gmc_trans_hover != blank -%}.gmc-hdr-trans:not(.gmc-hdr-solid) .header a:hover,.gmc-hdr-trans:not(.gmc-hdr-solid) .header summary:hover{color:{{ section.settings.gmc_trans_hover }}!important}{%- endif -%}
+  .gmc-logo-light{display:none}
+  {%- if section.settings.logo_light != blank -%}.gmc-hdr-trans:not(.gmc-hdr-solid) .header__heading-logo{display:none}.gmc-hdr-trans:not(.gmc-hdr-solid) .gmc-logo-light{display:block;height:auto}{%- endif -%}
+  {%- if section.settings.gmc_trans_hide_ann -%}.gmc-hdr-trans:not(.gmc-hdr-solid) .announcement-bar,.gmc-hdr-trans:not(.gmc-hdr-solid) .utility-bar{display:none}{%- endif -%}
+</style>
+<script>
+  (function(){var mode={{ section.settings.gmc_trans | json }},b=document.body,hdr=document.querySelector('.section-header');
+  function hero(){var f=document.querySelector('#MainContent .shopify-section');return !!(f&&f.querySelector('.slideshow,.banner,.gmc-hero,[class*="parallax"],[class*="video-hero"],[class*="hero"]'));}
+  function on(){var t=mode==='all'||(mode==='home'&&{{ request.page_type | json }}==='index')||(mode==='hero'&&hero());b.classList.toggle('gmc-hdr-trans',t);}
+  function size(){var h=document.querySelector('.header-wrapper');if(h)document.documentElement.style.setProperty('--gmc-hh',h.offsetHeight+'px');}
+  function scr(){b.classList.toggle('gmc-hdr-solid',window.scrollY>20);}
+  if(mode==='all'||mode==='home')on();document.addEventListener('DOMContentLoaded',function(){on();size();scr();});
+  window.addEventListener('scroll',scr,{passive:true});window.addEventListener('resize',size);window.addEventListener('load',size);
+  document.addEventListener('shopify:section:load',function(){on();size();});})();
+</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.header.name",
@@ -682,6 +709,58 @@
     {
       "type": "header",
       "content": "GMC extras"
+    },
+    {
+      "type": "header",
+      "content": "Transparent header (GMC)"
+    },
+    {
+      "type": "select",
+      "id": "gmc_trans",
+      "label": "Transparent over the first section",
+      "options": [
+        {
+          "value": "off",
+          "label": "Off"
+        },
+        {
+          "value": "home",
+          "label": "Home page only"
+        },
+        {
+          "value": "hero",
+          "label": "Pages that start with a hero or banner"
+        },
+        {
+          "value": "all",
+          "label": "All pages"
+        }
+      ],
+      "default": "off",
+      "info": "The header sits on top of the hero image and turns solid when scrolling."
+    },
+    {
+      "type": "color",
+      "id": "gmc_trans_text",
+      "label": "Link and icon colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "gmc_trans_hover",
+      "label": "Hover colour"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_light",
+      "label": "Secondary logo",
+      "info": "Shown instead of the main logo while the header is transparent."
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_trans_hide_ann",
+      "label": "Hide announcement bars while transparent",
+      "default": false
     },
     {
       "type": "select",
