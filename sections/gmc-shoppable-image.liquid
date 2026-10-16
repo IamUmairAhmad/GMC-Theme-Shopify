@@ -2,14 +2,31 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.settings.image == blank -%}{%- render 'gmc-empty', msg: 'Choose an image and add hotspot blocks.' -%}{%- endif -%}
-<div class="page-width gmc-si {% render 'gmc-vis', hide: section.settings.hide_on %}">
+<div class="page-width gmc-si {% render 'gmc-vis', hide: section.settings.hide_on %}" data-open="{{ section.settings.open_on }}" data-sheet="{{ section.settings.mobile_modal }}">
   {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   {%- if section.settings.image != blank -%}<div class="gmc-si__wrap">{{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,900,1600' }}
   {%- for block in section.blocks -%}{%- assign p = block.settings.product -%}{%- if p != blank -%}
-    <details class="gmc-si__pin" style="left:{{ block.settings.x }}%;top:{{ block.settings.y }}%" {{ block.shopify_attributes }}><summary aria-label="{{ p.title | escape }}">+</summary>
-      <a class="gmc-si__card" href="{{ p.url }}">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy' }}{%- endif -%}<span>{{ p.title | escape }}<br><strong>{{ p.price | money }}</strong></span></a></details>{%- endif -%}{%- endfor -%}</div>{%- endif -%}
+    {%- assign bm = block.settings.mobile_pos -%}
+    <div class="gmc-si__pin{% if section.settings.ripple %} gmc-si__pin--ripple{% endif %}" style="--x:{{ block.settings.x }}%;--y:{{ block.settings.y }}%;--xm:{% if bm %}{{ block.settings.x_m }}{% else %}{{ block.settings.x }}{% endif %}%;--ym:{% if bm %}{{ block.settings.y_m }}{% else %}{{ block.settings.y }}{% endif %}%" {{ block.shopify_attributes }}>
+      <button type="button" class="gmc-si__dot" aria-expanded="false" aria-label="{{ p.title | escape }}">+</button>
+      <div class="gmc-si__card" role="dialog" aria-label="{{ p.title | escape }}">
+        <button type="button" class="gmc-si__x" aria-label="Close">×</button>
+        <a class="gmc-si__lnk" href="{{ p.url }}">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 220 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+          <span>{{ p.title | escape }}<br><strong>{{ p.price | money }}</strong>{%- if p.compare_at_price > p.price -%} <s>{{ p.compare_at_price | money }}</s> <em class="gmc-si__off">-{{ p.compare_at_price | minus: p.price | times: 100 | divided_by: p.compare_at_price }}%</em>{%- endif -%}</span></a>
+        {%- if block.settings.add_to_cart -%}{%- render 'gmc-inline-atc', product: p, label: block.settings.atc_label, skip: block.settings.skip, align: 'left' -%}{%- endif -%}
+      </div>
+    </div>{%- endif -%}{%- endfor -%}</div>{%- endif -%}
 </div>
-<style>.gmc-si{padding:36px 0}.gmc-si__wrap{position:relative;max-width:1000px;margin:1rem auto 0}.gmc-si__wrap>img{display:block;width:100%;height:auto;border-radius:var(--media-radius)}.gmc-si__pin{position:absolute;transform:translate(-50%,-50%)}.gmc-si__pin summary{list-style:none;width:30px;height:30px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-weight:700;cursor:pointer;box-shadow:0 0 0 6px rgba(255,255,255,.4)}.gmc-si__pin summary::-webkit-details-marker{display:none}.gmc-si__card{position:absolute;top:38px;left:50%;transform:translateX(-50%);width:220px;display:flex;gap:.6rem;align-items:center;background:rgb(var(--color-background));color:rgb(var(--color-foreground));padding:.6rem;border-radius:var(--text-boxes-radius);box-shadow:0 6px 20px rgba(var(--color-shadow),.25);z-index:3;text-decoration:none}.gmc-si__card img{width:56px;height:56px;object-fit:cover;border-radius:var(--media-radius)}</style>
+<style>.gmc-si{padding:36px 0}.gmc-si__wrap{position:relative;max-width:1000px;margin:1rem auto 0}.gmc-si__wrap>img{display:block;width:100%;height:auto;border-radius:var(--media-radius)}
+.gmc-si__pin{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);z-index:2}.gmc-si__dot{width:30px;height:30px;border-radius:50%;background:#fff;color:#111;border:0;display:grid;place-items:center;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35);font-size:18px;line-height:1}
+.gmc-si__pin--ripple .gmc-si__dot{animation:gmcsir 2s infinite}@keyframes gmcsir{0%{box-shadow:0 0 0 0 rgba(255,255,255,.8)}100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}@media(prefers-reduced-motion:reduce){.gmc-si__pin--ripple .gmc-si__dot{animation:none}}
+.gmc-si__card{display:none;position:absolute;top:36px;left:50%;transform:translateX(-50%);width:240px;background:#fff;color:#111;border-radius:10px;padding:1rem;box-shadow:0 8px 28px rgba(0,0,0,.28);z-index:5}.gmc-si__pin.is-open{z-index:6}.gmc-si__pin.is-open .gmc-si__card{display:block}
+.gmc-si[data-open="hover"] .gmc-si__pin:hover .gmc-si__card{display:block}.gmc-si__lnk{display:flex;gap:.8rem;align-items:center;color:inherit;text-decoration:none;font-size:1.3rem}.gmc-si__lnk img{width:64px;height:64px;object-fit:cover;border-radius:6px}.gmc-si__off{background:#b91c1c;color:#fff;font-style:normal;font-size:1.1rem;padding:0 .4rem;border-radius:4px}.gmc-si__x{position:absolute;top:2px;right:8px;background:none;border:0;font-size:2rem;cursor:pointer;color:#111;display:none}
+@media(max-width:749px){.gmc-si__pin{left:var(--xm);top:var(--ym)}.gmc-si__card{position:fixed;top:auto;left:0;right:0;bottom:0;transform:none;width:auto;border-radius:16px 16px 0 0;padding:1.6rem}.gmc-si[data-sheet="center"] .gmc-si__card{top:50%;left:5vw;right:5vw;bottom:auto;transform:translateY(-50%);border-radius:14px}.gmc-si__pin.is-open .gmc-si__x{display:block}.gmc-si[data-open="hover"] .gmc-si__pin:hover:not(.is-open) .gmc-si__card{display:none}}</style>
+<script>(function(){var r=document.currentScript.previousElementSibling&&document.currentScript.previousElementSibling.previousElementSibling,root=document.currentScript.parentNode;var w=root.querySelector('.gmc-si');if(!w)return;
+function close(){w.querySelectorAll('.gmc-si__pin.is-open').forEach(function(p){p.classList.remove('is-open');p.querySelector('.gmc-si__dot').setAttribute('aria-expanded','false');});}
+w.addEventListener('click',function(e){var d=e.target.closest('.gmc-si__dot');if(d){var p=d.closest('.gmc-si__pin'),was=p.classList.contains('is-open');close();if(!was){p.classList.add('is-open');d.setAttribute('aria-expanded','true');}return;}if(e.target.closest('.gmc-si__x'))close();});
+document.addEventListener('click',function(e){if(!e.target.closest('.gmc-si__pin'))close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();</script>
 {% schema %}
 {
   "name": "Shoppable image",
@@ -26,6 +43,44 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "open_on",
+      "label": "Open product card on",
+      "options": [
+        {
+          "value": "click",
+          "label": "Click"
+        },
+        {
+          "value": "hover",
+          "label": "Hover (desktop)"
+        }
+      ],
+      "default": "click"
+    },
+    {
+      "type": "select",
+      "id": "mobile_modal",
+      "label": "Mobile card position",
+      "options": [
+        {
+          "value": "bottom",
+          "label": "Bottom sheet"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "checkbox",
+      "id": "ripple",
+      "label": "Animated ripple on hotspots",
+      "default": true
     },
     {
       "type": "select",
@@ -223,6 +278,58 @@
           "unit": "%",
           "label": "Vertical position",
           "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Mobile position"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_pos",
+          "label": "Use a different position on mobile",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "x_m",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Mobile horizontal position",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "y_m",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Mobile vertical position",
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Add to cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "add_to_cart",
+          "label": "Show add to cart in the card",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "atc_label",
+          "label": "Button label",
+          "default": "Add to cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "skip",
+          "label": "Go straight to checkout",
+          "default": false
         }
       ]
     }

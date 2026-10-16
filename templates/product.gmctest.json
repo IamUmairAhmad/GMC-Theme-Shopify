@@ -480,6 +480,82 @@
         "t"
       ],
       "settings": {}
+    },
+    "si": {
+      "type": "gmc-shoppable-image",
+      "blocks": {
+        "a": {
+          "type": "hotspot",
+          "settings": {
+            "product": "gmc-test-tee",
+            "x": 40,
+            "y": 40
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/gmc-sample-product-image.png",
+        "open_on": "click"
+      }
+    },
+    "pf": {
+      "type": "gmc-product-features",
+      "blocks": {
+        "a": {
+          "type": "feature",
+          "settings": {
+            "title": "Soft",
+            "text": "Very",
+            "x": 30,
+            "y": 30,
+            "len": 25,
+            "bend": 10
+          }
+        },
+        "b": {
+          "type": "feature",
+          "settings": {
+            "title": "Light",
+            "text": "Yes",
+            "x": 70,
+            "y": 60,
+            "label_side": "left",
+            "len": 25
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/gmc-sample-product-image.png",
+        "layout": "leader"
+      }
+    },
+    "pf2": {
+      "type": "gmc-product-features",
+      "blocks": {
+        "a": {
+          "type": "feature",
+          "settings": {
+            "title": "Hot",
+            "text": "Spot",
+            "x": 50,
+            "y": 50
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/gmc-sample-product-image.png",
+        "layout": "hotspots"
+      }
     }
   },
   "order": [
@@ -498,6 +574,9 @@
     "ic",
     "cc",
     "pt",
-    "rt"
+    "rt",
+    "si",
+    "pf",
+    "pf2"
   ]
 }

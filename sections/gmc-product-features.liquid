@@ -3,13 +3,45 @@
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add feature blocks.' -%}{%- endif -%}
 <div class="page-width gmc-pf {% render 'gmc-vis', hide: section.settings.hide_on %}">
   {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  {%- if section.settings.layout == 'sides' -%}
   <div class="gmc-pf__g">
     <div class="gmc-pf__side">{%- for block in section.blocks -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 0 -%}<div class="gmc-pf__f" {{ block.shopify_attributes }}>{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 32 -%}{%- endif -%}<h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></div>{%- endif -%}{%- endfor -%}</div>
     <div class="gmc-pf__img">{%- if section.settings.image != blank -%}{{ section.settings.image | image_url: width: 900 | image_tag: loading: 'lazy' }}{%- endif -%}</div>
     <div class="gmc-pf__side">{%- for block in section.blocks -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 1 -%}<div class="gmc-pf__f" {{ block.shopify_attributes }}>{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 32 -%}{%- endif -%}<h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></div>{%- endif -%}{%- endfor -%}</div>
   </div>
+  {%- else -%}
+  <div class="gmc-pf__map gmc-pf__map--{{ section.settings.layout }}" style="--lc:{{ section.settings.line_color }}">
+    {%- if section.settings.image != blank -%}{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400' }}{%- endif -%}
+    {%- if section.settings.layout == 'leader' -%}
+    <svg class="gmc-pf__svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      {%- for block in section.blocks -%}{%- assign b = block.settings -%}
+        {%- assign ex = b.x | plus: b.len -%}{%- if b.label_side == 'left' -%}{%- assign ex = b.x | minus: b.len -%}{%- endif -%}
+        {%- assign by = b.y | plus: b.bend -%}
+        <polyline points="{{ b.x }},{{ b.y }} {{ b.x }},{{ by }} {{ ex }},{{ by }}" fill="none" stroke="var(--lc)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      {%- endfor -%}
+    </svg>
+    {%- endif -%}
+    {%- for block in section.blocks -%}{%- assign b = block.settings -%}
+      {%- assign bm = b.mobile_pos -%}
+      <div class="gmc-pf__pt" style="--x:{{ b.x }}%;--y:{{ b.y }}%;--xm:{% if bm %}{{ b.x_m }}{% else %}{{ b.x }}{% endif %}%;--ym:{% if bm %}{{ b.y_m }}{% else %}{{ b.y }}{% endif %}%" {{ block.shopify_attributes }}>
+        {%- if section.settings.layout == 'hotspots' -%}
+          <button type="button" class="gmc-pf__dot" data-gmc-dlg="gmc-pf-{{ block.id }}" aria-label="{{ b.title | escape }}">+</button>
+          <dialog class="gmc-dlg" id="gmc-pf-{{ block.id }}" aria-label="{{ b.title | escape }}"><div class="gmc-dlg__in"><button type="button" class="gmc-dlg__x" data-gmc-dlgx aria-label="Close">×</button><h3 class="gmc-dlg__h">{{ b.title | escape }}</h3><p>{{ b.text | escape }}</p></div></dialog>
+        {%- else -%}
+          <span class="gmc-pf__dot gmc-pf__dot--s"></span>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.layout == 'leader' -%}
+        {%- assign ex = b.x | plus: b.len -%}{%- if b.label_side == 'left' -%}{%- assign ex = b.x | minus: b.len -%}{%- endif -%}
+        {%- assign by = b.y | plus: b.bend -%}
+        <div class="gmc-pf__lb gmc-pf__lb--{{ b.label_side }}" style="left:{{ ex }}%;top:{{ by }}%"><strong>{{ b.title | escape }}</strong><span>{{ b.text | escape }}</span></div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.layout == 'leader' -%}<ul class="gmc-pf__ml" role="list">{%- for block in section.blocks -%}<li><strong>{{ block.settings.title | escape }}</strong> {{ block.settings.text | escape }}</li>{%- endfor -%}</ul>{%- endif -%}
+  {%- endif -%}
 </div>
-<style>.gmc-pf{padding:36px 0}.gmc-pf__g{display:grid;grid-template-columns:1fr minmax(240px,420px) 1fr;gap:2rem;align-items:center;margin-top:1.5rem}.gmc-pf__img img{width:100%;height:auto;border-radius:16px}.gmc-pf__side{display:grid;gap:2rem}.gmc-pf__f h3{margin:.4rem 0}.gmc-pf__f p{margin:0;opacity:.8}.gmc-pf__side:first-child{text-align:right}.gmc-pf__side:first-child .gmc-icon{margin-left:auto;display:block}@media(max-width:749px){.gmc-pf__g{grid-template-columns:1fr}.gmc-pf__side:first-child{text-align:left}.gmc-pf__img{order:-1}}</style>
+<style>.gmc-pf__map{position:relative;max-width:900px;margin:1.5rem auto}.gmc-pf__map>img{width:100%;height:auto;display:block;border-radius:16px}.gmc-pf__svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.gmc-pf__pt{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%)}.gmc-pf__dot{width:28px;height:28px;border-radius:50%;background:#fff;color:#111;border:0;display:grid;place-items:center;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35)}.gmc-pf__dot--s{width:12px;height:12px;background:var(--lc,#fff);cursor:default}.gmc-pf__lb{position:absolute;transform:translateY(-50%);max-width:30%;font-size:1.3rem;display:grid;gap:.2rem;background:rgba(255,255,255,.9);color:#111;padding:.5rem .8rem;border-radius:6px}.gmc-pf__lb--left{transform:translate(-100%,-50%);text-align:right}.gmc-pf__ml{display:none;list-style:none;padding:0;margin:1rem 0;gap:.6rem}@media(max-width:749px){.gmc-pf__pt{left:var(--xm);top:var(--ym)}.gmc-pf__map--leader .gmc-pf__lb,.gmc-pf__map--leader .gmc-pf__svg{display:none}.gmc-pf__ml{display:grid}}.gmc-pf{padding:36px 0}.gmc-pf__g{display:grid;grid-template-columns:1fr minmax(240px,420px) 1fr;gap:2rem;align-items:center;margin-top:1.5rem}.gmc-pf__img img{width:100%;height:auto;border-radius:16px}.gmc-pf__side{display:grid;gap:2rem}.gmc-pf__f h3{margin:.4rem 0}.gmc-pf__f p{margin:0;opacity:.8}.gmc-pf__side:first-child{text-align:right}.gmc-pf__side:first-child .gmc-icon{margin-left:auto;display:block}@media(max-width:749px){.gmc-pf__g{grid-template-columns:1fr}.gmc-pf__side:first-child{text-align:left}.gmc-pf__img{order:-1}}</style>
 {% schema %}
 {
   "name": "Product features",
@@ -26,6 +58,32 @@
       "type": "image_picker",
       "id": "image",
       "label": "Center image"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "sides",
+          "label": "Features beside the image"
+        },
+        {
+          "value": "hotspots",
+          "label": "Hotspots with popups"
+        },
+        {
+          "value": "leader",
+          "label": "Bullet points with leader lines"
+        }
+      ],
+      "default": "sides"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Line and dot colour",
+      "default": "#ffffff"
     },
     {
       "type": "select",
@@ -218,6 +276,92 @@
           "id": "text",
           "label": "Text",
           "default": "Describe this benefit."
+        },
+        {
+          "type": "header",
+          "content": "Hotspot / leader position"
+        },
+        {
+          "type": "range",
+          "id": "x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Horizontal position",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Vertical position",
+          "default": 50
+        },
+        {
+          "type": "select",
+          "id": "label_side",
+          "label": "Label side (leader lines)",
+          "options": [
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "range",
+          "id": "len",
+          "min": 5,
+          "max": 45,
+          "step": 1,
+          "unit": "%",
+          "label": "Line length",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "bend",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "unit": "%",
+          "label": "Line bend (vertical)",
+          "default": 0
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_pos",
+          "label": "Use a different position on mobile",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "x_m",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Mobile horizontal position",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "y_m",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Mobile vertical position",
+          "default": 50
         }
       ]
     }
