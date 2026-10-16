@@ -91,3 +91,5 @@ body.gmc-sticky-on .gmc-scta{display:none}
 .swatch-input__input:checked+.swatch-input__label--text{background:rgb(var(--color-foreground));color:rgb(var(--color-background))}
 .swatch-input__input.visually-disabled:not(:checked)+.swatch-input__label--text .swatch-input__text{text-decoration:line-through;opacity:.5}
 /* sync probe */
+.gmc-cart-express{margin-top:1rem}
+.gmc-cart-express [data-shopify-buttoncontainer]{justify-content:center}

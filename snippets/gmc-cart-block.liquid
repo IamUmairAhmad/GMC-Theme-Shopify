@@ -78,6 +78,11 @@
       <button type="submit" id="CartDrawer-Checkout" class="cart__checkout-button button" name="checkout" form="CartDrawer-Form" {% if cart == empty %}disabled{% endif %}>
         {%- if bs.label != blank -%}{{ bs.label | escape }}{%- else -%}{{ 'sections.cart.checkout' | t }}{%- endif -%}
       </button>
+      {%- if bs.show_express and additional_checkout_buttons and cart != empty -%}
+        <div class="gmc-cart-express cart__dynamic-checkout-buttons additional-checkout-buttons additional-checkout-buttons--vertical">
+          {{ content_for_additional_checkout_buttons }}
+        </div>
+      {%- endif -%}
     </div>
 
   {%- when 'payment_badges' -%}
