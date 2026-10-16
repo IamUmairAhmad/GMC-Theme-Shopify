@@ -46,7 +46,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| HD-01 | **Transparent header over hero** (slideshow, hero, parallax): link/icon colours, highlighted and hover colours, **secondary logo swap**, option to hide announcement bars. | P1 |
+| HD-01 ✅ | **Transparent header over hero** (slideshow, hero, parallax): link/icon colours, highlighted and hover colours, **secondary logo swap**, option to hide announcement bars. | P1 |
 | HD-02 | **Products mega menu**: show products and collections from a link list, collection images on desktop and mobile. | P2 |
 | HD-03 | Active-link highlight with colour scheme, **secondary menu**, mobile menu title, mobile logo width. | P3 |
 | AN-01 | **Announcement bar layout**: columns desktop/mobile (0 = auto), spacing, separators, slider type (slide / loop / fade) with desktop/mobile switches, autoplay speed. | P2 |
@@ -78,7 +78,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| AT-01 | "Add to cart" button (custom product + skip-cart option) in: image-with-text, multirow, rich-text, multicolumn, image banner, slideshow, icons-with-content, content tabs, comparison table / slider, vertical ticker, custom columns. We only have it on three sections. | P1 |
+| AT-01 ✅ | "Add to cart" button (custom product + skip-cart option) in: image-with-text, multirow, rich-text, multicolumn, image banner, slideshow, icons-with-content, content tabs, comparison table / slider, vertical ticker, custom columns. We only have it on three sections. | P1 |
 | AT-02 | **Rating-stars**, **text-with-icon**, and **image** blocks available in rich-text, image-with-text and custom columns. | P3 |
 
 ## 7. Other sections

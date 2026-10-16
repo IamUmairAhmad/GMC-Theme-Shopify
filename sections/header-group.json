@@ -55,10 +55,7 @@
         "enable_language_selector": true,
         "margin_bottom": 0,
         "padding_top": 20,
-        "padding_bottom": 20,
-        "gmc_trans": "all",
-        "gmc_trans_text": "#ffff00",
-        "gmc_trans_hide_ann": true
+        "padding_bottom": 20
       }
     }
   },
@@ -68,4 +65,3 @@
     "header"
   ]
 }
-
