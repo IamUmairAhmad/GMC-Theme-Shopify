@@ -16,7 +16,12 @@
         "title",
         "price"
       ],
-      "settings": {}
+      "settings": {
+        "gmc_pagination": "dots_under",
+        "gmc_peek": 10,
+        "gmc_slide_gap": 8,
+        "gmc_variant_first": false
+      }
     },
     "ex": {
       "type": "gmc-product-extras",

@@ -76,7 +76,7 @@
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
     <div class="page-width">
-      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+      <div style="--gmc-th:{{ section.settings.gmc_thumbs_d }};--gmc-thm:{{ section.settings.gmc_thumbs_m }};--gmc-sgap:{{ section.settings.gmc_slide_gap }}px;--gmc-peek:{{ section.settings.gmc_peek }}%;--gmc-dot:{{ section.settings.gmc_dot_color }}" class="product gmc-gal gmc-gal--pag-{{ section.settings.gmc_pagination }}{% if section.settings.gmc_hide_arrows %} gmc-gal--noarrows{% endif %} product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
         <div class="grid__item product__media-wrapper">
           {% render 'product-media-gallery', variant_images: variant_images %}
         </div>
@@ -2485,6 +2485,143 @@
       "id": "enable_video_looping",
       "default": false,
       "label": "t:sections.main-product.settings.enable_video_looping.label"
+    },
+    {
+      "type": "header",
+      "content": "Gallery options"
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_variant_first",
+      "label": "Show the selected variant's image first",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "gmc_thumbs_d",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "label": "Thumbnails per row (desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "gmc_thumbs_m",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Thumbnails visible (mobile)",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "gmc_pagination",
+      "label": "Mobile pagination",
+      "options": [
+        {
+          "value": "none",
+          "label": "Counter only"
+        },
+        {
+          "value": "numeric",
+          "label": "Numeric"
+        },
+        {
+          "value": "dots_under",
+          "label": "Dots under the images"
+        },
+        {
+          "value": "dots_overlay",
+          "label": "Dots over the images"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "gmc_dot_color",
+      "label": "Dots colour",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_hide_arrows",
+      "label": "Hide arrows",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "gmc_slide_gap",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between mobile slides",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "gmc_peek",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "%",
+      "label": "Next slide preview (mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Trust badge on images"
+    },
+    {
+      "type": "image_picker",
+      "id": "gmc_badge_img",
+      "label": "Badge image"
+    },
+    {
+      "type": "select",
+      "id": "gmc_badge_pos",
+      "label": "Badge position",
+      "options": [
+        {
+          "value": "top_left",
+          "label": "Top left"
+        },
+        {
+          "value": "top_right",
+          "label": "Top right"
+        },
+        {
+          "value": "bottom_left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom_right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "bottom_left"
+    },
+    {
+      "type": "select",
+      "id": "gmc_badge_size",
+      "label": "Badge size",
+      "options": [
+        {
+          "value": "s",
+          "label": "Small"
+        },
+        {
+          "value": "m",
+          "label": "Medium"
+        },
+        {
+          "value": "l",
+          "label": "Large"
+        }
+      ],
+      "default": "m"
     },
     {
       "type": "header",

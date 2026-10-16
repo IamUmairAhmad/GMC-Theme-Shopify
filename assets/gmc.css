@@ -137,3 +137,19 @@ label.gmc-imgsw{font-size:0!important;background:var(--gmc-img) center/cover no-
 label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap:.2rem;min-width:9rem;padding:1.1rem 1.4rem!important;border-radius:var(--text-boxes-radius,8px)!important}.gmc-vcard__p{font-size:1.2rem;opacity:.75}
 
 .gmc-cdisc{background:var(--cd-bg);color:var(--cd-fg);border-color:var(--cd-bd)}.gmc-cdisc.is-on{background:var(--cd-abg);color:var(--cd-afg);border-style:solid}.gmc-cdisc__i{display:inline-flex}
+
+/* gallery options */
+.gmc-gal media-gallery{position:relative}
+@media(min-width:750px){.gmc-gal .thumbnail-list{grid-template-columns:repeat(var(--gmc-th,4),1fr)}.gmc-gal .thumbnail-list.slider--tablet-up .thumbnail-list__item.slider__slide{width:calc(100%/var(--gmc-th,4) - .8rem)}}
+@media(max-width:749px){.gmc-gal .thumbnail-list__item.slider__slide{width:calc(100%/var(--gmc-thm,3) - .6rem)}.gmc-gal .product__media-list.slider--mobile{gap:var(--gmc-sgap,0)}.gmc-gal .product__media-list .product__media-item.slider__slide{flex:0 0 calc(100% - var(--gmc-peek,0%));max-width:calc(100% - var(--gmc-peek,0%))}}
+.gmc-gal--noarrows .slider-buttons,.gmc-gal--noarrows .slider-button{display:none!important}
+.gmc-gal--pag-none .slider-counter{}
+.gmc-gal--pag-dots_under .slider-buttons,.gmc-gal--pag-dots_overlay .slider-buttons,.gmc-gal--pag-numeric .slider-buttons{display:none}
+.gmc-pag{display:flex;justify-content:center;gap:.7rem;margin:1rem 0;align-items:center}
+.gmc-pag i{width:.8rem;height:.8rem;border-radius:50%;background:var(--gmc-dot,currentColor);opacity:.3;cursor:pointer}.gmc-pag i.on{opacity:1;transform:scale(1.25)}
+.gmc-pag--overlay{position:absolute;left:0;right:0;bottom:1rem;margin:0;z-index:2;pointer-events:none}.gmc-pag--overlay i{pointer-events:auto}
+.gmc-pag--numeric{font-size:1.3rem}
+@media(min-width:750px){.gmc-pag{display:none}.gmc-gal--pag-numeric .slider-buttons,.gmc-gal--pag-dots_under .slider-buttons,.gmc-gal--pag-dots_overlay .slider-buttons{display:flex}}
+.gmc-gal__badge{position:absolute;z-index:3;pointer-events:none}.gmc-gal__badge img{width:100%;height:auto;display:block}
+.gmc-gal__badge--s{width:7rem}.gmc-gal__badge--m{width:10rem}.gmc-gal__badge--l{width:14rem}
+.gmc-gal__badge--top_left{top:1rem;left:1rem}.gmc-gal__badge--top_right{top:1rem;right:1rem}.gmc-gal__badge--bottom_left{bottom:1rem;left:1rem}.gmc-gal__badge--bottom_right{bottom:1rem;right:1rem}

@@ -50,7 +50,10 @@
   {% endif %}
   aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
   data-desktop-layout="{{ section.settings.gallery_layout }}"
+  data-gmc-pag="{{ section.settings.gmc_pagination }}"
+  {% unless section.settings.gmc_variant_first %}data-gmc-order="{% for m in product.media %}{{ section.id }}-{{ m.id }}{% unless forloop.last %},{% endunless %}{% endfor %}"{% endunless %}
 >
+  {%- if section.settings.gmc_badge_img != blank -%}<div class="gmc-gal__badge gmc-gal__badge--{{ section.settings.gmc_badge_pos }} gmc-gal__badge--{{ section.settings.gmc_badge_size }}">{{ section.settings.gmc_badge_img | image_url: width: 300 | image_tag: loading: 'lazy', alt: '' }}</div>{%- endif -%}
   <div id="GalleryStatus-{{ section.id }}" class="visually-hidden" role="status"></div>
   <slider-component id="GalleryViewer-{{ section.id }}" class="slider-mobile-gutter">
     <a class="skip-to-content-link button visually-hidden quick-add-hidden" href="#ProductInfo-{{ section.id }}">

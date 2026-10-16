@@ -463,3 +463,22 @@ document.querySelectorAll('.gmc-cdisc').forEach(function(c){try{if(sessionStorag
     if('IntersectionObserver' in window&&v.autoplay){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){v.play().catch(function(){});}else{v.pause();}});}).observe(w);}});}
   init();document.addEventListener('shopify:section:load',function(e){init(e.target);});
 })();
+
+/* product gallery: pagination, variant-first order */
+(function(){
+  function init(root){(root||document).querySelectorAll('media-gallery[data-gmc-pag]').forEach(function(g){if(g._gp)return;g._gp=1;
+    var ul=g.querySelector('.product__media-list'),mode=g.dataset.gmcPag;if(!ul)return;
+    if(g.dataset.gmcOrder){var ord=g.dataset.gmcOrder.split(',');var items=[].slice.call(ul.children);items.sort(function(a,b){return ord.indexOf(a.dataset.mediaId)-ord.indexOf(b.dataset.mediaId);});items.forEach(function(i){ul.appendChild(i);});}
+    if(mode==='none'||!mode)return;
+    var n=ul.children.length;if(n<2)return;
+    var bar=document.createElement('div');bar.className='gmc-pag'+(mode==='dots_overlay'?' gmc-pag--overlay':'')+(mode==='numeric'?' gmc-pag--numeric':'');
+    function build(){bar.innerHTML='';if(mode==='numeric'){bar.textContent='1 / '+n;return;}for(var i=0;i<n;i++){var d=document.createElement('i');d.dataset.i=i;bar.appendChild(d);}}
+    build();
+    var host=ul.parentNode;if(mode==='dots_overlay'){host.style.position='relative';host.appendChild(bar);}else{host.insertAdjacentElement('afterend',bar);}
+    function cur(){var w=ul.children[0]?ul.children[0].getBoundingClientRect().width:1;return Math.max(0,Math.min(n-1,Math.round(ul.scrollLeft/(w||1))));}
+    function mark(){var c=cur();if(mode==='numeric'){bar.textContent=(c+1)+' / '+n;}else{[].forEach.call(bar.children,function(d,i){d.classList.toggle('on',i===c);});}}
+    ul.addEventListener('scroll',mark,{passive:true});mark();
+    bar.addEventListener('click',function(e){var d=e.target.closest('i');if(d){var t=ul.children[+d.dataset.i];if(t)ul.scrollTo({left:t.offsetLeft-ul.offsetLeft,behavior:'smooth'});}});
+  });}
+  init();document.addEventListener('shopify:section:load',function(e){init(e.target);});
+})();
