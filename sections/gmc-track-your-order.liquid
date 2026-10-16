@@ -1,0 +1,132 @@
+{%- render 'gmc-scheme' -%}
+{%- render 'gmc-section-extras' -%}
+{%- comment -%}
+  GMC Theme: "Track your order" (original code).
+  - Tracking number: opens a carrier tracking page (URL template with [tracking]).
+  - Order number + email/phone: opens your order-tracking app page (URL template with [order] and [contact]),
+    or, when no URL is set, sends the details to you through the store's contact form so you can reply.
+{%- endcomment -%}
+{%- assign sid = section.id -%}
+{%- assign s = section.settings -%}
+{%- assign use_app = false -%}
+{%- if s.lookup_url != blank -%}{%- assign use_app = true -%}{%- endif -%}
+<div class="gmc-tyo color-{{ s.color_scheme }} gradient" id="gmc-tyo-{{ sid }}" style="padding-top:{{ s.padding_top }}px;padding-bottom:{{ s.padding_bottom }}px">
+  <div class="page-width gmc-tyo__wrap">
+    {%- if s.heading != blank -%}<h1 class="title {{ s.heading_size }}" style="text-align:center;margin:0 0 1rem">{{ s.heading | escape }}</h1>{%- endif -%}
+    {%- if s.text != blank -%}<div class="rte" style="text-align:center;margin:0 0 2.4rem">{{ s.text }}</div>{%- endif -%}
+
+    <div class="gmc-tyo__tabs" role="tablist">
+      <button type="button" role="tab" class="gmc-tyo__tab is-on" data-tab="order" aria-selected="true">{{ s.tab_order | escape }}</button>
+      <button type="button" role="tab" class="gmc-tyo__tab" data-tab="tracking" aria-selected="false">{{ s.tab_tracking | escape }}</button>
+    </div>
+
+    <div class="gmc-tyo__panel" data-panel="order">
+      {%- if use_app -%}
+        <form class="gmc-tyo__form" data-gmc-order-form data-url="{{ s.lookup_url | escape }}">
+          <label class="field__label" for="gmc-o-{{ sid }}">{{ s.order_label | escape }}</label>
+          <input id="gmc-o-{{ sid }}" class="field__input" name="order" required autocomplete="off" placeholder="{{ s.order_placeholder | escape }}">
+          <label class="field__label" for="gmc-c-{{ sid }}">{{ s.contact_label | escape }}</label>
+          <input id="gmc-c-{{ sid }}" class="field__input" name="contact" required autocomplete="email" placeholder="{{ s.contact_placeholder | escape }}">
+          <button type="submit" class="button">{{ s.button_label | escape }}</button>
+        </form>
+      {%- else -%}
+        {%- form 'contact', id: 'gmc-tyo-form', class: 'gmc-tyo__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form__message" role="status">{{ s.success_text | escape }}</p>
+          {%- else -%}
+            {%- if form.errors -%}<p class="form__message" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+            <input type="hidden" name="contact[subject]" value="Order status request">
+            <label class="field__label" for="gmc-o-{{ sid }}">{{ s.order_label | escape }}</label>
+            <input id="gmc-o-{{ sid }}" class="field__input" name="contact[order_number]" required autocomplete="off" placeholder="{{ s.order_placeholder | escape }}">
+            <label class="field__label" for="gmc-e-{{ sid }}">{{ s.email_label | escape }}</label>
+            <input id="gmc-e-{{ sid }}" class="field__input" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ s.email_placeholder | escape }}">
+            <label class="field__label" for="gmc-p-{{ sid }}">{{ s.phone_label | escape }}</label>
+            <input id="gmc-p-{{ sid }}" class="field__input" type="tel" name="contact[phone]" autocomplete="tel" placeholder="{{ s.phone_placeholder | escape }}">
+            <input type="hidden" name="contact[body]" value="Please send me the status of my order.">
+            <button type="submit" class="button">{{ s.button_label_form | escape }}</button>
+          {%- endif -%}
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+
+    <div class="gmc-tyo__panel" data-panel="tracking" hidden>
+      <form class="gmc-tyo__form" data-gmc-tracking-form data-url="{{ s.tracking_url | escape }}">
+        <label class="field__label" for="gmc-t-{{ sid }}">{{ s.tracking_label | escape }}</label>
+        <input id="gmc-t-{{ sid }}" class="field__input" name="tracking" required autocomplete="off" placeholder="{{ s.tracking_placeholder | escape }}">
+        <button type="submit" class="button">{{ s.button_label_tracking | escape }}</button>
+      </form>
+    </div>
+
+    {%- if customer -%}
+      <p style="text-align:center;margin-top:2.4rem"><a href="{{ routes.account_url }}">{{ s.account_label | escape }}</a></p>
+    {%- endif -%}
+  </div>
+</div>
+<style>
+  #gmc-tyo-{{ sid }} .gmc-tyo__wrap{max-width:56rem}
+  #gmc-tyo-{{ sid }} .gmc-tyo__tabs{display:flex;gap:.4rem;margin-bottom:2rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}
+  #gmc-tyo-{{ sid }} .gmc-tyo__tab{flex:1;padding:1.2rem 1rem;background:none;border:0;border-bottom:2px solid transparent;font:inherit;color:rgba(var(--color-foreground),.7);cursor:pointer;margin-bottom:-1px}
+  #gmc-tyo-{{ sid }} .gmc-tyo__tab.is-on{color:rgb(var(--color-foreground));border-bottom-color:rgb(var(--color-foreground));font-weight:600}
+  #gmc-tyo-{{ sid }} .gmc-tyo__tab:focus-visible{outline:.2rem solid rgba(var(--color-foreground),.5);outline-offset:-.2rem}
+  #gmc-tyo-{{ sid }} .gmc-tyo__form{display:grid;gap:.8rem}
+  #gmc-tyo-{{ sid }} .gmc-tyo__form .field__label{position:static;transform:none;font-size:1.3rem;margin-top:.6rem}
+  #gmc-tyo-{{ sid }} .gmc-tyo__form .button{margin-top:1.2rem;width:100%}
+  #gmc-tyo-{{ sid }} .gmc-tyo__note{font-size:1.2rem;opacity:.7;margin-top:1.2rem}
+</style>
+<script>
+(function(){
+  var root=document.getElementById('gmc-tyo-{{ sid }}');if(!root)return;
+  var tabs=root.querySelectorAll('.gmc-tyo__tab'),panels=root.querySelectorAll('.gmc-tyo__panel');
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){var on=x===t;x.classList.toggle('is-on',on);x.setAttribute('aria-selected',on);});
+    panels.forEach(function(p){p.hidden=p.getAttribute('data-panel')!==t.getAttribute('data-tab');});
+  });});
+  function go(url,map){Object.keys(map).forEach(function(k){url=url.split('['+k+']').join(encodeURIComponent(map[k]));});window.open(url,'_blank','noopener');}
+  var f=root.querySelector('[data-gmc-order-form]');
+  if(f)f.addEventListener('submit',function(e){e.preventDefault();go(f.getAttribute('data-url'),{order:f.order.value.trim().replace(/^#/,''),contact:f.contact.value.trim()});});
+  var t=root.querySelector('[data-gmc-tracking-form]');
+  if(t)t.addEventListener('submit',function(e){e.preventDefault();go(t.getAttribute('data-url'),{tracking:t.tracking.value.trim()});});
+})();
+</script>
+{% schema %}
+{
+  "name": "Track your order",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type": "header", "content": "Text"},
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Track your order"},
+    {"type": "select", "id": "heading_size", "label": "Heading size", "options": [{"value": "h2", "label": "Medium"}, {"value": "h1", "label": "Large"}], "default": "h1"},
+    {"type": "richtext", "id": "text", "label": "Intro text", "default": "<p>Enter your details to see where your order is.</p>"},
+    {"type": "header", "content": "Lookup by order number"},
+    {"type": "text", "id": "lookup_url", "label": "Order tracking page link", "info": "From your tracking app. Write [order] and [contact] where the values go, e.g. https://track.example.com/?order=[order]&email=[contact] Leave empty to send the request to your store inbox instead."},
+    {"type": "text", "id": "tab_order", "label": "Tab label", "default": "Order number"},
+    {"type": "text", "id": "order_label", "label": "Order number label", "default": "Order number"},
+    {"type": "text", "id": "order_placeholder", "label": "Order number placeholder", "default": "#1001"},
+    {"type": "text", "id": "contact_label", "label": "Email or phone label", "default": "Email or phone number"},
+    {"type": "text", "id": "contact_placeholder", "label": "Email or phone placeholder", "default": "name@example.com"},
+    {"type": "text", "id": "email_label", "label": "Email label (inbox mode)", "default": "Email"},
+    {"type": "text", "id": "email_placeholder", "label": "Email placeholder (inbox mode)", "default": "name@example.com"},
+    {"type": "text", "id": "phone_label", "label": "Phone label (inbox mode)", "default": "Phone number (optional)"},
+    {"type": "text", "id": "phone_placeholder", "label": "Phone placeholder (inbox mode)", "default": "+92 300 0000000"},
+    {"type": "text", "id": "button_label", "label": "Button label", "default": "Track order"},
+    {"type": "text", "id": "button_label_form", "label": "Button label (inbox mode)", "default": "Request order status"},
+    {"type": "text", "id": "success_text", "label": "Message after sending (inbox mode)", "default": "Thanks. We will email you the status of your order soon."},
+    {"type": "header", "content": "Lookup by tracking number"},
+    {"type": "text", "id": "tracking_url", "label": "Carrier tracking link", "default": "https://t.17track.net/en#nums=[tracking]", "info": "Write [tracking] where the number goes. The default opens the 17TRACK service."},
+    {"type": "text", "id": "tab_tracking", "label": "Tab label", "default": "Tracking number"},
+    {"type": "text", "id": "tracking_label", "label": "Tracking number label", "default": "Tracking number"},
+    {"type": "text", "id": "tracking_placeholder", "label": "Tracking number placeholder", "default": "Enter your tracking number"},
+    {"type": "text", "id": "button_label_tracking", "label": "Button label", "default": "Track package"},
+    {"type": "header", "content": "Account"},
+    {"type": "text", "id": "account_label", "label": "Link text for logged-in customers", "default": "View all my orders"},
+    {"type": "header", "content": "Layout"},
+    {"type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1"},
+    {"type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding", "default": 48},
+    {"type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 48},
+    {"type": "select", "id": "gmc_display_on", "label": "Display on", "options": [
+      {"value": "all", "label": "All devices"}, {"value": "mobile", "label": "Mobile only"}, {"value": "desktop", "label": "Desktop only"}], "default": "all"}
+  ],
+  "presets": [{"name": "Track your order"}]
+}
+{% endschema %}

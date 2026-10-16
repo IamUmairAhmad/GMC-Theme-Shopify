@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "gmc-track-your-order",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
