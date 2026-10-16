@@ -279,3 +279,9 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
+/* shared money formatter using the store's money format */
+window.gmcMoney=function(c){var f=String((window.GMC&&GMC.moneyFormat)||'{{amount}}').replace(/<[^>]*>/g,''),re=/\{\{\s*(\w+)\s*\}\}/,m=f.match(re);
+  function fd(n,p,t,d){n=(n/100).toFixed(p);var a=n.split('.');return a[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g,'$1'+t)+(a[1]?d+a[1]:'');}
+  var k=m?m[1]:'amount',v;
+  switch(k){case 'amount_no_decimals':v=fd(c,0,',','.');break;case 'amount_with_comma_separator':v=fd(c,2,'.',',');break;case 'amount_no_decimals_with_comma_separator':v=fd(c,0,'.',',');break;case 'amount_with_apostrophe_separator':v=fd(c,2,"'",'.');break;default:v=fd(c,2,',','.');}
+  return m?f.replace(re,v):f+v;};

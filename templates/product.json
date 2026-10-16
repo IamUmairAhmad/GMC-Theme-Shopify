@@ -100,7 +100,11 @@
     },
     "gmc_sticky": {
       "type": "gmc-sticky-atc",
-      "settings": {}
+      "settings": {
+        "picker": "combined",
+        "price_in_button": false,
+        "img_desktop": true
+      }
     },
     "gmc_qb": {
       "type": "gmc-quantity-breaks",

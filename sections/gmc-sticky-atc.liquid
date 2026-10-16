@@ -1,28 +1,88 @@
 {%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: sticky add-to-cart bar (original code). Add it to the product template. {%- endcomment -%}
 {%- if product != blank and settings.gmc_sticky_atc -%}
-<div class="gmc-satc" id="gmc-satc" hidden>
+{%- liquid
+  assign s = section.settings
+  assign sv = product.selected_or_first_available_variant
+  assign rating = product.metafields.reviews.rating.value
+  assign rcount = product.metafields.reviews.rating_count
+-%}
+<div class="gmc-satc{% if s.transparent %} gmc-satc--clear{% endif %}{% if s.full_width_mobile %} gmc-satc--fullm{% endif %}" id="gmc-satc" data-mode="{{ s.show_when }}" data-action="{{ s.action }}" data-picker="{{ s.picker }}" hidden
+  style="{% if s.button_color != blank and s.button_color.alpha != 0.0 %}--gmc-satc-btn:{{ s.button_color }};--gmc-satc-btn-text:{{ s.button_text_color }};{% endif %}">
   <div class="page-width gmc-satc__in">
-    <span class="gmc-satc__name">{{ product.title | escape }}</span>
-    <span class="gmc-satc__price" id="gmc-satc-price">{{ product.selected_or_first_available_variant.price | money }}</span>
-    <button type="button" class="button" id="gmc-satc-btn">{{ section.settings.label | escape }}</button>
+    {%- if product.featured_image != blank -%}
+      <span class="gmc-satc__img{% unless s.img_desktop %} gmc-hide-d{% endunless %}{% unless s.img_mobile %} gmc-hide-m{% endunless %}">{{ sv.featured_image | default: product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60, 120', id: 'gmc-satc-img', alt: product.title }}</span>
+    {%- endif -%}
+    <span class="gmc-satc__txt{% unless s.title_desktop %} gmc-hide-d{% endunless %}{% unless s.title_mobile %} gmc-hide-m{% endunless %}">
+      <span class="gmc-satc__name">{{ product.title | escape }}</span>
+      {%- if s.show_rating and rating != blank -%}<span class="gmc-satc__rate" aria-label="{{ rating }} / 5">★ {{ rating | round: 1 }}{% if rcount != blank %} ({{ rcount }}){% endif %}</span>{%- endif -%}
+      {%- if s.badge != blank -%}<span class="gmc-satc__badge">{{ s.badge | escape }}</span>{%- endif -%}
+    </span>
+    {%- if s.picker != 'none' and product.variants.size > 1 -%}
+      <span class="gmc-satc__pick{% unless s.picker_desktop %} gmc-hide-d{% endunless %}{% unless s.picker_mobile %} gmc-hide-m{% endunless %}">
+        {%- if s.picker == 'combined' -%}
+          <select id="gmc-satc-sel" aria-label="{{ product.title | escape }}">
+            {%- for v in product.variants -%}<option value="{{ v.id }}" {% if v.id == sv.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}
+          </select>
+        {%- else -%}
+          {%- for o in product.options_with_values -%}
+            <select data-opt="{{ forloop.index0 }}" aria-label="{{ o.name | escape }}">
+              {%- for val in o.values -%}<option value="{{ val | escape }}" {% if val == o.selected_value %}selected{% endif %}>{{ val | escape }}</option>{%- endfor -%}
+            </select>
+          {%- endfor -%}
+        {%- endif -%}
+      </span>
+    {%- endif -%}
+    <span class="gmc-satc__price{% unless s.price_desktop %} gmc-hide-d{% endunless %}{% unless s.price_mobile %} gmc-hide-m{% endunless %}{% if s.price_in_button %} gmc-satc__price--hidden{% endif %}" id="gmc-satc-price">{{ sv.price | money }}</span>
+    <button type="button" class="button gmc-satc__btn" id="gmc-satc-btn" {% unless sv.available %}disabled{% endunless %}>{{ s.label | escape }}{% if s.price_in_button %} · <span id="gmc-satc-btnprice">{{ sv.price | money }}</span>{% endif %}</button>
   </div>
 </div>
 <style>
   .gmc-satc{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgb(var(--color-background));border-top:1px solid rgba(var(--color-foreground),.15);padding:.8rem 0;box-shadow:0 -4px 16px rgba(var(--color-shadow),.08)}
   .gmc-satc[hidden]{display:none}
-  .gmc-satc__in{display:flex;align-items:center;gap:1.5rem}.gmc-satc__name{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .gmc-satc--clear{background:transparent;border-top:0;box-shadow:none;pointer-events:none}.gmc-satc--clear .gmc-satc__in{pointer-events:auto}
+  .gmc-satc__in{display:flex;align-items:center;gap:1.5rem}
+  .gmc-satc__img{width:4.4rem;flex:none}.gmc-satc__img img{width:100%;height:auto;border-radius:6px;display:block}
+  .gmc-satc__txt{flex:1;min-width:0;display:flex;flex-direction:column}
+  .gmc-satc__name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .gmc-satc__rate{font-size:1.2rem;opacity:.8}.gmc-satc__badge{font-size:1.1rem;color:{{ settings.gmc_accent }};font-weight:600}
+  .gmc-satc__pick{display:flex;gap:.6rem}.gmc-satc__pick select{padding:.6rem;max-width:16rem;border-radius:var(--inputs-radius,4px)}
+  .gmc-satc__price--hidden{display:none}
+  .gmc-satc[style*="--gmc-satc-btn"] .gmc-satc__btn{background:var(--gmc-satc-btn);color:var(--gmc-satc-btn-text)}
+  @media(min-width:750px){.gmc-hide-d{display:none!important}}
+  @media(max-width:749px){.gmc-hide-m{display:none!important}.gmc-satc--fullm .gmc-satc__btn{flex:1}.gmc-satc--fullm .gmc-satc__txt{display:none}}
 </style>
 <script>
   (function(){var bar=document.getElementById('gmc-satc'),btn=document.getElementById('gmc-satc-btn');
-  var form=document.querySelector('product-form form, form[action*="/cart/add"]');if(!bar||!form)return;
+  var form=document.querySelector('product-form form, form[action*="/cart/add"]');if(!bar||!form||!btn)return;
+  var LABEL={{ s.label | json }},action=bar.dataset.action,always=bar.dataset.mode==='always';
+  var VARS=[{%- for v in product.variants -%}{id:{{ v.id }},o:{{ v.options | json }},a:{{ v.available }},p:{{ v.price }}{% if v.featured_image %},img:{{ v.featured_image | image_url: width: 120 | json }}{% endif %}}{% unless forloop.last %},{% endunless %}{%- endfor -%}];
+  var cur={{ sv.id }},inBtn={{ s.price_in_button | json }};
   var target=form.querySelector('[type=submit]')||form;
-  new IntersectionObserver(function(e){bar.hidden=e[0].isIntersecting||e[0].boundingClientRect.top>0;document.body.classList.toggle('gmc-sticky-on',!bar.hidden);document.documentElement.style.setProperty('--gmc-dock',bar.hidden?'0px':bar.offsetHeight+'px');}).observe(target);
-  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;var pr=document.getElementById('gmc-satc-price');
-  if(!v){btn.disabled=true;return;}
-  try{pr.textContent=new Intl.NumberFormat(undefined,{style:'currency',currency:(window.GMC&&GMC.money)||'USD'}).format(v.price/100);}catch(e){}
-  btn.disabled=!v.available;btn.textContent=v.available?{{ section.settings.label | json }}:'Sold out';});});
-  btn.addEventListener('click',function(){var s=form.querySelector('[type=submit]');if(s&&!s.disabled)s.click();else form.scrollIntoView({behavior:'smooth'});});})();
+  function dock(){document.body.classList.toggle('gmc-sticky-on',!bar.hidden);document.documentElement.style.setProperty('--gmc-dock',bar.hidden?'0px':bar.offsetHeight+'px');}
+  if(always){bar.hidden=false;dock();}
+  else new IntersectionObserver(function(e){bar.hidden=e[0].isIntersecting||e[0].boundingClientRect.top>0;dock();}).observe(target);
+  function money(c){return window.gmcMoney?gmcMoney(c):(c/100).toFixed(2);}
+  function show(v){if(!v)return;cur=v.id;var pr=document.getElementById('gmc-satc-price'),bp=document.getElementById('gmc-satc-btnprice'),im=document.getElementById('gmc-satc-img');
+    if(pr)pr.textContent=money(v.p);if(bp)bp.textContent=money(v.p);if(im&&v.img){im.src=v.img;im.removeAttribute('srcset');}
+    btn.disabled=!v.a;var t=v.a?LABEL:{{ 'products.product.sold_out' | t | json }};btn.firstChild.nodeValue=t+(inBtn?' · ':'');
+    var sel=document.getElementById('gmc-satc-sel');if(sel&&sel.value!=v.id)sel.value=v.id;
+    bar.querySelectorAll('select[data-opt]').forEach(function(s){var val=v.o[+s.dataset.opt];if(s.value!==val)s.value=val;});}
+  function find(id){for(var i=0;i<VARS.length;i++)if(VARS[i].id==id)return VARS[i];}
+  function setMain(v){var vs=form.closest('section, .product')||document;var els=(document.querySelector('variant-selects, variant-radios')||vs).querySelectorAll('input[type=radio],select');
+    var names={{ product.options | json }};
+    names.forEach(function(n,i){els.forEach(function(el){
+      if(el.tagName==='SELECT'&&(el.name==='options['+n+']'||el.name===n)){if(el.value!==v.o[i]){el.value=v.o[i];el.dispatchEvent(new Event('change',{bubbles:true}));}}
+      else if(el.type==='radio'&&el.name===n&&el.value===v.o[i]&&!el.checked){el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));}
+    });});}
+  var sel=document.getElementById('gmc-satc-sel');if(sel)sel.addEventListener('change',function(){var v=find(sel.value);if(v){show(v);setMain(v);}});
+  bar.querySelectorAll('select[data-opt]').forEach(function(s){s.addEventListener('change',function(){var o=[];bar.querySelectorAll('select[data-opt]').forEach(function(x){o[+x.dataset.opt]=x.value;});
+    var v=VARS.filter(function(x){return x.o.join('|')===o.join('|');})[0];if(v){show(v);setMain(v);}});});
+  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;if(!v){btn.disabled=true;return;}var m=find(v.id);if(m)show(m);});});
+  var map={scroll_info:'.product__info-container, .product__info-wrapper',scroll_variants:'variant-selects, variant-radios, .product-form__input',scroll_breaks:'.gmc-qb',scroll_pricing:'.gmc-qb'};
+  btn.addEventListener('click',function(){
+    if(action==='add_to_cart'||!map[action]){var s=form.querySelector('[type=submit]');if(s&&!s.disabled)s.click();else form.scrollIntoView({behavior:'smooth'});return;}
+    var t=document.querySelector(map[action]);if(t)t.scrollIntoView({behavior:'smooth',block:'center'});else form.scrollIntoView({behavior:'smooth'});});})();
 </script>
 {%- endif -%}
 {% schema %}
@@ -36,10 +96,182 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "Button"
+    },
+    {
       "type": "text",
       "id": "label",
       "label": "Button label",
       "default": "Add to cart"
+    },
+    {
+      "type": "select",
+      "id": "action",
+      "label": "Button action",
+      "options": [
+        {
+          "value": "add_to_cart",
+          "label": "Add to cart"
+        },
+        {
+          "value": "scroll_info",
+          "label": "Scroll to product info"
+        },
+        {
+          "value": "scroll_variants",
+          "label": "Scroll to variants"
+        },
+        {
+          "value": "scroll_breaks",
+          "label": "Scroll to quantity breaks"
+        },
+        {
+          "value": "scroll_pricing",
+          "label": "Scroll to pricing table"
+        }
+      ],
+      "default": "add_to_cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "price_in_button",
+      "label": "Show price inside the button",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button colour",
+      "info": "Leave transparent to use the theme button colour."
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Behaviour"
+    },
+    {
+      "type": "select",
+      "id": "show_when",
+      "label": "Show the bar",
+      "options": [
+        {
+          "value": "scroll",
+          "label": "When the main button scrolls out of view"
+        },
+        {
+          "value": "always",
+          "label": "Always"
+        }
+      ],
+      "default": "scroll"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent",
+      "label": "Transparent background",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width_mobile",
+      "label": "Full-width button on mobile",
+      "default": false,
+      "info": "Hides the title on mobile so the button spans the bar."
+    },
+    {
+      "type": "header",
+      "content": "Variant picker"
+    },
+    {
+      "type": "select",
+      "id": "picker",
+      "label": "Variant picker",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "combined",
+          "label": "One dropdown (e.g. Black / S)"
+        },
+        {
+          "value": "separate",
+          "label": "One dropdown per option"
+        }
+      ],
+      "default": "none",
+      "info": "Stays in sync with the main picker."
+    },
+    {
+      "type": "checkbox",
+      "id": "picker_desktop",
+      "label": "Show picker on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "picker_mobile",
+      "label": "Show picker on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "img_desktop",
+      "label": "Show image on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "img_mobile",
+      "label": "Show image on mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "title_desktop",
+      "label": "Show title on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "title_mobile",
+      "label": "Show title on mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "price_desktop",
+      "label": "Show price on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "price_mobile",
+      "label": "Show price on mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show rating stars",
+      "default": false,
+      "info": "Uses the product's reviews rating metafield when present."
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge text"
     },
     {
       "type": "color_scheme",
