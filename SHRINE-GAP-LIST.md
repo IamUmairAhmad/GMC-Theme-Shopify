@@ -252,3 +252,20 @@ Reading the actual choices in each dropdown found variants not captured before:
 | OP-05 | **Vertical ticker side content** shown always / desktop only / never. | P3 |
 | OP-06 | **Sticky add-to-cart button function** options (add to cart, or scroll to info / variants / quantity breaks / pricing table). Already PP-05; confirmed as five exact choices. | P1 |
 | OP-07 | **Cart upsell block** adds a fifth style, a plain "Add" button, next to toggle switch / two checkbox styles / plus button. Extends CD-06. | P2 |
+
+## 21. Twelfth pass: every dropdown choice in Shrine compared with ours (automatic comparison)
+All option values in all Shrine sections were checked against every value in our schemas. Most differences were already listed; these are new:
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| OV-01 | **Arrow-style email submit button** (a round arrow inside the email field) for newsletter and footer signup, besides solid / outline. | P3 |
+| OV-02 | **Translucent "overlay" card colour** for multicolumn, icon bar and testimonials cards (card tint over any section background). | P3 |
+| OV-03 | **Icon sizes** extra-small to extra-extra-large, and **icon position** (above / next to title / next to text) on icon blocks. | P3 |
+| OV-04 | **Icons with content** layouts: 1 or 2 icon columns per device. | P3 |
+| OV-05 | **Testimonial "quotations" style** (large quote mark layout). | P3 |
+| OV-06 | **Slider details**: free-drag mode, dots and arrows placed over or under the slides (arrows beside or below), pagination over or under the slideshow, content-tabs active-button animation (fade or moving pill), media-first or media-second order per device, tab container width presets. Belongs to SL-01. | P2 |
+| OV-07 | **Hero height presets** (auto-fit, fixed pixels, full screen) per device and **content width modes** (unlimited, pixels, percentage). Belongs to HS-01 / HS-02. | P2 |
+| OV-08 | **Cart drawer width presets** (normal / partial on mobile) and cart item image and title size presets, compact or classic variant display, compare price based on discounts or automatic. Belongs to CD-01 / CD-08. | P3 |
+| OV-09 | **Before/after slider and comparison table**: slider-first or slider-second placement, classic arrow style, regular tick and cross styles. Belongs to SC-07. | P3 |
+| OV-10 | **Footer featured product / collection blocks** with a half-width card option. Belongs to SC-13. | P3 |
+| OV-11 | **Transparent banner text colour** (white or black) on slideshow slides and image banner. Belongs to HS-03 / HS-04. | P3 |
