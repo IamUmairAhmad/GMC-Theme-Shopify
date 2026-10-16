@@ -6,7 +6,8 @@
     "gmc_gift_variant": "67707160363082",
     "gmc_gift_threshold": 150,
     "gmc_upsell_enabled": true,
-    "gmc_upsell_collection": "all"
+    "gmc_upsell_collection": "all",
+    "cart_type": "drawer"
   },
   "presets": {
     "GMC Theme": {
