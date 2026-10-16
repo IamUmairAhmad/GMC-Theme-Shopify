@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "ct": {
+      "type": "gmc-comparison-table",
+      "blocks": {
+        "a": {
+          "type": "row",
+          "settings": {
+            "feature": "F1",
+            "us_yes": true,
+            "them_yes": false,
+            "them_text": "TXT"
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {
+        "table_style": "minimal",
+        "tick_style": "round"
+      }
+    }
+  },
+  "order": [
+    "ct"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "rs": {
+      "type": "gmc-results",
+      "blocks": {
+        "a": {
+          "type": "stat",
+          "settings": {
+            "number": 50,
+            "label": "RSTEST",
+            "bar": 60,
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "caption": "cap"
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {
+        "columns": 3
+      }
+    }
+  },
+  "order": [
+    "rs"
+  ]
+}

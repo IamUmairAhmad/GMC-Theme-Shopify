@@ -1,0 +1,44 @@
+{
+  "sections": {
+    "st": {
+      "type": "gmc-insta-stories",
+      "blocks": {
+        "a": {
+          "type": "story",
+          "settings": {
+            "user": "UserA",
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "verified": true,
+            "time": "2h"
+          }
+        },
+        "b": {
+          "type": "story",
+          "settings": {
+            "user": "UserA",
+            "image": "shopify://shop_images/gmc-sample-product-image.png"
+          }
+        },
+        "c": {
+          "type": "story",
+          "settings": {
+            "user": "UserB",
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "close_friends": true
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c"
+      ],
+      "settings": {
+        "autoplay": false
+      }
+    }
+  },
+  "order": [
+    "st"
+  ]
+}
