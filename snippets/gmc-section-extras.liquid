@@ -40,6 +40,7 @@
 {%- if section.settings.gmc_slider_autoplay > 0 -%}<span hidden data-gmc-autoplay="{{ section.settings.gmc_slider_autoplay }}"></span>{%- endif -%}
 {%- comment -%} Add to cart button for a chosen product {%- endcomment -%}
 {%- assign x_atc = section.settings.gmc_atc_product -%}
+{%- if x_atc == blank and section.settings.gmc_atc_show and section.settings.product != blank -%}{%- assign x_atc = section.settings.product -%}{%- endif -%}
 {%- if x_atc != blank and x_atc.available -%}
 <div class="gmc-sec-atc page-width" data-gmc-sec-atc style="text-align:{{ section.settings.gmc_atc_align | default: 'center' }};padding:1.5rem 0">
   <form class="gmc-sec-atc__f" action="{{ routes.cart_add_url }}" method="post">
