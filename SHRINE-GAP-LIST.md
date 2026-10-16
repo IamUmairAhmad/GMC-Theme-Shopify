@@ -71,8 +71,8 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | SL-01 ✅ (engine built, used by the hero slideshow; other sliders can adopt it) | One reusable slider engine with: slide / loop / fade, drag, autoplay speed, centre mode, slides per page and per move, side preview of next/previous, adaptive height, dots and arrows (position, colour scheme, transparent), full page width, corner radius, separate desktop and mobile switches. | P2 |
 | SL-02 ✅ | **Image/Video slider** section with description per slide (alignment, scheme), video slides (loop, muted, play/pause, sound, timeline). | P2 |
 | SL-03 ✅ | **Testimonials** upgrade: styles, media ratio, stars and colour, quote marks, video testimonials, avatar, cards scheme. | P2 |
-| SL-04 | **Icon bar** and **Icons with content** (new section: icon list beside heading, caption, text, button, ATC and video). | P2 |
-| SL-05 | **Featured on**: grayscale logos, layouts, mobile slider with dots, open link in new tab. | P3 |
+| SL-04 ✅ | **Icon bar** and **Icons with content** (new section: icon list beside heading, caption, text, button, ATC and video). | P2 |
+| SL-05 ✅ | **Featured on**: grayscale logos, layouts, mobile slider with dots, open link in new tab. | P3 |
 
 ## 6. Add-to-cart button inside content sections
 

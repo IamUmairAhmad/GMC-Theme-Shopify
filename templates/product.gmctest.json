@@ -331,6 +331,60 @@
         "btn": "Shop",
         "tilt": true
       }
+    },
+    "ib": {
+      "type": "gmc-icon-bar",
+      "blocks": {
+        "a": {
+          "type": "item",
+          "settings": {
+            "title": "One",
+            "icon_name": "truck"
+          }
+        },
+        "b": {
+          "type": "item",
+          "settings": {
+            "title": "Two",
+            "icon_name": "star"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {
+        "item_layout": "side"
+      }
+    },
+    "ic": {
+      "type": "gmc-icons-content",
+      "blocks": {
+        "a": {
+          "type": "item",
+          "settings": {
+            "title": "Fast",
+            "icon_name": "truck"
+          }
+        },
+        "b": {
+          "type": "item",
+          "settings": {
+            "title": "Safe",
+            "icon_name": "home",
+            "text": "Desc"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {
+        "button": "Shop",
+        "gmc_atc_product": "gmc-test-tee"
+      }
     }
   },
   "order": [
@@ -344,6 +398,8 @@
     "hs",
     "tm",
     "tm2",
-    "ph"
+    "ph",
+    "ib",
+    "ic"
   ]
 }
