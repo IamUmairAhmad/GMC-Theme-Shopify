@@ -563,14 +563,16 @@
         "shape": "wave",
         "color": "#ff0000",
         "height": 90,
-        "flip_v": true
+        "flip_v": true,
+        "gmc_anchor": "pa"
       }
     },
     "dv2": {
       "type": "gmc-section-divider",
       "settings": {
         "shape": "zigzag",
-        "color": "#0000ff"
+        "color": "#0000ff",
+        "gmc_pair_with": "pa"
       }
     },
     "px1": {
