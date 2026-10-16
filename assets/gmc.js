@@ -382,3 +382,6 @@ document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.
   document.addEventListener('DOMContentLoaded',function(){later();new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var n=ms[i].target;if(n&&n.closest&&n.closest('cart-drawer')){later();return;}}}).observe(document.body,{childList:true,subtree:true});});
   gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,later);});
 })();
+
+/* cart drawer test mode (theme editor only) */
+document.addEventListener('DOMContentLoaded',function(){var d=document.querySelector('cart-drawer[data-gmc-test]');if(d&&d.open)setTimeout(function(){d.open();},400);});

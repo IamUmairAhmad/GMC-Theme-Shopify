@@ -1,4 +1,6 @@
 {%- comment -%} GMC Theme: the cart drawer line items (moved out of cart-drawer so it can be a block). {%- endcomment -%}
+{%- assign ci_block = section.blocks | where: 'type', 'cart_items' | first -%}
+{%- assign ci = ci_block.settings -%}
       <cart-drawer-items
         view-event-payload="{{ cart | standard_event_data: 'view', context: 'dialog' | escape }}"
         view-event-trigger="manual"
@@ -15,7 +17,7 @@
           <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
             {%- if cart != empty -%}
               <div class="drawer__cart-items-wrapper">
-                <table class="cart-items" role="table">
+                <table class="cart-items{% if ci.variants_inline %} gmc-ci--inline{% endif %}{% if ci.show_compare == false %} gmc-ci--nocmp{% endif %}" role="table" style="{% if ci.image_size > 0 %}--gmc-ci-img:{{ ci.image_size }}px;{% endif %}{% if ci.title_size > 0 %}--gmc-ci-title:{{ ci.title_size }}px;{% endif %}{% if ci.price_color != blank %}--gmc-ci-price:{{ ci.price_color }};{% endif %}{% if ci.compare_color != blank %}--gmc-ci-old:{{ ci.compare_color }};{% endif %}--gmc-ci-qr:{{ ci.qty_radius | default: 0 }}px">
                   <thead role="rowgroup">
                     <tr role="row">
                       <th id="CartDrawer-ColumnProductImage" role="columnheader">
@@ -60,7 +62,7 @@
                         >
                           {% if item.image %}
                             {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
-                            <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
+                            {%- unless ci.image_link == false -%}<a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>{%- endunless -%}
                             <img
                               class="cart-item__image"
                               src="{{ item.image | image_url: width: 300 }}"
@@ -78,9 +80,13 @@
                           {%- endif -%}
 
                           <div class="cart-item__title">
+                            {%- if ci.title_link == false -%}
+                              <span class="cart-item__name h4 break">{{- item.product.title | escape -}}</span>
+                            {%- else -%}
                             <a href="{{ item.url }}" class="cart-item__name h4 break">
                               {{- item.product.title | escape -}}
                             </a>
+                            {%- endif -%}
                             {%- assign cart_disclosure_modal_id = 'CartDisclosureModal-drawer-' | append: item.key | replace: ':', '-' -%}
                             {%- render 'cart-disclosure-indicator',
                               product: item.product,

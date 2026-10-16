@@ -38,10 +38,17 @@
           {%- endfor -%}
         </ul>
       {%- endif -%}
+      {%- if bs.show_savings -%}
+        {%- assign tsave = cart.total_discount -%}
+        {%- for it in cart.items -%}{%- if it.variant.compare_at_price > it.original_price -%}{%- assign tsave = it.variant.compare_at_price | minus: it.original_price | times: it.quantity | plus: tsave -%}{%- endif -%}{%- endfor -%}
+        {%- capture tsave_html -%}{%- if tsave > 0 -%}<p class="gmc-totsave" style="margin:0 0 .6rem;text-align:{{ bs.savings_align | default: 'right' }};font-size:{{ bs.savings_size | default: 14 }}px;font-weight:600;color:{{ bs.savings_color | default: settings.gmc_accent }}">{%- assign tsave_money = tsave | money -%}{{ bs.savings_text | default: 'Total savings: [amount]' | escape | replace: '[amount]', tsave_money }}</p>{%- endif -%}{%- endcapture -%}
+      {%- endif -%}
+      {%- if bs.show_savings and bs.savings_pos != 'below' -%}{{ tsave_html }}{%- endif -%}
       <div class="totals" role="status">
         <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
         <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
       </div>
+      {%- if bs.show_savings and bs.savings_pos == 'below' -%}{{ tsave_html }}{%- endif -%}
       {%- if bs.show_tax_note != false -%}
         <small class="tax-note caption-large rte">
           {%- if cart.duties_included and cart.taxes_included -%}

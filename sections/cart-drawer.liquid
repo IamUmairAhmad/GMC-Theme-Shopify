@@ -6,6 +6,58 @@
     {
       "type": "paragraph",
       "content": "Add, remove and reorder blocks to build your cart drawer. Amounts and colors are under Theme settings > Cart."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Leave blank for the default."
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "width",
+      "min": 0,
+      "max": 640,
+      "step": 20,
+      "unit": "px",
+      "label": "Drawer width on desktop",
+      "default": 0,
+      "info": "0 uses the theme default."
+    },
+    {
+      "type": "checkbox",
+      "id": "continue_link",
+      "label": "Show a continue shopping link",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "continue_label",
+      "label": "Continue shopping label",
+      "default": "Continue shopping"
+    },
+    {
+      "type": "checkbox",
+      "id": "test_mode",
+      "label": "Test mode: open the drawer in the theme editor",
+      "info": "Opens the drawer automatically while you edit. Customers never see this.",
+      "default": false
     }
   ],
   "blocks": [
@@ -207,7 +259,110 @@
     {
       "type": "cart_items",
       "name": "Cart items",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_size",
+          "min": 0,
+          "max": 140,
+          "step": 10,
+          "unit": "px",
+          "label": "Image width",
+          "default": 0,
+          "info": "0 uses the theme default."
+        },
+        {
+          "type": "checkbox",
+          "id": "image_link",
+          "label": "Link the image to the product",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Title and variants"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 0,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Title size",
+          "default": 0,
+          "info": "0 uses the theme default."
+        },
+        {
+          "type": "checkbox",
+          "id": "title_link",
+          "label": "Link the title to the product",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "variants_inline",
+          "label": "Show variant options on one line",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Prices and savings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_compare",
+          "label": "Show the old price when discounted",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "price_color",
+          "label": "Price colour"
+        },
+        {
+          "type": "color",
+          "id": "compare_color",
+          "label": "Old price colour"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_savings",
+          "label": "Show compare-at price and savings line",
+          "default": true,
+          "info": "Needs Theme settings > Cart > compare prices on."
+        },
+        {
+          "type": "text",
+          "id": "savings_text",
+          "label": "Savings text",
+          "default": "Save [amount]",
+          "info": "[amount] becomes the amount saved."
+        },
+        {
+          "type": "color",
+          "id": "savings_color",
+          "label": "Savings colour"
+        },
+        {
+          "type": "header",
+          "content": "Quantity selector"
+        },
+        {
+          "type": "range",
+          "id": "qty_radius",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 0
+        }
+      ]
     },
     {
       "type": "discount_field",
@@ -224,6 +379,70 @@
           "id": "show_tax_note",
           "label": "Show tax and shipping note",
           "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_savings",
+          "label": "Show total savings line",
+          "default": false,
+          "info": "Adds up discounts and compare-at savings."
+        },
+        {
+          "type": "text",
+          "id": "savings_text",
+          "label": "Total savings text",
+          "default": "Total savings: [amount]"
+        },
+        {
+          "type": "color",
+          "id": "savings_color",
+          "label": "Total savings colour"
+        },
+        {
+          "type": "range",
+          "id": "savings_size",
+          "min": 11,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Total savings size",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "savings_align",
+          "label": "Total savings alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "select",
+          "id": "savings_pos",
+          "label": "Total savings position",
+          "options": [
+            {
+              "value": "above",
+              "label": "Above the total"
+            },
+            {
+              "value": "below",
+              "label": "Below the total"
+            }
+          ],
+          "default": "above"
         }
       ]
     },
@@ -518,13 +737,25 @@
   "default": {
     "blocks": [
       {
-        "type": "cart_items"
+        "type": "text_with_icon"
+      },
+      {
+        "type": "cart_items",
+        "settings": {
+          "image_size": 90,
+          "title_size": 16,
+          "price_color": "#0a7a3d",
+          "variants_inline": true
+        }
       },
       {
         "type": "discount_field"
       },
       {
-        "type": "subtotals"
+        "type": "subtotals",
+        "settings": {
+          "show_savings": true
+        }
       },
       {
         "type": "checkout_button"

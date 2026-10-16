@@ -103,3 +103,13 @@ label.gmc-imgsw{font-size:0!important;background:var(--gmc-img) center/cover no-
 
 .gmc-cgift{display:flex;gap:1rem;align-items:center;margin:.6rem 2rem;padding:.8rem 1rem;border:2px dashed var(--cg-lock);border-radius:var(--text-boxes-radius)}.gmc-cgift__img img{filter:grayscale(1);opacity:.6;border-radius:6px;display:block}.gmc-cgift__txt{flex:1;display:grid}.gmc-cgift__txt small{opacity:.75}.gmc-cgift[data-state=open]{border:2px solid var(--cg-open);background:color-mix(in srgb,var(--cg-open) 8%,transparent)}.gmc-cgift[data-state=open] .gmc-cgift__img img{filter:none;opacity:1}.gmc-cgift[data-state=open] small{color:var(--cg-open);font-weight:600;opacity:1}
 .gmc-cup__h{margin:0 0 .6rem;font-weight:700}.gmc-cup__list{display:grid;gap:.6rem}.gmc-cup--row .gmc-cup__list{grid-auto-flow:column;grid-auto-columns:minmax(24rem,1fr);overflow-x:auto}.gmc-cup__item{display:flex;gap:1rem;align-items:center;border:1px solid rgba(var(--color-foreground),.15);border-radius:var(--text-boxes-radius);padding:.7rem .9rem}.gmc-cup__img img{border-radius:6px;display:block;object-fit:cover}.gmc-cup__txt{flex:1;display:grid;gap:.2rem}.gmc-cup__var{padding:.4rem;border-radius:var(--inputs-radius,4px);max-width:100%}.gmc-cup__btn{min-height:3.6rem;padding:0 1.4rem}
+
+@media(min-width:750px){.cart-drawer .drawer__inner[style*="--gmc-drawer-w"]{width:min(var(--gmc-drawer-w),100vw)!important;max-width:100vw}}
+
+.cart-items[style*="--gmc-ci-img"] .cart-item__media{width:var(--gmc-ci-img)}
+.cart-items[style*="--gmc-ci-title"] .cart-item__name{font-size:var(--gmc-ci-title)}
+.cart-items[style*="--gmc-ci-price"] .cart-item__final-price,.cart-items[style*="--gmc-ci-price"] .cart-item__price-wrapper .price{color:var(--gmc-ci-price)}
+.cart-items[style*="--gmc-ci-old"] .cart-item__old-price,.cart-items[style*="--gmc-ci-old"] .gmc-line-save__old{color:var(--gmc-ci-old);opacity:1}
+.gmc-ci--nocmp .cart-item__old-price{display:none}
+.gmc-ci--inline .cart-item__details dl,.gmc-ci--inline .product-option{display:inline}
+.cart-items .quantity{border-radius:var(--gmc-ci-qr,0)}.cart-items .quantity:after,.cart-items .quantity:before{border-radius:var(--gmc-ci-qr,0)}
