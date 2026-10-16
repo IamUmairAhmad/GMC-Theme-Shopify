@@ -2613,6 +2613,40 @@
           }
         ],
         "default": "arrow"
+      },
+      {
+        "type": "header",
+        "content": "Product cards"
+      },
+      {
+        "type": "select",
+        "id": "gmc_badge_show",
+        "label": "Sale / sold-out badges",
+        "options": [
+          {
+            "value": "all",
+            "label": "Both"
+          },
+          {
+            "value": "sale",
+            "label": "Sale only"
+          },
+          {
+            "value": "soldout",
+            "label": "Sold out only"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ],
+        "default": "all"
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_same_h",
+        "label": "Make all cards the same height",
+        "default": false
       }
     ]
   },

@@ -63,34 +63,213 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    {"type": "paragraph", "content": "Install a review app (Judge.me, Loox, Stamped or similar), then add its block here with Add block > Apps."},
-    {"type": "text", "id": "heading", "label": "Heading", "default": "Customer reviews"},
-    {"type": "select", "id": "heading_size", "label": "Heading size", "options": [
-      {"value": "h2", "label": "Medium"}, {"value": "h1", "label": "Large"}], "default": "h1"},
-    {"type": "select", "id": "align", "label": "Alignment", "options": [
-      {"value": "left", "label": "Left"}, {"value": "center", "label": "Center"}, {"value": "right", "label": "Right"}], "default": "center"},
-    {"type": "select", "id": "width", "label": "Content width", "options": [
-      {"value": "narrow", "label": "Narrow"}, {"value": "medium", "label": "Medium"}, {"value": "full", "label": "Full"}], "default": "narrow"},
-    {"type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1"},
-    {"type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding", "default": 36},
-    {"type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 36},
-    {"type": "select", "id": "gmc_display_on", "label": "Display on", "options": [
-      {"value": "all", "label": "All devices"}, {"value": "mobile", "label": "Mobile only"}, {"value": "desktop", "label": "Desktop only"}], "default": "all"}
+    {
+      "type": "paragraph",
+      "content": "Install a review app (Judge.me, Loox, Stamped or similar), then add its block here with Add block > Apps."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Customer reviews"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Medium"
+        },
+        {
+          "value": "h1",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "full",
+          "label": "Full"
+        }
+      ],
+      "default": "narrow"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "gmc_display_on",
+      "label": "Display on",
+      "options": [
+        {
+          "value": "all",
+          "label": "All devices"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile only"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Section ID and pairing"
+    },
+    {
+      "type": "text",
+      "id": "gmc_anchor",
+      "label": "Section ID (for links like #my-id)",
+      "info": "Letters, numbers and dashes. Use this ID in a link to scroll here."
+    },
+    {
+      "type": "text",
+      "id": "gmc_pair_with",
+      "label": "Place beside the section with this ID",
+      "info": "Enter another section's ID. The two sections sit side by side on desktop."
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_pair_rev",
+      "label": "Reverse the pair order on mobile",
+      "default": false
+    }
   ],
   "blocks": [
-    {"type": "@app"},
-    {"type": "rating_summary", "name": "Rating summary", "limit": 1, "settings": [
-      {"type": "text", "id": "count_label", "label": "Label after the count", "default": "reviews"}]},
-    {"type": "write_review_button", "name": "Write a review button", "limit": 1, "settings": [
-      {"type": "url", "id": "link", "label": "Link", "info": "Leave empty to jump to the reviews area."},
-      {"type": "text", "id": "label", "label": "Button label", "default": "Write a review"},
-      {"type": "checkbox", "id": "secondary", "label": "Outline style", "default": false}]},
-    {"type": "custom_liquid", "name": "Custom code", "settings": [
-      {"type": "liquid", "id": "code", "label": "Code", "info": "Paste the embed code your review app gives you."}]}
+    {
+      "type": "@app"
+    },
+    {
+      "type": "rating_summary",
+      "name": "Rating summary",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "count_label",
+          "label": "Label after the count",
+          "default": "reviews"
+        }
+      ]
+    },
+    {
+      "type": "write_review_button",
+      "name": "Write a review button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Leave empty to jump to the reviews area."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button label",
+          "default": "Write a review"
+        },
+        {
+          "type": "checkbox",
+          "id": "secondary",
+          "label": "Outline style",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom code",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "code",
+          "label": "Code",
+          "info": "Paste the embed code your review app gives you."
+        }
+      ]
+    }
   ],
   "presets": [
-    {"name": "Product reviews", "blocks": [{"type": "rating_summary"}, {"type": "write_review_button"}]}
+    {
+      "name": "Product reviews",
+      "blocks": [
+        {
+          "type": "rating_summary"
+        },
+        {
+          "type": "write_review_button"
+        }
+      ]
+    }
   ],
-  "enabled_on": {"templates": ["product"]}
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  }
 }
 {% endschema %}

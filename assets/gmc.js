@@ -499,3 +499,9 @@ document.addEventListener('click',function(e){var b=e.target.closest('#gmc-cpd-b
 /* reusable countdown: <span data-gmc-countdown="MINUTES"></span> */
 document.querySelectorAll('[data-gmc-countdown]').forEach(function(el){var m=+el.dataset.gmcCountdown||10,k='gmc_cd_'+(el.id||m),end;try{end=+localStorage.getItem(k);if(!end||Date.now()>end){end=Date.now()+m*60000;localStorage.setItem(k,end);}}catch(x){end=Date.now()+m*60000;}
   function t(){var s=Math.max(0,Math.floor((end-Date.now())/1000)),P=function(n){return String(n).padStart(2,'0');};el.textContent=P(Math.floor(s/60))+':'+P(s%60);}t();setInterval(t,1000);});
+
+/* section pairing: place a section beside another one (by ID) */
+(function(){function pair(){document.querySelectorAll('.gmc-pairmark[data-gmc-pair]').forEach(function(m){var t=m.dataset.gmcPair;if(!t||m._done)return;var a=document.getElementById(m.dataset.sec),tm=document.getElementById(t),b=tm&&tm.dataset.sec&&document.getElementById(tm.dataset.sec);if(!a||!b||a===b||a.parentNode.classList.contains('gmc-pair'))return;
+  var w=document.createElement('div');w.className='gmc-pair'+(m.dataset.gmcPairRev==='true'?' gmc-pair--rev':'');a.parentNode.insertBefore(w,b.compareDocumentPosition(a)&4?b:a);
+  if(b.compareDocumentPosition(a)&4){w.appendChild(b);w.appendChild(a);}else{w.appendChild(a);w.appendChild(b);}m._done=1;});}
+  if(document.readyState!=='loading')pair();else document.addEventListener('DOMContentLoaded',pair);})();

@@ -12,7 +12,7 @@
     {%- when 'estimated_delivery' -%}
       <p class="gmc-pe__eta" data-gmc-eta data-min="{{ block.settings.min_days }}" data-max="{{ block.settings.max_days }}" data-skip="{{ block.settings.skip_weekends }}" data-fmt="{{ block.settings.date_format }}" data-days="{{ block.settings.day_names | escape }}" data-months="{{ block.settings.month_names | escape }}" data-tpl="{{ block.settings.text | default: 'Order today and get it between [start_date] and [end_date]' | escape }}" style="text-align:{{ block.settings.align }}">{%- if block.settings.icon != blank -%}<span class="gmc-pe__ic">{%- render 'gmc-icon', name: block.settings.icon, size: 22 -%}</span> {%- endif -%}<span class="gmc-pe__eta-t">{{ block.settings.text | default: 'Order today and get it between [start_date] and [end_date]' | escape }}</span></p>{%- when 'benefits' -%}
       <ul class="gmc-pe__ben">{%- for i in (1..5) -%}{%- assign k = 'b' | append: i -%}{%- if block.settings[k] != blank -%}<li>{{ block.settings[k] | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- when 'payment_badges' -%}
-      {%- if block.settings.types != blank -%}{%- assign pt_list = block.settings.types | remove: ' ' | split: ',' -%}{%- else -%}{%- assign pt_list = shop.enabled_payment_types -%}{%- endif -%}
+      {%- assign pt_all = 'visa,master,american_express,discover,diners_club,jcb,paypal,apple_pay,google_pay,shopify_pay,amazon,klarna,afterpay,ideal,bancontact,sofort,maestro,unionpay,alipay,venmo,dankort,elo,forbrugsforeningen' | split: ',' -%}{%- assign pt_pick = '' -%}{%- for pn in pt_all -%}{%- assign pk = 'pay_' | append: pn -%}{%- if block.settings[pk] -%}{%- assign pt_pick = pt_pick | append: pn | append: ',' -%}{%- endif -%}{%- endfor -%}{%- if block.settings.types != blank -%}{%- assign pt_list = block.settings.types | remove: ' ' | split: ',' -%}{%- elsif pt_pick != blank -%}{%- assign pt_list = pt_pick | split: ',' -%}{%- else -%}{%- assign pt_list = shop.enabled_payment_types -%}{%- endif -%}
       <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none;justify-content:{{ block.settings.align }}">{%- for type in pt_list -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>{%- when 'shipping_checkpoints' -%}
       <ol class="gmc-pe__cp gmc-pe__cp--dated" data-gmc-cp data-skip="{{ block.settings.skip_weekends }}" data-fmt="{{ block.settings.date_format }}" data-days="{{ block.settings.day_names | escape }}" data-months="{{ block.settings.month_names | escape }}" style="{% if block.settings.accent != blank %}--gmc-cp:{{ block.settings.accent }};{% endif %}">
         {%- for i in (1..4) -%}
@@ -42,6 +42,15 @@
           {%- if block.settings.heading != blank -%}<h3 class="gmc-dlg__h">{{ block.settings.heading | escape }}</h3>{%- endif -%}
           {%- if block.settings.image_top != blank -%}{{ block.settings.image_top | image_url: width: 900 | image_tag: loading: 'lazy', class: 'gmc-dlg__img' }}{%- endif -%}
           {%- if block.settings.header_row != blank -%}<p class="gmc-dlg__hr">{{ block.settings.header_row | escape }}</p>{%- endif -%}
+          {%- if block.settings.table_text != blank -%}
+            {%- assign tt_rows = block.settings.table_text | strip | newline_to_br | split: '<br />' -%}
+            <div class="gmc-dlg__tw"><table class="gmc-dlg__t">
+            {%- for tr in tt_rows -%}{%- assign tr_s = tr | strip -%}{%- if tr_s != blank -%}
+              {%- assign tt_cells = tr_s | split: ',' -%}
+              <tr>{%- for tc in tt_cells -%}{%- assign tc_s = tc | strip -%}{%- if tc_s == '-' -%}{%- assign tc_s = '' -%}{%- endif -%}{%- if forloop.parentloop.first or forloop.first -%}<th scope="{% if forloop.parentloop.first %}col{% else %}row{% endif %}">{{ tc_s | escape }}</th>{%- else -%}<td>{{ tc_s | escape }}</td>{%- endif -%}{%- endfor -%}</tr>
+            {%- endif -%}{%- endfor -%}
+            </table></div>
+          {%- endif -%}
           <div class="rte gmc-dlg__body">{{ block.settings.content }}</div>
           {%- if block.settings.image_bottom != blank -%}{{ block.settings.image_bottom | image_url: width: 900 | image_tag: loading: 'lazy', class: 'gmc-dlg__img' }}{%- endif -%}
           {%- if block.settings.caption != blank -%}<p class="gmc-dlg__cap">{{ block.settings.caption | escape }}</p>{%- endif -%}
@@ -407,6 +416,148 @@
           "unit": "px",
           "label": "Margin below",
           "default": 12
+        },
+        {
+          "type": "header",
+          "content": "Pick providers (used when the list above is empty)"
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_visa",
+          "label": "Visa",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_master",
+          "label": "Master",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_american_express",
+          "label": "American Express",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_discover",
+          "label": "Discover",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_diners_club",
+          "label": "Diners Club",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_jcb",
+          "label": "Jcb",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_paypal",
+          "label": "Paypal",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_apple_pay",
+          "label": "Apple Pay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_google_pay",
+          "label": "Google Pay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_shopify_pay",
+          "label": "Shopify Pay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_amazon",
+          "label": "Amazon",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_klarna",
+          "label": "Klarna",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_afterpay",
+          "label": "Afterpay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_ideal",
+          "label": "Ideal",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_bancontact",
+          "label": "Bancontact",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_sofort",
+          "label": "Sofort",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_maestro",
+          "label": "Maestro",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_unionpay",
+          "label": "Unionpay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_alipay",
+          "label": "Alipay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_venmo",
+          "label": "Venmo",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_dankort",
+          "label": "Dankort",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_elo",
+          "label": "Elo",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_forbrugsforeningen",
+          "label": "Forbrugsforeningen",
+          "default": false
         }
       ]
     },
@@ -790,6 +941,12 @@
           "type": "text",
           "id": "header_row",
           "label": "Header row text"
+        },
+        {
+          "type": "textarea",
+          "id": "table_text",
+          "label": "Size table from text",
+          "info": "One row per line, columns separated by commas. First line is the header. Use - for an empty cell. Example: Size, Chest, Waist"
         },
         {
           "type": "richtext",

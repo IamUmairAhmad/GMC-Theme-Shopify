@@ -328,6 +328,7 @@
         {%- when 'solid' -%}.newsletter-form__button{background:rgb(var(--color-button))!important;color:rgb(var(--color-button-text))!important;width:5.2rem}
         {%- when 'outline' -%}.newsletter-form__button{box-shadow:inset 0 0 0 1px rgb(var(--color-foreground));width:5.2rem}
       {%- endcase -%}
+      {%- if settings.gmc_same_h -%}.grid__item,.card-wrapper,.card-wrapper>.card,.card-wrapper .card__inner{height:100%}.card-wrapper{display:flex;flex-direction:column}.card-wrapper>.card{flex:1}.card__content{flex:1}{%- endif -%}
       {%- if settings.gmc_badge_offset > 0 -%}.card__badge{margin:{{ settings.gmc_badge_offset }}px}{%- endif -%}
       {%- if settings.gmc_title_lines > 0 -%}.card__heading a,.card__heading{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:{{ settings.gmc_title_lines }};overflow:hidden}{%- endif -%}
     </style>
