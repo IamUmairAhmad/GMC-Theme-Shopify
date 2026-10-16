@@ -1,11 +1,116 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
+{%- assign shp = section.settings.shape -%}
+{%- if shp == 'line' -%}
 <div class="page-width {% render 'gmc-vis', hide: section.settings.hide_on %}" style="padding:{{ section.settings.pad }}px 0"><hr style="border:0;border-top:{{ section.settings.w }}px {{ section.settings.style }} {{ section.settings.color }};margin:0"></div>
+{%- else -%}
+{%- case shp -%}{%- when 'diagonal_left' -%}{%- assign d = 'M0,0 L1200,120 L0,120 Z' -%}{%- when 'diagonal_right' -%}{%- assign d = 'M0,120 L1200,0 L1200,120 Z' -%}{%- when 'curve_down' -%}{%- assign d = 'M0,0 Q600,240 1200,0 L1200,120 L0,120 Z' -%}{%- when 'curve_up' -%}{%- assign d = 'M0,120 Q600,-120 1200,120 Z' -%}{%- when 'curve_left' -%}{%- assign d = 'M0,0 C400,0 800,120 1200,120 L0,120 Z' -%}{%- when 'curve_right' -%}{%- assign d = 'M1200,0 C800,0 400,120 0,120 L1200,120 Z' -%}{%- when 'triangle' -%}{%- assign d = 'M0,120 L600,0 L1200,120 Z' -%}{%- when 'triangle_down' -%}{%- assign d = 'M0,0 L600,120 L1200,0 L1200,120 L0,120 Z' -%}{%- when 'zigzag' -%}{%- assign d = 'M0,120 L0,60 L100,0 L200,60 L300,0 L400,60 L500,0 L600,60 L700,0 L800,60 L900,0 L1000,60 L1100,0 L1200,60 L1200,120 Z' -%}{%- when 'steps' -%}{%- assign d = 'M0,120 L0,90 L300,90 L300,60 L600,60 L600,30 L900,30 L900,0 L1200,0 L1200,120 Z' -%}{%- when 'wave' -%}{%- assign d = 'M0,60 C150,0 300,0 450,60 S750,120 900,60 S1100,0 1200,60 L1200,120 L0,120 Z' -%}{%- when 'wave_soft' -%}{%- assign d = 'M0,70 C200,30 400,30 600,70 S1000,110 1200,70 L1200,120 L0,120 Z' -%}{%- when 'wave_double' -%}{%- assign d = 'M0,40 C100,0 200,0 300,40 S500,80 600,40 S800,0 900,40 S1100,80 1200,40 L1200,120 L0,120 Z' -%}{%- when 'random' -%}{%- assign d = 'M0,90 L80,50 L150,80 L260,20 L340,70 L470,30 L560,90 L660,40 L760,75 L880,15 L980,65 L1090,35 L1200,80 L1200,120 L0,120 Z' -%}{%- endcase -%}
+{%- assign sx = 1 -%}{%- if section.settings.flip_h -%}{%- assign sx = -1 -%}{%- endif -%}
+{%- assign sy = 1 -%}{%- if section.settings.flip_v -%}{%- assign sy = -1 -%}{%- endif -%}
+<div class="gmc-shape {% render 'gmc-vis', hide: section.settings.hide_on %}" aria-hidden="true" style="background:{{ section.settings.bg | default: 'transparent' }};line-height:0">
+  <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="display:block;width:100%;height:{{ section.settings.height }}px;transform:scale({{ sx }},{{ sy }})"><path d="{{ d }}" fill="{{ section.settings.color }}"/></svg>
+</div>
+{%- endif -%}
 {% schema %}
 {
   "name": "Section divider",
   "tag": "section",
   "settings": [
+    {
+      "type": "select",
+      "id": "shape",
+      "label": "Shape",
+      "options": [
+        {
+          "value": "line",
+          "label": "Line"
+        },
+        {
+          "value": "diagonal_left",
+          "label": "Diagonal left"
+        },
+        {
+          "value": "diagonal_right",
+          "label": "Diagonal right"
+        },
+        {
+          "value": "curve_down",
+          "label": "Curve down"
+        },
+        {
+          "value": "curve_up",
+          "label": "Curve up"
+        },
+        {
+          "value": "curve_left",
+          "label": "Curve left"
+        },
+        {
+          "value": "curve_right",
+          "label": "Curve right"
+        },
+        {
+          "value": "triangle",
+          "label": "Triangle"
+        },
+        {
+          "value": "triangle_down",
+          "label": "Triangle notch"
+        },
+        {
+          "value": "zigzag",
+          "label": "Zigzag"
+        },
+        {
+          "value": "steps",
+          "label": "Steps"
+        },
+        {
+          "value": "wave",
+          "label": "Wave"
+        },
+        {
+          "value": "wave_soft",
+          "label": "Soft wave"
+        },
+        {
+          "value": "wave_double",
+          "label": "Double wave"
+        },
+        {
+          "value": "random",
+          "label": "Jagged"
+        }
+      ],
+      "default": "line"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background behind shape"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 20,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Shape height",
+      "default": 80
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_h",
+      "label": "Flip horizontally",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_v",
+      "label": "Flip vertically",
+      "default": false
+    },
     {
       "type": "color",
       "id": "color",

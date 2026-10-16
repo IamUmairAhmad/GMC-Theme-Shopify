@@ -131,7 +131,7 @@
                 <span class="gmc-cup__txt"><strong>{{ up.title | escape }}</strong><span class="gmc-cup__price">{{ uv.price | money }}</span>
                   {%- if up.variants.size > 1 -%}<select class="gmc-cup__var" aria-label="{{ up.title | escape }}">{%- for v in up.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}" {% if v.id == uv.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}</select>{%- endif -%}
                 </span>
-                <button type="button" class="button button--secondary gmc-cup__btn" data-gmc-upsell="{{ uv.id }}" {% unless uv.available %}disabled{% endunless %}>{{ bs.button | default: 'Add' | escape }}</button>
+                {%- assign ubtn = bs.button | default: 'Add' | escape -%}<button type="button" class="{% if bs.style == 'add' or bs.style == blank %}button button--secondary {% endif %}gmc-cup__btn gmc-cup__btn--{{ bs.style | default: 'add' }}" data-gmc-upsell="{{ uv.id }}" aria-label="{{ ubtn }} {{ up.title | escape }}" {% unless uv.available %}disabled{% endunless %}>{%- if bs.style == 'plus' -%}+{%- elsif bs.style == 'toggle' or bs.style == 'checkbox' -%}<span aria-hidden="true"></span>{%- else -%}{{ ubtn }}{%- endif -%}</button>
               </div>
             {%- endunless -%}
           {%- endfor -%}

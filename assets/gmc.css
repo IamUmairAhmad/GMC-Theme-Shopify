@@ -183,3 +183,7 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 .gmc-acct h1,.gmc-acct h2{margin:0 0 1.6rem}.gmc-acct form{display:grid;gap:1.2rem;margin-bottom:2rem}.gmc-acct__err{border:1px solid #b91c1c;color:#b91c1c;padding:1rem;border-radius:6px}.gmc-acct__head{display:flex;justify-content:space-between;align-items:baseline}.gmc-acct__grid{display:grid;grid-template-columns:2fr 1fr;gap:3rem}.gmc-acct__tbl{width:100%;border-collapse:collapse}.gmc-acct__tbl th,.gmc-acct__tbl td{padding:.8rem;border-bottom:1px solid rgba(var(--color-foreground),.15);text-align:left}.gmc-acct__addr{list-style:none;padding:0;display:grid;gap:2rem}.gmc-acct__new{margin-bottom:2rem}@media(max-width:749px){.gmc-acct__grid{grid-template-columns:1fr}}
 
 .gmc-cpd__row{display:flex;gap:.6rem}.gmc-cpd__row input{flex:1;min-width:0}
+.gmc-cup__btn--plus{width:3.4rem;height:3.4rem;border-radius:50%;border:1px solid currentColor;background:none;color:inherit;font-size:2rem;line-height:1;cursor:pointer;padding:0}
+.gmc-cup__btn--toggle{width:4.4rem;height:2.4rem;border-radius:2.4rem;border:0;background:rgba(128,128,128,.4);position:relative;cursor:pointer;padding:0}.gmc-cup__btn--toggle span{position:absolute;top:.2rem;left:.2rem;width:2rem;height:2rem;border-radius:50%;background:#fff;transition:transform .2s}
+.gmc-cup__btn--checkbox{width:2.4rem;height:2.4rem;border-radius:4px;border:2px solid currentColor;background:none;cursor:pointer;padding:0}
+.gmc-cup__btn:disabled{opacity:.5;cursor:not-allowed}

@@ -729,6 +729,27 @@
       },
       {
         "type": "select",
+        "id": "gmc_popup_preview",
+        "label": "Preview mode",
+        "info": "Testing opens the popup on every page load; success shows the thank-you state. Set back to Off when finished.",
+        "options": [
+          {
+            "value": "off",
+            "label": "Off (normal behaviour)"
+          },
+          {
+            "value": "testing",
+            "label": "Testing (always show)"
+          },
+          {
+            "value": "success",
+            "label": "Success state (always show)"
+          }
+        ],
+        "default": "off"
+      },
+      {
+        "type": "select",
         "id": "gmc_popup_mode",
         "label": "Popup type",
         "options": [
