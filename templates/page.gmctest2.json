@@ -223,12 +223,6 @@
    "type": "gmc-promo-popup",
    "settings": {}
   },
-  "gmc-reading-time": {
-   "type": "gmc-reading-time",
-   "settings": {
-    "show_updated": false
-   }
-  },
   "gmc-results": {
    "type": "gmc-results",
    "settings": {
@@ -444,7 +438,6 @@
   "gmc-pricing-table",
   "gmc-product-features",
   "gmc-promo-popup",
-  "gmc-reading-time",
   "gmc-results",
   "gmc-scroll-progress",
   "gmc-scroll-top",
