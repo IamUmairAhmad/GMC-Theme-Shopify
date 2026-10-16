@@ -2510,8 +2510,7 @@
         "min": 0,
         "max": 20,
         "step": 1,
-        "unit": "/100 em",
-        "label": "Body letter spacing",
+        "label": "Body letter spacing (hundredths of em)",
         "default": 0
       },
       {
@@ -2520,8 +2519,7 @@
         "min": 0,
         "max": 20,
         "step": 1,
-        "unit": "/100 em",
-        "label": "Heading letter spacing",
+        "label": "Heading letter spacing (hundredths of em)",
         "default": 0
       },
       {
