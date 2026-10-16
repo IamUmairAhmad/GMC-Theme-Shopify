@@ -308,4 +308,4 @@ Identical to ours (title, description, canonical, theme colour, preconnect, font
 | ID | Item | Pri |
 |---|---|---|
 | SE-01 ✅ | `noscript` fallback so the page stays readable without JavaScript (hidden-until-animated content shows). | P3 |
-| BX-06 ✅ | Beyond Shrine: neither theme adds **Organization** and **site-search** structured data on the home page; we could. Helps Google brand and sitelink results. | P3 |
+| BX-06 ✅ | (Organization + WebSite/site-search data are emitted from header.liquid) Beyond Shrine: neither theme adds **Organization** and **site-search** structured data on the home page; we could. Helps Google brand and sitelink results. | P3 |
