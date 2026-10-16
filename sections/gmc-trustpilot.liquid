@@ -1,7 +1,7 @@
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one review block.' -%}{%- endif -%}
 <div class="page-width gmc-tp {% render 'gmc-vis', hide: section.settings.hide_on %}">
-  <div class="gmc-tp__head"><span class="gmc-tp__logo">★ Trustpilot</span><span class="gmc-tp__stars" aria-hidden="true">{%- for i in (1..5) -%}<i>★</i>{%- endfor -%}</span><span>{{ section.settings.score | escape }} · {{ section.settings.count | escape }}</span></div>
+  {%- if section.settings.score != blank -%}<div class="gmc-tp__head"><span class="gmc-tp__logo">★ Trustpilot</span><span class="gmc-tp__stars" aria-hidden="true">{%- for i in (1..5) -%}<i>★</i>{%- endfor -%}</span><span>{{ section.settings.score | escape }} · {{ section.settings.count | escape }}</span></div>{%- endif -%}
   {%- if section.settings.embed != blank -%}<div class="gmc-tp__embed">{{ section.settings.embed }}</div>{%- endif -%}
   <div class="gmc-tp__grid">{%- for block in section.blocks -%}<div class="gmc-tp__card" {{ block.shopify_attributes }}><span class="gmc-tp__stars gmc-tp__stars--sm">{%- for i in (1..block.settings.rating) -%}<i>★</i>{%- endfor -%}</span><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p><small>{{ block.settings.name | escape }}</small></div>{%- endfor -%}</div>
 </div>
@@ -16,13 +16,13 @@
       "type": "text",
       "id": "score",
       "label": "Score text",
-      "default": "4.8 Excellent"
+      "info": "Your real Trustpilot score / review count. The header is hidden while the score is empty."
     },
     {
       "type": "text",
       "id": "count",
       "label": "Review count text",
-      "default": "based on 1,200 reviews"
+      "info": "Your real Trustpilot score / review count. The header is hidden while the score is empty."
     },
     {
       "type": "liquid",
@@ -184,7 +184,7 @@
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Great service"
+          "default": "Review headline"
         },
         {
           "type": "textarea",
@@ -196,7 +196,7 @@
           "type": "text",
           "id": "name",
           "label": "Name",
-          "default": "Verified customer"
+          "default": "Customer name"
         }
       ]
     }
