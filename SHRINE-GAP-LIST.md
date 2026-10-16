@@ -118,7 +118,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | ID | Missing feature | Pri |
 |---|---|---|
 | TP-01 ✅ | **Classic customer account templates**: account, login, register, order, addresses, reset password, activate account (we ship none; stores with classic accounts get the bare default). | P2 |
-| TP-02 | Default product template pre-built with the full block set (title, stars, price, picker, quantity breaks, buy buttons, checkpoints, sticky ATC, reviews, tabs) and sample extra sections. | P3 |
+| TP-02 ✅ | Default product template pre-built with the full block set (title, stars, price, picker, quantity breaks, buy buttons, checkpoints, sticky ATC, reviews, tabs) and sample extra sections. | P3 |
 
 ## 10. External / not recommended
 
@@ -213,8 +213,8 @@ Read in full, with every saved setting. They confirm the list and add three smal
 | ID | Missing feature | Pri |
 |---|---|---|
 | DF-01 ✅ | **Shop-name text token** (for example in the comparison table's "us" label) so default content adapts to each store. | P3 |
-| DF-02 | **Shrine's default product page recipe** (what a new merchant sees): thumbnail-slider gallery on the left, sticky info column, title → rating stars → price → variant picker (pills, dropdown, dropdown with "[name] - [selected]" labels) → quantity breaks "BUNDLE & SAVE" (1–4 units) → buy buttons → dated shipping checkpoints (ordered / ready / delivered) → sticky add-to-cart → description → reviews → collapsible tab; below it custom columns, image slider, icons-with-content, testimonials and a wave section divider; related products shipped switched off. Extends TP-02. | P2 |
-| DF-03 | **Shrine's default home page recipe**: slideshow → comparison table → icon bar (4 items) → results → contact form. | P3 |
+| DF-02 ✅ | **Shrine's default product page recipe** (what a new merchant sees): thumbnail-slider gallery on the left, sticky info column, title → rating stars → price → variant picker (pills, dropdown, dropdown with "[name] - [selected]" labels) → quantity breaks "BUNDLE & SAVE" (1–4 units) → buy buttons → dated shipping checkpoints (ordered / ready / delivered) → sticky add-to-cart → description → reviews → collapsible tab; below it custom columns, image slider, icons-with-content, testimonials and a wave section divider; related products shipped switched off. Extends TP-02. | P2 |
+| DF-03 ✅ | **Shrine's default home page recipe**: slideshow → comparison table → icon bar (4 items) → results → contact form. | P3 |
 
 Everything else in those two files is a setting already listed under sections 1, 5 and 7.
 

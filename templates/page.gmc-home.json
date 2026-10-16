@@ -1,0 +1,147 @@
+{
+  "sections": {
+    "hero": {
+      "type": "gmc-hero-slideshow",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Your headline",
+            "text": "<p>Tell shoppers what makes this store different.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "s1"
+      ],
+      "settings": {}
+    },
+    "cmp": {
+      "type": "gmc-comparison-table",
+      "blocks": {
+        "r0": {
+          "type": "row",
+          "settings": {
+            "feature": "Quality materials",
+            "us_yes": true,
+            "them_yes": false
+          }
+        },
+        "r1": {
+          "type": "row",
+          "settings": {
+            "feature": "Fast shipping",
+            "us_yes": true,
+            "them_yes": false
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "feature": "Easy returns",
+            "us_yes": true,
+            "them_yes": true
+          }
+        }
+      },
+      "block_order": [
+        "r0",
+        "r1",
+        "r2"
+      ],
+      "settings": {
+        "heading": "Why choose us"
+      }
+    },
+    "icons": {
+      "type": "gmc-icon-bar",
+      "blocks": {
+        "i1": {
+          "type": "item",
+          "settings": {
+            "icon_name": "truck",
+            "title": "Fast shipping",
+            "text": "Tracked delivery"
+          }
+        },
+        "i2": {
+          "type": "item",
+          "settings": {
+            "icon_name": "shield-check",
+            "title": "Secure checkout",
+            "text": "Protected payments"
+          }
+        },
+        "i3": {
+          "type": "item",
+          "settings": {
+            "icon_name": "refresh",
+            "title": "Easy returns",
+            "text": "Simple process"
+          }
+        },
+        "i4": {
+          "type": "item",
+          "settings": {
+            "icon_name": "headset",
+            "title": "Support",
+            "text": "Real people"
+          }
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4"
+      ],
+      "settings": {}
+    },
+    "results": {
+      "type": "gmc-results",
+      "blocks": {
+        "a": {
+          "type": "stat",
+          "settings": {
+            "number": 100,
+            "suffix": "+",
+            "label": "Edit this statistic"
+          }
+        },
+        "b": {
+          "type": "stat",
+          "settings": {
+            "number": 100,
+            "suffix": "+",
+            "label": "Edit this statistic"
+          }
+        },
+        "c": {
+          "type": "stat",
+          "settings": {
+            "number": 100,
+            "suffix": "+",
+            "label": "Edit this statistic"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c"
+      ],
+      "settings": {}
+    },
+    "contact": {
+      "type": "contact-form",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "cmp",
+    "icons",
+    "results",
+    "contact"
+  ]
+}

@@ -157,15 +157,12 @@
         "a": {
           "type": "product",
           "settings": {
-            "product": "gmc-test-tee",
             "percent": 5
           }
         },
         "b": {
           "type": "product",
-          "settings": {
-            "product": "gmc-test-free-gift"
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -200,16 +197,98 @@
         "btn"
       ],
       "settings": {}
+    },
+    "gmc_extras": {
+      "type": "gmc-product-extras",
+      "blocks": {
+        "eta": {
+          "type": "estimated_delivery",
+          "settings": {}
+        },
+        "cp": {
+          "type": "shipping_checkpoints",
+          "settings": {}
+        },
+        "pay": {
+          "type": "payment_badges",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "eta",
+        "cp",
+        "pay"
+      ],
+      "settings": {}
+    },
+    "gmc_icons": {
+      "type": "gmc-icon-bar",
+      "blocks": {
+        "i1": {
+          "type": "item",
+          "settings": {
+            "icon_name": "truck",
+            "title": "Fast shipping",
+            "text": "Tracked delivery on every order"
+          }
+        },
+        "i2": {
+          "type": "item",
+          "settings": {
+            "icon_name": "shield-check",
+            "title": "Secure checkout",
+            "text": "Your payment details stay protected"
+          }
+        },
+        "i3": {
+          "type": "item",
+          "settings": {
+            "icon_name": "refresh",
+            "title": "Easy returns",
+            "text": "Change your mind? We make it simple"
+          }
+        },
+        "i4": {
+          "type": "item",
+          "settings": {
+            "icon_name": "headset",
+            "title": "Real support",
+            "text": "Questions answered by a person"
+          }
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4"
+      ],
+      "settings": {}
+    },
+    "gmc_wave": {
+      "type": "gmc-section-divider",
+      "settings": {
+        "shape": "wave",
+        "color": "#e5e7eb"
+      }
+    },
+    "gmc_rv": {
+      "type": "gmc-recently-viewed",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "gmc_extras",
     "gmc_qb",
     "gmc_bd",
     "gmc_sub",
     "gmc_sticky",
+    "gmc_icons",
+    "gmc_wave",
     "disclosures",
     "gmc_reviews",
+    "gmc_rv",
     "related-products"
   ]
 }
