@@ -1,0 +1,38 @@
+{
+ "sections": {
+  "gmc-section-group": {
+   "type": "gmc-section-group",
+   "settings": {
+    "columns": 2,
+    "columns_mobile": "1",
+    "gap": 24,
+    "align": "start",
+    "pt": 36,
+    "pb": 36,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "gmc-group-0-0": {
+     "type": "_gmc-group",
+     "settings": {}
+    },
+    "gmc-image-0-1": {
+     "type": "_gmc-image",
+     "settings": {}
+    }
+   },
+   "block_order": [
+    "gmc-group-0-0",
+    "gmc-image-0-1"
+   ]
+  }
+ },
+ "order": [
+  "gmc-section-group"
+ ]
+}
