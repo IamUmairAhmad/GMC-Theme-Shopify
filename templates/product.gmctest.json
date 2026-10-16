@@ -599,6 +599,113 @@
         "btn": "Go",
         "btn_link": "/"
       }
+    },
+    "rs": {
+      "type": "gmc-results",
+      "blocks": {
+        "a": {
+          "type": "stat",
+          "settings": {
+            "number": 50,
+            "label": "RSTEST",
+            "bar": 60,
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "caption": "cap"
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {
+        "columns": 3
+      }
+    },
+    "ct": {
+      "type": "gmc-comparison-table",
+      "blocks": {
+        "a": {
+          "type": "row",
+          "settings": {
+            "feature": "F1",
+            "us_yes": true,
+            "them_yes": false,
+            "them_text": "TXT"
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {
+        "table_style": "minimal",
+        "tick_style": "round"
+      }
+    },
+    "tb": {
+      "type": "gmc-content-tabs",
+      "blocks": {
+        "a": {
+          "type": "tab",
+          "settings": {
+            "title": "T1",
+            "icon": "truck",
+            "content": "<p>c1</p>"
+          }
+        },
+        "b": {
+          "type": "tab",
+          "settings": {
+            "title": "T2",
+            "content": "<p>c2</p>"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {
+        "nav_align": "left",
+        "full_btn": true
+      }
+    },
+    "st": {
+      "type": "gmc-insta-stories",
+      "blocks": {
+        "a": {
+          "type": "story",
+          "settings": {
+            "user": "UserA",
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "verified": true,
+            "time": "2h"
+          }
+        },
+        "b": {
+          "type": "story",
+          "settings": {
+            "user": "UserA",
+            "image": "shopify://shop_images/gmc-sample-product-image.png"
+          }
+        },
+        "c": {
+          "type": "story",
+          "settings": {
+            "user": "UserB",
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "close_friends": true
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c"
+      ],
+      "settings": {
+        "autoplay": false
+      }
     }
   },
   "order": [
@@ -623,6 +730,10 @@
     "pf2",
     "dv1",
     "dv2",
-    "px1"
+    "px1",
+    "rs",
+    "ct",
+    "tb",
+    "st"
   ]
 }
