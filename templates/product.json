@@ -117,7 +117,9 @@
           "settings": {
             "qty": 2,
             "label": "Buy 2",
-            "percent": 10
+            "percent": 10,
+            "benefit": "You save [amount_saved]",
+            "price_text": "[price] total"
           }
         },
         "t3": {
@@ -127,7 +129,11 @@
             "label": "Buy 3",
             "percent": 15,
             "gift_variant": "67707160363082",
-            "gift_text": "Free gift"
+            "gift_text": "Free gift",
+            "benefit": "You save [amount_saved_rounded]",
+            "caption": "Only [price_each] each for [quantity] items",
+            "badge": "Best value",
+            "compare_text": "was [compare_price]"
           }
         }
       },
@@ -137,7 +143,8 @@
         "t3"
       ],
       "settings": {
-        "heading": "Buy more, save more"
+        "heading": "Buy more, save more",
+        "unit_pickers": true
       }
     },
     "gmc_bd": {
