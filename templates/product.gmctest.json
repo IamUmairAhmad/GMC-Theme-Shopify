@@ -4,7 +4,7 @@
     "ex": {"type":"gmc-product-extras","blocks":{
       "eta":{"type":"estimated_delivery","settings":{"min_days":3,"max_days":7,"date_format":"long","skip_weekends":true}},
       "cp":{"type":"shipping_checkpoints","settings":{}},
-      "sz":{"type":"sizing_chart","settings":{"header_row":"Size / Chest","content":"<table><tr><td>S</td><td>90</td></tr></table>","caption":"cm"}},
+      "sz":{"type":"sizing_chart","settings":{"header_row":"Size / Chest","content":"<p>S 90 cm</p>","caption":"cm"}},
       "ts":{"type":"trust_stars","settings":{"rating":"4.6","text":"from 12 reviews","star_style":"outline","link_to":"reviews"}},
       "rv":{"type":"reviews_slider","settings":{"name1":"A","text1":"Great","name2":"B","text2":"Nice"}}
     },"block_order":["eta","cp","sz","ts","rv"],"settings":{}}
