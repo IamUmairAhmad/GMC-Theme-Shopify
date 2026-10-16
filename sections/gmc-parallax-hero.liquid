@@ -223,7 +223,27 @@ addEventListener('scroll',u,{passive:true});u();})();</script>
   "max_blocks": 5,
   "presets": [
     {
-      "name": "3D parallax hero"
+      "name": "3D parallax hero",
+      "blocks": [
+        {
+          "type": "layer",
+          "settings": {
+            "speed": 8
+          }
+        },
+        {
+          "type": "layer",
+          "settings": {
+            "speed": 20
+          }
+        },
+        {
+          "type": "layer",
+          "settings": {
+            "speed": 32
+          }
+        }
+      ]
     }
   ]
 }
