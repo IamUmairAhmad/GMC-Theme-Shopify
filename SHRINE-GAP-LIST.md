@@ -269,3 +269,13 @@ All option values in all Shrine sections were checked against every value in our
 | OV-09 | **Before/after slider and comparison table**: slider-first or slider-second placement, classic arrow style, regular tick and cross styles. Belongs to SC-07. | P3 |
 | OV-10 | **Footer featured product / collection blocks** with a half-width card option. Belongs to SC-13. | P3 |
 | OV-11 | **Transparent banner text colour** (white or black) on slideshow slides and image banner. Belongs to HS-03 / HS-04. | P3 |
+
+## 22. Thirteenth pass: global settings option diff
+Most differences are colour-scheme names (Shrine uses fixed accent / background names, we use editable colour schemes, which is more flexible, so no gap). Remaining real items, all inside already-listed groups:
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| GS-01 | Separate **colour scheme choice for product cards, collection cards and blog cards** (cards can differ from the section background). | P2 |
+| GS-02 | Product-card **badge position "top centre"**, **title line limit** (unlimited / 1 / 2 / 3), **add button primary or secondary**. Part of DP-04. | P2 |
+| GS-03 | Sale and sold-out **badge colour scheme** choice, accent-icon colour (accent 1 / 2 / outline), variant-pill accent colour. Part of TS-04 / TS-05. | P3 |
+| GS-04 | **Arrow hover effect** for link and action buttons. Part of TS-03. | P3 |
