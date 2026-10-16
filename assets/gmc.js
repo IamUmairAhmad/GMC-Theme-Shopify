@@ -377,6 +377,7 @@ document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.
       if(add.length)p=p.then(function(){return fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:add})});});
       rm.forEach(function(k){p=p.then(function(){return fetch('/cart/change.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:k,quantity:0})});});});
       return p.then(refresh).finally(function(){busy=false;});});}
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(sync,600);});
-  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,function(){setTimeout(sync,700);});});
+  var tm;function later(){clearTimeout(tm);tm=setTimeout(sync,500);}
+  document.addEventListener('DOMContentLoaded',function(){later();new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var n=ms[i].target;if(n&&n.closest&&n.closest('cart-drawer')){later();return;}}}).observe(document.body,{childList:true,subtree:true});});
+  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,later);});
 })();
