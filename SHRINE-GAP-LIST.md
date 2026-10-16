@@ -16,8 +16,8 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | PP-04 | **Product upsells block (multi)**: up to 3 upsell products, toggle styles (switch / checkbox / plus), preselected, per-product image, description, % / fixed discount, stacking row/column/slider, container styling. Ours supports one upsell. | P1 |
 | PP-05 ✅ | **Sticky add-to-cart depth**: button function (add to cart, or scroll to info / variants / quantity breaks / pricing table), show always or after scroll, combined or separate variant picker, rating stars, button colour, separate desktop and mobile toggles (image, title, price, badge, picker, full-width, price in button, transparent background). Ours has a label only. | P1 |
 | PP-06 ✅ | **Custom product field** types: text, number, textarea, pills, dropdown. Needs placeholder, max characters, min/max, required with custom error on the ATC button and sticky ATC. Ours is label + required only. | P1 |
-| PP-07 | **Variant picker options**: type per option (pills / dropdown / swatches / image), custom labels, swatch size and radius, custom swatch colour list or from image alt, full-width dropdowns. | P1 |
-| PP-08 | **Buy buttons options**: skip cart (go straight to checkout), uppercase labels, price inside button, custom button colour. | P1 |
+| PP-07 ✅ | **Variant picker options**: type per option (pills / dropdown / swatches / image), custom labels, swatch size and radius, custom swatch colour list or from image alt, full-width dropdowns. | P1 |
+| PP-08 ✅ | **Buy buttons options**: skip cart (go straight to checkout), uppercase labels, price inside button, custom button colour. | P1 |
 | PP-09 | **Estimated shipping with real dates**: min/max days → formatted dates (six date formats), custom day and month labels, icon, alignment. | P2 |
 | PP-10 | **Shipping checkpoints with dates**: four checkpoints, icon, top/bottom text, per-step day range, auto start/end date tokens, colour scheme. | P2 |
 | PP-11 | **Sizing chart popup**: button (icon, size, underline), popup with heading, header row, rich body table, images above/below, caption, test mode. | P2 |
