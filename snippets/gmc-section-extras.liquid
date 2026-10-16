@@ -1,0 +1,26 @@
+{%- comment -%} GMC Theme: adds hide-by-device, background image and background MP4 to any section (original code). {%- endcomment -%}
+{%- assign x_hide = section.settings.gmc_hide_on -%}
+{%- assign x_img = section.settings.gmc_bg_image -%}
+{%- assign x_vid = section.settings.gmc_bg_video -%}
+{%- if x_hide != blank or x_img != blank or x_vid != blank -%}
+<style>
+  {%- if x_hide == 'mobile' -%}@media(max-width:749px){#shopify-section-{{ section.id }}{display:none!important}}{%- endif -%}
+  {%- if x_hide == 'desktop' -%}@media(min-width:750px){#shopify-section-{{ section.id }}{display:none!important}}{%- endif -%}
+  {%- if x_img != blank or x_vid != blank -%}
+  #shopify-section-{{ section.id }}{position:relative;overflow:hidden}
+  #shopify-section-{{ section.id }}>:not(.gmc-bg){position:relative;z-index:1;background:transparent!important}
+  #shopify-section-{{ section.id }} .gmc-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+  #shopify-section-{{ section.id }} .gmc-bg img,#shopify-section-{{ section.id }} .gmc-bg video{width:100%;height:100%;object-fit:cover;display:block}
+  #shopify-section-{{ section.id }} .gmc-bg:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,{{ section.settings.gmc_bg_overlay | divided_by: 100.0 }})}
+  {%- endif -%}
+</style>
+{%- if x_img != blank or x_vid != blank -%}
+<div class="gmc-bg" aria-hidden="true">
+  {%- if x_vid != blank -%}
+    <video autoplay muted loop playsinline {% if x_img != blank %}poster="{{ x_img | image_url: width: 1600 }}"{% endif %}>{%- for s in x_vid.sources -%}{%- if s.format == 'mp4' -%}<source src="{{ s.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
+  {%- else -%}
+    {{ x_img | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '750,1100,1500,2000', alt: '' }}
+  {%- endif -%}
+</div>
+{%- endif -%}
+{%- endif -%}

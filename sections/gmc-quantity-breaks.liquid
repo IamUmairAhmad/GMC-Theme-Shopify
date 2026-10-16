@@ -1,0 +1,52 @@
+{%- comment -%} GMC Theme: quantity break picker for product pages (original code). Sets the main form quantity. For real price discounts, create matching automatic discounts in Shopify admin. {%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+<div class="gmc-qb" id="gmc-qb-{{ section.id }}">
+  {%- if section.settings.heading != blank -%}<p class="gmc-qb__title">{{ section.settings.heading | escape }}</p>{%- endif -%}
+  {%- for block in section.blocks -%}
+    <label class="gmc-qb__opt" {{ block.shopify_attributes }}>
+      <input type="radio" name="gmc-qb-{{ section.id }}" value="{{ block.settings.qty }}" data-gift="{{ block.settings.gift_variant | strip }}" {% if forloop.first %}checked{% endif %}>
+      <span class="gmc-qb__label"><strong>{{ block.settings.label | escape }}</strong>{% if block.settings.note != blank %}<em>{{ block.settings.note | escape }}</em>{% endif %}{% if block.settings.gift_variant != blank %}<em class="gmc-qb__gift">🎁 {{ block.settings.gift_text | default: "Free gift included" | escape }}</em>{% endif %}</span>
+      {%- if block.settings.badge != blank -%}<span class="gmc-qb__badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+      {%- if product != blank -%}<span class="gmc-qb__price" data-qty="{{ block.settings.qty }}">{{ product.selected_or_first_available_variant.price | times: block.settings.qty | money }}</span>{%- endif -%}
+    </label>
+  {%- endfor -%}
+</div>
+<style>
+  .gmc-qb{margin:1.2rem 0;display:grid;gap:.7rem}.gmc-qb__title{margin:0;font-weight:700}
+  .gmc-qb__opt{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;border:1px solid rgba(var(--color-foreground),.2);border-radius:10px;cursor:pointer;position:relative}
+  .gmc-qb__opt:has(input:checked){border-color:rgb(var(--color-foreground));background:rgba(var(--color-foreground),.04)}
+  .gmc-qb__label{flex:1;display:flex;flex-direction:column}.gmc-qb__label em{font-size:.85em;opacity:.7;font-style:normal}
+  .gmc-qb__gift{color:{{ settings.gmc_accent }};font-weight:600}.gmc-qb__badge{background:{{ settings.gmc_accent }};color:#fff;font-size:.75em;padding:2px 8px;border-radius:99px}
+</style>
+<script>
+  (function(){var w=document.getElementById('gmc-qb-{{ section.id }}');if(!w)return;
+  function apply(v){document.querySelectorAll('form[action*="/cart/add"] input[name="quantity"]').forEach(function(i){i.value=v;i.dispatchEvent(new Event('change',{bubbles:true}));});}
+  w.addEventListener('change',function(e){if(e.target.type==='radio')apply(e.target.value);});
+  window.addEventListener('load',function(){var c=w.querySelector('input:checked');if(c)apply(c.value);});
+  if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;if(!v)return;
+    w.querySelectorAll('.gmc-qb__price').forEach(function(el){try{el.textContent=new Intl.NumberFormat(undefined,{style:'currency',currency:(window.GMC&&GMC.money)||'USD'}).format(v.price*(+el.dataset.qty)/100);}catch(e){}});
+    var c=w.querySelector('input:checked');if(c)apply(c.value);});}
+  var forms=document.querySelectorAll('form[action*="/cart/add"]');
+  forms.forEach(function(f){f.addEventListener('submit',function(){var c=w.querySelector('input:checked'),g=c&&c.dataset.gift;
+    if(g&&window.gmcOnce&&gmcOnce('qbgift',2000)){fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id:+g,quantity:1,properties:{_gmc_gift:'true'}}]})});}},true);});})();
+</script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Quantity breaks",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {"templates": ["product"]},
+  "settings": [{"type":"text","id":"heading","label":"Heading","default":"Buy more, save more"}],
+  "blocks": [{"type":"tier","name":"Tier","settings":[
+    {"type":"range","id":"qty","min":1,"max":12,"label":"Quantity","default":1},
+    {"type":"text","id":"label","label":"Label","default":"Buy 1"},
+    {"type":"text","id":"note","label":"Note"},
+    {"type":"text","id":"badge","label":"Badge"},
+    {"type":"text","id":"gift_variant","label":"Free gift variant ID","info":"Optional. Price the gift at 0 or add a 100% automatic discount."},
+    {"type":"text","id":"gift_text","label":"Gift label","default":"Free gift included"}
+  ]}],
+  "max_blocks": 5,
+  "presets": [{"name":"Quantity breaks","blocks":[{"type":"tier"},{"type":"tier","settings":{"qty":2,"label":"Buy 2","note":"Save 10%"}},{"type":"tier","settings":{"qty":3,"label":"Buy 3","note":"Save 15%","badge":"Best value"}}]}]
+}
+{% endschema %}

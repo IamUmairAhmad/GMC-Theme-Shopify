@@ -1,0 +1,576 @@
+{%- comment -%} GMC Theme: product page info blocks. Add this section to the product template and stack the blocks you want. {%- endcomment -%}
+{%- assign v = product.selected_or_first_available_variant -%}
+<div class="gmc-pe {% render 'gmc-vis', hide: section.settings.hide_on %}">
+{%- for block in section.blocks -%}
+  <div class="gmc-pe__b" style="margin-bottom:{{ block.settings.mb }}px" {{ block.shopify_attributes }}>
+  {%- case block.type -%}{%- when 'complimentary' -%}
+      {%- assign cp = block.settings.product -%}{%- if cp != blank -%}
+      <div class="gmc-pe__comp" data-gmc-addon="{{ cp.selected_or_first_available_variant.id }}" data-gmc-always="1">{%- if cp.featured_image -%}{{ cp.featured_image | image_url: width: 120 | image_tag: width: 52, height: 52, loading: 'lazy' }}{%- endif -%}<span><strong>{{ block.settings.text | escape }}</strong><br>{{ cp.title | escape }} <s style="opacity:.6">{{ cp.price | money }}</s> <b style="color:{{ settings.gmc_accent }}">FREE</b></span></div>{%- endif -%}{%- when 'upsell' -%}
+      {%- assign up = block.settings.product -%}{%- if up != blank -%}
+      <label class="gmc-pe__comp"><input type="checkbox" data-gmc-addon="{{ up.selected_or_first_available_variant.id }}" {% if block.settings.checked %}checked{% endif %}>{%- if up.featured_image -%}{{ up.featured_image | image_url: width: 120 | image_tag: width: 52, height: 52, loading: 'lazy' }}{%- endif -%}<span><strong>{{ block.settings.text | escape }}</strong><br>{{ up.title | escape }} — {{ up.selected_or_first_available_variant.price | money }}</span></label>{%- endif -%}{%- when 'clickable_discount' -%}
+      <button type="button" class="gmc-pe__code" data-gmc-code="{{ block.settings.code | escape }}"><span>🏷️ {{ block.settings.text | escape }}</span><b>{{ block.settings.code | escape }}</b><small>Click to apply</small></button>{%- when 'popup_page' -%}
+      {%- if block.settings.page != blank -%}<button type="button" class="gmc-pe__link" data-gmc-open="gmc-pop-{{ block.id }}">{{ block.settings.label | escape }}</button>
+      <dialog id="gmc-pop-{{ block.id }}" class="gmc-pe__dlg"><form method="dialog"><button class="gmc-pe__dx" aria-label="Close">×</button></form><h3>{{ block.settings.page.title | escape }}</h3><div class="rte">{{ block.settings.page.content }}</div></dialog>{%- endif -%}{%- when 'scroll_to' -%}
+      <button type="button" class="button button--secondary button--full-width" data-gmc-scroll="{{ block.settings.target | escape }}">{{ block.settings.label | escape }}</button>{%- when 'link_button' -%}
+      <a class="button{% if block.settings.secondary %} button--secondary{% endif %} button--full-width" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | escape }}</a>{%- when 'image' -%}
+      {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,600,900', style: 'width:100%;height:auto;border-radius:10px' }}{%- endif -%}{%- when 'video' -%}
+      {%- if block.settings.video != blank -%}<video controls playsinline preload="none" style="width:100%;border-radius:10px" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 900 }}"{% endif %}>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>{%- endif -%}{%- when 'countdown' -%}
+      <div class="gmc-pe__cd" data-minutes="{{ block.settings.minutes }}" data-key="{{ block.id }}">⏰ {{ block.settings.text | escape }} <b class="gmc-pe__cdt">--:--</b></div>{%- when 'slider' -%}
+      <div class="gmc-pe__sl">{%- for i in (1..5) -%}{%- assign k = 'i' | append: i -%}{%- if block.settings[k] != blank -%}<div>{{ block.settings[k] | image_url: width: 700 | image_tag: loading: 'lazy' }}</div>{%- endif -%}{%- endfor -%}</div>{%- when 'container_start' -%}
+      <div class="gmc-pe__ctr" style="background:{{ block.settings.bg }};color:{{ block.settings.fg }};padding:{{ block.settings.pad }}px;border-radius:{{ block.settings.radius }}px;border:{{ block.settings.border }}px solid currentColor">{%- when 'container_end' -%}
+      </div>{%- when 'tabs' -%}
+      <div class="gmc-pe__tabs"><div class="gmc-pe__tn">{%- for i in (1..3) -%}{%- assign tk = 't' | append: i -%}{%- if block.settings[tk] != blank -%}<button type="button" aria-selected="{% if i == 1 %}true{% else %}false{% endif %}" data-t="{{ i }}">{{ block.settings[tk] | escape }}</button>{%- endif -%}{%- endfor -%}</div>
+        {%- for i in (1..3) -%}{%- assign ck = 'c' | append: i -%}{%- assign tk = 't' | append: i -%}{%- if block.settings[tk] != blank -%}<div class="gmc-pe__tp rte" data-t="{{ i }}" {% unless i == 1 %}hidden{% endunless %}>{{ block.settings[ck] }}</div>{%- endif -%}{%- endfor -%}</div>{%- when 'reviews' -%}
+      <div class="gmc-pe__rv">{%- for i in (1..3) -%}{%- assign rk = 'r' | append: i -%}{%- assign nk = 'n' | append: i -%}{%- if block.settings[rk] != blank -%}<blockquote><span style="color:#f5a623">★★★★★</span><p>{{ block.settings[rk] | escape }}</p><small>— {{ block.settings[nk] | escape }}</small></blockquote>{%- endif -%}{%- endfor -%}</div>{%- when 'savings' -%}
+      <p class="gmc-pe__sv" data-text="{{ block.settings.text | escape }}" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>{% if v.compare_at_price > v.price %}{{ block.settings.text | escape }} {{ v.compare_at_price | minus: v.price | money }} ({{ v.compare_at_price | minus: v.price | times: 100 | divided_by: v.compare_at_price }}%){% endif %}</p>{%- endcase -%}
+  </div>
+{%- endfor -%}
+</div>
+<style>.gmc-pe__urg{color:#b91c1c;font-weight:600;margin:0}.gmc-pe__stock{color:#16a34a;margin:0}.gmc-pe__eta,.gmc-pe__ts,.gmc-pe__ti{margin:0}.gmc-pe__ben{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}.gmc-pe__ben li:before{content:"✅ "}.gmc-pe__cp{list-style:none;display:flex;justify-content:space-between;text-align:center;padding:0;margin:0}.gmc-pe__bs{display:inline-block;background:#f59e0b;color:#111;font-weight:700;padding:3px 12px;border-radius:99px;font-size:1.2rem}.gmc-pe__sz summary{cursor:pointer;font-weight:600;text-decoration:underline}.gmc-pe__cf{display:grid;gap:.4rem;font-weight:600}.gmc-pe__ra{display:flex;align-items:center;gap:1rem}.gmc-pe__stack{display:flex}.gmc-pe__stack img{border-radius:50%;border:2px solid rgb(var(--color-background));margin-left:-10px;object-fit:cover}.gmc-pe__stack img:first-child{margin-left:0}.gmc-pe__bc{font-size:1.2rem;opacity:.75}
+.gmc-pe__comp{display:flex;gap:1rem;align-items:center;padding:.9rem 1.1rem;border:1px dashed rgba(var(--color-foreground),.35);border-radius:10px;cursor:pointer}.gmc-pe__comp img{border-radius:8px;object-fit:cover}
+.gmc-pe__code{display:flex;gap:1rem;align-items:center;width:100%;padding:.9rem 1.2rem;border:2px dashed {{ settings.gmc_accent }};border-radius:10px;background:transparent;color:inherit;font:inherit;cursor:pointer;text-align:left}.gmc-pe__code b{background:{{ settings.gmc_accent }};color:#fff;padding:2px 10px;border-radius:6px}.gmc-pe__code small{margin-left:auto;opacity:.65}
+.gmc-pe__link{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;color:inherit;font:inherit}.gmc-pe__dlg{max-width:560px;width:92vw;border:0;border-radius:14px;padding:2rem;position:relative}.gmc-pe__dlg::backdrop{background:rgba(0,0,0,.55)}.gmc-pe__dx{position:absolute;top:.5rem;right:1rem;background:none;border:0;font-size:2.6rem;cursor:pointer}
+.gmc-pe__sl{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem}.gmc-pe__sl>div{flex:0 0 85%;scroll-snap-align:start}.gmc-pe__sl img{width:100%;border-radius:10px}
+.gmc-pe__tn{display:flex;gap:.4rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}.gmc-pe__tn button{background:none;border:0;padding:.7rem 1rem;cursor:pointer;color:inherit;font:inherit;opacity:.6}.gmc-pe__tn button[aria-selected=true]{opacity:1;border-bottom:2px solid currentColor}.gmc-pe__tp{padding-top:1rem}
+.gmc-pe__rv{display:grid;gap:.8rem}.gmc-pe__rv blockquote{margin:0;padding:1rem 1.2rem;border-radius:10px;background:rgba(var(--color-foreground),.05)}.gmc-pe__rv p{margin:.3rem 0}.gmc-pe__sv{color:{{ settings.gmc_accent }};font-weight:700;margin:0}.gmc-pe__cd{font-weight:600}
+</style>
+<script>(function(){document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
+{% schema %}
+{
+ "name": "Product extra blocks",
+ "tag": "section",
+ "class": "section",
+ "enabled_on": {
+  "templates": [
+   "product"
+  ]
+ },
+ "settings": [
+  {
+   "type": "select",
+   "id": "hide_on",
+   "label": "Hide on",
+   "options": [
+    {
+     "value": "",
+     "label": "Show everywhere"
+    },
+    {
+     "value": "mobile",
+     "label": "Mobile"
+    },
+    {
+     "value": "desktop",
+     "label": "Desktop"
+    }
+   ],
+   "default": ""
+  }
+ ],
+ "blocks": [
+  {
+   "type": "complimentary",
+   "name": "Complimentary product",
+   "settings": [
+    {
+     "type": "product",
+     "id": "product",
+     "label": "Free product"
+    },
+    {
+     "type": "text",
+     "id": "text",
+     "label": "Text",
+     "default": "Free gift with your order"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "upsell",
+   "name": "Product upsell",
+   "settings": [
+    {
+     "type": "product",
+     "id": "product",
+     "label": "Upsell product"
+    },
+    {
+     "type": "text",
+     "id": "text",
+     "label": "Text",
+     "default": "Add to my order"
+    },
+    {
+     "type": "checkbox",
+     "id": "checked",
+     "label": "Preselected",
+     "default": false
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "clickable_discount",
+   "name": "Clickable discount",
+   "settings": [
+    {
+     "type": "text",
+     "id": "code",
+     "label": "Discount code",
+     "default": "SAVE10"
+    },
+    {
+     "type": "text",
+     "id": "text",
+     "label": "Text",
+     "default": "Extra 10% off:"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "popup_page",
+   "name": "Popup page",
+   "settings": [
+    {
+     "type": "page",
+     "id": "page",
+     "label": "Page"
+    },
+    {
+     "type": "text",
+     "id": "label",
+     "label": "Link label",
+     "default": "Shipping & returns"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "scroll_to",
+   "name": "Scroll-to button",
+   "settings": [
+    {
+     "type": "text",
+     "id": "label",
+     "label": "Label",
+     "default": "Read reviews"
+    },
+    {
+     "type": "text",
+     "id": "target",
+     "label": "CSS selector to scroll to",
+     "default": "#shopify-section-reviews",
+     "info": "e.g. #shopify-section-template--123__reviews or .my-class"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "link_button",
+   "name": "Link button",
+   "settings": [
+    {
+     "type": "text",
+     "id": "label",
+     "label": "Label",
+     "default": "Learn more"
+    },
+    {
+     "type": "url",
+     "id": "link",
+     "label": "Link"
+    },
+    {
+     "type": "checkbox",
+     "id": "secondary",
+     "label": "Secondary style",
+     "default": true
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "image",
+   "name": "Image",
+   "settings": [
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "Image"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "video",
+   "name": "Video",
+   "settings": [
+    {
+     "type": "video",
+     "id": "video",
+     "label": "MP4 video"
+    },
+    {
+     "type": "image_picker",
+     "id": "poster",
+     "label": "Poster"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "countdown",
+   "name": "Countdown timer",
+   "settings": [
+    {
+     "type": "range",
+     "id": "minutes",
+     "min": 1,
+     "max": 120,
+     "unit": "min",
+     "label": "Minutes",
+     "default": 15
+    },
+    {
+     "type": "text",
+     "id": "text",
+     "label": "Text",
+     "default": "Offer ends in"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "slider",
+   "name": "Image slider",
+   "settings": [
+    {
+     "type": "image_picker",
+     "id": "i1",
+     "label": "Image 1"
+    },
+    {
+     "type": "image_picker",
+     "id": "i2",
+     "label": "Image 2"
+    },
+    {
+     "type": "image_picker",
+     "id": "i3",
+     "label": "Image 3"
+    },
+    {
+     "type": "image_picker",
+     "id": "i4",
+     "label": "Image 4"
+    },
+    {
+     "type": "image_picker",
+     "id": "i5",
+     "label": "Image 5"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "container_start",
+   "name": "Container start",
+   "settings": [
+    {
+     "type": "color",
+     "id": "bg",
+     "label": "Background",
+     "default": "#f6f6f6"
+    },
+    {
+     "type": "color",
+     "id": "fg",
+     "label": "Text",
+     "default": "#111111"
+    },
+    {
+     "type": "range",
+     "id": "pad",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Padding",
+     "default": 16
+    },
+    {
+     "type": "range",
+     "id": "radius",
+     "min": 0,
+     "max": 30,
+     "unit": "px",
+     "label": "Radius",
+     "default": 10
+    },
+    {
+     "type": "range",
+     "id": "border",
+     "min": 0,
+     "max": 4,
+     "unit": "px",
+     "label": "Border",
+     "default": 0
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "container_end",
+   "name": "Container end",
+   "settings": [
+    {
+     "type": "paragraph",
+     "content": "Closes the container opened by the last Container start."
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "tabs",
+   "name": "Content tabs",
+   "settings": [
+    {
+     "type": "text",
+     "id": "t1",
+     "label": "Tab 1",
+     "default": "Details"
+    },
+    {
+     "type": "richtext",
+     "id": "c1",
+     "label": "Content 1"
+    },
+    {
+     "type": "text",
+     "id": "t2",
+     "label": "Tab 2",
+     "default": "Shipping"
+    },
+    {
+     "type": "richtext",
+     "id": "c2",
+     "label": "Content 2"
+    },
+    {
+     "type": "text",
+     "id": "t3",
+     "label": "Tab 3"
+    },
+    {
+     "type": "richtext",
+     "id": "c3",
+     "label": "Content 3"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "reviews",
+   "name": "Reviews",
+   "settings": [
+    {
+     "type": "textarea",
+     "id": "r1",
+     "label": "Review 1",
+     "default": "Excellent quality!"
+    },
+    {
+     "type": "text",
+     "id": "n1",
+     "label": "Name 1",
+     "default": "Sarah"
+    },
+    {
+     "type": "textarea",
+     "id": "r2",
+     "label": "Review 2"
+    },
+    {
+     "type": "text",
+     "id": "n2",
+     "label": "Name 2"
+    },
+    {
+     "type": "textarea",
+     "id": "r3",
+     "label": "Review 3"
+    },
+    {
+     "type": "text",
+     "id": "n3",
+     "label": "Name 3"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "savings",
+   "name": "Dynamic savings",
+   "settings": [
+    {
+     "type": "text",
+     "id": "text",
+     "label": "Text",
+     "default": "You save"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  }
+ ],
+ "presets": [
+  {
+   "name": "Product extra blocks",
+   "blocks": [
+    {
+     "type": "complimentary"
+    },
+    {
+     "type": "clickable_discount"
+    }
+   ]
+  }
+ ]
+}
+{% endschema %}

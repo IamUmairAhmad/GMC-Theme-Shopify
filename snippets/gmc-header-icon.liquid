@@ -1,0 +1,13 @@
+{%- comment -%} GMC Theme: lets the merchant swap header icons (cart / account / search) from the 2,500-icon library. {%- endcomment -%}
+{%- liquid
+  assign choice = ''
+  case kind
+    when 'cart'
+      assign choice = settings.gmc_cart_icon
+    when 'account'
+      assign choice = settings.gmc_account_icon
+    when 'search'
+      assign choice = settings.gmc_search_icon
+  endcase
+-%}
+{%- if choice != blank and choice != 'default' -%}{%- render 'gmc-icon', name: choice, size: 22 -%}{%- else -%}{{- fallback | inline_asset_content -}}{%- endif -%}

@@ -1,0 +1,5 @@
+<div id="gmc-prog" style="position:fixed;top:0;left:0;height:{{ section.settings.h }}px;width:0;background:{{ section.settings.color }};z-index:120"></div>
+<script>(function(){var b=document.getElementById('gmc-prog');window.addEventListener('scroll',function(){var h=document.documentElement;b.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%';},{passive:true});})();</script>
+{% schema %}
+{"name":"Page scroll progress","settings":[{"type":"color","id":"color","label":"Color","default":"#16a34a"},{"type":"range","id":"h","min":2,"max":10,"unit":"px","label":"Thickness","default":4}],"presets":[{"name":"Page scroll progress"}]}
+{% endschema %}

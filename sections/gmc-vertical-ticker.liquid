@@ -1,0 +1,9 @@
+<div class="gmc-vt {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--bg:{{ section.settings.bg }};--fg:{{ section.settings.fg }};--h:{{ section.settings.height }}px;--speed:{{ section.blocks.size | times: 3 }}s">
+  <div class="gmc-vt__track">
+    {%- for i in (1..2) -%}{%- for block in section.blocks -%}<div class="gmc-vt__item" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</div>{%- endfor -%}{%- endfor -%}
+  </div>
+</div>
+<style>.gmc-vt{background:var(--bg);color:var(--fg);height:var(--h);overflow:hidden;text-align:center;font-weight:600}.gmc-vt__item{height:var(--h);line-height:var(--h)}.gmc-vt__track{animation:gmc-vt var(--speed) steps({{ section.blocks.size | at_least: 1 }}) infinite}@keyframes gmc-vt{to{transform:translateY(calc(var(--h) * -{{ section.blocks.size }}))}}@media(prefers-reduced-motion:reduce){.gmc-vt__track{animation:none}}</style>
+{% schema %}
+{"name":"Vertical ticker","tag":"section","class":"section","settings":[{"type":"color","id":"bg","label":"Background","default":"#111111"},{"type":"color","id":"fg","label":"Text","default":"#ffffff"},{"type":"range","id":"height","min":28,"max":80,"unit":"px","label":"Height","default":40},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"blocks":[{"type":"item","name":"Message","settings":[{"type":"text","id":"text","label":"Text","default":"Free shipping over $50"}]}],"max_blocks":8,"presets":[{"name":"Vertical ticker","blocks":[{"type":"item"},{"type":"item","settings":{"text":"30-day returns"}}]}]}
+{% endschema %}

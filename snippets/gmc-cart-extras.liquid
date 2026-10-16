@@ -1,0 +1,34 @@
+{%- comment -%} GMC Theme: cart timer, toggle upsell, custom content, policy checkbox (original code) {%- endcomment -%}
+{%- if settings.gmc_cart_timer and cart.item_count > 0 -%}
+  <p class="gmc-cart-timer" style="margin:.8rem 2rem 0;font-size:1.3rem" data-min="{{ settings.gmc_cart_timer_min }}">{{ settings.gmc_cart_timer_text | escape }} <strong class="gmc-cart-timer__t">--:--</strong></p>
+{%- endif -%}
+{%- if settings.gmc_toggle_variant != blank and cart.item_count > 0 -%}
+  {%- assign tv = settings.gmc_toggle_variant | plus: 0 -%}
+  {%- assign tog_on = false -%}
+  {%- for item in cart.items -%}{%- if item.variant_id == tv -%}{%- assign tog_on = true -%}{%- endif -%}{%- endfor -%}
+  <label class="gmc-toggle" style="display:flex;gap:1rem;align-items:center;padding:1rem 2rem;cursor:pointer">
+    <input type="checkbox" data-gmc-toggle="{{ tv }}" data-pre="{{ settings.gmc_toggle_pre }}" {% if tog_on %}checked{% endif %}>
+    <span>{{ settings.gmc_toggle_text | escape }}</span>
+  </label>
+{%- endif -%}
+{%- if settings.gmc_cart_custom != blank -%}<div class="rte" style="padding:0 2rem 1rem">{{ settings.gmc_cart_custom }}</div>{%- endif -%}
+{%- if settings.gmc_cart_policy and cart.item_count > 0 -%}
+  <label class="gmc-policy" style="display:flex;gap:.8rem;align-items:flex-start;padding:.6rem 2rem;font-size:1.3rem"><input type="checkbox" class="gmc-policy__cb"><span>{{ settings.gmc_cart_policy_text | escape }}</span></label>
+{%- endif -%}
+
+{%- if settings.gmc_cart_lines != blank -%}
+  <ul style="list-style:none;margin:0;padding:.4rem 2rem;display:grid;gap:.5rem;font-size:1.3rem">
+    {%- assign gl = settings.gmc_cart_lines | newline_to_br | split: '<br />' -%}
+    {%- for ln in gl -%}{%- assign pr = ln | strip | split: '|' -%}{%- if pr.size > 1 -%}<li style="display:flex;gap:.7rem;align-items:center">{%- render 'gmc-icon', name: pr[0], size: 20 -%}<span>{{ pr[1] | strip | escape }}</span></li>{%- endif -%}{%- endfor -%}
+  </ul>
+{%- endif -%}
+{%- if settings.gmc_cart_image != blank -%}<div style="padding:.6rem 2rem">{{ settings.gmc_cart_image | image_url: width: 800 | image_tag: loading: 'lazy', style: 'width:100%;height:auto;border-radius:8px', alt: '' }}</div>{%- endif -%}
+{%- if settings.gmc_cart_discount and cart.item_count > 0 -%}
+  <div class="gmc-disc" style="padding:.6rem 2rem">
+    <div style="display:flex;gap:.6rem"><label class="visually-hidden" for="gmc-disc-in">Discount code</label>
+      <input id="gmc-disc-in" class="field__input" style="padding:.9rem;flex:1;border-radius:6px" placeholder="Discount code" autocomplete="off">
+      <button type="button" class="button button--secondary" id="gmc-disc-btn" style="min-height:4rem">Apply</button></div>
+    <p id="gmc-disc-msg" role="status" aria-live="polite" style="margin:.4rem 0 0;font-size:1.25rem"></p>
+    {%- for dc in cart.cart_level_discount_applications -%}<p style="margin:.2rem 0 0;font-size:1.25rem;color:{{ settings.gmc_accent }}">✓ {{ dc.title | escape }} (−{{ dc.total_allocated_amount | money }})</p>{%- endfor -%}
+  </div>
+{%- endif -%}

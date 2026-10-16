@@ -1,0 +1,15 @@
+{%- if localization.available_countries.size > 1 -%}
+{%- capture loc_class -%}gmc-loc {% render 'gmc-vis', hide: section.settings.hide_on %}{%- endcapture -%}
+{%- form 'localization', id: 'gmc-loc-form', class: loc_class -%}
+  <label for="gmc-loc-{{ section.id }}" class="visually-hidden">Country / currency</label>
+  <select id="gmc-loc-{{ section.id }}" name="country_code" onchange="this.form.submit()" class="gmc-loc__sel">
+    {%- for country in localization.available_countries -%}
+      <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>{{ country.name | escape }}{% if section.settings.show_currency %} ({{ country.currency.iso_code }}{% if section.settings.show_symbol %} {{ country.currency.symbol }}{% endif %}){% endif %}</option>
+    {%- endfor -%}
+  </select>
+{%- endform -%}
+<style>.gmc-loc{display:flex;justify-content:{{ section.settings.align }};padding:.6rem 1.5rem}.gmc-loc__sel{padding:.7rem 1rem;border-radius:8px;border:1px solid rgba(var(--color-foreground),.3);background:rgb(var(--color-background));color:rgb(var(--color-foreground));font:inherit;max-width:100%}</style>
+{%- endif -%}
+{% schema %}
+{"name":"Country selector","tag":"section","settings":[{"type":"checkbox","id":"show_currency","label":"Show currency code","default":true},{"type":"checkbox","id":"show_symbol","label":"Show currency symbol","default":false},{"type":"select","id":"align","label":"Alignment","options":[{"value":"flex-start","label":"Left"},{"value":"center","label":"Center"},{"value":"flex-end","label":"Right"}],"default":"flex-end"},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"presets":[{"name":"Country selector"}]}
+{% endschema %}

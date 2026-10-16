@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "main": {
+      "type": "gmc-advertorial",
+      "blocks": {
+        "a": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Open with a relatable story or problem.</p>"
+          }
+        },
+        "b": {
+          "type": "list_item",
+          "settings": {
+            "number": "1",
+            "heading": "First reason"
+          }
+        },
+        "c": {
+          "type": "list_item",
+          "settings": {
+            "number": "2",
+            "heading": "Second reason"
+          }
+        },
+        "d": {
+          "type": "list_item",
+          "settings": {
+            "number": "3",
+            "heading": "Third reason"
+          }
+        },
+        "e": {
+          "type": "cta",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e"
+      ],
+      "settings": {
+        "title": "3 reasons shoppers are switching",
+        "label": "Listicle"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,11 @@
+{%- if section.settings.json_url != blank -%}
+<div class="page-width gmc-lt {% render 'gmc-vis', hide: section.settings.hide_on %}" style="text-align:center;padding:{{ section.settings.pad }}px 0">
+  <div id="gmc-lt-{{ section.id }}" role="img" aria-label="{{ section.settings.alt | escape }}" style="max-width:{{ section.settings.width }}px;margin:0 auto"></div>
+</div>
+<script>(function(){var id='gmc-lt-{{ section.id }}';
+function go(){var el=document.getElementById(id);if(!el||!window.lottie)return;var a=lottie.loadAnimation({container:el,renderer:'svg',loop:{{ section.settings.loop | json }},autoplay:{{ section.settings.autoplay | json }},path:{{ section.settings.json_url | json }}});a.setSpeed({{ section.settings.speed | json }});}
+if(window.lottie){go();}else{var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js';s.onload=go;document.head.appendChild(s);}})();</script>
+{%- endif -%}
+{% schema %}
+{"name":"JSON animation (Lottie)","tag":"section","class":"section","settings":[{"type":"text","id":"json_url","label":"Animation JSON URL","info":"Upload the .json file under Content > Files and paste its URL."},{"type":"text","id":"alt","label":"Description (accessibility)"},{"type":"range","id":"width","min":120,"max":900,"step":20,"unit":"px","label":"Max width","default":400},{"type":"checkbox","id":"autoplay","label":"Autoplay","default":true},{"type":"checkbox","id":"loop","label":"Loop","default":true},{"type":"range","id":"speed","min":0.5,"max":3,"step":0.1,"label":"Speed","default":1},{"type":"range","id":"pad","min":0,"max":80,"step":4,"unit":"px","label":"Spacing","default":24},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"presets":[{"name":"JSON animation (Lottie)"}]}
+{% endschema %}

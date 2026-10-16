@@ -1,0 +1,11 @@
+{%- comment -%} GMC Theme: compare price + savings under each cart line (original code) {%- endcomment -%}
+{%- if settings.gmc_cart_compare -%}
+  {%- assign cmp = item.variant.compare_at_price | times: item.quantity -%}
+  {%- if item.variant.compare_at_price > item.variant.price -%}
+    {%- assign save = cmp | minus: item.final_line_price -%}
+    <div class="gmc-line-save" style="font-size:1.2rem;margin-top:.3rem;text-align:right">
+      <s style="opacity:.6">{{ cmp | money }}</s>
+      {%- if save > 0 %} <span style="color:{{ settings.gmc_accent }};font-weight:600">Save {{ save | money }}</span>{% endif -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}

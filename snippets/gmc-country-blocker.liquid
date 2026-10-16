@@ -1,0 +1,15 @@
+{%- comment -%} GMC Theme: country blocker (original code). Uses Shopify's detected visitor country. Search/ad crawlers are exempt on the client so Google/Meta reviews are not blocked. {%- endcomment -%}
+{%- if settings.gmc_cb_mode != 'off' and settings.gmc_cb_list != blank and request.design_mode == false -%}
+  {%- assign cb_list = settings.gmc_cb_list | upcase | remove: ' ' | split: ',' -%}
+  {%- assign cb_listed = false -%}
+  {%- if cb_list contains localization.country.iso_code -%}{%- assign cb_listed = true -%}{%- endif -%}
+  {%- assign cb_block = false -%}
+  {%- if settings.gmc_cb_mode == 'block' and cb_listed -%}{%- assign cb_block = true -%}{%- endif -%}
+  {%- if settings.gmc_cb_mode == 'whitelist' and cb_listed == false -%}{%- assign cb_block = true -%}{%- endif -%}
+  {%- if cb_block -%}
+    <div id="gmc-cb" role="alertdialog" aria-live="assertive" style="position:fixed;inset:0;z-index:2147483000;background:rgb(var(--color-background));color:rgb(var(--color-foreground));display:grid;place-items:center;text-align:center;padding:2rem">
+      <div><h1 style="margin:0 0 1rem">{{ settings.gmc_cb_message | escape }}</h1></div>
+    </div>
+    <script>if(/bot|crawl|spider|slurp|google|bing|facebookexternalhit|meta-external|facebot|lighthouse|pagespeed|adsbot|mediapartners/i.test(navigator.userAgent)){var e=document.getElementById('gmc-cb');if(e)e.remove();}else{document.documentElement.style.overflow='hidden';}</script>
+  {%- endif -%}
+{%- endif -%}

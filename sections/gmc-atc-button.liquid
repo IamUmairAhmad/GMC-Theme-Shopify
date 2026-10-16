@@ -1,0 +1,12 @@
+{%- assign p = section.settings.product -%}
+{%- if p != blank -%}
+<div class="page-width gmc-ab {% render 'gmc-vis', hide: section.settings.hide_on %}" style="text-align:{{ section.settings.align }};padding:{{ section.settings.pad }}px 0">
+  {%- form 'product', p, class: 'gmc-ab__f' -%}
+    <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
+    <button class="button button--full-width" style="max-width:{{ section.settings.width }}px" type="submit" {% unless p.available %}disabled{% endunless %}>{%- if p.available -%}{{ section.settings.label | escape }}{% if section.settings.show_price %} — {{ p.selected_or_first_available_variant.price | money }}{% endif %}{%- else -%}Sold out{%- endif -%}</button>
+  {%- endform -%}
+</div>
+{%- endif -%}
+{% schema %}
+{"name":"Add to cart button","tag":"section","class":"section","settings":[{"type":"product","id":"product","label":"Product"},{"type":"text","id":"label","label":"Label","default":"Add to cart"},{"type":"checkbox","id":"show_price","label":"Show price in button","default":true},{"type":"range","id":"width","min":200,"max":700,"step":20,"unit":"px","label":"Max width","default":360},{"type":"select","id":"align","label":"Align","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}],"default":"center"},{"type":"range","id":"pad","min":0,"max":60,"step":4,"unit":"px","label":"Spacing","default":20},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"presets":[{"name":"Add to cart button"}]}
+{% endschema %}

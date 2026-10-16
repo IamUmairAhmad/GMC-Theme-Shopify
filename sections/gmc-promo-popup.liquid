@@ -1,0 +1,35 @@
+{%- comment -%} GMC Theme: promo / email popup (original code). Controlled from Theme settings > GMC features. {%- endcomment -%}
+{%- if settings.gmc_popup_enabled and request.page_type != 'password' -%}
+<div class="gmc-pop" id="gmc-pop" hidden role="dialog" aria-modal="true" aria-labelledby="gmc-pop-h">
+  <div class="gmc-pop__box">
+    <button type="button" class="gmc-pop__x" aria-label="Close">×</button>
+    <h2 id="gmc-pop-h">{{ settings.gmc_popup_heading | escape }}</h2>
+    <p>{{ settings.gmc_popup_text | escape }}</p>
+    {%- form 'customer', class: 'gmc-pop__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter,popup">
+      <input type="email" name="contact[email]" required placeholder="Email address" autocomplete="email" class="field__input" style="padding:1rem">
+      <button class="button" type="submit">Subscribe</button>
+    {%- endform -%}
+  </div>
+</div>
+<style>
+  .gmc-pop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:grid;place-items:center;padding:1.5rem}
+  .gmc-pop[hidden]{display:none}
+  .gmc-pop__box{position:relative;background:rgb(var(--color-background));color:rgb(var(--color-foreground));max-width:420px;width:100%;padding:2.5rem 2rem;border-radius:14px;text-align:center}
+  .gmc-pop__x{position:absolute;top:.6rem;right:1rem;background:none;border:0;font-size:2.4rem;cursor:pointer;color:inherit}
+  .gmc-pop__form{display:grid;gap:.8rem;margin-top:1.2rem}
+</style>
+<script>
+  (function(){var k='gmc_pop_seen',p=document.getElementById('gmc-pop');if(!p)return;
+  try{if(sessionStorage.getItem(k)||localStorage.getItem(k)==='sub')return;}catch(e){}
+  function close(){p.hidden=true;if(prev&&prev.focus)prev.focus();try{sessionStorage.setItem(k,'1');}catch(e){}}
+  var prev=null;setTimeout(function(){prev=document.activeElement;p.hidden=false;p.querySelector('.gmc-pop__x').focus();},{{ settings.gmc_popup_delay | times: 1000 }});
+  p.querySelector('.gmc-pop__x').addEventListener('click',close);
+  p.addEventListener('click',function(e){if(e.target===p)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  p.querySelector('form').addEventListener('submit',function(){try{localStorage.setItem(k,'sub');}catch(e){}});})();
+</script>
+{%- endif -%}
+{% schema %}
+{ "name": "Promo popup", "settings": [{"type":"paragraph","content":"Configure under Theme settings > GMC features."}] }
+{% endschema %}

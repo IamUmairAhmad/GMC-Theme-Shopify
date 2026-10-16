@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "main": {
+      "type": "gmc-advertorial",
+      "blocks": {
+        "a": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tell the customer story: problem, discovery, result.</p>"
+          }
+        },
+        "b": {
+          "type": "image",
+          "settings": {}
+        },
+        "c": {
+          "type": "quote",
+          "settings": {}
+        },
+        "d": {
+          "type": "product",
+          "settings": {}
+        },
+        "e": {
+          "type": "cta",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e"
+      ],
+      "settings": {
+        "title": "How one customer fixed this in a week",
+        "label": "Story"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

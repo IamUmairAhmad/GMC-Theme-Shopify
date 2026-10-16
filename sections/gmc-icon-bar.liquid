@@ -1,0 +1,46 @@
+{%- comment -%} GMC Theme: trust badge / icon bar (original code) {%- endcomment -%}
+<div class="page-width gmc-iconbar">
+  {%- if section.settings.heading != blank -%}<h2 class="gmc-iconbar__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  <ul class="gmc-iconbar__list" style="--cols:{{ section.settings.columns }}">
+    {%- for block in section.blocks -%}
+      <li class="gmc-iconbar__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 40 -%}{%- elsif block.settings.icon != blank -%}
+          <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.icon.alt | escape }}" width="48" height="48" loading="lazy">
+        {%- endif -%}
+        <strong>{{ block.settings.title | escape }}</strong>
+        {%- if block.settings.text != blank -%}<span>{{ block.settings.text | escape }}</span>{%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+<style>
+  .gmc-iconbar{padding-top:{{ section.settings.pad }}px;padding-bottom:{{ section.settings.pad }}px}
+  .gmc-iconbar__title{text-align:center;margin:0 0 2rem}
+  .gmc-iconbar__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:1.5rem;text-align:center}
+  .gmc-iconbar__item{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+  .gmc-iconbar__item img{object-fit:contain}
+  .gmc-iconbar__item span{opacity:.75;font-size:.9em}
+  @media(max-width:749px){.gmc-iconbar__list{grid-template-columns:repeat(2,1fr)}}
+</style>
+{% schema %}
+{
+  "name": "Icon bar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"text","id":"heading","label":"Heading"},
+    {"type":"range","id":"columns","min":2,"max":6,"label":"Columns","default":4},
+    {"type":"range","id":"pad","min":0,"max":80,"step":4,"unit":"px","label":"Vertical padding","default":36}
+  ],
+  "blocks": [
+    {"type":"item","name":"Item","settings":[
+      {"type":"text","id":"icon_name","label":"Icon name","info":"From the built-in 2,500-icon library, e.g. truck, shield-check. See assets/gmc-icon-list.txt"},
+      {"type":"image_picker","id":"icon","label":"Or icon image"},
+      {"type":"text","id":"title","label":"Title","default":"Fast shipping"},
+      {"type":"text","id":"text","label":"Description","default":"Delivered in 3-5 days"}
+    ]}
+  ],
+  "max_blocks": 8,
+  "presets": [{"name":"Icon bar","blocks":[{"type":"item"},{"type":"item","settings":{"title":"Easy returns","text":"30-day returns"}},{"type":"item","settings":{"title":"Secure payment","text":"SSL encrypted"}},{"type":"item","settings":{"title":"24/7 support","text":"We're here to help"}}]}]
+}
+{% endschema %}

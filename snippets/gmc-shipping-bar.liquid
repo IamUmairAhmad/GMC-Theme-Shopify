@@ -1,0 +1,40 @@
+{%- comment -%} GMC Theme: free shipping progress bar (original code). Threshold is in store currency units. {%- endcomment -%}
+{%- assign threshold = settings.gmc_ship_threshold | times: 100 -%}
+{%- if settings.gmc_ship_enabled and threshold > 0 -%}
+  {%- assign remaining = threshold | minus: cart.total_price -%}
+  {%- assign pct = cart.total_price | times: 100 | divided_by: threshold -%}
+  {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+  <div class="gmc-ship" style="padding:1rem 2rem 0">
+    <p class="gmc-ship__msg" style="margin:0 0 .5rem;font-size:1.3rem">
+      {%- if remaining > 0 -%}
+        Add <strong>{{ remaining | money }}</strong> more for free shipping
+      {%- else -%}
+        🎉 You've unlocked free shipping!
+      {%- endif -%}
+    </p>
+    <div style="height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);overflow:hidden">
+      <div style="height:100%;width:{{ pct }}%;background:{{ settings.gmc_accent }};transition:width .4s"></div>
+    </div>
+    {%- if settings.gmc_ship_threshold2 > settings.gmc_ship_threshold -%}
+      {%- assign t2 = settings.gmc_ship_threshold2 | times: 100 -%}
+      {%- assign pct2 = cart.total_price | times: 100 | divided_by: t2 -%}
+      {%- if pct2 > 100 -%}{%- assign pct2 = 100 -%}{%- endif -%}
+      <p style="margin:.8rem 0 .4rem;font-size:1.3rem">{%- if cart.total_price >= t2 -%}🎁 Free gift unlocked!{%- else -%}Add <strong>{{ t2 | minus: cart.total_price | money }}</strong> more for a free gift{%- endif -%}</p>
+      <div style="height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);overflow:hidden"><div style="height:100%;width:{{ pct2 }}%;background:#f59e0b;transition:width .4s"></div></div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{%- if settings.gmc_cart_savings -%}
+  {%- assign gmc_saved = 0 -%}
+  {%- for item in cart.items -%}
+    {%- if item.variant.compare_at_price > item.variant.price -%}
+      {%- assign d = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity -%}
+      {%- assign gmc_saved = gmc_saved | plus: d -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign gmc_saved = gmc_saved | plus: cart.total_discount -%}
+  {%- if gmc_saved > 0 -%}
+    <p style="margin:.8rem 2rem 0;font-size:1.3rem;color:{{ settings.gmc_accent }};font-weight:600">You're saving {{ gmc_saved | money }} on this order</p>
+  {%- endif -%}
+{%- endif -%}

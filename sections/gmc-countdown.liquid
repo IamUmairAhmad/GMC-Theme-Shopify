@@ -1,0 +1,14 @@
+<div class="gmc-cd {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-cd-{{ section.id }}" style="background:{{ section.settings.bg }};color:{{ section.settings.fg }}">
+  <p class="gmc-cd__t">{{ section.settings.text | escape }}</p>
+  <div class="gmc-cd__n" data-end="{{ section.settings.end }}" data-mode="{{ section.settings.mode }}" data-min="{{ section.settings.minutes }}"><b data-u="d">00</b>d <b data-u="h">00</b>h <b data-u="m">00</b>m <b data-u="s">00</b>s</div>
+</div>
+<style>.gmc-cd{text-align:center;padding:1.4rem 1rem}.gmc-cd__t{margin:0 0 .4rem;font-weight:600}.gmc-cd__n{font-size:2.4rem;font-variant-numeric:tabular-nums}</style>
+<script>(function(){var el=document.querySelector('#gmc-cd-{{ section.id }} .gmc-cd__n');if(!el)return;var end;
+if(el.dataset.mode==='evergreen'){var k='gmc_cd_{{ section.id }}';try{end=+localStorage.getItem(k);if(!end||Date.now()>end){end=Date.now()+(+el.dataset.min)*60000;localStorage.setItem(k,end);}}catch(e){end=Date.now()+(+el.dataset.min)*60000;}}
+else{end=new Date(el.dataset.end).getTime();}
+function p(n){return String(n).padStart(2,'0');}
+function t(){var d=Math.max(0,end-Date.now()),s=Math.floor(d/1000);var v={d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60};for(var u in v){el.querySelector('[data-u='+u+']').textContent=p(v[u]);}}
+t();setInterval(t,1000);})();</script>
+{% schema %}
+{"name":"Countdown timer","tag":"section","class":"section","settings":[{"type":"text","id":"text","label":"Text","default":"Sale ends in"},{"type":"select","id":"mode","label":"Mode","options":[{"value":"date","label":"Fixed date"},{"value":"evergreen","label":"Evergreen (per visitor)"}],"default":"evergreen"},{"type":"text","id":"end","label":"End date/time","info":"e.g. 2026-12-31T23:59:00","default":"2026-12-31T23:59:00"},{"type":"range","id":"minutes","min":5,"max":1440,"step":5,"unit":"min","label":"Evergreen duration","default":60},{"type":"color","id":"bg","label":"Background","default":"#b91c1c"},{"type":"color","id":"fg","label":"Text","default":"#ffffff"},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"presets":[{"name":"Countdown timer"}]}
+{% endschema %}

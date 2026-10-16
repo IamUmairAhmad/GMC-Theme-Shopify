@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "gmc-advertorial",
+      "settings": {
+        "title": "7 reasons everyone is talking about this product"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,44 @@
+{%- comment -%} GMC Theme: long-form advertorial / listicle article layout (original code) {%- endcomment -%}
+<article class="gmc-adv page-width {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--w:{{ section.settings.width }}px">
+  {%- if section.settings.label != blank -%}<p class="gmc-adv__label">{{ section.settings.label | escape }}</p>{%- endif -%}
+  <h1 class="gmc-adv__h1">{{ section.settings.title | escape }}</h1>
+  {%- if section.settings.byline != blank -%}<p class="gmc-adv__by">{{ section.settings.byline | escape }}</p>{%- endif -%}
+  {%- for block in section.blocks -%}
+    <div class="gmc-adv__b" {{ block.shopify_attributes }}>
+    {%- case block.type -%}
+      {%- when 'text' -%}<div class="rte">{{ block.settings.text }}</div>
+      {%- when 'heading' -%}<h2 class="gmc-adv__h2">{{ block.settings.heading | escape }}</h2>
+      {%- when 'image' -%}{%- if block.settings.image != blank -%}<figure style="margin:0">{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480,720,1200', style: 'width:100%;height:auto;border-radius:10px' }}{%- if block.settings.caption != blank -%}<figcaption style="opacity:.65;font-size:1.3rem;text-align:center">{{ block.settings.caption | escape }}</figcaption>{%- endif -%}</figure>{%- endif -%}
+      {%- when 'callout' -%}<aside class="gmc-adv__call" style="background:{{ block.settings.bg }};color:{{ block.settings.fg }}">{{ block.settings.text }}</aside>
+      {%- when 'quote' -%}<blockquote class="gmc-adv__q">“{{ block.settings.quote | escape }}”<footer>— {{ block.settings.author | escape }}</footer></blockquote>
+      {%- when 'cta' -%}<div class="gmc-adv__cta"><p>{{ block.settings.text | escape }}</p><a class="button" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.button | escape }}</a></div>
+      {%- when 'list_item' -%}<div class="gmc-adv__li"><span class="gmc-adv__n">{{ block.settings.number | escape }}</span><div><h3>{{ block.settings.heading | escape }}</h3><div class="rte">{{ block.settings.text }}</div></div></div>
+      {%- when 'product' -%}{%- assign p = block.settings.product -%}{%- if p != blank -%}<a class="gmc-adv__prod" href="{{ p.url }}">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 300 | image_tag: width: 110, height: 110, loading: 'lazy' }}{%- endif -%}<span><strong>{{ p.title | escape }}</strong><br>{{ p.price | money }}{% if p.compare_at_price > p.price %} <s style="opacity:.6">{{ p.compare_at_price | money }}</s>{% endif %}<br><em class="button button--small" style="margin-top:.5rem;display:inline-block;padding:.5rem 1.4rem;min-height:0">{{ block.settings.button | escape }}</em></span></a>{%- endif -%}
+    {%- endcase -%}
+    </div>
+  {%- endfor -%}
+</article>
+<style>.gmc-adv{max-width:calc(var(--w) + 3rem);padding-top:3rem;padding-bottom:4rem}.gmc-adv__label{text-transform:uppercase;letter-spacing:.14em;font-size:1.2rem;opacity:.6;margin:0 0 .6rem}.gmc-adv__h1{font-size:clamp(2.8rem,5vw,4.4rem);line-height:1.1;margin:0 0 .8rem}.gmc-adv__by{opacity:.65;margin:0 0 2rem;font-size:1.4rem}.gmc-adv__b{margin:1.6rem 0}.gmc-adv__h2{margin:2.4rem 0 0}.gmc-adv__call{padding:1.6rem 2rem;border-radius:10px}.gmc-adv__q{margin:0;padding:.4rem 0 .4rem 1.6rem;border-left:4px solid currentColor;font-size:1.9rem;font-style:italic}.gmc-adv__q footer{font-size:1.3rem;font-style:normal;opacity:.7;margin-top:.5rem}.gmc-adv__cta{text-align:center;padding:2rem;border:2px dashed rgba(var(--color-foreground),.3);border-radius:12px}.gmc-adv__li{display:flex;gap:1.4rem}.gmc-adv__n{flex:none;width:44px;height:44px;border-radius:50%;background:rgb(var(--color-foreground));color:rgb(var(--color-background));display:grid;place-items:center;font-weight:800}.gmc-adv__li h3{margin:.3rem 0 .4rem}.gmc-adv__prod{display:flex;gap:1.4rem;align-items:center;text-decoration:none;border:1px solid rgba(var(--color-foreground),.2);border-radius:12px;padding:1.2rem}.gmc-adv__prod img{border-radius:8px;object-fit:cover}</style>
+{% schema %}
+{
+ "name":"Advertorial article","tag":"section","class":"section",
+ "settings":[
+  {"type":"text","id":"label","label":"Label","default":"Advertorial"},
+  {"type":"text","id":"title","label":"Headline","default":"7 reasons everyone is talking about this product"},
+  {"type":"text","id":"byline","label":"Byline","default":"By Editorial Team · 5 min read"},
+  {"type":"range","id":"width","min":560,"max":960,"step":20,"unit":"px","label":"Article width","default":720},
+  {"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}
+ ],
+ "blocks":[
+  {"type":"text","name":"Text","settings":[{"type":"richtext","id":"text","label":"Text","default":"<p>Write your story here.</p>"}]},
+  {"type":"heading","name":"Heading","settings":[{"type":"text","id":"heading","label":"Heading","default":"Section heading"}]},
+  {"type":"image","name":"Image","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"caption","label":"Caption"}]},
+  {"type":"list_item","name":"Numbered point","settings":[{"type":"text","id":"number","label":"Number","default":"1"},{"type":"text","id":"heading","label":"Heading","default":"Point title"},{"type":"richtext","id":"text","label":"Text","default":"<p>Explain this point.</p>"}]},
+  {"type":"callout","name":"Callout box","settings":[{"type":"richtext","id":"text","label":"Text","default":"<p><strong>Tip:</strong> add an important note.</p>"},{"type":"color","id":"bg","label":"Background","default":"#fff7d6"},{"type":"color","id":"fg","label":"Text color","default":"#222222"}]},
+  {"type":"quote","name":"Quote","settings":[{"type":"textarea","id":"quote","label":"Quote","default":"This changed my routine."},{"type":"text","id":"author","label":"Author","default":"Happy customer"}]},
+  {"type":"product","name":"Product card","settings":[{"type":"product","id":"product","label":"Product"},{"type":"text","id":"button","label":"Button label","default":"Shop now"}]},
+  {"type":"cta","name":"Call to action","settings":[{"type":"text","id":"text","label":"Text","default":"Ready to try it?"},{"type":"text","id":"button","label":"Button","default":"Get yours"},{"type":"url","id":"link","label":"Link"}]}
+ ],
+ "presets":[{"name":"Advertorial article","blocks":[{"type":"text"},{"type":"list_item"},{"type":"list_item","settings":{"number":"2","heading":"Second point"}},{"type":"cta"}]}]
+}
+{% endschema %}

@@ -1,0 +1,11 @@
+<section class="gmc-ph {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-ph-{{ section.id }}" style="min-height:{{ section.settings.h }}vh">
+  {%- for block in section.blocks -%}{%- if block.settings.image != blank -%}<div class="gmc-ph__l" data-speed="{{ block.settings.speed }}" {{ block.shopify_attributes }}>{{ block.settings.image | image_url: width: 1800 | image_tag: loading: 'lazy' }}</div>{%- endif -%}{%- endfor -%}
+  <div class="gmc-ph__c page-width"><h1>{{ section.settings.heading | escape }}</h1><p>{{ section.settings.text | escape }}</p></div>
+</section>
+<style>.gmc-ph{position:relative;overflow:hidden;display:grid;place-items:center;text-align:center;color:#fff}.gmc-ph__l{position:absolute;inset:-10% 0;will-change:transform}.gmc-ph__l img{width:100%;height:100%;object-fit:cover}.gmc-ph__c{position:relative;z-index:5;padding:3rem 0;text-shadow:0 2px 12px rgba(0,0,0,.45)}@media(prefers-reduced-motion:reduce){.gmc-ph__l{transform:none!important}}</style>
+<script>(function(){var s=document.getElementById('gmc-ph-{{ section.id }}');if(!s||matchMedia('(prefers-reduced-motion:reduce)').matches)return;var L=s.querySelectorAll('.gmc-ph__l');
+function u(){var r=s.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var c=r.top+r.height/2-innerHeight/2;L.forEach(function(l){l.style.transform='translateY('+(c*(+l.dataset.speed)/100)+'px)';});}
+addEventListener('scroll',u,{passive:true});u();})();</script>
+{% schema %}
+{"name":"3D parallax hero","tag":"section","class":"section","settings":[{"type":"text","id":"heading","label":"Heading","default":"Depth in motion"},{"type":"textarea","id":"text","label":"Text"},{"type":"range","id":"h","min":40,"max":100,"unit":"vh","label":"Height","default":70},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"blocks":[{"type":"layer","name":"Layer","settings":[{"type":"image_picker","id":"image","label":"Image (back to front order)"},{"type":"range","id":"speed","min":-40,"max":40,"step":2,"label":"Speed","default":10}]}],"max_blocks":5,"presets":[{"name":"3D parallax hero"}]}
+{% endschema %}

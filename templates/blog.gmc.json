@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "gmc-blog-grid",
+      "settings": {
+        "heading": "",
+        "count": 12,
+        "featured": true,
+        "show_tags": true,
+        "excerpt": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,38 @@
+{%- comment -%} GMC Theme: tabbed content (original code) {%- endcomment -%}
+<div class="page-width gmc-tabs" id="gmc-tabs-{{ section.id }}">
+  {%- if section.settings.heading != blank -%}<h2 class="gmc-tabs__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  <div class="gmc-tabs__nav" role="tablist">
+    {%- for block in section.blocks -%}
+      <button type="button" role="tab" class="gmc-tabs__btn" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.title | escape }}</button>
+    {%- endfor -%}
+  </div>
+  {%- for block in section.blocks -%}
+    <div class="gmc-tabs__panel rte" role="tabpanel" {% unless forloop.first %}hidden{% endunless %}>{{ block.settings.content }}</div>
+  {%- endfor -%}
+</div>
+<style>
+  .gmc-tabs{padding:36px 0}.gmc-tabs__title{text-align:center;margin:0 0 1.5rem}
+  .gmc-tabs__nav{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+  .gmc-tabs__btn{cursor:pointer;padding:.6rem 1.2rem;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;opacity:.65}
+  .gmc-tabs__btn[aria-selected=true]{opacity:1;background:rgb(var(--color-foreground));color:rgb(var(--color-background))}
+</style>
+<script>
+  (function(){var w=document.getElementById('gmc-tabs-{{ section.id }}');if(!w)return;
+  var b=w.querySelectorAll('.gmc-tabs__btn'),p=w.querySelectorAll('.gmc-tabs__panel');
+  b.forEach(function(x){x.addEventListener('click',function(){var i=+x.dataset.i;
+    b.forEach(function(y,j){y.setAttribute('aria-selected',j===i);});p.forEach(function(z,j){z.hidden=j!==i;});});});})();
+</script>
+{% schema %}
+{
+  "name": "Content tabs",
+  "tag": "section",
+  "class": "section",
+  "settings": [{"type":"text","id":"heading","label":"Heading"}],
+  "blocks": [{"type":"tab","name":"Tab","settings":[
+    {"type":"text","id":"title","label":"Tab title","default":"Tab"},
+    {"type":"richtext","id":"content","label":"Content","default":"<p>Tab content goes here.</p>"}
+  ]}],
+  "max_blocks": 8,
+  "presets": [{"name":"Content tabs","blocks":[{"type":"tab","settings":{"title":"Details"}},{"type":"tab","settings":{"title":"Shipping"}},{"type":"tab","settings":{"title":"Returns"}}]}]
+}
+{% endschema %}

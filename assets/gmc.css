@@ -1,0 +1,50 @@
+/* GMC Theme store-wide enhancements (original code) */
+@media(max-width:749px){.gmc-hide-mobile{display:none!important}}
+@media(min-width:750px){.gmc-hide-desktop{display:none!important}}
+.gmc-hl{background:linear-gradient(transparent 60%,var(--gmc-hl,#fde047) 60%);padding:0 .15em}
+/* button hover effects */
+.gmc-hover-lift .button,.gmc-hover-lift .shopify-challenge__button{transition:transform .2s,box-shadow .2s}
+.gmc-hover-lift .button:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.2)}
+.gmc-hover-pulse .button:hover{animation:gmc-pulse .7s}
+.gmc-hover-shine .button{position:relative;overflow:hidden}
+.gmc-hover-shine .button:after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg)}
+.gmc-hover-shine .button:hover:after{left:130%;transition:left .6s}
+.gmc-hover-grow .button{transition:transform .2s}.gmc-hover-grow .button:hover{transform:scale(1.05)}
+@keyframes gmc-pulse{50%{transform:scale(1.06)}}
+/* section load animation */
+.gmc-anim .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}
+.gmc-anim .shopify-section.gmc-in{opacity:1;transform:none}
+.shopify-design-mode .gmc-anim .shopify-section{opacity:1!important;transform:none!important}
+@media(prefers-reduced-motion:reduce){.gmc-anim .shopify-section{opacity:1;transform:none;transition:none}}
+
+/* ---- variant picker ---- */
+.gmc-var-swatch .product-form__input--pill input[type=radio]+label,.gmc-var-boxed .product-form__input--pill input[type=radio]+label{border-radius:99px;padding:.8rem 1.6rem;transition:transform .15s,box-shadow .15s}
+.gmc-var-swatch .product-form__input--pill input[type=radio]+label:hover{transform:translateY(-2px)}
+.gmc-var-boxed .product-form__input--pill input[type=radio]+label{border-radius:10px;min-width:7rem;text-align:center}
+label.gmc-swatch{width:3.6rem;height:3.6rem;padding:0!important;border-radius:50%!important;font-size:0!important;background:var(--gmc-sw);border:1px solid rgba(0,0,0,.2)!important;position:relative}
+.product-form__input--pill input[type=radio]:checked+label.gmc-swatch{box-shadow:0 0 0 2px rgb(var(--color-background)),0 0 0 4px rgb(var(--color-foreground))!important;background:var(--gmc-sw)!important;color:transparent}
+.gmc-var-swatch .select__select,.gmc-var-boxed .select__select{border-radius:10px}
+/* ---- header / mega / footer ---- */
+.gmc-hdr-blur .section-header.shopify-section-group-header-group .header-wrapper{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(var(--color-background),.7)}
+.gmc-hdr-shadow .section-header.gmc-scrolled{box-shadow:0 4px 18px rgba(0,0,0,.1)}
+.gmc-mega .mega-menu__content{border-radius:0 0 14px 14px;box-shadow:0 18px 30px rgba(0,0,0,.12)}
+.gmc-mega .mega-menu__list{gap:2.4rem 3rem}
+.gmc-mega .mega-menu__link--level-2{font-weight:700}
+.gmc-mega .mega-menu__link:hover{text-decoration:none;opacity:.7;transform:translateX(3px);transition:.15s}
+.gmc-mega-promo{display:block;position:relative;width:28rem;border-radius:12px;overflow:hidden;text-decoration:none;color:#fff;align-self:stretch}
+.gmc-mega-promo img{display:block;width:100%;height:100%;object-fit:cover;min-height:16rem}
+.gmc-mega-promo span{position:absolute;left:0;right:0;bottom:0;padding:1.2rem;background:linear-gradient(transparent,rgba(0,0,0,.7));font-weight:700}
+.gmc-ftr .footer{padding-top:2rem}.gmc-ftr .footer-block__details-content a:hover,.gmc-ftr .footer__list-social a:hover{opacity:.7;transform:translateX(2px);transition:.15s}
+.gmc-ftr .footer-block__heading{letter-spacing:.06em;text-transform:uppercase;font-size:1.3rem}
+/* ---- zoom ---- */
+.gmc-zoomwrap{position:relative;overflow:hidden;cursor:zoom-in}
+.gmc-zoomwrap img{transition:transform .12s ease-out;will-change:transform}
+.gmc-lens{position:absolute;width:15rem;height:15rem;border-radius:50%;border:3px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.35);pointer-events:none;background-repeat:no-repeat;display:none;z-index:5}
+.gmc-lb{position:fixed;inset:0;z-index:140;background:rgba(0,0,0,.92);display:grid;place-items:center;cursor:zoom-out}
+.gmc-lb img{max-width:94vw;max-height:94vh;object-fit:contain}
+.gmc-icon{display:inline-block;vertical-align:middle;stroke:currentColor;fill:none;flex:none}
+/* cart drawer colors / mobile */
+
+/* accessibility: visible focus + reduced motion for GMC components */
+.gmc-tabs__btn:focus-visible,.gmc-pe__code:focus-visible,.gmc-pe__link:focus-visible,.gmc-ms__b:focus-visible,#gmc-top:focus-visible,#gmc-mp-btn:focus-visible,.gmc-is__b:focus-visible,.gmc-vp__play:focus-visible,.gmc-pop__x:focus-visible,.gmc-qb__opt:focus-within,.gmc-sub__o:focus-within,.gmc-bd__c:focus-within{outline:2px solid rgb(var(--color-foreground));outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.gmc-zoomwrap img,.gmc-hover-lift .button,.gmc-hover-grow .button{transition:none!important}.gmc-hover-pulse .button:hover{animation:none}.gmc-ph__l{transform:none!important}}

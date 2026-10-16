@@ -1,0 +1,10 @@
+{%- if settings.gmc_cart_badges or settings.gmc_cart_trust != blank -%}
+<div class="gmc-cart-badges" style="padding:1rem 2rem;text-align:center;font-size:1.2rem">
+  {%- if settings.gmc_cart_trust != blank -%}<p style="margin:0 0 .6rem">{{ settings.gmc_cart_trust | escape }}</p>{%- endif -%}
+  {%- if settings.gmc_cart_badges -%}
+  <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin:0;padding:0;list-style:none">
+    {%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}
+  </ul>
+  {%- endif -%}
+</div>
+{%- endif -%}

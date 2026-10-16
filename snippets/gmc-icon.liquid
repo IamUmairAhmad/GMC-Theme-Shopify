@@ -1,0 +1,2 @@
+{%- comment -%} Usage: {% render 'gmc-icon', name: 'truck', size: 28 %}  — names listed in assets/gmc-icon-list.txt (Tabler Icons, MIT) {%- endcomment -%}
+{%- if name != blank -%}<svg class="gmc-icon" width="{{ size | default: 24 }}" height="{{ size | default: 24 }}" aria-hidden="true" focusable="false"><use href="#gmc-i-{{ name | strip | handleize }}"></use></svg>{%- endif -%}

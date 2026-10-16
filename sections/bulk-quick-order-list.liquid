@@ -1,0 +1,64 @@
+{{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+
+{% render 'quick-order-list', product: product, show_image: true, show_sku: true, is_modal: true %}
+
+{%- render 'gmc-section-extras' -%}
+{% schema %}
+{
+  "name": "t:sections.quick-order-list.name",
+  "limit": 1,
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "GMC extras"
+    },
+    {
+      "type": "select",
+      "id": "gmc_hide_on",
+      "label": "Hide section on",
+      "options": [
+        {
+          "value": "",
+          "label": "Show everywhere"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "image_picker",
+      "id": "gmc_bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "video",
+      "id": "gmc_bg_video",
+      "label": "Background video (MP4 upload)"
+    },
+    {
+      "type": "range",
+      "id": "gmc_bg_overlay",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Background overlay",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

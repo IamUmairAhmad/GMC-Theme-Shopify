@@ -1,0 +1,5 @@
+{%- if section.settings.hide_header -%}<style>.shopify-section-group-header-group{display:none!important}</style>{%- endif -%}
+{%- if section.settings.hide_footer -%}<style>.shopify-section-group-footer-group{display:none!important}</style>{%- endif -%}
+{% schema %}
+{"name":"Hide header / footer","settings":[{"type":"checkbox","id":"hide_header","label":"Hide header","default":true},{"type":"checkbox","id":"hide_footer","label":"Hide footer","default":false}],"presets":[{"name":"Hide header / footer"}]}
+{% endschema %}

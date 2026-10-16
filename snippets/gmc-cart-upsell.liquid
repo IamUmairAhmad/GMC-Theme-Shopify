@@ -1,0 +1,32 @@
+{%- comment -%} GMC Theme: cart drawer upsell + free-gift message (original code) {%- endcomment -%}
+{%- if settings.gmc_gift_variant != blank and settings.gmc_gift_threshold > 0 -%}
+  {%- assign gift_goal = settings.gmc_gift_threshold | times: 100 -%}
+  {%- if cart.total_price >= gift_goal -%}
+    <p style="margin:.8rem 2rem 0;font-weight:600">{{ settings.gmc_gift_text | escape }}</p>
+  {%- else -%}
+    <p style="margin:.8rem 2rem 0;font-size:1.3rem">Spend {{ gift_goal | minus: cart.total_price | money }} more to get a free gift 🎁</p>
+  {%- endif -%}
+{%- endif -%}
+{%- if settings.gmc_upsell_enabled and settings.gmc_upsell_collection != blank -%}
+  {%- assign shown = 0 -%}
+  <div class="gmc-up" style="padding:1rem 2rem">
+    <p style="margin:0 0 .6rem;font-weight:700">{{ settings.gmc_upsell_title | escape }}</p>
+    {%- for p in settings.gmc_upsell_collection.products -%}
+      {%- assign in_cart = false -%}
+      {%- for item in cart.items -%}{%- if item.product_id == p.id -%}{%- assign in_cart = true -%}{%- endif -%}{%- endfor -%}
+      {%- if in_cart == false and p.available and shown < settings.gmc_upsell_count -%}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- assign uv = p.selected_or_first_available_variant -%}
+        <div style="display:flex;gap:1rem;align-items:center;margin-bottom:.8rem">
+          {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 120 | image_tag: width: 56, height: 56, loading: 'lazy', style: 'border-radius:8px;object-fit:cover' }}{%- endif -%}
+          <div style="flex:1;font-size:1.3rem"><a href="{{ p.url }}" style="text-decoration:none">{{ p.title | escape }}</a><br><strong>{{ uv.price | money }}</strong></div>
+          {%- if p.variants.size == 1 -%}
+            <button type="button" class="button button--secondary" style="min-height:3.6rem;padding:0 1.4rem" data-gmc-upsell="{{ uv.id }}">Add</button>
+          {%- else -%}
+            <a class="button button--secondary" style="min-height:3.6rem;padding:0 1.4rem" href="{{ p.url }}">View</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
