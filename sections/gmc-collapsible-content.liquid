@@ -2,7 +2,7 @@
 {%- render 'gmc-section-extras' -%}
 {%- assign s = section.settings -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add row blocks.' -%}{%- endif -%}
-<div class="gmc-cl page-width" id="gmc-cl-{{ section.id }}" style="--rad:{{ s.radius }}px;--gap:{{ s.gap }}px;padding-top:{{ s.pad_top }}px;padding-bottom:{{ s.pad_bottom }}px">
+<div class="gmc-cl page-width{% if s.top_border %} gmc-cl--tb{% endif %}" id="gmc-cl-{{ section.id }}" style="--rad:{{ s.radius }}px;--gap:{{ s.gap }}px;padding-top:{{ s.pad_top }}px;padding-bottom:{{ s.pad_bottom }}px">
   {%- if s.heading != blank -%}<h2 class="gmc-cl__h">{{ s.heading | escape }}</h2>{%- endif -%}
   <div class="gmc-cl__wrap{% if s.image != blank %} gmc-cl__wrap--split gmc-cl__wrap--{{ s.image_side }}{% endif %}">
     {%- if s.image != blank -%}<div class="gmc-cl__img">{%- assign gmc_fp = 'object-position:' | append: s.image.presentation.focal_point -%}{{ s.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: gmc_fp, alt: s.image.alt }}</div>{%- endif -%}
@@ -16,6 +16,7 @@
             <span class="gmc-cl__sign gmc-cl__sign--{{ s.indicator }}" aria-hidden="true"></span>
           </summary>
           <div class="gmc-cl__a rte">
+            {%- if block.settings.video != blank -%}<div class="gmc-pm__vid" data-gmc-vid style="margin-bottom:1rem"><video playsinline preload="metadata" autoplay muted loop style="width:100%;height:auto;border-radius:var(--media-radius,8px)">{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>{%- endif -%}
             {{ block.settings.content }}
             {%- if block.settings.page != blank -%}{{ block.settings.page.content }}{%- endif -%}
           </div>
@@ -47,7 +48,7 @@
   #gmc-cl-{{ section.id }} summary:focus-visible,#gmc-cl-{{ section.id }} .gmc-cl__all:focus-visible{outline:2px solid rgb(var(--color-foreground));outline-offset:3px}
   @media(max-width:749px){#gmc-cl-{{ section.id }} .gmc-cl__wrap--split{grid-template-columns:1fr}#gmc-cl-{{ section.id }} .gmc-cl__wrap--right .gmc-cl__img{order:0}}
   @media(prefers-reduced-motion:reduce){#gmc-cl-{{ section.id }} *{transition:none!important}}
-</style>
+.gmc-cl--tb .gmc-cl__list{border-top:1px solid rgba(var(--color-foreground),.25)}</style>
 <script>(function(){var r=document.getElementById('gmc-cl-{{ section.id }}');if(!r)return;var l=r.querySelector('.gmc-cl__list'),rows=l.querySelectorAll('details');
 if(l.dataset.single==='true'){rows.forEach(function(d){d.addEventListener('toggle',function(){if(d.open)rows.forEach(function(o){if(o!==d)o.open=false;});});});}
 var b=r.querySelector('[data-all]');if(b)b.addEventListener('click',function(){var open=b.dataset.state!=='open';rows.forEach(function(d){d.open=open;});b.dataset.state=open?'open':'';b.textContent=open?b.dataset.collapse:b.dataset.expand;});})();</script>
@@ -62,6 +63,12 @@ var b=r.querySelector('[data-all]');if(b)b.addEventListener('click',function(){v
       "id": "heading",
       "label": "Heading",
       "default": "Frequently asked questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "top_border",
+      "label": "Border above the first row",
+      "default": false
     },
     {
       "type": "select",
@@ -380,6 +387,11 @@ var b=r.querySelector('[data-all]');if(b)b.addEventListener('click',function(){v
           "type": "page",
           "id": "page",
           "label": "Or show a page's content below"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (MP4)"
         }
       ]
     }

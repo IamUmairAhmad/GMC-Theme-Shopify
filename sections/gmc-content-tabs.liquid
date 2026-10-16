@@ -2,15 +2,15 @@
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one tab block.' -%}{%- endif -%}
 {%- comment -%} GMC Theme: tabbed content (original code) {%- endcomment -%}
-<div class="page-width gmc-tabs" id="gmc-tabs-{{ section.id }}">
+<div class="page-width gmc-tabs gmc-tabs--{{ section.settings.nav_align }}{% if section.settings.full_btn %} gmc-tabs--full{% endif %} gmc-tabs--a-{{ section.settings.anim }}" id="gmc-tabs-{{ section.id }}">
   {%- if section.settings.heading != blank -%}<h2 class="gmc-tabs__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div class="gmc-tabs__nav" role="tablist">
     {%- for block in section.blocks -%}
-      <button type="button" role="tab" class="gmc-tabs__btn" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.title | escape }}</button>
+      <button type="button" role="tab" class="gmc-tabs__btn" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{%- if block.settings.icon != blank -%}<span class="gmc-tabs__ic">{%- render 'gmc-icon', name: block.settings.icon, size: 18 -%}</span>{%- endif -%}{{ block.settings.title | escape }}</button>
     {%- endfor -%}
   </div>
   {%- for block in section.blocks -%}
-    <div class="gmc-tabs__panel rte" role="tabpanel" {% unless forloop.first %}hidden{% endunless %}>{{ block.settings.content }}</div>
+    <div class="gmc-tabs__panel rte" role="tabpanel" {% unless forloop.first %}hidden{% endunless %}>{%- if block.settings.video != blank -%}<div class="gmc-pm__vid gmc-tabs__m" data-gmc-vid><video playsinline preload="metadata" autoplay muted loop>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>{%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'gmc-tabs__m', alt: block.settings.image.alt }}{%- endif -%}{{ block.settings.content }}{%- if block.settings.product != blank -%}{%- render 'gmc-inline-atc', product: block.settings.product, label: block.settings.button, skip: false, align: 'center' -%}{%- endif -%}</div>
   {%- endfor -%}
 </div>
 <style>
@@ -18,7 +18,7 @@
   .gmc-tabs__nav{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
   .gmc-tabs__btn{cursor:pointer;padding:.6rem 1.2rem;border:1px solid currentColor;border-radius:var(--badge-corner-radius,99px);background:transparent;color:inherit;font:inherit;opacity:.65}
   .gmc-tabs__btn[aria-selected=true]{opacity:1;background:rgb(var(--color-foreground));color:rgb(var(--color-background))}
-</style>
+.gmc-tabs--left .gmc-tabs__nav{justify-content:flex-start}.gmc-tabs--right .gmc-tabs__nav{justify-content:flex-end}.gmc-tabs--full .gmc-tabs__nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr))}.gmc-tabs__ic{display:inline-flex;margin-right:.5rem;vertical-align:middle}.gmc-tabs__m{width:100%;height:auto;border-radius:var(--media-radius,8px);margin-bottom:1.2rem;display:block}.gmc-tabs__panel{animation:gmc-tabs-fade .35s ease}.gmc-tabs--a-none .gmc-tabs__panel{animation:none}.gmc-tabs--a-slide .gmc-tabs__panel{animation:gmc-tabs-slide .35s ease}.gmc-tabs__btn{transition:background .25s,color .25s,opacity .25s}@keyframes gmc-tabs-fade{from{opacity:0}to{opacity:1}}@keyframes gmc-tabs-slide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
 <script>
   (function(){var w=document.getElementById('gmc-tabs-{{ section.id }}');if(!w)return;
   var b=w.querySelectorAll('.gmc-tabs__btn'),p=w.querySelectorAll('.gmc-tabs__panel');
@@ -35,6 +35,52 @@
       "type": "text",
       "id": "heading",
       "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "nav_align",
+      "label": "Tab buttons alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_btn",
+      "label": "Full-width tab buttons",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "anim",
+      "label": "Tab change animation",
+      "options": [
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "slide",
+          "label": "Slide up"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "fade"
     },
     {
       "type": "header",
@@ -201,6 +247,33 @@
           "id": "content",
           "label": "Content",
           "default": "<p>Tab content goes here.</p>"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Tab icon name",
+          "info": "Any icon from the library, for example truck or star."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Add-to-cart product"
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button label",
+          "default": "Add to cart"
         }
       ]
     }

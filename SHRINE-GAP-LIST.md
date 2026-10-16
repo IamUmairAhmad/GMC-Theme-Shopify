@@ -90,10 +90,10 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | SC-03 ✅ | **Pricing table**: card styles, product and variant linked, badge, icon, benefits, button function. | P2 |
 | SC-04 ✅ | **Shoppable image modal**: product image, price, discount badge, ATC with skip-cart, open on hover/click, mobile modal position, hotspot ripple, per-device hotspot position. | P2 |
 | SC-05 ✅ | **Product features**: hotspots with modals plus **bullet points with leader lines** (direction, bend, per-device position). | P2 |
-| SC-06 | **Results**: percentage bars per row, image or video, caption, ATC button. | P3 |
-| SC-07 | **Comparison table** styling (logo, labels, tick / cross styles, highlighted vs regular cells, minimal style) and **before/after slider** styling (labels, line colour, arrow style, placement, buttons). | P3 |
-| SC-08 | **Content tabs**: icons on tabs, image / video per tab, ATC, button style (animation), header layout, full-width buttons. | P3 |
-| SC-09 | **Collapsible content**: video media, icon per row, collapse icon, top border. | P3 |
+| SC-06 ✅ | **Results**: percentage bars per row, image or video, caption, ATC button. | P3 |
+| SC-07 ✅ | **Comparison table** styling (logo, labels, tick / cross styles, highlighted vs regular cells, minimal style) and **before/after slider** styling (labels, line colour, arrow style, placement, buttons). | P3 |
+| SC-08 ✅ | **Content tabs**: icons on tabs, image / video per tab, ATC, button style (animation), header layout, full-width buttons. | P3 |
+| SC-09 ✅ | **Collapsible content**: video media, icon per row, collapse icon, top border. | P3 |
 | SC-10 | **Instagram stories**: several stories per user, verified badge, close-friends ring, time posted, background, media fit, autoplay speed. | P3 |
 | SC-11 ✅ | **Promo popup**: display modes, delay and frequency, countdown, success state showing a discount code with copy button, heading prefix/suffix. | P2 |
 | SC-12 | **Music player**: standalone section + global: volume, position, offsets, ripple, colour scheme. Ours takes only a URL. | P3 |
@@ -212,7 +212,7 @@ Read in full, with every saved setting. They confirm the list and add three smal
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| DF-01 | **Shop-name text token** (for example in the comparison table's "us" label) so default content adapts to each store. | P3 |
+| DF-01 ✅ | **Shop-name text token** (for example in the comparison table's "us" label) so default content adapts to each store. | P3 |
 | DF-02 | **Shrine's default product page recipe** (what a new merchant sees): thumbnail-slider gallery on the left, sticky info column, title → rating stars → price → variant picker (pills, dropdown, dropdown with "[name] - [selected]" labels) → quantity breaks "BUNDLE & SAVE" (1–4 units) → buy buttons → dated shipping checkpoints (ordered / ready / delivered) → sticky add-to-cart → description → reviews → collapsible tab; below it custom columns, image slider, icons-with-content, testimonials and a wave section divider; related products shipped switched off. Extends TP-02. | P2 |
 | DF-03 | **Shrine's default home page recipe**: slideshow → comparison table → icon bar (4 items) → results → contact form. | P3 |
 
@@ -248,7 +248,7 @@ Reading the actual choices in each dropdown found variants not captured before:
 | OP-01 ✅ | **Shaped section dividers**: 14 shapes (2 diagonal, 4 curved, 4 sharp, 3 wave, 1 random), flip horizontal / vertical, shape and background colour. Ours only draws a solid / dashed / dotted line. | P2 |
 | OP-02 ✅ | **Promo popup preview modes**: disabled / testing (always show) / success-state testing / enabled, so merchants can design the popup without waiting for the trigger. Ours has none. | P2 |
 | OP-03 ✅ | **Slideshow pagination styles**: dots, counter ("2 / 5") and numbers. | P3 |
-| OP-04 | **Pricing table**: 3 card styles. **Comparison table**: classic / centered / minimal styles. **Collapsible content**: layout none / row / section containers. | P3 |
+| OP-04 ✅ | **Pricing table**: 3 card styles. **Comparison table**: classic / centered / minimal styles. **Collapsible content**: layout none / row / section containers. | P3 |
 | OP-05 ✅ | **Vertical ticker side content** shown always / desktop only / never. | P3 |
 | OP-06 ✅ | **Sticky add-to-cart button function** options (add to cart, or scroll to info / variants / quantity breaks / pricing table). Already PP-05; confirmed as five exact choices. | P1 |
 | OP-07 ✅ | **Cart upsell block** adds a fifth style, a plain "Add" button, next to toggle switch / two checkbox styles / plus button. Extends CD-06. | P2 |
@@ -266,7 +266,7 @@ All option values in all Shrine sections were checked against every value in our
 | OV-06 | **Slider details**: free-drag mode, dots and arrows placed over or under the slides (arrows beside or below), pagination over or under the slideshow, content-tabs active-button animation (fade or moving pill), media-first or media-second order per device, tab container width presets. Belongs to SL-01. | P2 |
 | OV-07 ✅ | **Hero height presets** (auto-fit, fixed pixels, full screen) per device and **content width modes** (unlimited, pixels, percentage). Belongs to HS-01 / HS-02. | P2 |
 | OV-08 | **Cart drawer width presets** (normal / partial on mobile) and cart item image and title size presets, compact or classic variant display, compare price based on discounts or automatic. Belongs to CD-01 / CD-08. | P3 |
-| OV-09 | **Before/after slider and comparison table**: slider-first or slider-second placement, classic arrow style, regular tick and cross styles. Belongs to SC-07. | P3 |
+| OV-09 ✅ | **Before/after slider and comparison table**: slider-first or slider-second placement, classic arrow style, regular tick and cross styles. Belongs to SC-07. | P3 |
 | OV-10 ✅ | **Footer featured product / collection blocks** with a half-width card option. Belongs to SC-13. | P3 |
 | OV-11 ✅ | **Transparent banner text colour** (white or black) on slideshow slides and image banner. Belongs to HS-03 / HS-04. | P3 |
 

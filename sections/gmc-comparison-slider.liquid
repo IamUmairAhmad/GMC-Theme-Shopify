@@ -4,7 +4,7 @@
 <div class="page-width gmc-cmp-wrap">
   {%- if section.settings.heading != blank -%}<h2 class="gmc-cmp-title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   {%- if section.settings.before != blank and section.settings.after != blank -%}
-  <div class="gmc-cmp" id="gmc-cmp-{{ section.id }}" style="--pos:50%">
+  <div class="gmc-cmp gmc-cmp--{{ section.settings.handle_style }} gmc-cmp--tags-{{ section.settings.tag_pos }}" id="gmc-cmp-{{ section.id }}" style="--pos:50%;--cl:{{ section.settings.line_color }};--cw:{{ section.settings.line_w }}px;--tg:{{ section.settings.tag_bg }};--tf:{{ section.settings.tag_fg }}">
     <div class="gmc-cmp__img">{{ section.settings.after | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', alt: section.settings.after_label }}</div>
     <div class="gmc-cmp__img gmc-cmp__before">{{ section.settings.before | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', alt: section.settings.before_label }}</div>
     <span class="gmc-cmp__tag gmc-cmp__tag--l">{{ section.settings.before_label | escape }}</span>
@@ -17,6 +17,7 @@
   {%- endif -%}
 </div>
 <style>
+  .gmc-cmp__handle{background:var(--cl,#fff)!important;width:var(--cw,3px)!important}.gmc-cmp__tag{background:var(--tg)!important;color:var(--tf)!important}.gmc-cmp--bar .gmc-cmp__handle:after{content:"";width:8px;height:44px;border-radius:4px}.gmc-cmp--arrows .gmc-cmp__handle:after{content:"‹ ›";width:auto;height:auto;padding:.3rem .9rem;border-radius:99px;letter-spacing:.3em}.gmc-cmp--line .gmc-cmp__handle:after{display:none}.gmc-cmp--tags-bottom .gmc-cmp__tag{top:auto!important;bottom:1rem}
   .gmc-cmp-wrap{padding:36px 0}.gmc-cmp-title{text-align:center;margin:0 0 1.5rem}
   .gmc-cmp{position:relative;overflow:hidden;max-width:900px;margin:0 auto;border-radius:var(--text-boxes-radius);user-select:none}
   .gmc-cmp__img img{display:block;width:100%;height:auto}
@@ -65,6 +66,74 @@
       "id": "after_label",
       "label": "After label",
       "default": "After"
+    },
+    {
+      "type": "select",
+      "id": "handle_style",
+      "label": "Handle style",
+      "options": [
+        {
+          "value": "circle",
+          "label": "Circle with arrows"
+        },
+        {
+          "value": "arrows",
+          "label": "Arrow pill"
+        },
+        {
+          "value": "bar",
+          "label": "Bar"
+        },
+        {
+          "value": "line",
+          "label": "Line only"
+        }
+      ],
+      "default": "circle"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Line colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "line_w",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Line width",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "tag_pos",
+      "label": "Label position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "color",
+      "id": "tag_bg",
+      "label": "Label background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tag_fg",
+      "label": "Label text",
+      "default": "#ffffff"
     },
     {
       "type": "header",

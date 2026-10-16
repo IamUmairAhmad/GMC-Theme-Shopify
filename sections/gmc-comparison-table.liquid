@@ -1,14 +1,20 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one row block.' -%}{%- endif -%}
-<div class="page-width gmc-ct {% render 'gmc-vis', hide: section.settings.hide_on %}">
+{%- assign ts = section.settings.tick_style -%}
+{%- capture yes_mark -%}{%- case ts -%}{%- when 'round' -%}<span class="gmc-ct__m gmc-ct__m--y" aria-label="Yes">✓</span>{%- when 'text' -%}Yes{%- else -%}<span class="gmc-ct__y" aria-label="Yes">✔</span>{%- endcase -%}{%- endcapture -%}
+{%- capture no_mark -%}{%- case ts -%}{%- when 'round' -%}<span class="gmc-ct__m gmc-ct__m--n" aria-label="No">✕</span>{%- when 'text' -%}No{%- else -%}<span class="gmc-ct__n" aria-label="No">✘</span>{%- endcase -%}{%- endcapture -%}
+<div class="page-width gmc-ct gmc-ct--{{ section.settings.table_style }} {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--ct-hl:{{ section.settings.us_bg | default: 'rgba(128,128,128,.08)' }};--ct-y:{{ section.settings.tick_color }};--ct-n:{{ section.settings.cross_color }}">
   {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div style="overflow-x:auto"><table class="gmc-ct__t">
-    <thead><tr><th></th><th class="gmc-ct__us">{{ section.settings.us | escape }}</th><th>{{ section.settings.them | escape }}</th></tr></thead>
-    <tbody>{%- for block in section.blocks -%}<tr {{ block.shopify_attributes }}><td>{{ block.settings.feature | escape }}</td><td class="gmc-ct__us">{% if block.settings.us_yes %}✔{% else %}✘{% endif %}</td><td>{% if block.settings.them_yes %}✔{% else %}✘{% endif %}</td></tr>{%- endfor -%}</tbody>
+    <thead><tr><th></th>
+      <th class="gmc-ct__us">{%- if section.settings.us_logo != blank -%}{{ section.settings.us_logo | image_url: width: 240 | image_tag: height: 32, loading: 'lazy', alt: section.settings.us }}{%- else -%}{{ section.settings.us | default: shop.name | escape }}{%- endif -%}</th>
+      <th>{%- if section.settings.them_logo != blank -%}{{ section.settings.them_logo | image_url: width: 240 | image_tag: height: 32, loading: 'lazy', alt: section.settings.them }}{%- else -%}{{ section.settings.them | escape }}{%- endif -%}</th></tr></thead>
+    <tbody>{%- for block in section.blocks -%}<tr {{ block.shopify_attributes }}><td>{{ block.settings.feature | escape }}</td><td class="gmc-ct__us">{%- if block.settings.us_text != blank -%}{{ block.settings.us_text | escape }}{%- elsif block.settings.us_yes -%}{{ yes_mark }}{%- else -%}{{ no_mark }}{%- endif -%}</td><td>{%- if block.settings.them_text != blank -%}{{ block.settings.them_text | escape }}{%- elsif block.settings.them_yes -%}{{ yes_mark }}{%- else -%}{{ no_mark }}{%- endif -%}</td></tr>{%- endfor -%}</tbody>
   </table></div>
 </div>
-<style>.gmc-ct{padding:36px 0}.gmc-ct__t{width:100%;max-width:760px;margin:1rem auto 0;border-collapse:collapse;text-align:center}.gmc-ct__t td,.gmc-ct__t th{padding:1rem;border-bottom:1px solid rgba(var(--color-foreground),.12)}.gmc-ct__t td:first-child{text-align:left}.gmc-ct__us{background:rgba(var(--color-foreground),.05);font-weight:700}</style>
+<style>.gmc-ct{padding:36px 0}.gmc-ct__t{width:100%;max-width:760px;margin:1rem auto 0;border-collapse:collapse;text-align:center}.gmc-ct__t td,.gmc-ct__t th{padding:1rem;border-bottom:1px solid rgba(var(--color-foreground),.12)}.gmc-ct__t td:first-child{text-align:left}.gmc-ct__us{background:var(--ct-hl);font-weight:700}.gmc-ct__y{color:var(--ct-y,inherit)}.gmc-ct__n{color:var(--ct-n,inherit);opacity:.8}.gmc-ct__m{display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;color:#fff;font-size:1.4rem}.gmc-ct__m--y{background:var(--ct-y,#16a34a)}.gmc-ct__m--n{background:var(--ct-n,#9ca3af)}.gmc-ct__t img{display:block;margin:auto;width:auto}
+.gmc-ct--centered .gmc-ct__t td:first-child{text-align:center}.gmc-ct--minimal .gmc-ct__t td,.gmc-ct--minimal .gmc-ct__t th{border:0}.gmc-ct--minimal .gmc-ct__us{background:transparent;border-bottom:2px solid currentColor}</style>
 {% schema %}
 {
   "name": "Comparison table",
@@ -25,13 +31,79 @@
       "type": "text",
       "id": "us",
       "label": "Your column",
-      "default": "Us"
+      "default": "",
+      "info": "Leave empty to use your shop name."
     },
     {
       "type": "text",
       "id": "them",
       "label": "Other column",
       "default": "Others"
+    },
+    {
+      "type": "select",
+      "id": "table_style",
+      "label": "Table style",
+      "options": [
+        {
+          "value": "classic",
+          "label": "Classic"
+        },
+        {
+          "value": "centered",
+          "label": "Centered"
+        },
+        {
+          "value": "minimal",
+          "label": "Minimal"
+        }
+      ],
+      "default": "classic"
+    },
+    {
+      "type": "select",
+      "id": "tick_style",
+      "label": "Tick and cross style",
+      "options": [
+        {
+          "value": "check",
+          "label": "Check marks"
+        },
+        {
+          "value": "round",
+          "label": "Round badges"
+        },
+        {
+          "value": "text",
+          "label": "Yes / No text"
+        }
+      ],
+      "default": "check"
+    },
+    {
+      "type": "color",
+      "id": "tick_color",
+      "label": "Tick colour"
+    },
+    {
+      "type": "color",
+      "id": "cross_color",
+      "label": "Cross colour"
+    },
+    {
+      "type": "color",
+      "id": "us_bg",
+      "label": "Highlighted column colour"
+    },
+    {
+      "type": "image_picker",
+      "id": "us_logo",
+      "label": "Your logo (instead of name)"
+    },
+    {
+      "type": "image_picker",
+      "id": "them_logo",
+      "label": "Other brand logo"
     },
     {
       "type": "select",
@@ -224,6 +296,16 @@
           "id": "them_yes",
           "label": "Others have it",
           "default": false
+        },
+        {
+          "type": "text",
+          "id": "us_text",
+          "label": "Your cell text (replaces tick)"
+        },
+        {
+          "type": "text",
+          "id": "them_text",
+          "label": "Other cell text (replaces tick)"
         }
       ]
     }
