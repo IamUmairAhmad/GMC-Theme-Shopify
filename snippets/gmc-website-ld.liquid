@@ -1,0 +1,17 @@
+{%- comment -%} GMC Theme: WebSite + site-search structured data, home page only. {%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+{%- assign ld_target = shop.url | append: routes.search_url | append: '?q=' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }},
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ ld_target }}{% raw %}{search_term_string}{% endraw %}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{%- endif -%}
