@@ -4,6 +4,8 @@ window.gmcT=window.gmcT||function(k){return (window.GMC&&GMC.t&&GMC.t[k])||'';};
   if(document.body.classList.contains('gmc-anim')&&'IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('gmc-in');io.unobserve(e.target);}});},{threshold:.08});
     document.querySelectorAll('.shopify-section').forEach(function(s){io.observe(s);});
+    /* safety net: never leave content hidden */
+    setTimeout(function(){document.querySelectorAll('.shopify-section:not(.gmc-in)').forEach(function(s){s.classList.add('gmc-in');});},2500);
   } else { document.querySelectorAll('.shopify-section').forEach(function(s){s.classList.add('gmc-in');}); }
 })();
 

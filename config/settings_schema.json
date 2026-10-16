@@ -635,7 +635,7 @@
         "type": "checkbox",
         "id": "gmc_load_anim",
         "label": "Section load animation",
-        "default": true
+        "default": false
       },
       {
         "type": "header",

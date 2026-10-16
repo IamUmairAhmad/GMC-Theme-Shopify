@@ -12,8 +12,8 @@
 .gmc-hover-grow .button{transition:transform .2s}.gmc-hover-grow .button:hover{transform:scale(1.05)}
 @keyframes gmc-pulse{50%{transform:scale(1.06)}}
 /* section load animation */
-.gmc-anim .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}
-.gmc-anim .shopify-section.gmc-in{opacity:1;transform:none}
+.gmc-anim .shopify-section{transition:opacity .6s,transform .6s}
+.gmc-anim .shopify-section:not(.gmc-in):not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){opacity:0;transform:translateY(14px)}
 .shopify-design-mode .gmc-anim .shopify-section{opacity:1!important;transform:none!important}
 @media(prefers-reduced-motion:reduce){.gmc-anim .shopify-section{opacity:1;transform:none;transition:none}}
 
@@ -54,8 +54,8 @@ label.gmc-swatch{width:3.6rem;height:3.6rem;padding:0!important;border-radius:50
 .gmc-hover-slide .button{position:relative;overflow:hidden;z-index:0}.gmc-hover-slide .button:before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.22);transform:translateX(-101%);transition:transform .3s;z-index:-1}.gmc-hover-slide .button:hover:before{transform:none}
 /* entrance animation styles */
 .gmc-anim-fade .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:none}
-.gmc-anim-zoom .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:scale(.96)}
-.gmc-anim-left .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:translateX(-28px)}
+.gmc-anim-zoom .shopify-section:not(.gmc-in):not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:scale(.96)}
+.gmc-anim-left .shopify-section:not(.gmc-in):not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:translateX(-28px)}
 .gmc-anim-slow .shopify-section{transition-duration:1.1s!important}
 /* navigation */
 .gmc-nav-underline .header__menu-item span,.gmc-nav-underline .list-menu__item--link{background:linear-gradient(currentColor,currentColor) 0 100%/0 2px no-repeat;transition:background-size .25s}
