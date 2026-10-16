@@ -6,7 +6,7 @@
   <div class="gmc-cl__wrap{% if s.image != blank %} gmc-cl__wrap--split gmc-cl__wrap--{{ s.image_side }}{% endif %}">
     {%- if s.image != blank -%}<div class="gmc-cl__img">{%- assign gmc_fp = 'object-position:' | append: s.image.presentation.focal_point -%}{{ s.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: gmc_fp, alt: s.image.alt }}</div>{%- endif -%}
     <div class="gmc-cl__list gmc-cl__style--{{ s.style }}" data-single="{{ s.single_open }}">
-      {%- if s.show_toggle_all and section.blocks.size > 1 and s.single_open == false -%}<button type="button" class="gmc-cl__all" data-all>Expand all</button>{%- endif -%}
+      {%- if s.show_toggle_all and section.blocks.size > 1 and s.single_open == false -%}<button type="button" class="gmc-cl__all" data-all data-expand="{{ 'gmc.expand_all' | t | escape }}" data-collapse="{{ 'gmc.collapse_all' | t | escape }}">{{ 'gmc.expand_all' | t }}</button>{%- endif -%}
       {%- for block in section.blocks -%}
         <details class="gmc-cl__row" {% if forloop.first and s.open_first %}open{% endif %} {{ block.shopify_attributes }}>
           <summary class="gmc-cl__sum">
@@ -49,7 +49,7 @@
 </style>
 <script>(function(){var r=document.getElementById('gmc-cl-{{ section.id }}');if(!r)return;var l=r.querySelector('.gmc-cl__list'),rows=l.querySelectorAll('details');
 if(l.dataset.single==='true'){rows.forEach(function(d){d.addEventListener('toggle',function(){if(d.open)rows.forEach(function(o){if(o!==d)o.open=false;});});});}
-var b=r.querySelector('[data-all]');if(b)b.addEventListener('click',function(){var open=b.dataset.state!=='open';rows.forEach(function(d){d.open=open;});b.dataset.state=open?'open':'';b.textContent=open?'Collapse all':'Expand all';});})();</script>
+var b=r.querySelector('[data-all]');if(b)b.addEventListener('click',function(){var open=b.dataset.state!=='open';rows.forEach(function(d){d.open=open;});b.dataset.state=open?'open':'';b.textContent=open?b.dataset.collapse:b.dataset.expand;});})();</script>
 {% schema %}
 {
   "name": "Collapsible (Advanced)",

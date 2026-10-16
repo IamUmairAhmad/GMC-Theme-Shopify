@@ -23,9 +23,9 @@
           {%- else -%}
             {%- if form.errors -%}<p role="alert" style="color:#b91c1c;margin:0">{{ form.errors | default_errors }}</p>{%- endif -%}
             <input type="hidden" name="contact[tags]" value="newsletter,popup">
-            <label class="visually-hidden" for="gmc-pop-email">Email address</label>
-            <input type="email" id="gmc-pop-email" name="contact[email]" required placeholder="Email address" autocomplete="email" class="field__input" style="padding:1rem">
-            <button class="button" type="submit">Subscribe</button>
+            <label class="visually-hidden" for="gmc-pop-email">{{ section.settings.email_label | escape }}</label>
+            <input type="email" id="gmc-pop-email" name="contact[email]" required placeholder="{{ section.settings.email_label | escape }}" autocomplete="email" class="field__input" style="padding:1rem">
+            <button class="button" type="submit">{{ section.settings.button_label | escape }}</button>
           {%- endif -%}
         {%- endform -%}
       {%- elsif settings.gmc_popup_link != blank -%}
@@ -64,5 +64,25 @@
 </script>
 {%- endif -%}
 {% schema %}
-{ "name": "Promo popup", "settings": [{"type":"paragraph","content":"Configure under Theme settings > GMC features > Promo popup."}] }
+{
+  "name": "Promo popup",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Configure under Theme settings > GMC features > Promo popup."
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email field label",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Subscribe button label",
+      "default": "Subscribe"
+    }
+  ]
+}
 {% endschema %}

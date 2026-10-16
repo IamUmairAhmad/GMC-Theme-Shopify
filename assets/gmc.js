@@ -1,3 +1,4 @@
+window.gmcT=window.gmcT||function(k){return (window.GMC&&GMC.t&&GMC.t[k])||'';};
 /* GMC Theme store-wide scripts (original code) */
 (function(){
   if(document.body.classList.contains('gmc-anim')&&'IntersectionObserver' in window){
@@ -142,7 +143,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   document.addEventListener('click',function(e){
     var c=e.target.closest('[data-gmc-code]');
     if(c){var code=c.dataset.gmcCode;try{navigator.clipboard.writeText(code);}catch(x){}
-      fetch('/discount/'+encodeURIComponent(code)).then(function(){var s=c.querySelector('small');if(s)s.textContent='Code saved — Shopify checks it at checkout';});}
+      fetch('/discount/'+encodeURIComponent(code)).then(function(){var s=c.querySelector('small');if(s)s.textContent=gmcT('code_saved');});}
     var o=e.target.closest('[data-gmc-open]');if(o){var d=document.getElementById(o.dataset.gmcOpen);if(d&&d.showModal)d.showModal();}
     var sc=e.target.closest('[data-gmc-scroll]');if(sc){var t=null;try{t=document.querySelector(sc.dataset.gmcScroll);}catch(x){}if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
     var tb=e.target.closest('.gmc-pe__tn button');if(tb){var w=tb.closest('.gmc-pe__tabs');qa('.gmc-pe__tn button',w).forEach(function(b){b.setAttribute('aria-selected',b===tb);});qa('.gmc-pe__tp',w).forEach(function(p){p.hidden=p.dataset.t!==tb.dataset.t;});}
@@ -221,18 +222,18 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   document.addEventListener('click',function(e){
     var b=e.target.closest('#gmc-disc-btn');if(!b)return;
     var inp=document.getElementById('gmc-disc-in'),msg=document.getElementById('gmc-disc-msg'),code=(inp.value||'').trim();
-    if(!code){msg.textContent='Enter a discount code.';return;}
-    if(b.disabled)return;b.disabled=true;msg.textContent='Checking…';
+    if(!code){msg.textContent=gmcT('disc_enter');return;}
+    if(b.disabled)return;b.disabled=true;msg.textContent=gmcT('disc_checking');
     fetch('/cart/update.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({discount:code})})
       .then(function(r){return r.ok?r.json():Promise.reject(new Error('http '+r.status));})
       .then(function(cart){
         var list=cart.discount_codes;var hit=Array.isArray(list)&&list.find(function(d){return (d.code||'').toLowerCase()===code.toLowerCase();});
-        if(hit&&hit.applicable){msg.textContent='Code applied ✓';return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(s){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents)cd.renderContents({sections:s});});}
-        if(hit&&!hit.applicable){msg.textContent='This code does not apply to your cart.';return;}
-        if(Array.isArray(list)){msg.textContent='This code could not be applied.';return;}
-        return fetch('/discount/'+encodeURIComponent(code)).then(function(){msg.textContent='Code saved. Shopify will confirm whether it applies at checkout.';});
+        if(hit&&hit.applicable){msg.textContent=gmcT('disc_applied');return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(s){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents)cd.renderContents({sections:s});});}
+        if(hit&&!hit.applicable){msg.textContent=gmcT('disc_not_applicable');return;}
+        if(Array.isArray(list)){msg.textContent=gmcT('disc_failed');return;}
+        return fetch('/discount/'+encodeURIComponent(code)).then(function(){msg.textContent=gmcT('disc_saved');});
       })
-      .catch(function(){msg.textContent='Could not check the code. Try again, or enter it at checkout.';})
+      .catch(function(){msg.textContent=gmcT('disc_check_failed');})
       .finally(function(){b.disabled=false;});
   });
 })();
@@ -259,7 +260,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
     var f=box.querySelector('form'),msg=box.querySelector('.gmc-sec-atc__m');
     f.addEventListener('submit',function(e){e.preventDefault();var btn=f.querySelector('button');btn.disabled=true;
       fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:+f.elements.id.value,quantity:1})})
-      .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.description||'Could not add');return j;});})
+      .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.description||gmcT('add_failed'));return j;});})
       .then(function(){return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();});})
       .then(function(sec2){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents){cd.renderContents({sections:sec2});}else{location.href='/cart';}})
       .catch(function(err){msg.textContent=err.message;}).then(function(){btn.disabled=false;});});

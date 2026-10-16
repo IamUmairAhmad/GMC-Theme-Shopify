@@ -274,7 +274,6 @@
       "announcement": "Announcement",
       "announcement_bar": "Announcement bar"
     },
-
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
@@ -528,5 +527,21 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "gmc": {
+    "expand_all": "Expand all",
+    "collapse_all": "Collapse all",
+    "purchase_options": "Purchase options",
+    "discount_code": "Discount code",
+    "apply": "Apply",
+    "disc_enter": "Enter a discount code.",
+    "disc_checking": "Checking…",
+    "disc_applied": "Code applied ✓",
+    "disc_not_applicable": "This code does not apply to your cart.",
+    "disc_failed": "This code could not be applied.",
+    "disc_saved": "Code saved. Shopify will confirm whether it applies at checkout.",
+    "disc_check_failed": "Could not check the code. Try again, or enter it at checkout.",
+    "code_saved": "Code saved — Shopify checks it at checkout",
+    "add_failed": "Could not add this item"
   }
 }

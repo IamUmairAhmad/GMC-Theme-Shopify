@@ -8,7 +8,7 @@
       <div class="gmc-pe__comp" data-gmc-addon="{{ cp.selected_or_first_available_variant.id }}" data-gmc-always="1">{%- if cp.featured_image -%}{{ cp.featured_image | image_url: width: 120 | image_tag: width: 52, height: 52, loading: 'lazy' }}{%- endif -%}<span><strong>{{ block.settings.text | escape }}</strong><br>{{ cp.title | escape }} <s style="opacity:.6">{{ cp.price | money }}</s> <b style="color:{{ settings.gmc_accent }}">FREE</b></span></div>{%- endif -%}{%- when 'upsell' -%}
       {%- assign up = block.settings.product -%}{%- if up != blank -%}
       <label class="gmc-pe__comp"><input type="checkbox" data-gmc-addon="{{ up.selected_or_first_available_variant.id }}" {% if block.settings.checked %}checked{% endif %}>{%- if up.featured_image -%}{{ up.featured_image | image_url: width: 120 | image_tag: width: 52, height: 52, loading: 'lazy' }}{%- endif -%}<span><strong>{{ block.settings.text | escape }}</strong><br>{{ up.title | escape }} — {{ up.selected_or_first_available_variant.price | money }}</span></label>{%- endif -%}{%- when 'clickable_discount' -%}
-      <button type="button" class="gmc-pe__code" data-gmc-code="{{ block.settings.code | escape }}"><span>🏷️ {{ block.settings.text | escape }}</span><b>{{ block.settings.code | escape }}</b><small>Click to apply</small></button>{%- when 'popup_page' -%}
+      <button type="button" class="gmc-pe__code" data-gmc-code="{{ block.settings.code | escape }}"><span>🏷️ {{ block.settings.text | escape }}</span><b>{{ block.settings.code | escape }}</b><small>{{ block.settings.cta | default: 'Click to apply' | escape }}</small></button>{%- when 'popup_page' -%}
       {%- if block.settings.page != blank -%}<button type="button" class="gmc-pe__link" data-gmc-open="gmc-pop-{{ block.id }}">{{ block.settings.label | escape }}</button>
       <dialog id="gmc-pop-{{ block.id }}" class="gmc-pe__dlg"><form method="dialog"><button class="gmc-pe__dx" aria-label="Close">×</button></form><h3>{{ block.settings.page.title | escape }}</h3><div class="rte">{{ block.settings.page.content }}</div></dialog>{%- endif -%}{%- when 'scroll_to' -%}
       <button type="button" class="button button--secondary button--full-width" data-gmc-scroll="{{ block.settings.target | escape }}">{{ block.settings.label | escape }}</button>{%- when 'link_button' -%}
@@ -156,6 +156,12 @@
           "unit": "px",
           "label": "Margin below",
           "default": 12
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Hint text",
+          "default": "Click to apply"
         }
       ]
     },

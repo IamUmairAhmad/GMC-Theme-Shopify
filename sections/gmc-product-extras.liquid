@@ -12,7 +12,7 @@
       <p class="gmc-pe__eta">🚚 Order today and get it between <strong class="gmc-eta" data-min="{{ block.settings.min_days }}" data-max="{{ block.settings.max_days }}">…</strong></p>{%- when 'benefits' -%}
       <ul class="gmc-pe__ben">{%- for i in (1..5) -%}{%- assign k = 'b' | append: i -%}{%- if block.settings[k] != blank -%}<li>{{ block.settings[k] | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- when 'payment_badges' -%}
       <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none">{%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>{%- when 'shipping_checkpoints' -%}
-      <ol class="gmc-pe__cp"><li>📦<br><small>Ordered</small></li><li>🏭<br><small>Shipped</small></li><li>🚚<br><small>In transit</small></li><li>🏠<br><small>Delivered</small></li></ol>{%- when 'trust_stars' -%}
+      <ol class="gmc-pe__cp"><li>📦<br><small>{{ block.settings.step1 | escape }}</small></li><li>🏭<br><small>{{ block.settings.step2 | escape }}</small></li><li>🚚<br><small>{{ block.settings.step3 | escape }}</small></li><li>🏠<br><small>{{ block.settings.step4 | escape }}</small></li></ol>{%- when 'trust_stars' -%}
       {%- assign mf = product.metafields.reviews.rating.value -%}
       {%- assign mfc = product.metafields.reviews.rating_count.value -%}
       {%- if block.settings.rating != blank -%}{%- assign tr = block.settings.rating | plus: 0.0 -%}{%- assign tcount = block.settings.text -%}
@@ -97,7 +97,7 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
           "type": "text",
           "id": "fallback",
           "label": "Message when stock is above the limit",
-        "info": "Leave empty to show nothing when stock is high or not tracked."
+          "info": "Leave empty to show nothing when stock is high or not tracked."
         },
         {
           "type": "range",
@@ -237,6 +237,30 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
           "unit": "px",
           "label": "Margin below",
           "default": 12
+        },
+        {
+          "type": "text",
+          "id": "step1",
+          "label": "Step 1 label",
+          "default": "Ordered"
+        },
+        {
+          "type": "text",
+          "id": "step2",
+          "label": "Step 2 label",
+          "default": "Shipped"
+        },
+        {
+          "type": "text",
+          "id": "step3",
+          "label": "Step 3 label",
+          "default": "In transit"
+        },
+        {
+          "type": "text",
+          "id": "step4",
+          "label": "Step 4 label",
+          "default": "Delivered"
         }
       ]
     },

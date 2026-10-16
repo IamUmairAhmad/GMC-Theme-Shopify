@@ -2,7 +2,7 @@
 {%- if product != blank and product.selling_plan_groups.size > 0 -%}
 {%- assign cur = product.selected_or_first_available_variant -%}
 <fieldset class="gmc-sub" id="gmc-sub-{{ section.id }}" data-variant="{{ cur.id }}">
-  <legend class="visually-hidden">Purchase options</legend>
+  <legend class="visually-hidden">{{ 'gmc.purchase_options' | t }}</legend>
   <label class="gmc-sub__o"><input type="radio" name="gmc-sub-{{ section.id }}" value="" checked><span><strong>{{ section.settings.one_time | escape }}</strong></span></label>
   <label class="gmc-sub__o"><input type="radio" name="gmc-sub-{{ section.id }}" value="plan"><span><strong>{{ section.settings.subscribe | escape }}</strong>{%- if section.settings.note != blank -%}<em>{{ section.settings.note | escape }}</em>{%- endif -%}</span></label>
   <select class="gmc-sub__sel select__select" aria-label="Delivery frequency" hidden></select>
