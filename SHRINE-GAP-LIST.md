@@ -79,15 +79,15 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | ID | Missing feature | Pri |
 |---|---|---|
 | AT-01 ✅ | "Add to cart" button (custom product + skip-cart option) in: image-with-text, multirow, rich-text, multicolumn, image banner, slideshow, icons-with-content, content tabs, comparison table / slider, vertical ticker, custom columns. We only have it on three sections. | P1 |
-| AT-02 | **Rating-stars**, **text-with-icon**, and **image** blocks available in rich-text, image-with-text and custom columns. | P3 |
+| AT-02 ✅ | **Rating-stars**, **text-with-icon**, and **image** blocks available in rich-text, image-with-text and custom columns. | P3 |
 
 ## 7. Other sections
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| SC-01 | **Custom columns (full)**: 6 columns with desktop/mobile widths, per-column visibility, vertical alignment, gaps, and 13 block types (heading, rich text, rating, buttons, ATC, text-with-icon, icon content, image, video, accordion, payment badges, email signup, custom liquid), each assignable to a column. | P2 |
+| SC-01 ✅ | **Custom columns (full)**: 6 columns with desktop/mobile widths, per-column visibility, vertical alignment, gaps, and 13 block types (heading, rich text, rating, buttons, ATC, text-with-icon, icon content, image, video, accordion, payment badges, email signup, custom liquid), each assignable to a column. | P2 |
 | SC-02 ✅ | **Bundle deals section**: dynamic price change, skip-cart, per-product % / fixed discount, horizontal layouts, up to 5 products. | P1 |
-| SC-03 | **Pricing table**: card styles, product and variant linked, badge, icon, benefits, button function. | P2 |
+| SC-03 ✅ | **Pricing table**: card styles, product and variant linked, badge, icon, benefits, button function. | P2 |
 | SC-04 | **Shoppable image modal**: product image, price, discount badge, ATC with skip-cart, open on hover/click, mobile modal position, hotspot ripple, per-device hotspot position. | P2 |
 | SC-05 | **Product features**: hotspots with modals plus **bullet points with leader lines** (direction, bend, per-device position). | P2 |
 | SC-06 | **Results**: percentage bars per row, image or video, caption, ATC button. | P3 |

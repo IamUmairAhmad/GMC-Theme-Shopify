@@ -1,0 +1,10 @@
+{%- comment -%} GMC Theme: rating stars, text with icon and image blocks for rich-text and image-with-text. Param: block {%- endcomment -%}
+{%- assign b = block.settings -%}
+{%- case block.type -%}
+  {%- when 'rating_stars' -%}
+    <p class="gmc-bx__rt" {{ block.shopify_attributes }} style="margin:0;text-align:inherit">{%- if b.link != blank -%}<a href="{{ b.link }}" style="color:inherit;text-decoration:none">{%- endif -%}<span style="color:{{ b.color }};letter-spacing:2px" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</span> {{ b.label | escape }}{%- if b.link != blank -%}</a>{%- endif -%}</p>
+  {%- when 'text_icon' -%}
+    <p class="gmc-bx__ti" {{ block.shopify_attributes }} style="margin:0;display:inline-flex;gap:.8rem;align-items:center">{%- render 'gmc-icon', name: b.icon_name, size: 24 -%}<span>{{ b.text | escape }}</span></p>
+  {%- when 'image' -%}
+    {%- if b.image != blank -%}<div {{ block.shopify_attributes }} style="max-width:{{ b.width }}%;margin-inline:auto">{{ b.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: 'width:100%;height:auto;display:block;border-radius:' | append: b.radius | append: 'px', alt: b.image.alt }}</div>{%- endif -%}
+{%- endcase -%}

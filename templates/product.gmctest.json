@@ -385,6 +385,101 @@
         "button": "Shop",
         "gmc_atc_product": "gmc-test-tee"
       }
+    },
+    "cc": {
+      "type": "gmc-columns-full",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "column": 1,
+            "text": "Col heading"
+          }
+        },
+        "r": {
+          "type": "rating",
+          "settings": {
+            "column": 2
+          }
+        },
+        "a": {
+          "type": "atc",
+          "settings": {
+            "column": 2,
+            "product": "gmc-test-tee"
+          }
+        },
+        "e": {
+          "type": "email",
+          "settings": {
+            "column": 3
+          }
+        },
+        "ac": {
+          "type": "accordion",
+          "settings": {
+            "column": 3
+          }
+        },
+        "pay": {
+          "type": "payment",
+          "settings": {
+            "column": 3,
+            "types": "visa, master"
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "r",
+        "a",
+        "e",
+        "ac",
+        "pay"
+      ],
+      "settings": {
+        "cols": 3
+      }
+    },
+    "pt": {
+      "type": "gmc-pricing-table",
+      "blocks": {
+        "a": {
+          "type": "plan",
+          "settings": {
+            "name": "Linked",
+            "product": "gmc-test-tee",
+            "benefits": "One\nTwo",
+            "action": "cart",
+            "icon_name": "star",
+            "button": "Buy"
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {
+        "card_style": "shadow"
+      }
+    },
+    "rt": {
+      "type": "rich-text",
+      "blocks": {
+        "r": {
+          "type": "rating_stars",
+          "settings": {}
+        },
+        "t": {
+          "type": "text_icon",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "r",
+        "t"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -400,6 +495,9 @@
     "tm2",
     "ph",
     "ib",
-    "ic"
+    "ic",
+    "cc",
+    "pt",
+    "rt"
   ]
 }
