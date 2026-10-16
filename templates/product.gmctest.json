@@ -599,6 +599,18 @@
         "btn": "Go",
         "btn_link": "/"
       }
+    },
+    "wl": {
+      "type": "gmc-wishlist",
+      "settings": {}
+    },
+    "rv": {
+      "type": "gmc-recently-viewed",
+      "settings": {}
+    },
+    "cmpx": {
+      "type": "gmc-compare",
+      "settings": {}
     }
   },
   "order": [
@@ -623,6 +635,9 @@
     "pf2",
     "dv1",
     "dv2",
-    "px1"
+    "px1",
+    "wl",
+    "rv",
+    "cmpx"
   ]
 }

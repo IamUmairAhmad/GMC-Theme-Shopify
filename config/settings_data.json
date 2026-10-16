@@ -199,7 +199,9 @@
             "color_scheme": "scheme-1"
           }
         }
-      }
+      },
+      "gmc_wish_on": true,
+      "gmc_cmp_on": true
     }
   }
 }
