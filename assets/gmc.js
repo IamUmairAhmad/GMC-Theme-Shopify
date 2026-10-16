@@ -135,7 +135,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   }
   document.addEventListener('submit',function(e){
     var f=e.target;if(!f.matches||!f.matches('form[action*="/cart/add"]'))return;
-    gmcQueue=[];gmcUnits=[];qa('[data-gmc-addon]').forEach(function(el){var on=el.type==='checkbox'?el.checked:true;if(on)gmcQueueAddon(el.dataset.gmcAddon);});
+    gmcQueue=[];gmcUnits=[];qa('[data-gmc-addon]').forEach(function(el){var on=el.type==='checkbox'?el.checked:true;if(on)gmcQueueAddon(el.dataset.gmcAddon);});qa('[data-gmc-unitadd]').forEach(function(el){if(el.checked&&!el.disabled)gmcQueueUnit(el.dataset.gmcUnitadd);});
     /* the quantity-break gift listener runs after this one in the same event, so flush on the next tick when no cart UI will announce success */
     setTimeout(function(){if(!document.querySelector('cart-drawer, cart-notification'))flush();},0);
   },true);
@@ -317,3 +317,11 @@ gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,function(ev){
   if(!ev||ev.source!=='product-form'||!document.querySelector('product-form[data-gmc-skip]'))return;
   setTimeout(function(){Promise.resolve(window.gmcPending).catch(function(){}).then(function(){window.location.href=(window.routes&&routes.root_url?routes.root_url.replace(/\/$/,''):'')+'/checkout';});},60);
 });});
+
+/* multi upsells: variant dropdown updates the add-on variant and the displayed price */
+document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.matches('.gmc-ups__var'))return;
+  var it=s.closest('.gmc-ups__item'),o=s.options[s.selectedIndex],p=+o.dataset.price,t=it.dataset.dtype,n=p;
+  if(t==='percent')n=Math.round(p*(100-(+it.dataset.dpct||0))/100);else if(t==='fixed')n=Math.max(0,p-(+it.dataset.dfix||0));
+  var inp=it.querySelector('.gmc-ups__in');inp.dataset.gmcUnitadd=s.value;inp.disabled=o.disabled;
+  var now=it.querySelector('[data-ups-now]'),old=it.querySelector('.gmc-ups__price s');now.textContent=gmcMoney(n);
+  if(n<p){if(!old){old=document.createElement('s');now.parentNode.insertBefore(old,now);now.parentNode.insertBefore(document.createTextNode(' '),now);}old.textContent=gmcMoney(p);}else if(old)old.remove();});
