@@ -28,28 +28,10 @@
             "text_alignment_mobile": "center",
             "color_scheme": ""
           }
-        },
-        "s2": {
-          "type": "slide",
-          "settings": {
-            "image_overlay_opacity": 0,
-            "heading": "New arrivals",
-            "heading_size": "h1",
-            "subheading": "Fresh picks for the season",
-            "button_label": "Shop now",
-            "link": "shopify://collections/all",
-            "button_style_secondary": false,
-            "show_text_box": true,
-            "box_align": "middle-center",
-            "text_alignment": "center",
-            "text_alignment_mobile": "center",
-            "color_scheme": ""
-          }
         }
       },
       "block_order": [
-        "s1",
-        "s2"
+        "s1"
       ],
       "settings": {
         "layout": "full_bleed",
