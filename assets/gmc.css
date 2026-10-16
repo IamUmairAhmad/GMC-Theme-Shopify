@@ -71,3 +71,7 @@ label.gmc-swatch{width:3.6rem;height:3.6rem;padding:0!important;border-radius:50
 .gmc-fx{padding:2rem 0 1rem;text-align:center}.gmc-fx__lines{list-style:none;margin:0;padding:0;display:flex;gap:1.6rem 3rem;flex-wrap:wrap;justify-content:center}.gmc-fx__lines li{display:flex;gap:.7rem;align-items:center}.gmc-fx__text{margin-top:1.2rem;font-size:1.3rem;opacity:.8}
 .gmc-ftrlayout-centered .footer__blocks-wrapper{text-align:center}.gmc-ftrlayout-centered .footer-block__details-content{align-items:center}.gmc-ftrlayout-centered .footer__list-social{justify-content:center}
 .gmc-ftrlayout-divided .footer-block{padding:0 2rem;border-left:1px solid rgba(var(--color-foreground),.12)}.gmc-ftrlayout-divided .footer-block:first-child{border-left:0}
+
+/* keep floating buttons clear of the sticky add-to-cart bar */
+.gmc-sticky-on #gmc-top,.gmc-sticky-on .gmc-mp,.gmc-sticky-on .gmc-scta{bottom:calc(1.5rem + 72px)!important}
+@media(max-width:749px){.gmc-mp{bottom:1rem}.gmc-scta{max-width:calc(100vw - 7rem)}}

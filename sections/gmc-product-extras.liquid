@@ -13,7 +13,13 @@
       <ul class="gmc-pe__ben">{%- for i in (1..5) -%}{%- assign k = 'b' | append: i -%}{%- if block.settings[k] != blank -%}<li>{{ block.settings[k] | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- when 'payment_badges' -%}
       <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none">{%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>{%- when 'shipping_checkpoints' -%}
       <ol class="gmc-pe__cp"><li>📦<br><small>Ordered</small></li><li>🏭<br><small>Shipped</small></li><li>🚚<br><small>In transit</small></li><li>🏠<br><small>Delivered</small></li></ol>{%- when 'trust_stars' -%}
-      {%- if block.settings.rating != blank -%}{%- assign tr = block.settings.rating | plus: 0.0 -%}{%- assign tfull = tr | round -%}<p class="gmc-pe__ts"><span style="color:#00b67a;font-size:1.8rem" aria-label="Rated {{ block.settings.rating | escape }} out of 5">{%- for i in (1..5) -%}{%- if i <= tfull -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</span> {{ block.settings.rating | escape }}/5 {{ block.settings.text | escape }}</p>{%- endif -%}{%- when 'bestseller' -%}
+      {%- assign mf = product.metafields.reviews.rating.value -%}
+      {%- assign mfc = product.metafields.reviews.rating_count.value -%}
+      {%- if block.settings.rating != blank -%}{%- assign tr = block.settings.rating | plus: 0.0 -%}{%- assign tcount = block.settings.text -%}
+      {%- elsif mf != blank -%}{%- assign tr = mf.rating | plus: 0.0 | times: 5 | divided_by: mf.scale_max -%}{%- if mfc != blank -%}{%- capture tcount -%}({{ mfc }} reviews){%- endcapture -%}{%- endif -%}
+      {%- else -%}{%- assign tr = nil -%}{%- endif -%}
+      {%- if tr != nil -%}{%- assign tfull = tr | round -%}<p class="gmc-pe__ts"><span style="color:#00b67a;font-size:1.8rem" aria-label="Rated {{ tr | round: 1 }} out of 5">{%- for i in (1..5) -%}{%- if i <= tfull -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</span> {{ tr | round: 1 }}/5 {{ tcount | escape }}</p>{%- endif -%}
+    {%- when 'bestseller' -%}
       <span class="gmc-pe__bs">{{ block.settings.text | escape }}</span>{%- when 'sizing_chart' -%}
       <details class="gmc-pe__sz"><summary>{{ block.settings.label | escape }}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- when 'text_icon' -%}
       <p class="gmc-pe__ti"><span style="font-size:2rem">{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 24 -%}{%- else -%}{{ block.settings.icon | escape }}{%- endif -%}</span> {{ block.settings.text | escape }}</p>{%- when 'custom_field' -%}
@@ -242,7 +248,7 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
      "type": "text",
      "id": "rating",
      "label": "Your real rating (0-5)",
-     "info": "Only shown when filled in. Enter your actual Trustpilot/review score, e.g. 4.7"
+     "info": "Optional. Leave empty to use your review app's rating (the standard reviews.rating product metafield). Nothing shows if neither exists."
     },
     {
      "type": "text",

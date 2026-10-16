@@ -1,0 +1,10 @@
+{%- comment -%} Resolves a threshold for the shopper's currency. map lines look like USD:50 (comma or newline separated). Falls back to base. {%- endcomment -%}
+{%- assign out = base -%}
+{%- if map != blank -%}
+  {%- assign pairs = map | newline_to_br | replace: ',', '<br />' | split: '<br />' -%}
+  {%- for pr in pairs -%}
+    {%- assign kv = pr | strip | split: ':' -%}
+    {%- if kv.size == 2 -%}{%- assign k = kv[0] | strip | upcase -%}{%- if k == cart.currency.iso_code -%}{%- assign out = kv[1] | strip -%}{%- endif -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{{- out -}}

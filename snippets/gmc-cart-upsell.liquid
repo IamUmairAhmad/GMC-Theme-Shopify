@@ -1,6 +1,7 @@
 {%- comment -%} GMC Theme: cart drawer upsell + free-gift message (original code) {%- endcomment -%}
-{%- if settings.gmc_gift_variant != blank and settings.gmc_gift_threshold > 0 -%}
-  {%- assign gift_goal = settings.gmc_gift_threshold | times: 100 -%}
+{%- capture gift_cap -%}{%- render 'gmc-threshold', base: settings.gmc_gift_threshold, map: settings.gmc_gift_currency_map -%}{%- endcapture -%}
+{%- assign gift_goal = gift_cap | strip | plus: 0 | times: 100 -%}
+{%- if settings.gmc_gift_variant != blank and gift_goal > 0 -%}
   {%- if cart.total_price >= gift_goal -%}
     <p style="margin:.8rem 2rem 0;font-weight:600">{{ settings.gmc_gift_text | escape }}</p>
   {%- else -%}

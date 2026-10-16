@@ -45,3 +45,37 @@ All GMC options now live in six Theme-settings groups: **GMC: Product page**, **
 Added in this pass: sale badges as real percent/amount off (from the compare-at price), footer layouts (default/centered/divided) + payment row + icon lines + custom text, menu hover styles and `[NEW]`-style menu badges, dropdown styles, 6 button hover effects, 5 entrance-animation styles, scroll-to-top side/shape, popup upgrade (email or offer type, image, exit-intent/scroll/delay triggers, once per visit/day/week, page targeting, real discount code shown after signup), article template `article.gmc` (scroll progress + reading time), quantity-break tiers accept a free gift or paid add-on.
 Reuses base-theme features instead of duplicating: header country/currency selector (Dawn header settings), reveal-on-scroll and hover animations (Dawn Animations group; the GMC entrance styles are an optional extra).
 Partial: "Add to cart buttons in supported sections" – provided as the Add-to-cart button section and the bundle/ATC blocks; not injected into every Dawn section. "Advanced section sliders" – Image & video slider (swipe, autoplay, MP4) plus the base slideshow.
+
+---
+
+## Section 6 — Reference-page review and integration checks
+
+### A. Features explicitly shown on shrine.io/pages/features
+The page lists 159 Pro rows (82 Shrine rows) in four categories (49 + 52 + 20 + 38). Re-checked on this pass: **no table row exists that is not already in the checklist above.** Everything in the tables is covered by the checklist rows above, with the honest status labels used there.
+
+Items on the page that are not theme features (marketing or services, not built as theme code): lifetime support, updates, help center, Discord community, demo stores, Shrine-vs-Pro edition comparison, crypto-payment mention, social links. The sale countdown and cart-reserved timer shown on the page are built (`gmc-countdown`, cart timer setting).
+
+### B. Integration behaviour (what was fixed or verified)
+| Combination | Behaviour now | Status |
+|---|---|---|
+| Quantity breaks + free gifts | Gift is queued on submit and added only after Shopify confirms the main add (`cartUpdate` from `product-form`); falls back to a timed add if no cart UI is present. Gift must be $0 or covered by an automatic discount | Smoke-tested with mocked endpoints |
+| Bundles + variant selection | Bundle block lets the shopper choose variants; chosen variant ids are added | Built, untested on live store |
+| Upsells + cart drawer | Upsell add refetches `cart-drawer` and re-renders | Built, untested on live store |
+| Sticky ATC + variant change | Follows `variantChange` (price, availability, id) | Built, untested on live store |
+| Subscriptions + selling plans | Uses the product's real selling plans; still requires a subscription app/selling plans on the product | Built; per-variant plan filtering **not done** (see C) |
+| Reviews + rating data | Trust stars use the manual rating, else the standard `reviews.rating` / `reviews.rating_count` metafields; nothing shows if neither exists | Built, untested with a real review app |
+| Shipping progress + cart totals | Uses `cart.total_price` in the shopper's currency; optional per-currency thresholds (`USD:50, EUR:45`) | Built, untested on live store |
+| Discount messaging | Discount-code click saves the code to the cart session; wording now says Shopify checks eligibility at checkout. The theme cannot verify eligibility itself | Built |
+| Mobile + sticky elements | When the sticky ATC is visible, scroll-to-top, music player and sticky CTA lift above it | CSS only, not visually tested on devices |
+| Country selection + Markets | Uses Shopify's standard localization form; country blocker reads `localization.country`. Prices, languages and shipping come from the merchant's Markets setup | Built, untested on live store |
+
+### C. Known limits
+- Subscription widget does not yet filter plans per selected variant.
+- Quantity-break and bundle price reductions need Shopify automatic discounts; the theme only displays them.
+- Nothing has been run on a live Shopify store; Liquid rendering is only theme-checked.
+
+### D. My own recommended improvements (NOT Shrine Pro features)
+1. Per-currency thresholds (added above).
+2. Add-on queueing after confirmed main add (added above).
+3. Metafield-driven review stars (added above).
+4. Recommended next: per-variant selling-plan filter; a Shopify Function for quantity-break discounts; Lighthouse/accessibility pass on a live store.

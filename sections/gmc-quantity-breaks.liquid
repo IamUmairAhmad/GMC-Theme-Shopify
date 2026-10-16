@@ -28,7 +28,7 @@
     var c=w.querySelector('input:checked');if(c)apply(c.value);});}
   var forms=document.querySelectorAll('form[action*="/cart/add"]');
   forms.forEach(function(f){f.addEventListener('submit',function(){var c=w.querySelector('input:checked'),g=c&&c.dataset.gift;
-    if(g&&window.gmcOnce&&gmcOnce('qbgift',2000)){fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:[{id:+g,quantity:1,properties:{_gmc_gift:'true'}}]})});}},true);});})();
+    if(g&&window.gmcQueueAddon)gmcQueueAddon(g);},true);});})();
 </script>
 {%- endif -%}
 {% schema %}

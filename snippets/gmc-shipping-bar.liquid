@@ -1,5 +1,6 @@
 {%- comment -%} GMC Theme: free shipping progress bar (original code). Threshold is in store currency units. {%- endcomment -%}
-{%- assign threshold = settings.gmc_ship_threshold | times: 100 -%}
+{%- capture ship_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold, map: settings.gmc_ship_currency_map -%}{%- endcapture -%}
+{%- assign threshold = ship_cap | strip | plus: 0 | times: 100 -%}
 {%- if settings.gmc_ship_enabled and threshold > 0 -%}
   {%- assign remaining = threshold | minus: cart.total_price -%}
   {%- assign pct = cart.total_price | times: 100 | divided_by: threshold -%}
@@ -15,8 +16,9 @@
     <div style="height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);overflow:hidden">
       <div style="height:100%;width:{{ pct }}%;background:{{ settings.gmc_accent }};transition:width .4s"></div>
     </div>
-    {%- if settings.gmc_ship_threshold2 > settings.gmc_ship_threshold -%}
-      {%- assign t2 = settings.gmc_ship_threshold2 | times: 100 -%}
+    {%- capture t2_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold2, map: settings.gmc_ship2_currency_map -%}{%- endcapture -%}
+    {%- assign t2 = t2_cap | strip | plus: 0 | times: 100 -%}
+    {%- if t2 > threshold -%}
       {%- assign pct2 = cart.total_price | times: 100 | divided_by: t2 -%}
       {%- if pct2 > 100 -%}{%- assign pct2 = 100 -%}{%- endif -%}
       <p style="margin:.8rem 0 .4rem;font-size:1.3rem">{%- if cart.total_price >= t2 -%}🎁 Free gift unlocked!{%- else -%}Add <strong>{{ t2 | minus: cart.total_price | money }}</strong> more for a free gift{%- endif -%}</p>

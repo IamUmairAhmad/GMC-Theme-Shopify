@@ -79,8 +79,9 @@
     add([{id:+b.dataset.gmcUpsell,quantity:1}]).then(refresh).then(syncGift);
   });
   function syncGift(){
-    var gid=window.GMC&&+GMC.giftVariant,th=window.GMC&&+GMC.giftThreshold;if(!gid||!th||refreshing)return;
+    var gid=window.GMC&&+GMC.giftVariant;if(!gid||refreshing)return;
     fetch('/cart.js').then(function(r){return r.json();}).then(function(c){
+      var th=+GMC.giftThreshold;(GMC.giftMap||'').split(/[\n,]/).forEach(function(x){var kv=x.split(':');if(kv.length===2&&kv[0].trim().toUpperCase()===c.currency)th=+kv[1];});if(!th)return;
       var gl=c.items.find(function(i){return i.variant_id===gid&&i.properties&&i.properties._gmc_gift;});
       var paid=c.total_price-(gl?gl.final_line_price:0),ok=paid>=th*100;
       if(ok&&!gl){refreshing=true;add([{id:gid,quantity:1,properties:{_gmc_gift:'true'}}]).then(refresh).finally(function(){refreshing=false;});}
@@ -121,17 +122,27 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
 /* ---- product page interactions: add-ons, discount code, popups, scroll-to, tabs, timers, dynamic savings ---- */
 (function(){
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
-  /* add-ons (complimentary + upsells) added when the main form is submitted */
+  /* add-ons (complimentary, upsells, quantity-break gifts) are queued on submit and added only after Shopify confirms the main add */
+  window.gmcQueue=[];window.gmcQueueAddon=function(id){id=+id;if(id&&gmcQueue.indexOf(id)<0)gmcQueue.push(id);};
+  function flush(){
+    if(!gmcQueue.length||!gmcOnce('flush',1500))return;
+    var items=gmcQueue.map(function(id){return {id:id,quantity:1,properties:{_gmc_gift:'true'}};});gmcQueue=[];
+    fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})}).then(function(r){return r.ok?r.json():null;}).then(function(){
+      return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(sec){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents)cd.renderContents({sections:sec});});}).catch(function(){});
+  }
   document.addEventListener('submit',function(e){
     var f=e.target;if(!f.matches||!f.matches('form[action*="/cart/add"]'))return;
-    var items=[];qa('[data-gmc-addon]').forEach(function(el){
-      var on=el.type==='checkbox'?el.checked:true;if(on)items.push({id:+el.dataset.gmcAddon,quantity:1,properties:{_gmc_gift:'true'}});});
-    if(items.length&&gmcOnce('addons',2000))fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})});
+    gmcQueue=[];qa('[data-gmc-addon]').forEach(function(el){var on=el.type==='checkbox'?el.checked:true;if(on)gmcQueueAddon(el.dataset.gmcAddon);});
+    /* the quantity-break gift listener runs after this one in the same event, so flush on the next tick when no cart UI will announce success */
+    setTimeout(function(){if(!document.querySelector('cart-drawer, cart-notification'))flush();},0);
   },true);
+  if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){
+    subscribe(PUB_SUB_EVENTS.cartUpdate,function(ev){if(ev&&ev.source==='product-form')flush();});
+  }
   document.addEventListener('click',function(e){
     var c=e.target.closest('[data-gmc-code]');
     if(c){var code=c.dataset.gmcCode;try{navigator.clipboard.writeText(code);}catch(x){}
-      fetch('/discount/'+encodeURIComponent(code)).then(function(){var s=c.querySelector('small');if(s)s.textContent='Applied ✓ (auto-applies at checkout)';});}
+      fetch('/discount/'+encodeURIComponent(code)).then(function(){var s=c.querySelector('small');if(s)s.textContent='Code saved — Shopify checks it at checkout';});}
     var o=e.target.closest('[data-gmc-open]');if(o){var d=document.getElementById(o.dataset.gmcOpen);if(d&&d.showModal)d.showModal();}
     var sc=e.target.closest('[data-gmc-scroll]');if(sc){var t=null;try{t=document.querySelector(sc.dataset.gmcScroll);}catch(x){}if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
     var tb=e.target.closest('.gmc-pe__tn button');if(tb){var w=tb.closest('.gmc-pe__tabs');qa('.gmc-pe__tn button',w).forEach(function(b){b.setAttribute('aria-selected',b===tb);});qa('.gmc-pe__tp',w).forEach(function(p){p.hidden=p.dataset.t!==tb.dataset.t;});}

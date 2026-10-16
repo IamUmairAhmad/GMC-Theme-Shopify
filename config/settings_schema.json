@@ -169,6 +169,12 @@
         "default": 50
       },
       {
+        "type": "textarea",
+        "id": "gmc_ship_currency_map",
+        "label": "Free-shipping threshold per currency (optional)",
+        "info": "One per line or comma separated, e.g. USD:50, EUR:45, GBP:40. Currencies not listed use the amount above, read as that currency's own units."
+      },
+      {
         "type": "color",
         "id": "gmc_accent",
         "label": "Accent color",
@@ -219,6 +225,12 @@
         "label": "Cart total needed for gift",
         "info": "Store currency, e.g. 75",
         "default": 75
+      },
+      {
+        "type": "textarea",
+        "id": "gmc_gift_currency_map",
+        "label": "Gift threshold per currency (optional)",
+        "info": "Same format, e.g. USD:75, EUR:70"
       },
       {
         "type": "text",
@@ -292,6 +304,12 @@
         "id": "gmc_ship_threshold2",
         "label": "Checkpoint bar: second milestone amount",
         "info": "Optional, e.g. the amount for a free gift. Leave empty to hide."
+      },
+      {
+        "type": "textarea",
+        "id": "gmc_ship2_currency_map",
+        "label": "Second milestone per currency (optional)",
+        "info": "Same format, e.g. USD:100, EUR:90"
       },
       {
         "type": "richtext",
