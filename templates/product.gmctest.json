@@ -460,7 +460,7 @@
         "a"
       ],
       "settings": {
-        "card_style": "shadow"
+        "card_style": "filled"
       }
     },
     "rt": {
