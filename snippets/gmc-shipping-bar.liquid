@@ -17,10 +17,10 @@
       <p class="gmc-ship__msg" style="margin:0 0 1rem;font-size:1.3rem">
         {%- if cart.total_price < threshold -%}
           {%- assign rem_money = remaining | money -%}
-          {{ bs.text_step_1 | default: 'Add {amount} more for free shipping' | escape | replace: '{amount}', rem_money }}
+          {{ bs.text_step_1 | default: 'Add [amount] more for free shipping' | escape | replace: '[amount]', rem_money }}
         {%- elsif cart.total_price < t2 -%}
           {%- assign rem_money = t2 | minus: cart.total_price | money -%}
-          {{ bs.text_step_2 | default: 'Add {amount} more for a free gift' | escape | replace: '{amount}', rem_money }}
+          {{ bs.text_step_2 | default: 'Add [amount] more for a free gift' | escape | replace: '[amount]', rem_money }}
         {%- else -%}
           {{ bs.text_done | default: 'All rewards unlocked' | escape }}
         {%- endif -%}
@@ -40,7 +40,7 @@
       <p class="gmc-ship__msg" style="margin:0 0 .5rem;font-size:1.3rem">
         {%- if remaining > 0 -%}
           {%- assign rem_money = remaining | money -%}
-          {{ bs.text_before | default: 'Add {amount} more for free shipping' | escape | replace: '{amount}', rem_money }}
+          {{ bs.text_before | default: 'Add [amount] more for free shipping' | escape | replace: '[amount]', rem_money }}
         {%- else -%}
           {{ bs.text_after | default: 'You have unlocked free shipping' | escape }}
         {%- endif -%}
