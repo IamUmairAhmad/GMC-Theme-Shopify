@@ -353,7 +353,24 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
-  </head>
+    {%- if settings.gmc_anim_custom and settings.animations_reveal_on_scroll -%}
+  <style>
+    :root{--gmc-a-dur:{{ settings.gmc_anim_dur }}ms;--gmc-a-init:{{ settings.gmc_anim_delay }}ms;--gmc-a-child:{{ settings.gmc_anim_child }}ms;--gmc-a-op:{{ settings.gmc_anim_op | divided_by: 100.0 }};--gmc-a-x:{{ settings.gmc_anim_x }}px;--gmc-a-y:{{ settings.gmc_anim_y }}px;--gmc-a-z:{{ settings.gmc_anim_zoom | divided_by: 100.0 }}}
+    @keyframes gmcIn{from{opacity:var(--gmc-a-op);transform:translate(var(--gmc-a-x),var(--gmc-a-y)) scale(var(--gmc-a-z))}to{opacity:1;transform:none}}
+    .scroll-trigger.animate--slide-in:not(.scroll-trigger--offscreen){animation:gmcIn var(--gmc-a-dur) cubic-bezier(.2,.7,.3,1) both;animation-delay:calc(var(--gmc-a-init) + var(--animation-order,0) * var(--gmc-a-child))}
+    .scroll-trigger.animate--slide-in.scroll-trigger--offscreen:not(.scroll-trigger--cancel){opacity:var(--gmc-a-op);transform:translate(var(--gmc-a-x),var(--gmc-a-y)) scale(var(--gmc-a-z))}
+    @media(prefers-reduced-motion:reduce){.scroll-trigger.animate--slide-in{animation:none!important;opacity:1!important;transform:none!important}}
+  </style>
+  {%- endif -%}
+  {%- if settings.gmc_anim_repeat -%}<script>window.gmcAnimRepeat=true;</script>{%- endif -%}
+  <style>
+    {%- if settings.gmc_pill_accent != blank -%}.product-form__input input[type='radio']:checked + label,.product-form__input input[type='radio']:checked + label.gmc-vcard{background:{{ settings.gmc_pill_accent }}!important;border-color:{{ settings.gmc_pill_accent }}!important;color:#fff!important}{%- endif -%}
+    {%- if settings.gmc_pill_bold -%}.product-form__input input[type='radio'] + label{font-weight:700}{%- endif -%}
+    {%- if settings.gmc_dd_bg != blank or settings.gmc_dd_border != blank or settings.gmc_dd_radius > 0 or settings.gmc_dd_shadow -%}.product-form__input .select,.product-form__input .select__select{ {%- if settings.gmc_dd_bg != blank -%}background-color:{{ settings.gmc_dd_bg }};{%- endif -%}{%- if settings.gmc_dd_radius > 0 -%}border-radius:{{ settings.gmc_dd_radius }}px;{%- endif -%}{%- if settings.gmc_dd_shadow -%}box-shadow:0 4px 14px rgba(0,0,0,.12);{%- endif -%} }
+    {%- if settings.gmc_dd_border != blank -%}.product-form__input .select__select{border:1px solid {{ settings.gmc_dd_border }}!important;box-shadow:none}.product-form__input .select:after,.product-form__input .select:before{display:none}{%- endif -%}
+    {%- if settings.gmc_dd_hover != blank -%}.product-form__input .select__select:hover{border-color:{{ settings.gmc_dd_hover }}!important}{%- endif -%}{%- endif -%}
+  </style>
+</head>
 
   <body class="gradient gmc-hover-{{ settings.gmc_btn_hover }}{% if settings.gmc_load_anim and settings.gmc_anim_style != 'none' %} gmc-anim{% endif %} gmc-var-{{ settings.gmc_variant_style }} gmc-anim-{{ settings.gmc_anim_style }} gmc-nav-{{ settings.gmc_nav_style }} gmc-dd-{{ settings.gmc_dropdown_style }} gmc-ftrlayout-{{ settings.gmc_footer_layout }}{% if settings.gmc_header_blur %} gmc-hdr-blur{% endif %}{% if settings.gmc_header_shadow %} gmc-hdr-shadow{% endif %}{% if settings.gmc_mega_style %} gmc-mega{% endif %}{% if settings.gmc_footer_upgrade %} gmc-ftr{% endif %}{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">

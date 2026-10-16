@@ -1202,6 +1202,143 @@
         "default": "default",
         "label": "t:settings_schema.animations.settings.animations_hover_elements.label",
         "info": "t:settings_schema.animations.settings.animations_hover_elements.info"
+      },
+      {
+        "type": "header",
+        "content": "Scroll animation controls (GMC)"
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_anim_custom",
+        "label": "Use custom animation values",
+        "info": "Needs 'Reveal sections on scroll' turned on.",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_anim_repeat",
+        "label": "Repeat animation every time it scrolls into view",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "gmc_anim_dur",
+        "min": 200,
+        "max": 2000,
+        "step": 100,
+        "unit": "ms",
+        "label": "Duration",
+        "default": 600
+      },
+      {
+        "type": "range",
+        "id": "gmc_anim_delay",
+        "min": 0,
+        "max": 1000,
+        "step": 50,
+        "unit": "ms",
+        "label": "Initial delay",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_anim_child",
+        "min": 0,
+        "max": 400,
+        "step": 25,
+        "unit": "ms",
+        "label": "Delay between items",
+        "default": 75
+      },
+      {
+        "type": "range",
+        "id": "gmc_anim_op",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "unit": "%",
+        "label": "Start opacity",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_anim_x",
+        "min": -100,
+        "max": 100,
+        "step": 10,
+        "unit": "px",
+        "label": "Start offset sideways",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_anim_y",
+        "min": -100,
+        "max": 100,
+        "step": 10,
+        "unit": "px",
+        "label": "Start offset up/down",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "gmc_anim_zoom",
+        "min": 50,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Start size",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Variant pills (GMC)"
+      },
+      {
+        "type": "color",
+        "id": "gmc_pill_accent",
+        "label": "Selected pill colour"
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_pill_bold",
+        "label": "Bold pill text",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Variant dropdown (GMC)"
+      },
+      {
+        "type": "color",
+        "id": "gmc_dd_bg",
+        "label": "Dropdown background"
+      },
+      {
+        "type": "color",
+        "id": "gmc_dd_border",
+        "label": "Dropdown border colour"
+      },
+      {
+        "type": "color",
+        "id": "gmc_dd_hover",
+        "label": "Dropdown hover border colour"
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_radius",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px",
+        "label": "Dropdown corner radius",
+        "default": 0
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_dd_shadow",
+        "label": "Dropdown shadow",
+        "default": false
       }
     ]
   },
