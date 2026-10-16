@@ -89,7 +89,7 @@
     });
   }
   syncGift();
-  if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){subscribe(PUB_SUB_EVENTS.cartUpdate,function(){setTimeout(syncGift,400);});}
+  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,function(){setTimeout(syncGift,400);});});
 })();
 
 /* ---- helper: write a field into the main product form (used by custom fields, subscriptions) ---- */
@@ -136,9 +136,9 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
     /* the quantity-break gift listener runs after this one in the same event, so flush on the next tick when no cart UI will announce success */
     setTimeout(function(){if(!document.querySelector('cart-drawer, cart-notification'))flush();},0);
   },true);
-  if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){
+  gmcWhenPubsub(function(){
     subscribe(PUB_SUB_EVENTS.cartUpdate,function(ev){if(ev&&ev.source==='product-form')flush();});
-  }
+  });
   document.addEventListener('click',function(e){
     var c=e.target.closest('[data-gmc-code]');
     if(c){var code=c.dataset.gmcCode;try{navigator.clipboard.writeText(code);}catch(x){}
@@ -153,7 +153,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
     var out=el.querySelector('.gmc-pe__cdt');function t(){var s=Math.max(0,Math.floor((end-Date.now())/1000));out.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}t();setInterval(t,1000);
   });
   /* dynamic savings on variant change */
-  if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){
+  gmcWhenPubsub(function(){
     subscribe(PUB_SUB_EVENTS.variantChange,function(ev){
       var v=ev&&ev.data&&ev.data.variant;if(!v)return;
       qa('.gmc-pe__sv').forEach(function(p){
@@ -161,7 +161,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
           var m=new Intl.NumberFormat(undefined,{style:'currency',currency:GMC.money}).format(d/100);p.textContent=p.dataset.text+' '+m+' ('+pct+'%)';p.hidden=false;}else{p.hidden=true;}
       });
     });
-  }
+  });
 })();
 /* ---- price inside the add-to-cart button + quantity next to it ---- */
 (function(){

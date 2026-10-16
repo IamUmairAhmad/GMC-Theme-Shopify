@@ -45,7 +45,7 @@
     document.querySelectorAll('[data-gmc-urg]').forEach(function(el){if(!d){el.hidden=true;return;}var th=+el.dataset.threshold;
       if(d.q!==null&&d.q>0&&d.q<=th){el.textContent='🔥 Only '+d.q+' left in stock — order soon';el.hidden=false;}
       else if(d.a&&el.dataset.fallback){el.textContent=el.dataset.fallback;el.hidden=false;}else{el.hidden=true;}});}
-  if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;upd(v?v.id:null);});}
+  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;upd(v?v.id:null);});});
 })();
 document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
 {% schema %}
