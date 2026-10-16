@@ -106,11 +106,11 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | ID | Missing feature | Pri |
 |---|---|---|
 | TS-01 ✅ | **Animation controls**: repeat on scroll, duration, initial delay, children delay, start opacity / X / Y / zoom. | P2 |
-| TS-02 | **Typography**: heading and body line-height and letter-spacing. | P3 |
-| TS-03 | **Link and action button hover effects** (glow / centre / left / arrow). | P3 |
+| TS-02 ✅ | **Typography**: heading and body line-height and letter-spacing. | P3 |
+| TS-03 ✅ | **Link and action button hover effects** (glow / centre / left / arrow). | P3 |
 | TS-04 ✅ | **Variant pills** accent colour + bold text; **Variant dropdown** styling group (scheme, border, overlay, hover, radius, shadow). | P2 |
 | TS-05 ✅ | **Product cards**: badge position, push-to-side, **custom badges from tags** (`custom-badge-…`), sale badge text and discount icon, title line limit, add-button style, accent icon style. | P1 |
-| TS-06 | **Scrollbar** style, colours, width; **custom cursor** image. | P3 |
+| TS-06 ✅ | **Scrollbar** style, colours, width; **custom cursor** image. | P3 |
 | TS-07 ✅ | Secondary logo and mobile logo width. | P2 |
 
 ## 9. Templates
@@ -278,7 +278,7 @@ Most differences are colour-scheme names (Shrine uses fixed accent / background 
 | GS-01 ✅ | Separate **colour scheme choice for product cards, collection cards and blog cards** (cards can differ from the section background). | P2 |
 | GS-02 ✅ | Product-card **badge position "top centre"**, **title line limit** (unlimited / 1 / 2 / 3), **add button primary or secondary**. Part of DP-04. | P2 |
 | GS-03 | Sale and sold-out **badge colour scheme** choice, accent-icon colour (accent 1 / 2 / outline), variant-pill accent colour. Part of TS-04 / TS-05. | P3 |
-| GS-04 | **Arrow hover effect** for link and action buttons. Part of TS-03. | P3 |
+| GS-04 ✅ | **Arrow hover effect** for link and action buttons. Part of TS-03. | P3 |
 
 ## 23. Fourteenth pass: editor setting types
 Shrine's sections use two editor controls that ours never use:
@@ -307,5 +307,5 @@ Counted help text in the section schemas. Shrine: 21% of settings carry a help l
 Identical to ours (title, description, canonical, theme colour, preconnect, font preload, social share tags for Open Graph and Twitter, price tags for product shares). Only differences:
 | ID | Item | Pri |
 |---|---|---|
-| SE-01 | `noscript` fallback so the page stays readable without JavaScript (hidden-until-animated content shows). | P3 |
-| BX-06 | Beyond Shrine: neither theme adds **Organization** and **site-search** structured data on the home page; we could. Helps Google brand and sitelink results. | P3 |
+| SE-01 ✅ | `noscript` fallback so the page stays readable without JavaScript (hidden-until-animated content shows). | P3 |
+| BX-06 ✅ | Beyond Shrine: neither theme adds **Organization** and **site-search** structured data on the home page; we could. Helps Google brand and sitelink results. | P3 |

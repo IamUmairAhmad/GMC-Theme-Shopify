@@ -2478,6 +2478,119 @@
     ]
   },
   {
+    "name": "GMC: Typography & effects",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Line height and letter spacing"
+      },
+      {
+        "type": "range",
+        "id": "gmc_lh_body",
+        "min": 100,
+        "max": 200,
+        "step": 5,
+        "unit": "%",
+        "label": "Body line height (100 = theme default)",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "gmc_lh_heading",
+        "min": 100,
+        "max": 200,
+        "step": 5,
+        "unit": "%",
+        "label": "Heading line height (100 = theme default)",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "gmc_ls_body",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "/100 em",
+        "label": "Body letter spacing",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_ls_heading",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "/100 em",
+        "label": "Heading letter spacing",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Button and link hover"
+      },
+      {
+        "type": "select",
+        "id": "gmc_link_hover",
+        "label": "Hover effect",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "glow",
+            "label": "Glow"
+          },
+          {
+            "value": "lift",
+            "label": "Lift"
+          },
+          {
+            "value": "spread",
+            "label": "Letter spread"
+          },
+          {
+            "value": "arrow",
+            "label": "Arrow slide"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "header",
+        "content": "Scrollbar and cursor"
+      },
+      {
+        "type": "range",
+        "id": "gmc_scroll_w",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "label": "Scrollbar width (0 = browser default)",
+        "default": 0
+      },
+      {
+        "type": "color",
+        "id": "gmc_scroll_thumb",
+        "label": "Scrollbar thumb",
+        "default": "#888888"
+      },
+      {
+        "type": "color",
+        "id": "gmc_scroll_track",
+        "label": "Scrollbar track",
+        "default": "#eeeeee"
+      },
+      {
+        "type": "image_picker",
+        "id": "gmc_cursor",
+        "label": "Custom cursor image",
+        "info": "Small PNG, 32x32 recommended."
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.brand_information.name",
     "settings": [
       {
