@@ -1,0 +1,17 @@
+{%- comment -%} GMC Theme: footer trust row, icon lines and custom text (original code) {%- endcomment -%}
+{%- if settings.gmc_footer_trust or settings.gmc_footer_lines != blank or settings.gmc_footer_text != blank -%}
+<div class="gmc-fx page-width">
+  {%- if settings.gmc_footer_lines != blank -%}
+    <ul class="gmc-fx__lines" role="list">
+      {%- assign gl = settings.gmc_footer_lines | newline_to_br | split: '<br />' -%}
+      {%- for ln in gl -%}{%- assign pr = ln | strip | split: '|' -%}{%- if pr.size > 1 -%}<li>{%- render 'gmc-icon', name: pr[0], size: 22 -%}<span>{{ pr[1] | strip | escape }}</span></li>{%- endif -%}{%- endfor -%}
+    </ul>
+  {%- endif -%}
+  {%- if settings.gmc_footer_trust -%}
+    <ul class="list-payment" role="list" style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;padding:0;margin:1.2rem 0 0;list-style:none">
+      {%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}
+    </ul>
+  {%- endif -%}
+  {%- if settings.gmc_footer_text != blank -%}<div class="rte gmc-fx__text">{{ settings.gmc_footer_text }}</div>{%- endif -%}
+</div>
+{%- endif -%}

@@ -225,3 +225,15 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
       .finally(function(){b.disabled=false;});
   });
 })();
+
+/* ---- navigation: [badge] suffix in a menu label becomes a small badge, e.g. "Sale [HOT]" ---- */
+(function(){
+  if(window.GMC&&GMC.accent)document.documentElement.style.setProperty('--gmc-accent',GMC.accent);
+  function run(root){(root||document).querySelectorAll('header a, .header a, .menu-drawer a, footer a').forEach(function(a){
+    if(a.dataset.gmcB)return;var t=a.firstChild&&a.childNodes.length<=3?a.textContent:'';
+    var m=/\s*\[([^\]]{1,12})\]\s*$/.exec(a.textContent);if(!m)return;a.dataset.gmcB=1;
+    var walker=document.createTreeWalker(a,NodeFilter.SHOW_TEXT),n,last=null;while((n=walker.nextNode())){if(/\[[^\]]{1,12}\]\s*$/.test(n.nodeValue))last=n;}
+    if(last){last.nodeValue=last.nodeValue.replace(/\s*\[[^\]]{1,12}\]\s*$/,'');var b=document.createElement('span');b.className='gmc-nav-badge';b.textContent=m[1];last.parentNode.insertBefore(b,last.nextSibling);}
+  });}
+  run();document.addEventListener('shopify:section:load',function(e){run(e.target);});
+})();

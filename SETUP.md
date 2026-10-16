@@ -1,6 +1,6 @@
 # GMC Theme – setup guide
 1. Online Store > Themes > Add theme > Upload zip. Preview before publishing.
-2. **Theme settings > GMC features** controls: free-shipping bar, gift, upsells, popup, zoom, variant style, hover effects, animations, header icons, mega-menu tile, country blocker, cart drawer extras, security.
+2. **Theme settings > GMC: …** (six groups: Product page, Cart drawer, Header/menu/footer, Effects & buttons, Popup & marketing, Security & access) controls: free-shipping bar, gift, upsells, popup, zoom, variant style, hover effects, animations, header icons, mega-menu tile, country blocker, cart drawer extras, security.
 3. **Add sections** in the editor ("Add section" list). Product page: add "Product info blocks" / "Product extra blocks", "Quantity breaks", "Subscription widget".
 4. **Page templates:** create a Page and choose template `advertorial`, `listicle` or `story`. Blog: choose template `blog.gmc` on your blog.
 5. **Any section:** scroll to "GMC extras" to hide on mobile/desktop or add a background image/MP4.

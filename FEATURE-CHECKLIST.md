@@ -39,3 +39,9 @@ Base: country/currency selector in header (Dawn setting) + GMC section.
 ## Testing performed vs. still required
 Performed: Shopify Theme Check (no errors), JSON validity for all config/templates, JS syntax check, headless Chromium smoke test of gmc.js with mocked cart endpoints (swatches, highlight, zoom pan, icon sprite, free-gift add, add-on on submit, duplicate guard, hidden-field injection).
 **Not performed (needs a Shopify preview/live store):** rendering of Liquid sections, theme-editor behavior, real cart/discount responses, subscriptions, Markets/country detection, mobile layout checks, keyboard-navigation pass, app compatibility.
+
+## Theme-wide settings (v1.0.1)
+All GMC options now live in six Theme-settings groups: **GMC: Product page**, **GMC: Cart drawer**, **GMC: Header, menu, footer**, **GMC: Effects & buttons**, **GMC: Popup & marketing**, **GMC: Security & access**.
+Added in this pass: sale badges as real percent/amount off (from the compare-at price), footer layouts (default/centered/divided) + payment row + icon lines + custom text, menu hover styles and `[NEW]`-style menu badges, dropdown styles, 6 button hover effects, 5 entrance-animation styles, scroll-to-top side/shape, popup upgrade (email or offer type, image, exit-intent/scroll/delay triggers, once per visit/day/week, page targeting, real discount code shown after signup), article template `article.gmc` (scroll progress + reading time), quantity-break tiers accept a free gift or paid add-on.
+Reuses base-theme features instead of duplicating: header country/currency selector (Dawn header settings), reveal-on-scroll and hover animations (Dawn Animations group; the GMC entrance styles are an optional extra).
+Partial: "Add to cart buttons in supported sections" – provided as the Add-to-cart button section and the bundle/ATC blocks; not injected into every Dawn section. "Advanced section sliders" – Image & video slider (swipe, autoplay, MP4) plus the base slideshow.

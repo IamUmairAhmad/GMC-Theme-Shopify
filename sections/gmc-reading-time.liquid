@@ -1,0 +1,8 @@
+{%- if article != blank -%}
+  {%- assign words = article.content | strip_html | split: ' ' | size -%}
+  {%- assign mins = words | divided_by: 200 | at_least: 1 -%}
+  <p class="page-width" style="margin:1rem auto 0;text-align:center;opacity:.7;font-size:1.3rem">{{ mins }} min read{% if section.settings.show_updated and article.updated_at != article.published_at %} · Updated {{ article.updated_at | date: '%b %d, %Y' }}{% endif %}</p>
+{%- endif -%}
+{% schema %}
+{"name":"Reading time","tag":"div","settings":[{"type":"checkbox","id":"show_updated","label":"Show last-updated date","default":false}],"enabled_on":{"templates":["article"]},"presets":[{"name":"Reading time"}]}
+{% endschema %}

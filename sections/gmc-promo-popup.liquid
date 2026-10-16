@@ -1,35 +1,68 @@
-{%- comment -%} GMC Theme: promo / email popup (original code). Controlled from Theme settings > GMC features. {%- endcomment -%}
-{%- if settings.gmc_popup_enabled and request.page_type != 'password' -%}
-<div class="gmc-pop" id="gmc-pop" hidden role="dialog" aria-modal="true" aria-labelledby="gmc-pop-h">
-  <div class="gmc-pop__box">
+{%- comment -%} GMC Theme: promo popup (original code). Controlled from Theme settings > GMC features > Promo popup. {%- endcomment -%}
+{%- assign pg = request.page_type -%}
+{%- assign allowed = false -%}
+{%- case settings.gmc_popup_pages -%}
+  {%- when 'all' -%}{%- assign allowed = true -%}
+  {%- when 'index' -%}{%- if pg == 'index' -%}{%- assign allowed = true -%}{%- endif -%}
+  {%- when 'product' -%}{%- if pg == 'product' -%}{%- assign allowed = true -%}{%- endif -%}
+  {%- when 'collection' -%}{%- if pg == 'collection' -%}{%- assign allowed = true -%}{%- endif -%}
+  {%- when 'not_cart' -%}{%- if pg != 'cart' -%}{%- assign allowed = true -%}{%- endif -%}
+{%- endcase -%}
+{%- if settings.gmc_popup_enabled and pg != 'password' and pg != 'customers/login' and allowed -%}
+<div class="gmc-pop" id="gmc-pop" hidden role="dialog" aria-modal="true" aria-labelledby="gmc-pop-h" data-trigger="{{ settings.gmc_popup_trigger }}" data-delay="{{ settings.gmc_popup_delay | times: 1000 }}" data-freq="{{ settings.gmc_popup_freq }}">
+  <div class="gmc-pop__box{% if settings.gmc_popup_image != blank %} gmc-pop__box--img{% endif %}">
     <button type="button" class="gmc-pop__x" aria-label="Close">×</button>
-    <h2 id="gmc-pop-h">{{ settings.gmc_popup_heading | escape }}</h2>
-    <p>{{ settings.gmc_popup_text | escape }}</p>
-    {%- form 'customer', class: 'gmc-pop__form' -%}
-      <input type="hidden" name="contact[tags]" value="newsletter,popup">
-      <input type="email" name="contact[email]" required placeholder="Email address" autocomplete="email" class="field__input" style="padding:1rem">
-      <button class="button" type="submit">Subscribe</button>
-    {%- endform -%}
+    {%- if settings.gmc_popup_image != blank -%}<div class="gmc-pop__im">{{ settings.gmc_popup_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: '' }}</div>{%- endif -%}
+    <div class="gmc-pop__body">
+      <h2 id="gmc-pop-h">{{ settings.gmc_popup_heading | escape }}</h2>
+      <p>{{ settings.gmc_popup_text | escape }}</p>
+      {%- if settings.gmc_popup_mode == 'email' -%}
+        {%- form 'customer', class: 'gmc-pop__form', id: 'gmc-pop-form' -%}
+          {%- if form.posted_successfully? -%}
+            <p role="status" style="font-weight:700" data-gmc-posted>Thanks for subscribing!{% if settings.gmc_popup_code != blank %} Your code: <span class="gmc-pop__code">{{ settings.gmc_popup_code | escape }}</span>{% endif %}</p>
+          {%- else -%}
+            {%- if form.errors -%}<p role="alert" style="color:#b91c1c;margin:0">{{ form.errors | default_errors }}</p>{%- endif -%}
+            <input type="hidden" name="contact[tags]" value="newsletter,popup">
+            <label class="visually-hidden" for="gmc-pop-email">Email address</label>
+            <input type="email" id="gmc-pop-email" name="contact[email]" required placeholder="Email address" autocomplete="email" class="field__input" style="padding:1rem">
+            <button class="button" type="submit">Subscribe</button>
+          {%- endif -%}
+        {%- endform -%}
+      {%- elsif settings.gmc_popup_link != blank -%}
+        <a class="button" href="{{ settings.gmc_popup_link }}">{{ settings.gmc_popup_btn | escape }}</a>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 <style>
-  .gmc-pop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:grid;place-items:center;padding:1.5rem}
-  .gmc-pop[hidden]{display:none}
-  .gmc-pop__box{position:relative;background:rgb(var(--color-background));color:rgb(var(--color-foreground));max-width:420px;width:100%;padding:2.5rem 2rem;border-radius:14px;text-align:center}
-  .gmc-pop__x{position:absolute;top:.6rem;right:1rem;background:none;border:0;font-size:2.4rem;cursor:pointer;color:inherit}
-  .gmc-pop__form{display:grid;gap:.8rem;margin-top:1.2rem}
+  .gmc-pop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:grid;place-items:center;padding:1.5rem}.gmc-pop[hidden]{display:none}
+  .gmc-pop__box{position:relative;background:rgb(var(--color-background));color:rgb(var(--color-foreground));max-width:440px;width:100%;border-radius:14px;overflow:hidden;text-align:center}
+  .gmc-pop__box--img{max-width:760px;display:grid;grid-template-columns:1fr 1fr}.gmc-pop__im img{width:100%;height:100%;object-fit:cover;display:block}
+  .gmc-pop__body{padding:2.5rem 2rem}.gmc-pop__body h2{margin:0 0 .6rem}.gmc-pop__body p{margin:0 0 1rem}
+  .gmc-pop__x{position:absolute;top:.4rem;right:.9rem;background:none;border:0;font-size:2.6rem;cursor:pointer;color:inherit;z-index:2;line-height:1}
+  .gmc-pop__form{display:grid;gap:.8rem;margin-top:1rem}.gmc-pop__code{display:inline-block;padding:.2rem 1rem;border:2px dashed currentColor;border-radius:6px;letter-spacing:.08em}
+  @media(max-width:749px){.gmc-pop__box--img{grid-template-columns:1fr}.gmc-pop__im{max-height:180px}}
 </style>
 <script>
-  (function(){var k='gmc_pop_seen',p=document.getElementById('gmc-pop');if(!p)return;
-  try{if(sessionStorage.getItem(k)||localStorage.getItem(k)==='sub')return;}catch(e){}
-  function close(){p.hidden=true;if(prev&&prev.focus)prev.focus();try{sessionStorage.setItem(k,'1');}catch(e){}}
-  var prev=null;setTimeout(function(){prev=document.activeElement;p.hidden=false;p.querySelector('.gmc-pop__x').focus();},{{ settings.gmc_popup_delay | times: 1000 }});
+  (function(){var p=document.getElementById('gmc-pop');if(!p)return;var K='gmc_pop_seen',F=p.dataset.freq,posted=p.querySelector('[data-gmc-posted]');
+  var days={session:0,day:1,week:7}[F]||0,now=Date.now();
+  function seen(){try{if(localStorage.getItem(K)==='sub')return true;if(days===0)return !!sessionStorage.getItem(K);var t=+localStorage.getItem(K+'_t');return t&&now-t<days*86400000;}catch(e){return false;}}
+  function mark(){try{sessionStorage.setItem(K,'1');localStorage.setItem(K+'_t',Date.now());}catch(e){}}
+  var prev=null;
+  function open(){if(!p.hidden)return;prev=document.activeElement;p.hidden=false;var x=p.querySelector('.gmc-pop__x');if(x)x.focus();}
+  function close(){p.hidden=true;mark();if(prev&&prev.focus)prev.focus();}
   p.querySelector('.gmc-pop__x').addEventListener('click',close);
   p.addEventListener('click',function(e){if(e.target===p)close();});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
-  p.querySelector('form').addEventListener('submit',function(){try{localStorage.setItem(k,'sub');}catch(e){}});})();
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!p.hidden)close();});
+  var f=p.querySelector('form');if(f)f.addEventListener('submit',function(){try{localStorage.setItem(K,'sub');}catch(e){}});
+  if(posted){open();return;}
+  if(seen()||(window.Shopify&&Shopify.designMode))return;
+  var tr=p.dataset.trigger,fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if(tr==='exit'&&fine){document.addEventListener('mouseout',function h(e){if(!e.relatedTarget&&e.clientY<=0){document.removeEventListener('mouseout',h);open();}});}
+  else if(tr==='scroll'){addEventListener('scroll',function h(){if(scrollY>(document.documentElement.scrollHeight-innerHeight)*.5){removeEventListener('scroll',h);open();}},{passive:true});}
+  else{setTimeout(open,+p.dataset.delay||8000);}})();
 </script>
 {%- endif -%}
 {% schema %}
-{ "name": "Promo popup", "settings": [{"type":"paragraph","content":"Configure under Theme settings > GMC features."}] }
+{ "name": "Promo popup", "settings": [{"type":"paragraph","content":"Configure under Theme settings > GMC features > Promo popup."}] }
 {% endschema %}

@@ -48,3 +48,26 @@ label.gmc-swatch{width:3.6rem;height:3.6rem;padding:0!important;border-radius:50
 /* accessibility: visible focus + reduced motion for GMC components */
 .gmc-tabs__btn:focus-visible,.gmc-pe__code:focus-visible,.gmc-pe__link:focus-visible,.gmc-ms__b:focus-visible,#gmc-top:focus-visible,#gmc-mp-btn:focus-visible,.gmc-is__b:focus-visible,.gmc-vp__play:focus-visible,.gmc-pop__x:focus-visible,.gmc-qb__opt:focus-within,.gmc-sub__o:focus-within,.gmc-bd__c:focus-within{outline:2px solid rgb(var(--color-foreground));outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.gmc-zoomwrap img,.gmc-hover-lift .button,.gmc-hover-grow .button{transition:none!important}.gmc-hover-pulse .button:hover{animation:none}.gmc-ph__l{transform:none!important}}
+
+/* more button hover effects */
+.gmc-hover-glow .button{transition:box-shadow .25s}.gmc-hover-glow .button:hover{box-shadow:0 0 0 3px rgba(var(--color-button),.25),0 0 18px rgba(var(--color-button),.55)}
+.gmc-hover-slide .button{position:relative;overflow:hidden;z-index:0}.gmc-hover-slide .button:before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.22);transform:translateX(-101%);transition:transform .3s;z-index:-1}.gmc-hover-slide .button:hover:before{transform:none}
+/* entrance animation styles */
+.gmc-anim-fade .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:none}
+.gmc-anim-zoom .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:scale(.96)}
+.gmc-anim-left .shopify-section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group){transform:translateX(-28px)}
+.gmc-anim-slow .shopify-section{transition-duration:1.1s!important}
+/* navigation */
+.gmc-nav-underline .header__menu-item span,.gmc-nav-underline .list-menu__item--link{background:linear-gradient(currentColor,currentColor) 0 100%/0 2px no-repeat;transition:background-size .25s}
+.gmc-nav-underline .header__menu-item:hover span,.gmc-nav-underline .list-menu__item--link:hover{background-size:100% 2px;text-decoration:none}
+.gmc-nav-pill .header__menu-item{border-radius:99px;transition:background .2s}.gmc-nav-pill .header__menu-item:hover{background:rgba(var(--color-foreground),.08)}
+.gmc-nav-badge{display:inline-block;margin-left:.5rem;padding:.1rem .6rem;border-radius:99px;font-size:1rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--gmc-accent,#16a34a);color:#fff;vertical-align:middle}
+/* enhanced dropdowns */
+.gmc-dd-rounded .select__select,.gmc-dd-rounded .field__input{border-radius:12px}
+.gmc-dd-underline .select__select{border-radius:0}
+.gmc-dd-rounded .select__select:hover,.gmc-dd-underline .select__select:hover{background-color:rgba(var(--color-foreground),.04)}
+.gmc-dd-rounded .select__select:focus-visible,.gmc-dd-underline .select__select:focus-visible{outline:2px solid rgb(var(--color-foreground));outline-offset:2px}
+/* footer */
+.gmc-fx{padding:2rem 0 1rem;text-align:center}.gmc-fx__lines{list-style:none;margin:0;padding:0;display:flex;gap:1.6rem 3rem;flex-wrap:wrap;justify-content:center}.gmc-fx__lines li{display:flex;gap:.7rem;align-items:center}.gmc-fx__text{margin-top:1.2rem;font-size:1.3rem;opacity:.8}
+.gmc-ftrlayout-centered .footer__blocks-wrapper{text-align:center}.gmc-ftrlayout-centered .footer-block__details-content{align-items:center}.gmc-ftrlayout-centered .footer__list-social{justify-content:center}
+.gmc-ftrlayout-divided .footer-block{padding:0 2rem;border-left:1px solid rgba(var(--color-foreground),.12)}.gmc-ftrlayout-divided .footer-block:first-child{border-left:0}
