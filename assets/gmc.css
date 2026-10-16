@@ -153,3 +153,11 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 .gmc-gal__badge{position:absolute;z-index:3;pointer-events:none}.gmc-gal__badge img{width:100%;height:auto;display:block}
 .gmc-gal__badge--s{width:7rem}.gmc-gal__badge--m{width:10rem}.gmc-gal__badge--l{width:14rem}
 .gmc-gal__badge--top_left{top:1rem;left:1rem}.gmc-gal__badge--top_right{top:1rem;right:1rem}.gmc-gal__badge--bottom_left{bottom:1rem;left:1rem}.gmc-gal__badge--bottom_right{bottom:1rem;right:1rem}
+
+/* price style + accordion extras */
+.gmc-pr .price-item--sale,.gmc-pr .price-item--regular{color:var(--gmc-pc,inherit)}.gmc-pr .price__sale .price-item--regular,.gmc-pr s.price-item{color:var(--gmc-cc,inherit)}
+.gmc-pr--sale_first .price__sale{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:.8rem;flex-wrap:wrap}.gmc-pr--sale_first .price__sale>*{order:0}
+.gmc-pr--compare_first .price__sale{display:flex;gap:.8rem;flex-wrap:wrap;align-items:baseline}
+.gmc-acc--plus summary>svg.icon-caret{display:none}.gmc-acc--plus summary:after{content:"+";font-size:2.4rem;line-height:1;margin-left:auto}.gmc-acc--plus details[open] summary:after{content:"\2212"}
+.gmc-acc--notop{border-top:0!important}.gmc-acc--notop details{border-top:0!important}
+.gmc-acc--filled .summary__title svg{fill:currentColor}

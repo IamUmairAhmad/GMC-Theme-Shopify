@@ -25,9 +25,9 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | PP-13 ✅ | **Clickable discount**: auto-apply a code with non-applied and applied states (text, icon, colours). Ours exists but with fewer controls. | P2 |
 | PP-14 ✅ | **Content blocks**: text-with-icon (3 lines with container, border, background), image block (width, mobile full, radius), video block (loop, muted autoplay, play/pause, sound button, timeline, ripple), urgency text, emoji benefits, payment badges with chosen icons. | P2 |
 | PP-15 ✅ | **Gallery options**: thumbnail-slider layout, show variant image first, thumbnail counts, mobile thumbnails, mobile slide spacing and next-slide preview, pagination (numeric / dots under / dots overlay), hide arrows, dots colour, **trust badge overlay** (image, 4 positions, 3 sizes), separate mobile and desktop padding. | P2 |
-| PP-16 | Per-block **margins** (top/bottom) on every product block, and **inline price layout / colours** (price first or second, price and compare colours, hide sale badge). | P3 |
-| PP-17 | Collapsible tab extras: plus/caret icon, heading size, custom or filled icon, top border toggle. | P3 |
-| PP-18 | Same block set available inside the **Featured product** section. | P2 |
+| PP-16 ✅ | Per-block **margins** (top/bottom) on every product block, and **inline price layout / colours** (price first or second, price and compare colours, hide sale badge). | P3 |
+| PP-17 ✅ | Collapsible tab extras: plus/caret icon, heading size, custom or filled icon, top border toggle. | P3 |
+| PP-18 ✅ | Same block set available inside the **Featured product** section. | P2 |
 
 ## 2. Cart drawer depth (we have the 9 blocks, but each is shallower)
 

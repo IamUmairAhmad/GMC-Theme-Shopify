@@ -88,6 +88,7 @@
             {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
             {%- for block in section.blocks -%}
+              {%- if block.settings.gmc_mt > 0 -%}<div class="gmc-sp" style="height:{{ block.settings.gmc_mt }}px"></div>{%- endif -%}
               {%- case block.type -%}
                 {%- when '@app' -%}
                   {% render block %}
@@ -108,11 +109,12 @@
                     </a>
                   </div>
                 {%- when 'price' -%}
-                  <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                  <div id="price-{{ section.id }}" class="gmc-pr gmc-pr--{{ block.settings.gmc_price_order }}" style="{% if block.settings.gmc_price_color != blank %}--gmc-pc:{{ block.settings.gmc_price_color }};{% endif %}{% if block.settings.gmc_compare_color != blank %}--gmc-cc:{{ block.settings.gmc_compare_color }};{% endif %}" role="status" {{ block.shopify_attributes }}>
+                    {%- assign gmc_show_sb = true -%}{%- if block.settings.gmc_hide_sale_badge -%}{%- assign gmc_show_sb = false -%}{%- endif -%}
                     {%- render 'price',
                       product: product,
                       use_variant: true,
-                      show_badges: true,
+                      show_badges: gmc_show_sb,
                       price_class: 'price--large'
                     -%}
                   </div>
@@ -212,12 +214,12 @@
                 {%- when 'custom_liquid' -%}
                   {{ block.settings.custom_liquid }}
                 {%- when 'collapsible_tab' -%}
-                  <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
+                  <div class="product__accordion accordion quick-add-hidden gmc-acc{% if block.settings.gmc_arrow == 'plus' %} gmc-acc--plus{% endif %}{% if block.settings.gmc_no_top %} gmc-acc--notop{% endif %}{% if block.settings.gmc_icon_filled %} gmc-acc--filled{% endif %}" {{ block.shopify_attributes }}>
                     <details id="Details-{{ block.id }}-{{ section.id }}">
                       <summary>
                         <div class="summary__title">
-                          {% render 'icon-accordion', icon: block.settings.icon %}
-                          <h2 class="h4 accordion__title inline-richtext">
+                          {% if block.settings.gmc_icon_name != blank %}{% render 'gmc-icon', name: block.settings.gmc_icon_name, size: 22 %}{% else %}{% render 'icon-accordion', icon: block.settings.icon %}{% endif %}
+                          <h2 class="{{ block.settings.gmc_head_size }} accordion__title inline-richtext">
                             {{ block.settings.heading | default: block.settings.page.title | escape }}
                           </h2>
                         </div>
@@ -690,6 +692,7 @@
                 {%- when 'icon-with-text' -%}
                   {% render 'icon-with-text', block: block %}
               {%- endcase -%}
+              {%- if block.settings.gmc_mb > 0 -%}<div class="gmc-sp" style="height:{{ block.settings.gmc_mb }}px"></div>{%- endif -%}
             {%- endfor -%}
             <a href="{{ product.url }}" class="link product__view-details animate-arrow">
               {{ 'products.product.view_full_details' | t }}
@@ -793,18 +796,118 @@
           ],
           "default": "body",
           "label": "t:sections.main-product.blocks.text.settings.text_style.label"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
     {
       "type": "title",
       "name": "t:sections.main-product.blocks.title.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
+        }
+      ]
     },
     {
       "type": "price",
       "name": "t:sections.main-product.blocks.price.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Price style"
+        },
+        {
+          "type": "select",
+          "id": "gmc_price_order",
+          "label": "Order",
+          "options": [
+            {
+              "value": "sale_first",
+              "label": "Sale price first"
+            },
+            {
+              "value": "compare_first",
+              "label": "Original price first"
+            }
+          ],
+          "default": "compare_first"
+        },
+        {
+          "type": "color",
+          "id": "gmc_price_color",
+          "label": "Price colour"
+        },
+        {
+          "type": "color",
+          "id": "gmc_compare_color",
+          "label": "Original price colour"
+        },
+        {
+          "type": "checkbox",
+          "id": "gmc_hide_sale_badge",
+          "label": "Hide sale badge",
+          "default": false
+        }
+      ]
     },
     {
       "type": "sku",
@@ -830,6 +933,26 @@
           ],
           "default": "body",
           "label": "t:sections.main-product.blocks.sku.settings.text_style.label"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -872,13 +995,55 @@
           "id": "show_inventory_quantity",
           "label": "t:sections.main-product.blocks.inventory.settings.show_inventory_quantity.label",
           "default": true
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
     {
       "type": "quantity_selector",
       "name": "t:sections.main-product.blocks.quantity_selector.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
+        }
+      ]
     },
     {
       "type": "variant_picker",
@@ -1077,6 +1242,26 @@
           "id": "full_width_dropdown",
           "label": "Full-width dropdowns",
           "default": false
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -1129,13 +1314,55 @@
           "default": true,
           "label": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.label",
           "info": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.info"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
     {
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
+        }
+      ]
     },
     {
       "type": "share",
@@ -1147,6 +1374,26 @@
           "id": "share_label",
           "label": "t:sections.main-product.blocks.share.settings.text.label",
           "default": "t:sections.main-product.blocks.share.settings.text.default"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -1159,6 +1406,26 @@
           "id": "custom_liquid",
           "label": "t:sections.custom-liquid.settings.custom_liquid.label",
           "info": "t:sections.custom-liquid.settings.custom_liquid.info"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -1202,6 +1469,26 @@
           "id": "open_by_default",
           "label": "t:sections.disclosures.settings.open_by_default.label",
           "default": false
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -1408,6 +1695,84 @@
           "type": "page",
           "id": "page",
           "label": "t:sections.main-product.blocks.collapsible_tab.settings.page.label"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Tab style"
+        },
+        {
+          "type": "select",
+          "id": "gmc_arrow",
+          "label": "Open/close icon",
+          "options": [
+            {
+              "value": "caret",
+              "label": "Caret"
+            },
+            {
+              "value": "plus",
+              "label": "Plus / minus"
+            }
+          ],
+          "default": "caret"
+        },
+        {
+          "type": "select",
+          "id": "gmc_head_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h5",
+              "label": "Small"
+            },
+            {
+              "value": "h4",
+              "label": "Medium"
+            },
+            {
+              "value": "h3",
+              "label": "Large"
+            }
+          ],
+          "default": "h4"
+        },
+        {
+          "type": "text",
+          "id": "gmc_icon_name",
+          "label": "Custom icon name",
+          "info": "Icon from the theme library. Replaces the preset icon."
+        },
+        {
+          "type": "checkbox",
+          "id": "gmc_icon_filled",
+          "label": "Filled icon",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "gmc_no_top",
+          "label": "Hide top border",
+          "default": false
         }
       ]
     },
@@ -1425,6 +1790,26 @@
           "id": "page",
           "type": "page",
           "label": "t:sections.main-product.blocks.popup.settings.page.label"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -1436,6 +1821,26 @@
         {
           "type": "paragraph",
           "content": "t:sections.main-product.blocks.rating.settings.paragraph.content"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -1708,6 +2113,26 @@
           "id": "enable_quick_add",
           "label": "t:sections.main-product.blocks.complementary_products.settings.enable_quick_add.label",
           "default": false
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     },
@@ -2331,6 +2756,26 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        },
+        {
+          "type": "range",
+          "id": "gmc_mt",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "gmc_mb",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     }

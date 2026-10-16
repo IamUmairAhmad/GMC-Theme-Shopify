@@ -9,12 +9,26 @@
         },
         "price": {
           "type": "price",
-          "settings": {}
+          "settings": {
+            "gmc_price_order": "sale_first",
+            "gmc_price_color": "#aa0000",
+            "gmc_mt": 10
+          }
+        },
+        "tab": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Details",
+            "content": "<p>Hello</p>",
+            "gmc_arrow": "plus",
+            "gmc_no_top": true
+          }
         }
       },
       "block_order": [
         "title",
-        "price"
+        "price",
+        "tab"
       ],
       "settings": {
         "gmc_pagination": "dots_under",
@@ -108,11 +122,45 @@
         "cd"
       ],
       "settings": {}
+    },
+    "fp": {
+      "type": "featured-product",
+      "blocks": {
+        "t": {
+          "type": "title",
+          "settings": {}
+        },
+        "i": {
+          "type": "inventory",
+          "settings": {}
+        },
+        "c": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "FP tab",
+            "content": "<p>x</p>"
+          }
+        },
+        "d": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "t",
+        "i",
+        "c",
+        "d"
+      ],
+      "settings": {
+        "product": "gmc-test-tee"
+      }
     }
   },
   "order": [
     "main",
     "ex",
-    "more"
+    "more",
+    "fp"
   ]
 }
