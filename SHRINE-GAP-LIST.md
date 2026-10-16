@@ -292,7 +292,7 @@ Shrine's sections use two editor controls that ours never use:
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| PS-01 | **Ready-made starter content** (sample blocks and text) for the add-section presets of: Bundle deals, Featured on, Instagram stories (Stories), Image & video slider, 3D parallax hero, Shoppable image, TikTok videos. Quick fix, no new logic. | P1 |
+| PS-01 ✅ done | **Ready-made starter content** (sample blocks and text) for the add-section presets of: Bundle deals, Featured on, Instagram stories (Stories), Image & video slider, 3D parallax hero, Shoppable image, TikTok videos. Quick fix, no new logic. | P1 |
 
 ## 25. Sixteenth pass: merchant guidance inside the editor
 Counted help text in the section schemas. Shrine: 21% of settings carry a help line and there are 72 explanatory notes. Ours (GMC sections only): 13% and 8 notes.
