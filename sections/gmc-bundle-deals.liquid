@@ -2,28 +2,36 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add products as blocks.' -%}{%- endif -%}
-<div class="page-width gmc-bd {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-bd-{{ section.id }}">
+<div class="page-width gmc-bd gmc-bd--{{ section.settings.layout }} {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-bd-{{ section.id }}" data-dtype="{{ section.settings.discount_type }}" data-dpct="{{ section.settings.discount_percent }}" data-dfix="{{ section.settings.discount_fixed | times: 100 | round }}" data-code="{{ section.settings.discount_code | escape }}" data-skip="{{ section.settings.skip_cart }}" data-save="{{ section.settings.save_text | default: 'You save [saved]' | escape }}">
   {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div class="gmc-bd__g">{%- for block in section.blocks -%}{%- assign p = block.settings.product -%}{%- if p != blank -%}
-    <div class="gmc-bd__c" {{ block.shopify_attributes }}>
+    <div class="gmc-bd__c" {{ block.shopify_attributes }} data-pct="{{ block.settings.percent }}">
       {%- assign pv = p.selected_or_first_available_variant -%}
       <label class="gmc-bd__chk"><input type="checkbox" checked data-id="{{ pv.id }}" data-price="{{ pv.price }}"><span class="visually-hidden">Include {{ p.title | escape }}</span></label>
-      {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 300 | image_tag: loading: 'lazy' }}{%- endif -%}
+      {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: p.featured_image.alt | default: p.title }}{%- endif -%}
       <a href="{{ p.url }}" style="text-decoration:none;color:inherit">{{ p.title | escape }}</a>
       {%- if p.has_only_default_variant == false -%}
         <select class="select__select gmc-bd__var" aria-label="Variant for {{ p.title | escape }}">
           {%- for variant in p.variants -%}<option value="{{ variant.id }}" data-price="{{ variant.price }}" {% if variant.id == pv.id %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title | escape }}{% unless variant.available %} (sold out){% endunless %}</option>{%- endfor -%}
         </select>
       {%- endif -%}
-      <strong class="gmc-bd__p">{{ pv.price | money }}</strong></div>{%- endif -%}{%- endfor -%}</div>
-  <div class="gmc-bd__f"><span>Total: <strong class="gmc-bd__tot"></strong>{% if section.settings.discount != blank %} <em>{{ section.settings.discount | escape }}</em>{% endif %}</span><button class="button" type="button" id="gmc-bd-btn-{{ section.id }}">{{ section.settings.button | escape }}</button></div>
+      <span class="gmc-bd__pw"><s class="gmc-bd__old" hidden></s> <strong class="gmc-bd__p">{{ pv.price | money }}</strong></span></div>{%- endif -%}{%- endfor -%}</div>
+  <div class="gmc-bd__f"><span>{{ section.settings.total_text | default: 'Total' | escape }}: <s class="gmc-bd__totold" hidden></s> <strong class="gmc-bd__tot"></strong>{% if section.settings.discount != blank %} <em>{{ section.settings.discount | escape }}</em>{% endif %}<small class="gmc-bd__sv" style="display:block;color:{{ settings.gmc_accent }};font-weight:600" hidden></small></span><button class="button" type="button" id="gmc-bd-btn-{{ section.id }}">{{ section.settings.button | escape }}</button></div>
+  <p class="gmc-bd__err" role="alert" hidden style="color:#b91c1c"></p>
 </div>
-<style>.gmc-bd{padding:36px 0}.gmc-bd__g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.5rem 0}.gmc-bd__c{display:flex;flex-direction:column;gap:.4rem;text-align:center;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:1rem;cursor:pointer;position:relative}.gmc-bd__chk{position:absolute;top:.6rem;left:.6rem}.gmc-bd__c:has(.gmc-bd__chk input:not(:checked)){opacity:.5}.gmc-bd__var{width:100%}.gmc-bd__f{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}</style>
-<script>(function(){var w=document.getElementById('gmc-bd-{{ section.id }}');if(!w)return;var cur={{ cart.currency.iso_code | json }};
-function calc(){var t=0;w.querySelectorAll('input:checked').forEach(function(i){t+=+i.dataset.price;});w.querySelector('.gmc-bd__tot').textContent=new Intl.NumberFormat(undefined,{style:'currency',currency:cur}).format(t/100);}
-w.addEventListener('change',function(e){var t=e.target;if(t.classList.contains('gmc-bd__var')){var c=t.closest('.gmc-bd__c'),o=t.options[t.selectedIndex],i=c.querySelector('input[type=checkbox]');i.dataset.id=o.value;i.dataset.price=o.dataset.price;c.querySelector('.gmc-bd__p').textContent=new Intl.NumberFormat(undefined,{style:'currency',currency:cur}).format(o.dataset.price/100);}calc();});calc();
-var bdBtn=document.getElementById('gmc-bd-btn-{{ section.id }}');bdBtn.addEventListener('click',function(){if(bdBtn.disabled)return;var items=[];w.querySelectorAll('input:checked').forEach(function(i){items.push({id:+i.dataset.id,quantity:1});});if(!items.length)return;
-fetch({{ routes.cart_add_url | json }}+'.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})}).then(function(r){if(!r.ok)throw new Error('add failed');location.href={{ routes.cart_url | json }};}).catch(function(){bdBtn.disabled=false;bdBtn.textContent='Could not add — try again';});bdBtn.disabled=true;});})();</script>
+<style>.gmc-bd{padding:36px 0}.gmc-bd__g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.5rem 0}.gmc-bd__c{display:flex;flex-direction:column;gap:.4rem;text-align:center;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:1rem;cursor:pointer;position:relative}.gmc-bd__chk{position:absolute;top:.6rem;left:.6rem}.gmc-bd__c:has(.gmc-bd__chk input:not(:checked)){opacity:.5}.gmc-bd__var{width:100%}.gmc-bd__f{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}.gmc-bd__old,.gmc-bd__totold{opacity:.6}
+.gmc-bd--row .gmc-bd__g{display:flex;align-items:stretch;overflow-x:auto;gap:2.4rem}.gmc-bd--row .gmc-bd__c{flex:1 0 16rem}.gmc-bd--row .gmc-bd__c+.gmc-bd__c:before{content:"+";position:absolute;left:-1.8rem;top:50%;transform:translateY(-50%);font-size:2.2rem;font-weight:700}</style>
+<script>(function(){var w=document.getElementById('gmc-bd-{{ section.id }}');if(!w)return;
+function items(){var a=[];w.querySelectorAll('.gmc-bd__c').forEach(function(c){var i=c.querySelector('input[type=checkbox]');a.push({c:c,i:i,on:i.checked,p:+i.dataset.price,pct:+c.dataset.pct||0});});return a;}
+function calc(){var it=items(),orig=0,sub=0,dis=false;
+  it.forEach(function(x){var np=Math.round(x.p*(100-x.pct)/100);var old=x.c.querySelector('.gmc-bd__old'),pe=x.c.querySelector('.gmc-bd__p');pe.textContent=gmcMoney(np);old.hidden=!(x.pct>0);if(x.pct>0)old.textContent=gmcMoney(x.p);if(x.on){orig+=x.p;sub+=np;}});
+  var t=w.dataset.dtype,tot=sub;if(t==='percent')tot=Math.round(sub*(100-(+w.dataset.dpct||0))/100);else if(t==='fixed')tot=Math.max(0,sub-(+w.dataset.dfix||0));
+  w.querySelector('.gmc-bd__tot').textContent=gmcMoney(tot);var o=w.querySelector('.gmc-bd__totold'),sv=w.querySelector('.gmc-bd__sv');o.hidden=!(orig>tot);if(orig>tot)o.textContent=gmcMoney(orig);sv.hidden=!(orig>tot);if(orig>tot)sv.textContent=(w.dataset.save||'').replace('[saved]',gmcMoney(orig-tot));}
+w.addEventListener('change',function(e){var t=e.target;if(t.classList.contains('gmc-bd__var')){var c=t.closest('.gmc-bd__c'),o=t.options[t.selectedIndex],i=c.querySelector('input[type=checkbox]');i.dataset.id=o.value;i.dataset.price=o.dataset.price;}calc();});calc();
+var bdBtn=document.getElementById('gmc-bd-btn-{{ section.id }}'),err=w.querySelector('.gmc-bd__err');bdBtn.addEventListener('click',function(){if(bdBtn.disabled)return;var list=[];w.querySelectorAll('input:checked').forEach(function(i){list.push({id:+i.dataset.id,quantity:1,properties:{_bundle:w.id}});});if(!list.length)return;err.hidden=true;bdBtn.disabled=true;
+fetch({{ routes.cart_add_url | json }}+'.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:list})}).then(function(r){if(!r.ok)throw new Error('add failed');return w.dataset.code?fetch('/discount/'+encodeURIComponent(w.dataset.code)).catch(function(){}):null;})
+.then(function(){if(w.dataset.skip==='true'){location.href='/checkout';return;}return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(sec){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents){cd.renderContents({sections:sec});bdBtn.disabled=false;}else{location.href={{ routes.cart_url | json }};}});})
+.catch(function(){bdBtn.disabled=false;err.textContent='Could not add the bundle. Please try again.';err.hidden=false;});});})();</script>
 {% schema %}
 {
   "name": "Bundle deals",
@@ -43,10 +51,85 @@ fetch({{ routes.cart_add_url | json }}+'.js',{method:'POST',headers:{'Content-Ty
       "default": "Add bundle to cart"
     },
     {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "row",
+          "label": "Row with plus signs"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "discount_type",
+      "label": "Bundle discount",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "percent",
+          "label": "Percentage off the total"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed amount off the total"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "discount_percent",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Percentage off",
+      "default": 10
+    },
+    {
+      "type": "number",
+      "id": "discount_fixed",
+      "label": "Fixed amount off (store currency)"
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Discount code to apply",
+      "info": "Optional. Create the discount in Shopify admin; the code is applied when the bundle is added so checkout charges the reduced price."
+    },
+    {
       "type": "text",
       "id": "discount",
       "label": "Discount note",
-      "info": "Display only. Create a matching automatic discount in Shopify admin for a real price cut."
+      "info": "Optional text shown next to the total."
+    },
+    {
+      "type": "text",
+      "id": "total_text",
+      "label": "Total label",
+      "default": "Total"
+    },
+    {
+      "type": "text",
+      "id": "save_text",
+      "label": "Savings text",
+      "default": "You save [saved]"
+    },
+    {
+      "type": "checkbox",
+      "id": "skip_cart",
+      "label": "Skip the cart and go straight to checkout",
+      "default": false
     },
     {
       "type": "select",
@@ -220,6 +303,17 @@ fetch({{ routes.cart_add_url | json }}+'.js',{method:'POST',headers:{'Content-Ty
           "type": "product",
           "id": "product",
           "label": "Product"
+        },
+        {
+          "type": "range",
+          "id": "percent",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "unit": "%",
+          "label": "Discount on this product",
+          "default": 0,
+          "info": "Display and total only. Needs a matching discount code or automatic discount for checkout."
         }
       ]
     }

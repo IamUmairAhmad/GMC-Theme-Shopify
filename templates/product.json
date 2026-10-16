@@ -157,7 +157,8 @@
         "a": {
           "type": "product",
           "settings": {
-            "product": "gmc-test-tee"
+            "product": "gmc-test-tee",
+            "percent": 5
           }
         },
         "b": {
@@ -172,7 +173,10 @@
         "b"
       ],
       "settings": {
-        "heading": "Bundle"
+        "heading": "Bundle",
+        "layout": "row",
+        "discount_type": "percent",
+        "discount_percent": 10
       }
     },
     "gmc_sub": {
