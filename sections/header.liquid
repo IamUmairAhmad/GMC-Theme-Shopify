@@ -165,6 +165,18 @@
       assign language_selector = true
     endif
   -%}
+  {%- if section.settings.gmc_menu2 != blank -%}
+  <nav class="gmc-menu2 page-width" aria-label="{{ section.settings.gmc_menu2.title | escape }}" style="justify-content:{{ section.settings.gmc_menu2_align }}">{%- for l2 in section.settings.gmc_menu2.links -%}<a href="{{ l2.url }}" class="link link--text"{% if l2.current %} aria-current="page"{% endif %}>{{ l2.title | escape }}</a>{%- endfor -%}</nav>
+  {%- endif -%}
+  <style>
+    {%- if section.settings.gmc_active_style != 'none' -%}
+    .header__menu-item[aria-current="page"],.header__active-menu-item,.header__inline-menu a[aria-current="page"]{ {%- if section.settings.gmc_active_color != blank -%}color:{{ section.settings.gmc_active_color }};{%- endif -%}
+      {%- case section.settings.gmc_active_style -%}{%- when 'underline' -%}text-decoration:underline;text-underline-offset:.6rem;text-decoration-thickness:2px;{%- when 'pill' -%}background:{{ section.settings.gmc_active_color | default: 'currentColor' }};color:rgb(var(--color-background));border-radius:2rem;padding:.2rem 1rem;{%- when 'bold' -%}font-weight:700;{%- endcase -%} }
+    {%- endif -%}
+    {%- if section.settings.gmc_logo_w_m > 0 -%}@media (max-width: 989px){ .header__heading-logo-wrapper{ width:{{ section.settings.gmc_logo_w_m }}px !important; max-width:60vw } }{%- endif -%}
+    .gmc-menu2{display:flex;gap:2rem;padding-top:.5rem;padding-bottom:.5rem;font-size:1.3rem}
+    .gmc-menu2 a[aria-current]{text-decoration:underline}
+  </style>
   <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if country_selector or language_selector %} header--has-localizations{% endif %}">
     {%- liquid
       assign render_search_left = false
@@ -645,6 +657,131 @@
       "id": "menu_color_scheme",
       "label": "t:sections.header.settings.menu_color_scheme.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "gmc_mega_img",
+      "label": "Menu images on desktop",
+      "info": "Shows the image of collections or products linked in the mega menu.",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "collections",
+          "label": "Collections"
+        },
+        {
+          "value": "products",
+          "label": "Products"
+        },
+        {
+          "value": "both",
+          "label": "Collections and products"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_mega_img_mobile",
+      "label": "Menu images on mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "gmc_mega_img_ratio",
+      "label": "Menu image shape",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "Square"
+        },
+        {
+          "value": "4/5",
+          "label": "Portrait"
+        },
+        {
+          "value": "3/2",
+          "label": "Landscape"
+        }
+      ],
+      "default": "1/1"
+    },
+    {
+      "type": "header",
+      "content": "Menu extras"
+    },
+    {
+      "type": "select",
+      "id": "gmc_active_style",
+      "label": "Highlight current page link",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "underline",
+          "label": "Underline"
+        },
+        {
+          "value": "pill",
+          "label": "Pill"
+        },
+        {
+          "value": "bold",
+          "label": "Bold"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "gmc_active_color",
+      "label": "Highlight colour"
+    },
+    {
+      "type": "link_list",
+      "id": "gmc_menu2",
+      "label": "Secondary menu",
+      "info": "Small row of links above the header."
+    },
+    {
+      "type": "select",
+      "id": "gmc_menu2_align",
+      "label": "Secondary menu alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "flex-end"
+    },
+    {
+      "type": "text",
+      "id": "gmc_menu_title",
+      "label": "Mobile menu title"
+    },
+    {
+      "type": "range",
+      "id": "gmc_logo_w_m",
+      "min": 0,
+      "max": 240,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile logo width (0 = same as desktop)",
+      "default": 0
     },
     {
       "type": "header",

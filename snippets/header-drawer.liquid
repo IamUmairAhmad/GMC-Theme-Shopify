@@ -23,6 +23,7 @@
     <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme }}">
       <div class="menu-drawer__inner-container">
         <div class="menu-drawer__navigation-container">
+          {%- if section.settings.gmc_menu_title != blank -%}<p class="gmc-menu-title">{{ section.settings.gmc_menu_title | escape }}</p>{%- endif -%}
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
               {%- for link in section.settings.menu.links -%}
@@ -65,6 +66,7 @@
                                       aria-current="page"
                                     {% endif %}
                                   >
+                                    {%- render 'gmc-menu-img', link: childlink, ctx: 'mobile' -%}
                                     {{ childlink.title | escape }}
                                   </a>
                                 {%- else -%}

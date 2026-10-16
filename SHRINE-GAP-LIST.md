@@ -36,7 +36,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | CD-01 ✅ | **Cart items controls**: image size and link, title size and link, variant display style, price position, compare-price source, price colours, single-item discounted prices, savings text and colour, quantity-selector styling. | P2 |
 | CD-02 ✅ | **Subtotals**: total-savings line with left/right text, layout, colour, size and position; cart discount badges. | P2 |
 | CD-03 ✅ | **Progress bar** with goal, messages and icon; **Checkpoints bar** with 3 goals (label, icon, text, amount). | P1 |
-| CD-04 | **Countdown timer**: seconds, text size, colour scheme. | P3 |
+| CD-04 ✅ | **Countdown timer**: seconds, text size, colour scheme. | P3 |
 | CD-05 ✅ | **Multiple gift blocks** (any count) with locked/unlocked look and "show only on selected products" rules; gift block position (above or below items). | P1 |
 | CD-06 ✅ | **Multi upsell blocks** with position, "show only for these products", hide-if-in-cart, classic Add button label. | P1 |
 | CD-07 ✅ | New blocks: **cart note**, **text with icon**, **image**, **icons with text** (richer), **payment badges** with chosen icons. | P2 |
@@ -47,8 +47,8 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | ID | Missing feature | Pri |
 |---|---|---|
 | HD-01 ✅ | **Transparent header over hero** (slideshow, hero, parallax): link/icon colours, highlighted and hover colours, **secondary logo swap**, option to hide announcement bars. | P1 |
-| HD-02 | **Products mega menu**: show products and collections from a link list, collection images on desktop and mobile. | P2 |
-| HD-03 | Active-link highlight with colour scheme, **secondary menu**, mobile menu title, mobile logo width. | P3 |
+| HD-02 ✅ | **Products mega menu**: show products and collections from a link list, collection images on desktop and mobile. | P2 |
+| HD-03 ✅ | Active-link highlight with colour scheme, **secondary menu**, mobile menu title, mobile logo width. | P3 |
 | AN-01 | **Announcement bar layout**: columns desktop/mobile (0 = auto), spacing, separators, slider type (slide / loop / fade) with desktop/mobile switches, autoplay speed. | P2 |
 | AN-02 | Announcement block types: **discount code with copy button** and **social icons**; per-block icon (library or image), text sizes, vertical layout. | P2 |
 | AN-03 | **Show/hide on specific products** (handle lists) for announcement bars and tickers. | P2 |

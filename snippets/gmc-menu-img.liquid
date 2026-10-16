@@ -1,0 +1,23 @@
+{%- comment -%} GMC Theme: image for a menu link that points to a collection or product. Params: link, ctx ('desktop' or 'mobile') {%- endcomment -%}
+{%- liquid
+  assign mi_mode = section.settings.gmc_mega_img
+  assign mi_on = false
+  if ctx == 'mobile' and section.settings.gmc_mega_img_mobile
+    assign mi_on = true
+  endif
+  if ctx == 'desktop' and mi_mode != 'none'
+    assign mi_on = true
+  endif
+  assign mi_img = nil
+  if mi_on and link.type == 'collection_link' and mi_mode != 'products'
+    assign mi_img = link.object.featured_image
+    if mi_img == blank
+      assign mi_img = link.object.products.first.featured_media.preview_image
+    endif
+  elsif mi_on and link.type == 'product_link' and mi_mode != 'collections'
+    assign mi_img = link.object.featured_image
+  endif
+-%}
+{%- if mi_img != blank -%}
+  <span class="gmc-mi gmc-mi--{{ ctx }}" style="--gmc-mi-r:{{ section.settings.gmc_mega_img_ratio }}">{{ mi_img | image_url: width: 400 | image_tag: loading: 'lazy', alt: link.title }}</span>
+{%- endif -%}

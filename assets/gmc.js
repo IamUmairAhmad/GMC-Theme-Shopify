@@ -153,7 +153,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   /* countdown blocks (restarts per visitor) */
   qa('.gmc-pe__cd').forEach(function(el){
     var k='gmc_pecd_'+el.dataset.key,end;try{end=+localStorage.getItem(k);if(!end||Date.now()>end){end=Date.now()+(+el.dataset.minutes)*60000;localStorage.setItem(k,end);}}catch(x){end=Date.now()+(+el.dataset.minutes)*60000;}
-    var out=el.querySelector('.gmc-pe__cdt');function t(){var s=Math.max(0,Math.floor((end-Date.now())/1000));out.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}t();setInterval(t,1000);
+    var out=el.querySelector('.gmc-pe__cdt');function t(){var s=Math.max(0,Math.floor((end-Date.now())/1000));var h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60,P=function(n){return String(n).padStart(2,'0');};out.textContent=(h?P(h)+':':'')+(el.dataset.seconds==='false'?P(m)+(h?'':' min'):P(m)+':'+P(sec));}t();setInterval(t,1000);
   });
   /* dynamic savings on variant change */
   gmcWhenPubsub(function(){

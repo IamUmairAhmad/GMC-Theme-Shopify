@@ -112,7 +112,7 @@
       {%- if block.settings.video != blank -%}<div class="gmc-pm__vid" data-gmc-vid style="border-radius:{{ block.settings.radius }}px"><video playsinline preload="metadata" {% if block.settings.autoplay %}autoplay muted{% endif %} {% if block.settings.loop %}loop{% endif %} {% unless block.settings.autoplay or block.settings.custom_ui %}controls{% endunless %} {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 900 }}"{% endif %}>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
         {%- if block.settings.custom_ui -%}<div class="gmc-pm__vc"><button type="button" data-gmc-vplay aria-label="Play or pause">❚❚</button>{%- if block.settings.sound_btn -%}<button type="button" data-gmc-vsound aria-label="Sound on or off">🔇</button>{%- endif -%}{%- if block.settings.timeline -%}<i class="gmc-pm__vt"><b></b></i>{%- endif -%}</div>{%- endif -%}
         {%- if block.settings.ripple -%}<span class="gmc-pm__ripple" aria-hidden="true"></span>{%- endif -%}</div>{%- endif -%}{%- when 'countdown' -%}
-      <div class="gmc-pe__cd" data-minutes="{{ block.settings.minutes }}" data-key="{{ block.id }}">⏰ {{ block.settings.text | escape }} <b class="gmc-pe__cdt">--:--</b></div>{%- when 'slider' -%}
+      <div class="gmc-pe__cd color-{{ block.settings.scheme }} gradient" data-minutes="{{ block.settings.minutes }}" data-seconds="{{ block.settings.show_seconds }}" data-key="{{ block.id }}" style="font-size:{{ block.settings.text_size }}px;text-align:{{ block.settings.align }};padding:1rem 1.4rem;border-radius:var(--text-boxes-radius,8px)">⏰ {{ block.settings.text | escape }} <b class="gmc-pe__cdt">--:--</b></div>{%- when 'slider' -%}
       <div class="gmc-pe__sl">{%- for i in (1..5) -%}{%- assign k = 'i' | append: i -%}{%- if block.settings[k] != blank -%}<div>{{ block.settings[k] | image_url: width: 700 | image_tag: loading: 'lazy' }}</div>{%- endif -%}{%- endfor -%}</div>{%- when 'container_start' -%}
       <div class="gmc-pe__ctr" style="background:{{ block.settings.bg }};color:{{ block.settings.fg }};padding:{{ block.settings.pad }}px;border-radius:{{ block.settings.radius }}px;border:{{ block.settings.border }}px solid currentColor">{%- when 'container_end' -%}
       </div>{%- when 'tabs' -%}
@@ -975,6 +975,48 @@
           "id": "text",
           "label": "Text",
           "default": "Offer ends in"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_seconds",
+          "label": "Show seconds",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Text size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "color_scheme",
+          "id": "scheme",
+          "label": "Colour scheme",
+          "default": "scheme-1"
         },
         {
           "type": "range",
