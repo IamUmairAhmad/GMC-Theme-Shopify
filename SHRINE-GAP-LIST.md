@@ -286,3 +286,10 @@ Shrine's sections use two editor controls that ours never use:
 |---|---|---|
 | ST-01 | **Multi-product picker** (`product_list`) used for upsell and gift blocks: choose several products in one field. Ours takes one product per block. Needed for PP-04 and CD-06. | P1 |
 | ST-02 | **Gradient background picker** (`color_background`) used for section / scheme backgrounds (accent and background gradients). | P3 |
+
+## 24. Fifteenth pass: "add section" experience (presets)
+31 of Shrine's 32 block-based sections arrive in the editor already filled with sample content. In ours, 7 arrive empty, which makes them look broken the first time a merchant adds them.
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| PS-01 | **Ready-made starter content** (sample blocks and text) for the add-section presets of: Bundle deals, Featured on, Instagram stories (Stories), Image & video slider, 3D parallax hero, Shoppable image, TikTok videos. Quick fix, no new logic. | P1 |
