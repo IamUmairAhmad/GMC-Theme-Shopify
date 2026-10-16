@@ -115,3 +115,21 @@ label.gmc-imgsw{font-size:0!important;background:var(--gmc-img) center/cover no-
 .cart-items .quantity{border-radius:var(--gmc-ci-qr,0)}.cart-items .quantity:after,.cart-items .quantity:before{border-radius:var(--gmc-ci-qr,0)}
 
 .card__badge .gmc-badge-extra{margin-left:.4rem}.card__badge.top .gmc-badge-extra,.card__badge .gmc-badge-extra{align-self:flex-start}
+
+/* GMC slider engine */
+.gmc-sl{position:relative;--gmc-gap:0px;--gmc-peek:0px;--per:1;--per-m:1;--gmc-dot:#fff}
+.gmc-sl__vp{overflow:hidden;touch-action:pan-y}
+.gmc-sl__tr{display:flex;gap:var(--gmc-gap);transition:transform .5s ease;will-change:transform}
+.gmc-sl__s{flex:0 0 calc((100% - var(--gmc-gap) * (var(--per) - 1) - var(--gmc-peek)) / var(--per));min-width:0}
+@media(max-width:749px){.gmc-sl__s{flex-basis:calc((100% - var(--gmc-gap) * (var(--per-m) - 1) - var(--gmc-peek)) / var(--per-m))}}
+.gmc-sl[data-mode="fade"] .gmc-sl__tr{display:grid;transition:none}
+.gmc-sl[data-mode="fade"] .gmc-sl__s{grid-area:1/1;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility .6s}
+.gmc-sl[data-mode="fade"] .gmc-sl__s.is-active{opacity:1;visibility:visible;z-index:1}
+.gmc-sl__dots{position:absolute;left:0;right:0;bottom:1.2rem;display:flex;gap:.8rem;justify-content:center;z-index:3}
+.gmc-sl__dot{width:1rem;height:1rem;padding:0;border-radius:50%;border:1px solid var(--gmc-dot);background:transparent;cursor:pointer}
+.gmc-sl__dot.is-on{background:var(--gmc-dot)}
+.gmc-sl__a{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:4.4rem;height:4.4rem;border-radius:50%;border:0;background:rgba(255,255,255,.85);color:#111;display:grid;place-items:center;cursor:pointer}
+.gmc-sl__a--prev{left:1.2rem}.gmc-sl__a--next{right:1.2rem}.gmc-sl__a:disabled{opacity:.35;cursor:default}
+.gmc-sl__pp{position:absolute;right:1.2rem;bottom:1rem;z-index:3;background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:99px;padding:.3rem .8rem;font-size:1.1rem;cursor:pointer}
+.gmc-sl__dot:focus-visible,.gmc-sl__a:focus-visible,.gmc-sl__pp:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.gmc-sl__tr,.gmc-sl[data-mode="fade"] .gmc-sl__s{transition:none}}

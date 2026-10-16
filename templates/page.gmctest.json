@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "hs": {
+      "type": "gmc-hero-slideshow",
+      "blocks": {
+        "a": {
+          "type": "slide",
+          "settings": {
+            "heading": "First slide",
+            "prefix": "New",
+            "button1": "Shop",
+            "link1": "/collections/all",
+            "button2": "More",
+            "link2": "/pages/contact"
+          }
+        },
+        "b": {
+          "type": "slide",
+          "settings": {
+            "heading": "Second slide",
+            "h_align": "left",
+            "v_align": "bottom"
+          }
+        },
+        "c": {
+          "type": "slide",
+          "settings": {
+            "heading": "Third slide",
+            "h_align": "right",
+            "v_align": "top",
+            "box_bg": "rgba(0,0,0,0.4)"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c"
+      ],
+      "settings": {
+        "speed": 3,
+        "height": "medium"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "hs",
+    "main"
+  ]
+}
