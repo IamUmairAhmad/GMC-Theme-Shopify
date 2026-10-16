@@ -556,6 +556,47 @@
         "image": "shopify://shop_images/gmc-sample-product-image.png",
         "layout": "hotspots"
       }
+    },
+    "dv1": {
+      "type": "gmc-section-divider",
+      "settings": {
+        "shape": "wave",
+        "color": "#ff0000",
+        "height": 90,
+        "flip_v": true
+      }
+    },
+    "dv2": {
+      "type": "gmc-section-divider",
+      "settings": {
+        "shape": "zigzag",
+        "color": "#0000ff"
+      }
+    },
+    "px1": {
+      "type": "gmc-parallax-hero",
+      "blocks": {
+        "l1": {
+          "type": "layer",
+          "settings": {
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "speed": 20,
+            "zoom": 10
+          }
+        }
+      },
+      "block_order": [
+        "l1"
+      ],
+      "settings": {
+        "heading": "PXTEST",
+        "prefix": "PRE",
+        "h_mode": "px",
+        "h_px": 420,
+        "h_mobile": 300,
+        "btn": "Go",
+        "btn_link": "/"
+      }
     }
   },
   "order": [
@@ -577,6 +618,9 @@
     "rt",
     "si",
     "pf",
-    "pf2"
+    "pf2",
+    "dv1",
+    "dv2",
+    "px1"
   ]
 }
