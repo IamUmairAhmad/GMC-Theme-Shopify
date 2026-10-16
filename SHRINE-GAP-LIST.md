@@ -188,3 +188,12 @@ All 61 sections, all 17 page templates and group files, all 140+ snippets by nam
 4. Subscription plans and Markets need a store with a selling-plan app and a second market.
 5. The default home template still points at the demo product handle `gmc-test-tee`.
 6. Master-prompt sections 9–11 were never received.
+
+---
+## 13. Fourth pass (file list was cut at 250; the last 35 files and store data now read)
+
+- **No new missing feature found.** The last 35 files were: `shipping-checkpoints`, `text-with-icon-block`, `social-icons`, `share-button`, `upsell-block`, `video-player`, `sizing-chart`, `separate-atc-btn`, `text-with-price`, all page templates, and the market-specific template files.
+- **Market-specific templates** (`*.context.*.json`): these are created by Shopify itself when a merchant customises a page per market, on any Online Store 2.0 theme. Not a theme feature, nothing to build. Shrine's only market override is a mobile sticky bar on the product page.
+- **Store data**: Shrine's store has one theme, one Contact page, three menus, and Shopify's standard category metaobjects (colour, material, etc.). Nothing theme-specific is required from the store, so our theme needs no special setup data to match.
+- **Icon font**: Shrine loads Google Material Symbols from the web for every icon. Ours bundles icons locally (faster, no outside call). The gap is only icon variety (DP-11), not the loading method.
+- **Not read**: the CSS files (`base.css` and component styles) were skimmed by size and class names only. They describe looks, not features. A visual side-by-side is the right check for those.
