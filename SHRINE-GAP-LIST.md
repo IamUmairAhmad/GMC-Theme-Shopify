@@ -227,3 +227,15 @@ All present in GMC Theme as well. One real gap found:
 | ID | Missing feature | Pri |
 |---|---|---|
 | CD-09 | **Express checkout buttons (Shop Pay, Apple Pay, Google Pay, PayPal) inside the cart drawer**, switchable in the Checkout button block. Shrine shows them in the drawer and on the cart page; ours only on the cart page. | P1 |
+
+## 19. Tenth pass: script keyword scan, and ways to go beyond Shrine
+Both Shrine scripts were scanned for hidden features (wishlist, compare, recently viewed, back-in-stock, consent banner, infinite scroll, gift wrap, etc.). **None exist in Shrine**, so there is no further parity gap. Only upsell, discount, sticky, video, country/currency, countdown, predictive search and popup logic appear, all already listed.
+
+Because neither theme has them, these are optional **"beat Shrine"** ideas for later, not parity work:
+| ID | Idea | Note |
+|---|---|---|
+| BX-01 | Wishlist (saved in the browser, no app) | P3 |
+| BX-02 | Recently viewed products strip | P3 |
+| BX-03 | Back-in-stock email request | needs an email app or Shopify Flow **[EXT]** |
+| BX-04 | Product compare | P3 |
+| BX-05 | Gift-wrap / gift-message option in the cart | P3 |
