@@ -1,0 +1,52 @@
+{
+ "sections": {
+  "iwt": {
+   "type": "gmc-image-with-text",
+   "settings": {
+    "gmc_atc_product": "gmc-test-tee",
+    "gmc_atc_label": "Quick add"
+   }
+  },
+  "mc": {
+   "type": "gmc-multicolumn",
+   "settings": {
+    "gmc_slider_autoplay": 2,
+    "gmc_swipe_mobile": true
+   },
+   "blocks": {
+    "a": {
+     "type": "column",
+     "settings": {}
+    },
+    "b": {
+     "type": "column",
+     "settings": {}
+    },
+    "c": {
+     "type": "column",
+     "settings": {}
+    }
+   },
+   "block_order": [
+    "a",
+    "b",
+    "c"
+   ]
+  },
+  "fc": {
+   "type": "featured-collection",
+   "settings": {
+    "collection": "all",
+    "gmc_slider_autoplay": 2,
+    "gmc_swipe_mobile": true,
+    "products_to_show": 8,
+    "columns_desktop": 2
+   }
+  }
+ },
+ "order": [
+  "iwt",
+  "mc",
+  "fc"
+ ]
+}

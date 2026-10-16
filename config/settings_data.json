@@ -1,5 +1,13 @@
 {
-  "current": "GMC Theme",
+  "current": {
+    "gmc_ship_enabled": true,
+    "gmc_ship_threshold": 100,
+    "gmc_ship_threshold2": 200,
+    "gmc_gift_variant": "67707160363082",
+    "gmc_gift_threshold": 150,
+    "gmc_upsell_enabled": true,
+    "gmc_upsell_collection": "all"
+  },
   "presets": {
     "GMC Theme": {
       "logo_width": 90,
