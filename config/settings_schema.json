@@ -2440,6 +2440,17 @@
         "info": "0 shows the full title."
       },
       {
+        "type": "header",
+        "content": "Icons"
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_icon_filled",
+        "label": "Filled icons",
+        "info": "Fills the shapes of the theme's icons (works best with solid-style glyphs).",
+        "default": false
+      },
+      {
         "type": "select",
         "id": "gmc_card_btn",
         "label": "Card add button style",

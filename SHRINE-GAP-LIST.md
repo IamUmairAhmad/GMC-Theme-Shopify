@@ -150,7 +150,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | DP-08 ✅ | **Bundle** pricing: free-item price text, dynamic prices after a variant change, two modes: "main" (tied to the main button, includes gifts and upsells) and "separate" (own button). | P2 |
 | DP-09 | **Sizing chart** built from simple text: commas make columns, new lines make rows, an empty-cell placeholder. | P3 |
 | DP-10 | **Payment badges** chosen by a list of about 24 named providers (Apple Pay, Klarna, Afterpay, iDEAL, etc.). | P3 |
-| DP-11 | **Icon picker with a very large library**: Shrine accepts any Google Material Symbol name with a "filled" switch, plus custom image icons, in nearly every block. Ours uses a smaller bundled set. | P2 |
+| DP-11 ✅ | **Icon picker with a very large library**: Shrine accepts any Google Material Symbol name with a "filled" switch, plus custom image icons, in nearly every block. Ours uses a smaller bundled set. | P2 |
 | DP-12 ✅ | **Copy-to-clipboard button** (discount code), **countdown-timer** and **modal** components reusable by any block. | P2 |
 | DP-13 | Section **"Display on" is a select in each Shrine section**; per-column and per-block visibility in Custom columns. We have it per section only. | P3 |
 
