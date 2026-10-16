@@ -177,29 +177,37 @@
           "type": "price",
           "settings": {}
         },
-        "variant_picker": {
+        "variants": {
           "type": "variant_picker",
-          "settings": {}
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
         },
-        "quantity_selector": {
+        "qty": {
           "type": "quantity_selector",
           "settings": {}
         },
-        "buy_buttons": {
+        "buy": {
           "type": "buy_buttons",
-          "settings": {}
+          "settings": {
+            "show_dynamic_checkout": true
+          }
         }
       },
       "block_order": [
         "title",
         "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons"
+        "variants",
+        "qty",
+        "buy"
       ],
       "settings": {
-        "product": "gmc-test-tee",
-        "color_scheme": "scheme-1"
+        "product": "gmc-demo-hoodie",
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "rich_text_3": {
@@ -239,6 +247,148 @@
         "full_width": true,
         "padding_top": 40,
         "padding_bottom": 52
+      }
+    },
+    "image_with_text_1": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Feature one",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Add a short description here. Tell shoppers what makes this special.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_2": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Feature two",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Add a short description here. Tell shoppers what makes this special.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_3": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Feature three",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Add a short description here. Tell shoppers what makes this special.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "section": {
+      "type": "gmc-section-group",
+      "blocks": {
+        "t": {
+          "type": "_gmc-text",
+          "settings": {
+            "heading": "A section you can build on",
+            "text": "<p>Add text, images, buttons and icons using blocks.</p>",
+            "align": "center"
+          }
+        }
+      },
+      "block_order": [
+        "t"
+      ],
+      "settings": {
+        "columns": 1
       }
     },
     "newsletter": {
@@ -281,6 +431,10 @@
     "rich_text_2",
     "featured_product",
     "rich_text_3",
+    "image_with_text_1",
+    "image_with_text_2",
+    "image_with_text_3",
+    "section",
     "newsletter"
   ]
 }
