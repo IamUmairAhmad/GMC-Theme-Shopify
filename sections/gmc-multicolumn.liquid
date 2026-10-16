@@ -8,7 +8,7 @@
       <li class="gmc-mc__c" {% if block.settings.bg != blank %}style="background:{{ block.settings.bg }};{% if block.settings.fg != blank %}color:{{ block.settings.fg }}{% endif %}"{% endif %} {{ block.shopify_attributes }}>
         {%- if s.numbered -%}<span class="gmc-mc__n" aria-hidden="true">{{ forloop.index }}</span>{%- endif -%}
         {%- if block.settings.image != blank -%}
-          <div class="gmc-mc__img gmc-mc__img--{{ s.image_shape }}">{{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '240,400,600,800', style: 'object-position:' | append: block.settings.image.presentation.focal_point, alt: block.settings.image.alt }}</div>
+          <div class="gmc-mc__img gmc-mc__img--{{ s.image_shape }}">{%- assign gmc_fp = 'object-position:' | append: block.settings.image.presentation.focal_point -%}{{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '240,400,600,800', style: gmc_fp, alt: block.settings.image.alt }}</div>
         {%- elsif block.settings.icon_name != blank -%}
           <div class="gmc-mc__icon">{%- render 'gmc-icon', name: block.settings.icon_name, size: s.icon_size -%}</div>
         {%- endif -%}

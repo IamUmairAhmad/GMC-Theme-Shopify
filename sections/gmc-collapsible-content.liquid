@@ -4,7 +4,7 @@
 <div class="gmc-cl page-width" id="gmc-cl-{{ section.id }}" style="--rad:{{ s.radius }}px;--gap:{{ s.gap }}px;padding-top:{{ s.pad_top }}px;padding-bottom:{{ s.pad_bottom }}px">
   {%- if s.heading != blank -%}<h2 class="gmc-cl__h">{{ s.heading | escape }}</h2>{%- endif -%}
   <div class="gmc-cl__wrap{% if s.image != blank %} gmc-cl__wrap--split gmc-cl__wrap--{{ s.image_side }}{% endif %}">
-    {%- if s.image != blank -%}<div class="gmc-cl__img">{{ s.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: 'object-position:' | append: s.image.presentation.focal_point, alt: s.image.alt }}</div>{%- endif -%}
+    {%- if s.image != blank -%}<div class="gmc-cl__img">{%- assign gmc_fp = 'object-position:' | append: s.image.presentation.focal_point -%}{{ s.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: gmc_fp, alt: s.image.alt }}</div>{%- endif -%}
     <div class="gmc-cl__list gmc-cl__style--{{ s.style }}" data-single="{{ s.single_open }}">
       {%- if s.show_toggle_all and section.blocks.size > 1 and s.single_open == false -%}<button type="button" class="gmc-cl__all" data-all>Expand all</button>{%- endif -%}
       {%- for block in section.blocks -%}

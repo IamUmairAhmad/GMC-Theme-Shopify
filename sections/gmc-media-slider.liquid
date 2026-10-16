@@ -4,7 +4,7 @@
   <div class="gmc-ms__track">{%- for block in section.blocks -%}
     <div class="gmc-ms__s" {{ block.shopify_attributes }}>
       {%- if block.settings.video != blank -%}<video muted loop playsinline autoplay preload="metadata">{%- for s in block.settings.video.sources -%}{%- if s.format == 'mp4' -%}<source src="{{ s.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
-      {%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,1000,1600', style: 'object-position:' | append: block.settings.image.presentation.focal_point }}{%- endif -%}
+      {%- elsif block.settings.image != blank -%}{%- assign gmc_fp = 'object-position:' | append: block.settings.image.presentation.focal_point -%}{{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,1000,1600', style: gmc_fp }}{%- endif -%}
       {%- if block.settings.caption != blank -%}<span class="gmc-ms__cap">{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.caption | escape }}</a>{%- else -%}{{ block.settings.caption | escape }}{%- endif -%}</span>{%- endif -%}
     </div>{%- endfor -%}</div>
   <button type="button" class="gmc-ms__b gmc-ms__b--p" aria-label="Previous">‹</button><button type="button" class="gmc-ms__b gmc-ms__b--n" aria-label="Next">›</button>
