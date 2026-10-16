@@ -126,6 +126,12 @@
                   {{ content_for_additional_checkout_buttons }}
                 </div>
               {%- endif -%}
+            {%- when 'discount' -%}
+              <div class="gmc-cpd cart__ctas" {{ block.shopify_attributes }} style="margin-bottom:1.6rem">
+                <div class="gmc-cpd__row"><input type="text" id="gmc-cpd-in" class="field__input" placeholder="{{ block.settings.placeholder | escape }}" aria-label="{{ block.settings.placeholder | escape }}" autocomplete="off"><button type="button" id="gmc-cpd-btn" class="button button--secondary" data-error="{{ block.settings.error | escape }}" data-na="{{ block.settings.not_applicable | escape }}">{{ block.settings.button | escape }}</button></div>
+                <p id="gmc-cpd-msg" role="status" style="margin:.6rem 0 0"></p>
+                {%- if cart.cart_level_discount_applications.size > 0 -%}<p class="gmc-cpd__on">{%- for da in cart.cart_level_discount_applications -%}{{ da.title | escape }}{% unless forloop.last %}, {% endunless %}{%- endfor -%}</p>{%- endif -%}
+              </div>
           {%- endcase -%}
         {% endfor %}
 
@@ -312,6 +318,37 @@
     },
     {
       "type": "@app"
+    },
+    {
+      "type": "discount",
+      "name": "Discount code",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder",
+          "default": "Discount code"
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button label",
+          "default": "Apply"
+        },
+        {
+          "type": "text",
+          "id": "error",
+          "label": "Invalid code text",
+          "default": "This code is not valid."
+        },
+        {
+          "type": "text",
+          "id": "not_applicable",
+          "label": "Not applicable text",
+          "default": "This code does not apply to your cart."
+        }
+      ]
     }
   ]
 }

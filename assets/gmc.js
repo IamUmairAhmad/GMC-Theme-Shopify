@@ -488,3 +488,11 @@ document.addEventListener('click',function(e){var b=e.target.closest('[data-gmc-
 
 /* preselect saved country in address forms */
 document.querySelectorAll('select[data-default]').forEach(function(s){var d=s.dataset.default;if(!d)return;for(var i=0;i<s.options.length;i++){if(s.options[i].text===d||s.options[i].value===d){s.selectedIndex=i;break;}}});
+
+/* cart page discount code */
+document.addEventListener('click',function(e){var b=e.target.closest('#gmc-cpd-btn');if(!b)return;var inp=document.getElementById('gmc-cpd-in'),msg=document.getElementById('gmc-cpd-msg'),code=(inp.value||'').trim();if(!code||b.disabled)return;b.disabled=true;msg.textContent='…';
+  fetch('/cart/update.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({discount:code})}).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(cart){var list=cart.discount_codes||[],hit=list.find(function(d){return (d.code||'').toLowerCase()===code.toLowerCase();});
+    if(hit&&hit.applicable){location.reload();return;}msg.textContent=hit?b.dataset.na:b.dataset.error;}).catch(function(){msg.textContent=b.dataset.error;}).then(function(){b.disabled=false;});});
+/* reusable countdown: <span data-gmc-countdown="MINUTES"></span> */
+document.querySelectorAll('[data-gmc-countdown]').forEach(function(el){var m=+el.dataset.gmcCountdown||10,k='gmc_cd_'+(el.id||m),end;try{end=+localStorage.getItem(k);if(!end||Date.now()>end){end=Date.now()+m*60000;localStorage.setItem(k,end);}}catch(x){end=Date.now()+m*60000;}
+  function t(){var s=Math.max(0,Math.floor((end-Date.now())/1000)),P=function(n){return String(n).padStart(2,'0');};el.textContent=P(Math.floor(s/60))+':'+P(s%60);}t();setInterval(t,1000);});
