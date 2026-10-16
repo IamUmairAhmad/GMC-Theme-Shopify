@@ -18,17 +18,20 @@
       "blocks": {
         "subtotal": {
           "type": "subtotal",
-          "settings": {
-          }
+          "settings": {}
         },
         "buttons": {
           "type": "buttons",
-          "settings": {
-          }
+          "settings": {}
+        },
+        "disc": {
+          "type": "discount",
+          "settings": {}
         }
       },
       "block_order": [
         "subtotal",
+        "disc",
         "buttons"
       ]
     }
