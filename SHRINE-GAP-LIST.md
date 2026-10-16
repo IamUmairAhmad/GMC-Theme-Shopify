@@ -134,3 +134,30 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 1. **Sales engine (P1)**: PP-01 → PP-05 → PP-06/07/08 → PP-04 → PP-03 → PP-02 → CD-03/05/06 → SC-02 → TS-05
 2. **Page building (P1/P2)**: AT-01 → HD-01 → HS-01 → SL-01 and the sections that use it → SC-01 → SC-04/05 → SC-11/13
 3. **Polish (P2/P3)**: remaining product blocks, cart depth, settings, templates
+
+---
+## 11. Added in the second, deeper pass (page sections, product card, text tokens, behaviours)
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| DP-01 | **Quantity breaks as a variant-picker style**: a variant option can be shown as quantity-break cards (for stores whose quantities are separate SKUs), mixed per option, e.g. "swatches, dropdown, quantity breaks". Works with the clickable discount block. | P1 |
+| DP-02 | **Dynamic text tokens** usable in every text field of breaks, bundles and pickers: quantity, price, compare price, price each, compare price each, amount saved, amount saved rounded, option name / lowercase / uppercase / selected, option index. Per-option texts are comma-split, with an "empty" placeholder to skip one. | P1 |
+| DP-03 | **Sale badge text with tokens** (for example "Save [percentage]") and **custom badges list driven by product tags** (for example BEST SELLER). | P1 |
+| DP-04 | **Product card options**: card style choice, add-button style, limit titles to N lines, badge position and push-to-side, sold-out badge scheme, quick-add on cards, accent-icon style. | P1 |
+| DP-05 | **Collection and search grid**: "make all cards same height", a badges selector (sale / sold-out / both / none) and a Display-on setting on the blog page. | P3 |
+| DP-06 | **Cart page** (not the drawer): discount-code field block with placeholder, button label and error text. | P2 |
+| DP-07 | **Clickable discount** remembers the applied code when the shopper navigates back. | P3 |
+| DP-08 | **Bundle** pricing: free-item price text, dynamic prices after a variant change, two modes: "main" (tied to the main button, includes gifts and upsells) and "separate" (own button). | P2 |
+| DP-09 | **Sizing chart** built from simple text: commas make columns, new lines make rows, an empty-cell placeholder. | P3 |
+| DP-10 | **Payment badges** chosen by a list of about 24 named providers (Apple Pay, Klarna, Afterpay, iDEAL, etc.). | P3 |
+| DP-11 | **Icon picker with a very large library**: Shrine accepts any Google Material Symbol name with a "filled" switch, plus custom image icons, in nearly every block. Ours uses a smaller bundled set. | P2 |
+| DP-12 | **Copy-to-clipboard button** (discount code), **countdown-timer** and **modal** components reusable by any block. | P2 |
+| DP-13 | Section **"Display on" is a select in each Shrine section**; per-column and per-block visibility in Custom columns. We have it per section only. | P3 |
+
+### Checked in the second pass and found already equal or better in GMC
+Customer pages (login, register, account, orders, addresses, reset and activate password) in Shrine are plain styled pages with only a padding setting, so the gap is only that we ship no templates for them (TP-01). The 404 page, article, blog, collection banner, list-collections and password pages match what we have. Translations are equal (both ship the Dawn language set).
+
+### Not verified (honest limits)
+- I read Shrine's code and settings, not its live storefront behaviour; animation feel, slider smoothness and mobile polish still need a side-by-side visual test once we can preview both themes.
+- Shrine's `shrine.null.js` (125 KB) and `secondary.js` (70 KB) are minified; I listed their components but did not read the logic. Behaviours are written from the settings and snippet markup.
+- Our own side was compared from schemas and code, not by re-testing every section in a browser.
