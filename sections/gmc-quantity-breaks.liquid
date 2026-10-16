@@ -7,7 +7,7 @@
       <input type="radio" name="gmc-qb-{{ section.id }}" value="{{ block.settings.qty }}" data-gift="{{ block.settings.gift_variant | strip }}" {% if forloop.first %}checked{% endif %}>
       <span class="gmc-qb__label"><strong>{{ block.settings.label | escape }}</strong>{% if block.settings.note != blank %}<em>{{ block.settings.note | escape }}</em>{% endif %}{% if block.settings.gift_variant != blank %}<em class="gmc-qb__gift">🎁 {{ block.settings.gift_text | default: "Free gift included" | escape }}</em>{% endif %}</span>
       {%- if block.settings.badge != blank -%}<span class="gmc-qb__badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
-      {%- if product != blank -%}{%- assign qb_full = product.selected_or_first_available_variant.price | times: block.settings.qty -%}{%- assign qb_pct = block.settings.percent | default: 0 -%}<span class="gmc-qb__price" data-qty="{{ block.settings.qty }}" data-pct="{{ qb_pct }}">{%- if qb_pct > 0 -%}<s style="opacity:.6;margin-right:.4rem">{{ qb_full | money }}</s>{{ qb_full | times: 100 | minus: qb_pct | times: 1.0 | divided_by: 100 | round | money }}{%- else -%}{{ qb_full | money }}{%- endif -%}</span>{%- endif -%}
+      {%- if product != blank -%}{%- assign qb_full = product.selected_or_first_available_variant.price | times: block.settings.qty -%}{%- assign qb_pct = block.settings.percent | default: 0 -%}<span class="gmc-qb__price" data-qty="{{ block.settings.qty }}" data-pct="{{ qb_pct }}">{%- if qb_pct > 0 -%}<s style="opacity:.6;margin-right:.4rem">{{ qb_full | money }}</s>{%- assign qb_mult = 100 | minus: qb_pct -%}{{ qb_full | times: qb_mult | divided_by: 100.0 | round | money }}{%- else -%}{{ qb_full | money }}{%- endif -%}</span>{%- endif -%}
     </label>
   {%- endfor -%}
 </div>
