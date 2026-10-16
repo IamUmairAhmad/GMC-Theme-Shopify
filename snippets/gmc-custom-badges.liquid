@@ -1,0 +1,10 @@
+{%- comment -%} GMC Theme: extra badges from product tags named custom-badge-Your text (original code). Param: product. {%- endcomment -%}
+{%- if settings.gmc_custom_badges -%}
+  {%- for tag in product.tags -%}
+    {%- assign tag_l = tag | downcase -%}
+    {%- if tag_l startswith 'custom-badge-' -%}
+      {%- assign cb_text = tag | slice: 13, 60 | strip -%}
+      {%- if cb_text != blank -%}<span class="badge badge--bottom-left gmc-badge-extra color-{{ settings.gmc_custom_badge_scheme }}">{{ cb_text | escape }}</span>{%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

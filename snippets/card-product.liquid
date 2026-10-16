@@ -142,6 +142,7 @@
                   {%- render 'gmc-sale-badge', price: card_product.price, compare: card_product.compare_at_price -%}
                 </span>
               {%- endif -%}
+{%- render 'gmc-custom-badges', product: card_product -%}
             </div>
           </div>
         </div>
@@ -566,6 +567,7 @@
                 {%- render 'gmc-sale-badge', price: card_product.price, compare: card_product.compare_at_price -%}
               </span>
             {%- endif -%}
+{%- render 'gmc-custom-badges', product: card_product -%}
           </div>
         </div>
       </div>

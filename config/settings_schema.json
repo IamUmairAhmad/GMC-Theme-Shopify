@@ -2191,6 +2191,45 @@
         "id": "sold_out_badge_color_scheme",
         "label": "t:settings_schema.badges.settings.sold_out_badge_color_scheme.label",
         "default": "scheme-3"
+      },
+      {
+        "type": "range",
+        "id": "gmc_badge_offset",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Push badges away from the card edge",
+        "default": 0
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_sale_icon",
+        "label": "Show a discount icon in the sale badge",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_custom_badges",
+        "label": "Custom badges from tags",
+        "default": true,
+        "info": "A product tag named custom-badge-Best seller shows a Best seller badge on its cards."
+      },
+      {
+        "type": "color_scheme",
+        "id": "gmc_custom_badge_scheme",
+        "label": "Custom badge colour scheme",
+        "default": "scheme-4"
+      },
+      {
+        "type": "range",
+        "id": "gmc_title_lines",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "label": "Product title line limit",
+        "default": 0,
+        "info": "0 shows the full title."
       }
     ]
   },

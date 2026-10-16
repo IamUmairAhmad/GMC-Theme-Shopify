@@ -1,4 +1,5 @@
 {%- comment -%} GMC Theme: sale badge text. Uses the real compare-at price, never an invented one. {%- endcomment -%}
+{%- if settings.gmc_sale_icon -%}{%- render 'gmc-icon', name: 'discount', size: 14 -%} {%- endif -%}
 {%- if settings.gmc_sale_badge == 'percent' and compare > price and compare > 0 -%}
   {%- assign off = compare | minus: price | times: 100 | divided_by: compare -%}-{{ off }}%
 {%- elsif settings.gmc_sale_badge == 'amount' and compare > price -%}

@@ -113,3 +113,5 @@ label.gmc-imgsw{font-size:0!important;background:var(--gmc-img) center/cover no-
 .gmc-ci--nocmp .cart-item__old-price{display:none}
 .gmc-ci--inline .cart-item__details dl,.gmc-ci--inline .product-option{display:inline}
 .cart-items .quantity{border-radius:var(--gmc-ci-qr,0)}.cart-items .quantity:after,.cart-items .quantity:before{border-radius:var(--gmc-ci-qr,0)}
+
+.card__badge .gmc-badge-extra{margin-left:.4rem}.card__badge.top .gmc-badge-extra,.card__badge .gmc-badge-extra{align-self:flex-start}
