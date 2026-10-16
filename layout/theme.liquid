@@ -309,6 +309,7 @@
       {%- if settings.gmc_cart_body_bg != blank -%}.drawer__inner,.drawer__contents{background:{{ settings.gmc_cart_body_bg }}!important}{%- endif -%}
       {%- if settings.gmc_cart_ftr_bg != blank -%}.cart-drawer__footer,.drawer__footer{background:{{ settings.gmc_cart_ftr_bg }}!important}{%- endif -%}
       {%- if settings.gmc_cart_full_mobile -%}@media(max-width:749px){.cart-drawer .drawer__inner{width:100vw!important;max-width:100vw!important}}{%- endif -%}
+      {%- if settings.gmc_card_btn == 'outline' -%}.quick-add__submit{background:transparent!important;color:rgb(var(--color-foreground))!important;box-shadow:0 0 0 1px rgb(var(--color-foreground))}{%- elsif settings.gmc_card_btn == 'pill' -%}.quick-add__submit{border-radius:99px}.quick-add__submit:before,.quick-add__submit:after{border-radius:99px}{%- endif -%}
       {%- if settings.gmc_badge_offset > 0 -%}.card__badge{margin:{{ settings.gmc_badge_offset }}px}{%- endif -%}
       {%- if settings.gmc_title_lines > 0 -%}.card__heading a,.card__heading{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:{{ settings.gmc_title_lines }};overflow:hidden}{%- endif -%}
     </style>

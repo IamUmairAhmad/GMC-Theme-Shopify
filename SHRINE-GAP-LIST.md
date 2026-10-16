@@ -142,8 +142,8 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 |---|---|---|
 | DP-01 | **Quantity breaks as a variant-picker style**: a variant option can be shown as quantity-break cards (for stores whose quantities are separate SKUs), mixed per option, e.g. "swatches, dropdown, quantity breaks". Works with the clickable discount block. | P1 |
 | DP-02 ✅ | **Dynamic text tokens** usable in every text field of breaks, bundles and pickers: quantity, price, compare price, price each, compare price each, amount saved, amount saved rounded, option name / lowercase / uppercase / selected, option index. Per-option texts are comma-split, with an "empty" placeholder to skip one. | P1 |
-| DP-03 | **Sale badge text with tokens** (for example "Save [percentage]") and **custom badges list driven by product tags** (for example BEST SELLER). | P1 |
-| DP-04 | **Product card options**: card style choice, add-button style, limit titles to N lines, badge position and push-to-side, sold-out badge scheme, quick-add on cards, accent-icon style. | P1 |
+| DP-03 ✅ | **Sale badge text with tokens** (for example "Save [percentage]") and **custom badges list driven by product tags** (for example BEST SELLER). | P1 |
+| DP-04 ✅ | **Product card options**: card style choice, add-button style, limit titles to N lines, badge position and push-to-side, sold-out badge scheme, quick-add on cards, accent-icon style. | P1 |
 | DP-05 | **Collection and search grid**: "make all cards same height", a badges selector (sale / sold-out / both / none) and a Display-on setting on the blog page. | P3 |
 | DP-06 | **Cart page** (not the drawer): discount-code field block with placeholder, button label and error text. | P2 |
 | DP-07 | **Clickable discount** remembers the applied code when the shopper navigates back. | P3 |
@@ -168,12 +168,12 @@ Customer pages (login, register, account, orders, addresses, reset and activate 
 | ID | Missing feature | Pri |
 |---|---|---|
 | TH-01 ✅ | **Separate secondary variant picker** that keeps the sticky bar and the main picker in sync (combined "Black/S" dropdown or one dropdown per option). Also needed by PP-05. | P1 |
-| TH-02 | **Product-info upsell logic**: selected upsell products are added together with the main product in one request, and their price changes follow the chosen variant. | P1 |
-| TH-03 | **Bundle and quantity-gift logic** as scripts: live price recalculation, gift unlock states, cart cleanup when quantity drops. | P1 |
+| TH-02 ✅ | **Product-info upsell logic**: selected upsell products are added together with the main product in one request, and their price changes follow the chosen variant. | P1 |
+| TH-03 ✅ | **Bundle and quantity-gift logic** as scripts: live price recalculation, gift unlock states, cart cleanup when quantity drops. | P1 |
 | TH-04 | **Cart drawer scripts**: cart note, gift auto-add and remove, upsell add, countdown timer, item removal without reload. We cover gift, upsell and timer; the **cart note** block is missing (CD-07). | P2 |
 | TH-05 | **Section pairing script** (Sections group): puts two sections side by side and can reverse their order on mobile. | P3 |
 | TH-06 | **Dynamic dates script** for delivery estimates (day and month names per language). | P2 |
-| TH-07 | **Custom product field validation** that disables every Add to Cart button until required fields are filled, and writes the answers into line-item properties. | P1 |
+| TH-07 ✅ | **Custom product field validation** that disables every Add to Cart button until required fields are filled, and writes the answers into line-item properties. | P1 |
 | TH-08 | **Brand information** in the footer (headline, description, image, width) and **nine social networks** with "Follow on Shop". We have the settings group; the footer block for brand image width and per-column widths is missing (SC-13). | P3 |
 | TH-09 | **Gift-card and password pages** use the full theme styling (buttons, inputs, cards, fonts). Ours use only the base styling. | P3 |
 | TH-10 | **Disable copy / right-click / inspect** and **country block** exist in ours; Shrine's country check calls an outside lookup service **[EXT]**. We already have our own version. No action. | none |

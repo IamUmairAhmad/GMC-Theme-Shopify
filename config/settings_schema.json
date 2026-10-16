@@ -123,6 +123,12 @@
         "default": "percent"
       },
       {
+        "type": "text",
+        "id": "gmc_sale_badge_text",
+        "label": "Custom sale badge text",
+        "info": "Optional. Overrides the choice above. Use [percentage] and [amount], e.g. Save [percentage]%."
+      },
+      {
         "type": "header",
         "content": "Dropdowns"
       },
@@ -2230,6 +2236,27 @@
         "label": "Product title line limit",
         "default": 0,
         "info": "0 shows the full title."
+      },
+      {
+        "type": "select",
+        "id": "gmc_card_btn",
+        "label": "Card add button style",
+        "options": [
+          {
+            "value": "default",
+            "label": "Theme default"
+          },
+          {
+            "value": "outline",
+            "label": "Outline"
+          },
+          {
+            "value": "pill",
+            "label": "Rounded pill"
+          }
+        ],
+        "default": "default",
+        "info": "Applies to the quick add button on product cards."
       }
     ]
   },
