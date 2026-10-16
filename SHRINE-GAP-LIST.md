@@ -263,7 +263,7 @@ All option values in all Shrine sections were checked against every value in our
 | OV-03 ✅ | **Icon sizes** extra-small to extra-extra-large, and **icon position** (above / next to title / next to text) on icon blocks. | P3 |
 | OV-04 ✅ | **Icons with content** layouts: 1 or 2 icon columns per device. | P3 |
 | OV-05 ✅ | **Testimonial "quotations" style** (large quote mark layout). | P3 |
-| OV-06 | **Slider details**: free-drag mode, dots and arrows placed over or under the slides (arrows beside or below), pagination over or under the slideshow, content-tabs active-button animation (fade or moving pill), media-first or media-second order per device, tab container width presets. Belongs to SL-01. | P2 |
+| OV-06 ✅ | **Slider details**: free-drag mode, dots and arrows placed over or under the slides (arrows beside or below), pagination over or under the slideshow, content-tabs active-button animation (fade or moving pill), media-first or media-second order per device, tab container width presets. Belongs to SL-01. | P2 |
 | OV-07 ✅ | **Hero height presets** (auto-fit, fixed pixels, full screen) per device and **content width modes** (unlimited, pixels, percentage). Belongs to HS-01 / HS-02. | P2 |
 | OV-08 ✅ | **Cart drawer width presets** (normal / partial on mobile) and cart item image and title size presets, compact or classic variant display, compare price based on discounts or automatic. Belongs to CD-01 / CD-08. | P3 |
 | OV-09 ✅ | **Before/after slider and comparison table**: slider-first or slider-second placement, classic arrow style, regular tick and cross styles. Belongs to SC-07. | P3 |
@@ -277,7 +277,7 @@ Most differences are colour-scheme names (Shrine uses fixed accent / background 
 |---|---|---|
 | GS-01 ✅ | Separate **colour scheme choice for product cards, collection cards and blog cards** (cards can differ from the section background). | P2 |
 | GS-02 ✅ | Product-card **badge position "top centre"**, **title line limit** (unlimited / 1 / 2 / 3), **add button primary or secondary**. Part of DP-04. | P2 |
-| GS-03 | Sale and sold-out **badge colour scheme** choice, accent-icon colour (accent 1 / 2 / outline), variant-pill accent colour. Part of TS-04 / TS-05. | P3 |
+| GS-03 ✅ | Sale and sold-out **badge colour scheme** choice, accent-icon colour (accent 1 / 2 / outline), variant-pill accent colour. Part of TS-04 / TS-05. | P3 |
 | GS-04 ✅ | **Arrow hover effect** for link and action buttons. Part of TS-03. | P3 |
 
 ## 23. Fourteenth pass: editor setting types
@@ -299,9 +299,9 @@ Counted help text in the section schemas. Shrine: 21% of settings carry a help l
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| GD-01 | **Help line under settings** and short **explanatory notes** at the top of complex blocks (quantity breaks, bundles, upsells, checkpoints, custom fields), stating what a setting does, the allowed formats and the text tokens available. Bring GMC sections to at least Shrine's level. | P2 |
+| GD-01 ✅ | **Help line under settings** and short **explanatory notes** at the top of complex blocks (quantity breaks, bundles, upsells, checkpoints, custom fields), stating what a setting does, the allowed formats and the text tokens available. Bring GMC sections to at least Shrine's level. | P2 |
 | GD-02 | **Tutorial links** from tricky settings (Shrine links to a help centre and videos). We have none: a documentation site or README with a page per feature, plus short video guides, linked from the editor. | P2 |
-| GD-03 | **Block limits** (for example only one sticky bar per page) on our product blocks, as Shrine has 84, to prevent invalid setups. Ours has 3 on GMC sections. | P3 |
+| GD-03 ✅ | **Block limits** (for example only one sticky bar per page) on our product blocks, as Shrine has 84, to prevent invalid setups. Ours has 3 on GMC sections. | P3 |
 
 ## 26. Seventeenth pass: page head, SEO and sharing tags
 Identical to ours (title, description, canonical, theme colour, preconnect, font preload, social share tags for Open Graph and Twitter, price tags for product shares). Only differences:

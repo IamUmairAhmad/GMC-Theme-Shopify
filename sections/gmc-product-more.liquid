@@ -267,6 +267,10 @@
       "name": "Product upsells (up to 3)",
       "settings": [
         {
+          "type": "paragraph",
+          "content": "Up to three add-on products shown with a tick box. Ticked items are added together with the main product."
+        },
+        {
           "type": "product_list",
           "id": "products",
           "label": "Upsell products",
@@ -425,12 +429,17 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "bundle",
       "name": "Bundle offer",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Buy-together offer. Pick the products and an optional discount; the bundle price updates as options change."
+        },
         {
           "type": "select",
           "id": "bundle_type",
@@ -580,13 +589,18 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "qty_gift",
       "name": "Gift on quantity",
-      "limit": 4,
+      "limit": 1,
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Gives a free gift when the quantity reaches the threshold. The gift product must be priced at 0 or covered by an automatic discount."
+        },
         {
           "type": "product",
           "id": "product",
@@ -649,6 +663,10 @@
       "type": "clickable_discount",
       "name": "Clickable discount",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "A code the shopper can tap to copy and apply at checkout. The code must exist under Discounts in Shopify admin."
+        },
         {
           "type": "text",
           "id": "code",
@@ -961,6 +979,10 @@
       "name": "Countdown timer",
       "settings": [
         {
+          "type": "paragraph",
+          "content": "A countdown that restarts on each visit. The text is shown before the timer."
+        },
+        {
           "type": "range",
           "id": "minutes",
           "min": 5,
@@ -1241,7 +1263,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "savings",
@@ -1263,7 +1286,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "metafield",

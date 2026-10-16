@@ -192,7 +192,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "inventory",
@@ -214,12 +215,17 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "estimated_delivery",
       "name": "Estimated shipping",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows a real delivery date range counted from today. Use [start_date] and [end_date] in the text. Weekends can be skipped."
+        },
         {
           "type": "text",
           "id": "text",
@@ -332,7 +338,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "benefits",
@@ -381,6 +388,10 @@
       "type": "payment_badges",
       "name": "Payment badges",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows card logos. Type names such as visa, master, paypal, or tick providers below. Empty = the methods your store accepts."
+        },
         {
           "type": "text",
           "id": "types",
@@ -559,12 +570,17 @@
           "label": "Forbrugsforeningen",
           "default": false
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "shipping_checkpoints",
       "name": "Shipping checkpoints",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Four dated steps (ordered, ready, delivered). Use [start_date] and [end_date] in a step's text; they become real dates in the chosen format."
+        },
         {
           "type": "text",
           "id": "step1",
@@ -778,7 +794,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "trust_stars",
@@ -843,7 +860,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "bestseller",
@@ -865,12 +883,17 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "sizing_chart",
       "name": "Sizing chart",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Opens a popup. Paste a table as text: one row per line, columns separated by commas, first line is the header."
+        },
         {
           "type": "text",
           "id": "label",
@@ -1105,6 +1128,10 @@
       "name": "Custom product field",
       "settings": [
         {
+          "type": "paragraph",
+          "content": "Adds a text, dropdown or checkbox field to the product form. The shopper's answer is saved on the order line as a property."
+        },
+        {
           "type": "text",
           "id": "label",
           "label": "Field label",
@@ -1206,7 +1233,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "review_avatars",
@@ -1252,7 +1280,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     },
     {
       "type": "divider",
@@ -1421,7 +1450,8 @@
           "label": "Margin below",
           "default": 12
         }
-      ]
+      ],
+      "limit": 1
     }
   ],
   "presets": [
