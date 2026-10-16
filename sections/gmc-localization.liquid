@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- if localization.available_countries.size > 1 -%}
 {%- capture loc_class -%}gmc-loc {% render 'gmc-vis', hide: section.settings.hide_on %}{%- endcapture -%}
 {%- form 'localization', id: 'gmc-loc-form', class: loc_class -%}
@@ -11,5 +12,87 @@
 <style>.gmc-loc{display:flex;justify-content:{{ section.settings.align }};padding:.6rem 1.5rem}.gmc-loc__sel{padding:.7rem 1rem;border-radius:var(--text-boxes-radius);border:1px solid rgba(var(--color-foreground),.3);background:rgb(var(--color-background));color:rgb(var(--color-foreground));font:inherit;max-width:100%}</style>
 {%- endif -%}
 {% schema %}
-{"name":"Country selector","tag":"section","settings":[{"type":"checkbox","id":"show_currency","label":"Show currency code","default":true},{"type":"checkbox","id":"show_symbol","label":"Show currency symbol","default":false},{"type":"select","id":"align","label":"Alignment","options":[{"value":"flex-start","label":"Left"},{"value":"center","label":"Center"},{"value":"flex-end","label":"Right"}],"default":"flex-end"},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"presets":[{"name":"Country selector"}]}
+{
+  "name": "Country selector",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_currency",
+      "label": "Show currency code",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_symbol",
+      "label": "Show currency symbol",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "flex-end"
+    },
+    {
+      "type": "select",
+      "id": "hide_on",
+      "label": "Hide on",
+      "options": [
+        {
+          "value": "",
+          "label": "Show everywhere"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "gmc_display_on",
+      "label": "Display on",
+      "options": [
+        {
+          "value": "all",
+          "label": "All devices"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile only"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop only"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Country selector"
+    }
+  ]
+}
 {% endschema %}
