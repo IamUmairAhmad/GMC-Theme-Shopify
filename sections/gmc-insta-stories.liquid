@@ -2,17 +2,54 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one story block.' -%}{%- endif -%}
-<div class="page-width gmc-is {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-is-{{ section.id }}">
-  {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-  <div class="gmc-is__row">{%- for block in section.blocks -%}<button type="button" class="gmc-is__b" data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}><span class="gmc-is__ring">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy' }}{%- endif -%}</span><small>{{ block.settings.title | escape }}</small></button>{%- endfor -%}</div>
-  <div class="gmc-is__modal" hidden><button type="button" class="gmc-is__x" aria-label="Close">×</button>
-    {%- for block in section.blocks -%}<div class="gmc-is__s" hidden>{%- if block.settings.video != blank -%}<video src="{% for s in block.settings.video.sources %}{% if s.format == 'mp4' %}{{ s.url }}{% endif %}{% endfor %}" playsinline controls></video>{%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy' }}{%- endif -%}{%- if block.settings.link != blank -%}<a class="button" href="{{ block.settings.link }}">{{ block.settings.cta | escape }}</a>{%- endif -%}</div>{%- endfor -%}</div>
+{%- assign ss = section.settings -%}
+{%- comment -%} Group items by the "user" name: items with the same user form one story ring. {%- endcomment -%}
+{%- assign users = '' -%}
+{%- for block in section.blocks -%}{%- assign un = block.settings.user | default: block.settings.title | strip -%}{%- unless users contains un -%}{%- assign users = users | append: un | append: '|' -%}{%- endunless -%}{%- endfor -%}
+{%- assign user_list = users | split: '|' -%}
+<div class="page-width gmc-is {% render 'gmc-vis', hide: ss.hide_on %}" id="gmc-is-{{ section.id }}" data-speed="{{ ss.speed }}" data-auto="{{ ss.autoplay }}" style="--is-bg:{{ ss.modal_bg }};--is-fit:{{ ss.fit }}">
+  {%- if ss.heading != blank -%}<h2 style="text-align:center">{{ ss.heading | escape }}</h2>{%- endif -%}
+  <div class="gmc-is__row">
+    {%- for un in user_list -%}
+      {%- assign first_b = nil -%}{%- assign close_f = false -%}{%- assign ver = false -%}
+      {%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}{%- if first_b == nil -%}{%- assign first_b = block -%}{%- endif -%}{%- if block.settings.close_friends -%}{%- assign close_f = true -%}{%- endif -%}{%- if block.settings.verified -%}{%- assign ver = true -%}{%- endif -%}{%- endif -%}{%- endfor -%}
+      <button type="button" class="gmc-is__b" data-u="{{ forloop.index0 }}" {{ first_b.shopify_attributes }}><span class="gmc-is__ring{% if close_f %} gmc-is__ring--cf{% endif %}">{%- if first_b.settings.image != blank -%}{{ first_b.settings.image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '' }}{%- else -%}<span class="gmc-is__ph"></span>{%- endif -%}</span><span class="gmc-is__n">{{ un | escape }}{%- if ver -%}<svg class="gmc-is__v" width="14" height="14" viewBox="0 0 24 24" aria-label="Verified"><circle cx="12" cy="12" r="11" fill="#2563eb"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4"/></svg>{%- endif -%}</span></button>
+    {%- endfor -%}
+  </div>
+  <div class="gmc-is__modal" hidden role="dialog" aria-modal="true" aria-label="Stories"><button type="button" class="gmc-is__x" aria-label="Close">×</button>
+    {%- for un in user_list -%}
+      <div class="gmc-is__u" data-u="{{ forloop.index0 }}" hidden>
+        <div class="gmc-is__bars">{%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}<span><i></i></span>{%- endif -%}{%- endfor -%}</div>
+        {%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}
+          <div class="gmc-is__s" hidden>
+            <div class="gmc-is__hd"><strong>{{ un | escape }}</strong>{%- if block.settings.time != blank -%}<small>{{ block.settings.time | escape }}</small>{%- endif -%}</div>
+            {%- if block.settings.video != blank -%}<video src="{% for vs in block.settings.video.sources %}{% if vs.format == 'mp4' %}{{ vs.url }}{% endif %}{% endfor %}" playsinline muted></video>
+            {%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- endif -%}
+            {%- if block.settings.link != blank -%}<a class="button" href="{{ block.settings.link }}">{{ block.settings.cta | escape }}</a>{%- endif -%}
+          </div>
+        {%- endif -%}{%- endfor -%}
+        <button type="button" class="gmc-is__prev" aria-label="Previous"></button><button type="button" class="gmc-is__next" aria-label="Next"></button>
+      </div>
+    {%- endfor -%}
+  </div>
 </div>
-<style>.gmc-is{padding:28px 0}.gmc-is__row{display:flex;gap:1.2rem;overflow-x:auto;justify-content:center;padding:.5rem}.gmc-is__b{background:none;border:0;cursor:pointer;text-align:center;color:inherit}.gmc-is__ring{display:block;padding:3px;border-radius:50%;background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)}.gmc-is__ring img{display:block;border-radius:50%;border:3px solid rgb(var(--color-background));object-fit:cover}.gmc-is__modal{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.85);display:grid;place-items:center}.gmc-is__modal[hidden]{display:none}.gmc-is__s{max-width:min(420px,92vw);text-align:center}.gmc-is__s[hidden]{display:none}.gmc-is__s img,.gmc-is__s video{max-height:78vh;width:auto;max-width:100%;border-radius:var(--media-radius)}.gmc-is__x{position:absolute;top:1rem;right:1.4rem;background:none;border:0;color:#fff;font-size:3rem;cursor:pointer}</style>
-<script>(function(){var w=document.getElementById('gmc-is-{{ section.id }}'),m=w.querySelector('.gmc-is__modal'),S=m.querySelectorAll('.gmc-is__s');
-function close(){m.hidden=true;m.querySelectorAll('video').forEach(function(v){v.pause();});}
-w.querySelectorAll('.gmc-is__b').forEach(function(b){b.addEventListener('click',function(){S.forEach(function(s,i){s.hidden=i!==+b.dataset.i;});m.hidden=false;});});
-m.querySelector('.gmc-is__x').addEventListener('click',close);m.addEventListener('click',function(e){if(e.target===m)close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();</script>
+<style>.gmc-is{padding:28px 0}.gmc-is__row{display:flex;gap:1.2rem;overflow-x:auto;justify-content:center;padding:.5rem}.gmc-is__b{background:none;border:0;cursor:pointer;text-align:center;color:inherit;flex:none}.gmc-is__ring{display:block;padding:3px;border-radius:50%;background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)}.gmc-is__ring--cf{background:#22c55e}.gmc-is__ring img,.gmc-is__ph{display:block;width:72px;height:72px;border-radius:50%;border:3px solid rgb(var(--color-background));object-fit:cover;background:#ddd}.gmc-is__n{display:flex;gap:.3rem;align-items:center;justify-content:center;font-size:1.2rem;margin-top:.4rem}
+.gmc-is__modal{position:fixed;inset:0;z-index:120;background:var(--is-bg,rgba(0,0,0,.92));display:grid;place-items:center}.gmc-is__modal[hidden],.gmc-is__u[hidden],.gmc-is__s[hidden]{display:none}.gmc-is__u{position:relative;width:min(420px,100vw);height:min(100svh,760px);background:#000;border-radius:12px;overflow:hidden}.gmc-is__s{position:absolute;inset:0;display:grid}.gmc-is__s img,.gmc-is__s video{width:100%;height:100%;object-fit:var(--is-fit,cover)}.gmc-is__s .button{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:3}
+.gmc-is__bars{position:absolute;top:.8rem;left:.8rem;right:.8rem;display:flex;gap:.4rem;z-index:4}.gmc-is__bars span{flex:1;height:3px;background:rgba(255,255,255,.35);border-radius:3px;overflow:hidden}.gmc-is__bars i{display:block;height:100%;width:0;background:#fff}.gmc-is__hd{position:absolute;top:2rem;left:1.2rem;z-index:4;color:#fff;display:flex;gap:.8rem;align-items:baseline;text-shadow:0 1px 4px rgba(0,0,0,.6)}.gmc-is__hd small{opacity:.8}
+.gmc-is__prev,.gmc-is__next{position:absolute;top:5rem;bottom:6rem;width:30%;background:none;border:0;z-index:2;cursor:pointer}.gmc-is__prev{left:0}.gmc-is__next{right:0}.gmc-is__x{position:fixed;top:1rem;right:1.4rem;z-index:130;background:none;border:0;color:#fff;font-size:3.4rem;cursor:pointer;line-height:1}</style>
+<script>(function(){var w=document.getElementById('gmc-is-{{ section.id }}'),m=w.querySelector('.gmc-is__modal'),U=m.querySelectorAll('.gmc-is__u'),speed=(+w.dataset.speed||5)*1000,auto=w.dataset.auto==='true',cu=null,ci=0,tm=null,raf=null;
+function stop(){clearTimeout(tm);cancelAnimationFrame(raf);m.querySelectorAll('video').forEach(function(v){v.pause();});}
+function close(){stop();m.hidden=true;cu=null;}
+function show(u,i){stop();cu=u;ci=i;U.forEach(function(x,k){x.hidden=k!==u;});var us=U[u],S=us.querySelectorAll('.gmc-is__s'),B=us.querySelectorAll('.gmc-is__bars i');
+  S.forEach(function(s,k){s.hidden=k!==i;});B.forEach(function(b,k){b.style.transition='none';b.style.width=k<i?'100%':'0';});
+  var v=S[i].querySelector('video'),t0=performance.now(),dur=speed;
+  function next(){if(i+1<S.length)show(u,i+1);else if(u+1<U.length)show(u+1,0);else close();}
+  if(v){v.currentTime=0;v.play().catch(function(){});v.onended=function(){if(auto)next();};}
+  function tick(now){var d=v&&v.duration?v.duration*1000:dur,p=Math.min(1,(v&&v.duration?v.currentTime*1000:now-t0)/d);B[i].style.width=(p*100)+'%';if(p<1)raf=requestAnimationFrame(tick);else if(auto&&!v)next();}
+  raf=requestAnimationFrame(tick);}
+w.querySelectorAll('.gmc-is__b').forEach(function(b){b.addEventListener('click',function(){m.hidden=false;show(+b.dataset.u,0);});});
+m.addEventListener('click',function(e){var us=e.target.closest('.gmc-is__u');if(e.target.closest('.gmc-is__next')){var S=us.querySelectorAll('.gmc-is__s').length;if(ci+1<S)show(cu,ci+1);else if(cu+1<U.length)show(cu+1,0);else close();}else if(e.target.closest('.gmc-is__prev')){if(ci>0)show(cu,ci-1);else if(cu>0)show(cu-1,0);}else if(e.target===m||e.target.closest('.gmc-is__x'))close();});
+document.addEventListener('keydown',function(e){if(m.hidden)return;if(e.key==='Escape')close();if(e.key==='ArrowRight')m.querySelector('.gmc-is__u:not([hidden]) .gmc-is__next').click();if(e.key==='ArrowLeft')m.querySelector('.gmc-is__u:not([hidden]) .gmc-is__prev').click();});})();</script>
 {% schema %}
 {
   "name": "Stories",
@@ -23,6 +60,44 @@ m.querySelector('.gmc-is__x').addEventListener('click',close);m.addEventListener
       "type": "text",
       "id": "heading",
       "label": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Move to the next story automatically",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "label": "Seconds per image",
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "fit",
+      "label": "Media fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Fill (crop)"
+        },
+        {
+          "value": "contain",
+          "label": "Fit (no crop)"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "color",
+      "id": "modal_bg",
+      "label": "Viewer background",
+      "default": "#0a0a0a"
     },
     {
       "type": "select",
@@ -221,6 +296,12 @@ m.querySelector('.gmc-is__x').addEventListener('click',close);m.addEventListener
       "name": "Story",
       "settings": [
         {
+          "type": "text",
+          "id": "user",
+          "label": "Story owner name",
+          "info": "Items with the same name are grouped into one ring."
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Cover / image"
@@ -246,11 +327,29 @@ m.querySelector('.gmc-is__x').addEventListener('click',close);m.addEventListener
           "type": "url",
           "id": "link",
           "label": "Button link"
+        },
+        {
+          "type": "text",
+          "id": "time",
+          "label": "Time posted",
+          "info": "For example 2h ago."
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified badge",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "close_friends",
+          "label": "Green close-friends ring",
+          "default": false
         }
       ]
     }
   ],
-  "max_blocks": 10,
+  "max_blocks": 30,
   "presets": [
     {
       "name": "Stories",

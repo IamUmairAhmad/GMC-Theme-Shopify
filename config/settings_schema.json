@@ -367,6 +367,76 @@
         "type": "image_picker",
         "id": "gmc_cart_image",
         "label": "Cart image (banner under items)"
+      },
+      {
+        "type": "header",
+        "content": "Drawer size and lines"
+      },
+      {
+        "type": "select",
+        "id": "gmc_cart_w",
+        "label": "Drawer width",
+        "options": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "narrow",
+            "label": "Narrow"
+          },
+          {
+            "value": "wide",
+            "label": "Wide"
+          }
+        ],
+        "default": "normal"
+      },
+      {
+        "type": "select",
+        "id": "gmc_cart_img",
+        "label": "Item image size",
+        "options": [
+          {
+            "value": "s",
+            "label": "Small"
+          },
+          {
+            "value": "m",
+            "label": "Medium"
+          },
+          {
+            "value": "l",
+            "label": "Large"
+          }
+        ],
+        "default": "m"
+      },
+      {
+        "type": "select",
+        "id": "gmc_cart_title",
+        "label": "Item title size",
+        "options": [
+          {
+            "value": "s",
+            "label": "Small"
+          },
+          {
+            "value": "m",
+            "label": "Medium"
+          },
+          {
+            "value": "l",
+            "label": "Large"
+          }
+        ],
+        "default": "m"
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_cart_compact",
+        "label": "Compact variant text (one line)",
+        "default": false
       }
     ]
   },
