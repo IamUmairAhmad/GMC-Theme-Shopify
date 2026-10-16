@@ -1,0 +1,498 @@
+{
+ "sections": {
+  "gmc-lottie": {
+   "type": "gmc-lottie",
+   "settings": {
+    "width": 400,
+    "autoplay": true,
+    "loop": true,
+    "speed": 1,
+    "pad": 24,
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  },
+  "gmc-media-slider": {
+   "type": "gmc-media-slider",
+   "settings": {
+    "per_view": 100,
+    "per_view_mobile": 100,
+    "ratio": "16/9",
+    "autoplay": false,
+    "interval": 5,
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  },
+  "gmc-multicolumn": {
+   "type": "gmc-multicolumn",
+   "settings": {
+    "heading": "Why choose us",
+    "columns": 3,
+    "columns_mobile": "1",
+    "mobile_layout": "grid",
+    "swipe_width": 80,
+    "gap": 24,
+    "style": "plain",
+    "hover": "none",
+    "text_align": "left",
+    "image_shape": "rect",
+    "circle_size": 160,
+    "ratio": "3/2",
+    "radius": 12,
+    "icon_size": 40,
+    "numbered": false,
+    "pad_top": 36,
+    "pad_bottom": 36,
+    "gmc_hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "column-0-0": {
+     "type": "column",
+     "settings": {
+      "title": "Fast shipping",
+      "text": "<p>Describe this point.</p>",
+      "icon_name": "truck"
+     }
+    },
+    "column-0-1": {
+     "type": "column",
+     "settings": {
+      "title": "Secure checkout",
+      "text": "<p>Describe this point.</p>",
+      "icon_name": "shield-check"
+     }
+    },
+    "column-0-2": {
+     "type": "column",
+     "settings": {
+      "title": "Easy returns",
+      "text": "<p>Describe this point.</p>",
+      "icon_name": "refresh"
+     }
+    }
+   },
+   "block_order": [
+    "column-0-0",
+    "column-0-1",
+    "column-0-2"
+   ]
+  },
+  "gmc-music-player": {
+   "type": "gmc-music-player",
+   "settings": {
+    "hide_on": ""
+   }
+  },
+  "gmc-parallax-hero": {
+   "type": "gmc-parallax-hero",
+   "settings": {
+    "heading": "Depth in motion",
+    "h": 70,
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  },
+  "gmc-pricing-table": {
+   "type": "gmc-pricing-table",
+   "settings": {
+    "heading": "Choose your plan",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "plan-0-0": {
+     "type": "plan",
+     "settings": {
+      "name": "Starter",
+      "price": "$19",
+      "features": "<ul><li>Feature one</li><li>Feature two</li></ul>",
+      "featured": false,
+      "button": "Choose"
+     }
+    },
+    "plan-0-1": {
+     "type": "plan",
+     "settings": {
+      "name": "Pro",
+      "price": "$39",
+      "features": "<ul><li>Feature one</li><li>Feature two</li></ul>",
+      "featured": true,
+      "button": "Choose",
+      "badge": "Popular"
+     }
+    }
+   },
+   "block_order": [
+    "plan-0-0",
+    "plan-0-1"
+   ]
+  },
+  "gmc-product-features": {
+   "type": "gmc-product-features",
+   "settings": {
+    "heading": "Why you'll love it",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "feature-0-0": {
+     "type": "feature",
+     "settings": {
+      "icon_name": "sparkles",
+      "title": "Feature",
+      "text": "Describe this benefit."
+     }
+    },
+    "feature-0-1": {
+     "type": "feature",
+     "settings": {
+      "icon_name": "sparkles",
+      "title": "Feature",
+      "text": "Describe this benefit."
+     }
+    },
+    "feature-0-2": {
+     "type": "feature",
+     "settings": {
+      "icon_name": "sparkles",
+      "title": "Feature",
+      "text": "Describe this benefit."
+     }
+    },
+    "feature-0-3": {
+     "type": "feature",
+     "settings": {
+      "icon_name": "sparkles",
+      "title": "Feature",
+      "text": "Describe this benefit."
+     }
+    }
+   },
+   "block_order": [
+    "feature-0-0",
+    "feature-0-1",
+    "feature-0-2",
+    "feature-0-3"
+   ]
+  },
+  "gmc-promo-popup": {
+   "type": "gmc-promo-popup",
+   "settings": {}
+  },
+  "gmc-reading-time": {
+   "type": "gmc-reading-time",
+   "settings": {
+    "show_updated": false
+   }
+  },
+  "gmc-redirect": {
+   "type": "gmc-redirect",
+   "settings": {
+    "enabled": true,
+    "delay": 0
+   }
+  },
+  "gmc-results": {
+   "type": "gmc-results",
+   "settings": {
+    "heading": "Results that speak",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "stat-0-0": {
+     "type": "stat",
+     "settings": {
+      "number": 10000,
+      "suffix": "+",
+      "label": "Happy customers"
+     }
+    },
+    "stat-0-1": {
+     "type": "stat",
+     "settings": {
+      "number": 98,
+      "suffix": "%",
+      "label": "Satisfaction"
+     }
+    },
+    "stat-0-2": {
+     "type": "stat",
+     "settings": {
+      "number": 50,
+      "suffix": "+",
+      "label": "Countries"
+     }
+    }
+   },
+   "block_order": [
+    "stat-0-0",
+    "stat-0-1",
+    "stat-0-2"
+   ]
+  },
+  "gmc-scroll-progress": {
+   "type": "gmc-scroll-progress",
+   "settings": {
+    "color": "#16a34a",
+    "h": 4
+   }
+  },
+  "gmc-scroll-top": {
+   "type": "gmc-scroll-top",
+   "settings": {}
+  },
+  "gmc-section-divider": {
+   "type": "gmc-section-divider",
+   "settings": {
+    "color": "#cccccc",
+    "style": "solid",
+    "w": 1,
+    "pad": 16,
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  },
+  "gmc-section-group": {
+   "type": "gmc-section-group",
+   "settings": {
+    "columns": 2,
+    "columns_mobile": "1",
+    "gap": 24,
+    "align": "start",
+    "pt": 36,
+    "pb": 36,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "gmc-group-0-0": {
+     "type": "_gmc-group",
+     "settings": {}
+    },
+    "gmc-image-0-1": {
+     "type": "_gmc-image",
+     "settings": {}
+    }
+   },
+   "block_order": [
+    "gmc-group-0-0",
+    "gmc-image-0-1"
+   ]
+  },
+  "gmc-shoppable-image": {
+   "type": "gmc-shoppable-image",
+   "settings": {
+    "heading": "Shop the look",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  },
+  "gmc-sticky-cta": {
+   "type": "gmc-sticky-cta",
+   "settings": {
+    "label": "Shop now",
+    "hide_on": ""
+   }
+  },
+  "gmc-testimonials": {
+   "type": "gmc-testimonials",
+   "settings": {
+    "heading": "Loved by customers",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "review-0-0": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "quote": "Amazing quality, arrived fast!",
+      "name": "Sarah M.",
+      "verified": true
+     }
+    },
+    "review-0-1": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "quote": "Amazing quality, arrived fast!",
+      "name": "James T.",
+      "verified": true
+     }
+    },
+    "review-0-2": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "quote": "Amazing quality, arrived fast!",
+      "name": "Aisha K.",
+      "verified": true
+     }
+    }
+   },
+   "block_order": [
+    "review-0-0",
+    "review-0-1",
+    "review-0-2"
+   ]
+  },
+  "gmc-ticker": {
+   "type": "gmc-ticker",
+   "settings": {
+    "bg": "#111111",
+    "fg": "#ffffff",
+    "speed": 30,
+    "size": 14,
+    "separator": "\u2726",
+    "reverse": false,
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "item-0-0": {
+     "type": "item",
+     "settings": {
+      "text": "Free shipping on orders over $50"
+     }
+    },
+    "item-0-1": {
+     "type": "item",
+     "settings": {
+      "text": "30-day money-back guarantee"
+     }
+    },
+    "item-0-2": {
+     "type": "item",
+     "settings": {
+      "text": "Secure checkout"
+     }
+    }
+   },
+   "block_order": [
+    "item-0-0",
+    "item-0-1",
+    "item-0-2"
+   ]
+  },
+  "gmc-tiktok-videos": {
+   "type": "gmc-tiktok-videos",
+   "settings": {
+    "heading": "As seen on TikTok",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  }
+ },
+ "order": [
+  "gmc-lottie",
+  "gmc-media-slider",
+  "gmc-multicolumn",
+  "gmc-music-player",
+  "gmc-parallax-hero",
+  "gmc-pricing-table",
+  "gmc-product-features",
+  "gmc-promo-popup",
+  "gmc-reading-time",
+  "gmc-redirect",
+  "gmc-results",
+  "gmc-scroll-progress",
+  "gmc-scroll-top",
+  "gmc-section-divider",
+  "gmc-section-group",
+  "gmc-shoppable-image",
+  "gmc-sticky-cta",
+  "gmc-testimonials",
+  "gmc-ticker",
+  "gmc-tiktok-videos"
+ ]
+}

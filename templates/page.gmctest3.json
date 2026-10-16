@@ -1,0 +1,190 @@
+{
+ "sections": {
+  "gmc-timeline": {
+   "type": "gmc-timeline",
+   "settings": {
+    "heading": "How it works",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "step-0-0": {
+     "type": "step",
+     "settings": {
+      "title": "Order",
+      "text": "Place your order online."
+     }
+    },
+    "step-0-1": {
+     "type": "step",
+     "settings": {
+      "title": "Ship",
+      "text": "We ship in 24 hours."
+     }
+    },
+    "step-0-2": {
+     "type": "step",
+     "settings": {
+      "title": "Enjoy",
+      "text": "Delivered to your door."
+     }
+    }
+   },
+   "block_order": [
+    "step-0-0",
+    "step-0-1",
+    "step-0-2"
+   ]
+  },
+  "gmc-track-order": {
+   "type": "gmc-track-order",
+   "settings": {
+    "heading": "Track your order",
+    "text": "Enter the tracking number from your shipping email.",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  },
+  "gmc-trustpilot": {
+   "type": "gmc-trustpilot",
+   "settings": {
+    "score": "4.8 Excellent",
+    "count": "based on 1,200 reviews",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "review-0-0": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "title": "Great service",
+      "text": "Fast delivery and exactly as described.",
+      "name": "Verified customer"
+     }
+    },
+    "review-0-1": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "title": "Great service",
+      "text": "Fast delivery and exactly as described.",
+      "name": "Verified customer"
+     }
+    },
+    "review-0-2": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "title": "Great service",
+      "text": "Fast delivery and exactly as described.",
+      "name": "Verified customer"
+     }
+    }
+   },
+   "block_order": [
+    "review-0-0",
+    "review-0-1",
+    "review-0-2"
+   ]
+  },
+  "gmc-vertical-ticker": {
+   "type": "gmc-vertical-ticker",
+   "settings": {
+    "bg": "#111111",
+    "fg": "#ffffff",
+    "height": 40,
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   },
+   "blocks": {
+    "item-0-0": {
+     "type": "item",
+     "settings": {
+      "text": "Free shipping over $50"
+     }
+    },
+    "item-0-1": {
+     "type": "item",
+     "settings": {
+      "text": "30-day returns"
+     }
+    }
+   },
+   "block_order": [
+    "item-0-0",
+    "item-0-1"
+   ]
+  },
+  "gmc-video-hero": {
+   "type": "gmc-video-hero",
+   "settings": {
+    "heading": "Your headline",
+    "text": "Supporting text goes here.",
+    "button": "Shop now",
+    "h": 70,
+    "ov": 35,
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  },
+  "gmc-video-player": {
+   "type": "gmc-video-player",
+   "settings": {
+    "ratio": "16/9",
+    "hide_on": "",
+    "gmc_pad_top": 0,
+    "gmc_pad_bottom": 0,
+    "gmc_max_width": 0,
+    "gmc_bg_overlay": 0,
+    "gmc_atc_label": "Add to cart",
+    "gmc_atc_align": "center",
+    "gmc_swipe_mobile": false,
+    "gmc_slider_autoplay": 0
+   }
+  }
+ },
+ "order": [
+  "gmc-timeline",
+  "gmc-track-order",
+  "gmc-trustpilot",
+  "gmc-vertical-ticker",
+  "gmc-video-hero",
+  "gmc-video-player"
+ ]
+}
