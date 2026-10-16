@@ -1,6 +1,7 @@
 <!doctype html>
 <html class="js" lang="{{ request.locale.iso_code }}">
   <head>
+    <script>window.gmcMF={{ shop.money_format | json }};window.gmcMoney=function(c){var f=String(window.gmcMF||'').replace(/<[^>]*>/g,''),re=/\{\{\s*(\w+)\s*\}\}/,m=f.match(re);function fd(n,p,t,d){n=(n/100).toFixed(p);var a=n.split('.');return a[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g,'$1'+t)+(a[1]?d+a[1]:'');}var k=m?m[1]:'amount',v;switch(k){case 'amount_no_decimals':v=fd(c,0,',','.');break;case 'amount_with_comma_separator':v=fd(c,2,'.',',');break;case 'amount_no_decimals_with_comma_separator':v=fd(c,0,'.',',');break;case 'amount_with_apostrophe_separator':v=fd(c,2,"'",'.');break;default:v=fd(c,2,',','.');}return m?f.replace(re,v):f+v;};</script>
     <script>window.gmcWhenPubsub=function(cb){function go(){if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined')cb();}if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined')go();else document.addEventListener('DOMContentLoaded',go);};</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
