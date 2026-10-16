@@ -197,3 +197,7 @@ All 61 sections, all 17 page templates and group files, all 140+ snippets by nam
 - **Store data**: Shrine's store has one theme, one Contact page, three menus, and Shopify's standard category metaobjects (colour, material, etc.). Nothing theme-specific is required from the store, so our theme needs no special setup data to match.
 - **Icon font**: Shrine loads Google Material Symbols from the web for every icon. Ours bundles icons locally (faster, no outside call). The gap is only icon variety (DP-11), not the loading method.
 - **Not read**: the CSS files (`base.css` and component styles) were skimmed by size and class names only. They describe looks, not features. A visual side-by-side is the right check for those.
+
+## 14. Fifth pass
+- Small stylesheets read in full (predictive search, customer pages, quick add, bundle deals, content tabs, pricing table, password, gift card): no feature beyond what the matching sections already do.
+- `base.css` (328 KB) is too large for the store tool and its download link is blocked from this workspace, so it was **not** read. It holds general look-and-feel only; check it by visual comparison.
