@@ -379,7 +379,7 @@
           "type": "_gmc-text",
           "settings": {
             "heading": "A section you can build on",
-            "text": "Add text, images, buttons and icons using blocks.",
+            "text": "<p>Add text, images, buttons and icons using blocks.</p>",
             "align": "center"
           }
         }
