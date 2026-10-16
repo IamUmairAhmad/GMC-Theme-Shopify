@@ -201,3 +201,8 @@ All 61 sections, all 17 page templates and group files, all 140+ snippets by nam
 ## 14. Fifth pass
 - Small stylesheets read in full (predictive search, customer pages, quick add, bundle deals, content tabs, pricing table, password, gift card): no feature beyond what the matching sections already do.
 - `base.css` (328 KB) is too large for the store tool and its download link is blocked from this workspace, so it was **not** read. It holds general look-and-feel only; check it by visual comparison.
+
+## 15. Sixth pass
+- `settings_data` defaults read in full: they hold Shrine's style presets plus leftover settings from older Shrine cart versions (trust-badge width, cart timer text, two fixed upsell products). These are covered by our block-based cart drawer; no new feature.
+- Editor help texts (`en.default.schema.json`) are Shopify's standard theme strings; nothing Shrine-specific beyond what the schemas already showed.
+- Shrine's live storefront is behind a store password, so the rendered pages (animation feel, spacing, mobile behaviour) have not been seen. To compare visually, the store password or a preview link is needed; I did not try to bypass it.
