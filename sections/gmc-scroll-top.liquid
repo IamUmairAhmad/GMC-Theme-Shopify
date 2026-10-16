@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- if settings.gmc_scrolltop -%}
 <button type="button" id="gmc-top" aria-label="Scroll to top" hidden>↑</button>
 <style>
@@ -11,5 +12,19 @@
 </script>
 {%- endif -%}
 {% schema %}
-{ "name": "Scroll to top", "settings": [{"type":"paragraph","content":"Configure under Theme settings > GMC features."}] }
+{
+  "name": "Scroll to top",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Configure under Theme settings > GMC features."
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ]
+}
 {% endschema %}

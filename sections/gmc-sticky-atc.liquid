@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: sticky add-to-cart bar (original code). Add it to the product template. {%- endcomment -%}
 {%- if product != blank and settings.gmc_sticky_atc -%}
 <div class="gmc-satc" id="gmc-satc" hidden>
@@ -28,8 +29,29 @@
 {
   "name": "Sticky add to cart",
   "tag": "section",
-  "enabled_on": {"templates": ["product"]},
-  "settings": [{"type":"text","id":"label","label":"Button label","default":"Add to cart"}],
-  "presets": [{"name":"Sticky add to cart"}]
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Button label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticky add to cart"
+    }
+  ]
 }
 {% endschema %}

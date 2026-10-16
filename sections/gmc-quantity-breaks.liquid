@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: quantity break picker for product pages (original code). Sets the main form quantity. For real price discounts, create matching automatic discounts in Shopify admin. {%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
 <div class="gmc-qb" id="gmc-qb-{{ section.id }}">
@@ -47,6 +48,12 @@
       "id": "heading",
       "label": "Heading",
       "default": "Buy more, save more"
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

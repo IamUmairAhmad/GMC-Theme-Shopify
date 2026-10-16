@@ -1,8 +1,50 @@
+{%- render 'gmc-scheme' -%}
 {%- if section.settings.url != blank -%}
 <div class="gmc-mp {% render 'gmc-vis', hide: section.settings.hide_on %}"><button type="button" id="gmc-mp-btn" aria-label="Toggle music">♪</button><audio id="gmc-mp-a" src="{{ section.settings.url }}" loop preload="none"></audio></div>
 <style>.gmc-mp{position:fixed;left:1.2rem;bottom:calc(var(--gmc-dock,0px) + 1.2rem);z-index:40}#gmc-mp-btn{width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;background:rgb(var(--color-foreground));color:rgb(var(--color-background));font-size:20px;box-shadow:0 2px 10px rgba(var(--color-shadow),.25)}#gmc-mp-btn.on{outline:3px solid {{ settings.gmc_accent }}}</style>
 <script>(function(){var b=document.getElementById('gmc-mp-btn'),a=document.getElementById('gmc-mp-a');b.addEventListener('click',function(){if(a.paused){a.play();b.classList.add('on');}else{a.pause();b.classList.remove('on');}});})();</script>
 {%- endif -%}
 {% schema %}
-{"name":"Music player","settings":[{"type":"text","id":"url","label":"Audio file URL (.mp3)","info":"Upload the file under Content > Files and paste its URL. Plays only after the visitor taps the button."},{"type":"select","id":"hide_on","label":"Hide on","options":[{"value":"","label":"Show everywhere"},{"value":"mobile","label":"Mobile"},{"value":"desktop","label":"Desktop"}],"default":""}],"presets":[{"name":"Music player"}]}
+{
+  "name": "Music player",
+  "settings": [
+    {
+      "type": "text",
+      "id": "url",
+      "label": "Audio file URL (.mp3)",
+      "info": "Upload the file under Content > Files and paste its URL. Plays only after the visitor taps the button."
+    },
+    {
+      "type": "select",
+      "id": "hide_on",
+      "label": "Hide on",
+      "options": [
+        {
+          "value": "",
+          "label": "Show everywhere"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Music player"
+    }
+  ]
+}
 {% endschema %}

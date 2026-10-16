@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <section class="gmc-vh {% render 'gmc-vis', hide: section.settings.hide_on %}" style="min-height:{{ section.settings.h }}vh">
   {%- if section.settings.video != blank -%}<video autoplay muted loop playsinline {% if section.settings.poster != blank %}poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}>{%- for s in section.settings.video.sources -%}{%- if s.format == 'mp4' -%}<source src="{{ s.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
@@ -199,6 +200,12 @@
       "step": 1,
       "default": 0,
       "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "presets": [

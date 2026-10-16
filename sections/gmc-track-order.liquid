@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <div class="page-width gmc-to {% render 'gmc-vis', hide: section.settings.hide_on %}">
   <h2>{{ section.settings.heading | escape }}</h2><p>{{ section.settings.text | escape }}</p>
@@ -177,6 +178,12 @@
       "id": "orders_label",
       "label": "Link to customer orders",
       "default": "View my orders"
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "presets": [

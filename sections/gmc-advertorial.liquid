@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- comment -%} GMC Theme: long-form advertorial / listicle article layout (original code) {%- endcomment -%}
 <article class="gmc-adv page-width {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--w:{{ section.settings.width }}px">
@@ -189,6 +190,12 @@
       "step": 1,
       "default": 0,
       "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

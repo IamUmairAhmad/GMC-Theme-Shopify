@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add products as blocks.' -%}{%- endif -%}
 <div class="page-width gmc-bd {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-bd-{{ section.id }}">
@@ -181,6 +182,12 @@ fetch({{ routes.cart_add_url | json }}+'.js',{method:'POST',headers:{'Content-Ty
       "step": 1,
       "default": 0,
       "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

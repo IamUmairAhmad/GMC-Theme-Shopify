@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one story block.' -%}{%- endif -%}
 <div class="page-width gmc-is {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-is-{{ section.id }}">
@@ -157,6 +158,12 @@ m.querySelector('.gmc-is__x').addEventListener('click',close);m.addEventListener
       "step": 1,
       "default": 0,
       "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: subscribe & save widget using Shopify selling plans (original code). Requires a subscription app that creates selling plans. {%- endcomment -%}
 {%- if product != blank and product.selling_plan_groups.size > 0 -%}
 {%- assign cur = product.selected_or_first_available_variant -%}
@@ -23,5 +24,49 @@ build();w.addEventListener('change',sync);window.addEventListener('load',sync);
 gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;if(v&&v.id)vid=String(v.id);build();setTimeout(sync,50);});});})();</script>
 {%- endif -%}
 {% schema %}
-{"name":"Subscription widget","tag":"section","class":"section","enabled_on":{"templates":["product"]},"settings":[{"type":"text","id":"one_time","label":"One-time label","default":"One-time purchase"},{"type":"text","id":"subscribe","label":"Subscribe label","default":"Subscribe & save"},{"type":"text","id":"note","label":"Note","default":"Cancel or skip any time"},{"type":"paragraph","content":"Shows only for products that have selling plans from a subscription app."}],"presets":[{"name":"Subscription widget"}]}
+{
+  "name": "Subscription widget",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "one_time",
+      "label": "One-time label",
+      "default": "One-time purchase"
+    },
+    {
+      "type": "text",
+      "id": "subscribe",
+      "label": "Subscribe label",
+      "default": "Subscribe & save"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note",
+      "default": "Cancel or skip any time"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shows only for products that have selling plans from a subscription app."
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subscription widget"
+    }
+  ]
+}
 {% endschema %}

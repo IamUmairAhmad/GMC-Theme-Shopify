@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- comment -%} Per-page color changer: add this section to any page/template to recolor that page only. {%- endcomment -%}
 {%- assign bg = section.settings.bg | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
 {%- assign fg = section.settings.fg | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
@@ -9,5 +10,48 @@
   [class*="color-"].gradient{background:{{ section.settings.bg }}}
 </style>
 {% schema %}
-{"name":"Page color changer","settings":[{"type":"paragraph","content":"Recolors the whole page this section is on."},{"type":"color","id":"bg","label":"Background","default":"#ffffff"},{"type":"color","id":"fg","label":"Text","default":"#121212"},{"type":"color","id":"accent","label":"Buttons / links","default":"#121212"},{"type":"color","id":"button_text","label":"Button text","default":"#ffffff"}],"presets":[{"name":"Page color changer"}]}
+{
+  "name": "Page color changer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Recolors the whole page this section is on."
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "fg",
+      "label": "Text",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Buttons / links",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page color changer"
+    }
+  ]
+}
 {% endschema %}

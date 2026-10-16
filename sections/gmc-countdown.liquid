@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <div class="gmc-cd {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-cd-{{ section.id }}" style="background:{{ section.settings.bg }};color:{{ section.settings.fg }}">
   <p class="gmc-cd__t">{{ section.settings.text | escape }}</p>
@@ -202,6 +203,12 @@ t();setInterval(t,1000);})();</script>
       "step": 1,
       "default": 0,
       "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "presets": [

@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: product page info blocks. Add this section to the product template and stack the blocks you want. {%- endcomment -%}
 {%- assign v = product.selected_or_first_available_variant -%}
 <div class="gmc-pe {% render 'gmc-vis', hide: section.settings.hide_on %}">
@@ -68,6 +69,12 @@
         }
       ],
       "default": ""
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

@@ -1,3 +1,4 @@
+{%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: promo popup (original code). Controlled from Theme settings > GMC features > Promo popup. {%- endcomment -%}
 {%- assign pg = request.page_type -%}
 {%- assign allowed = false -%}
@@ -82,6 +83,12 @@
       "id": "button_label",
       "label": "Subscribe button label",
       "default": "Subscribe"
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     }
   ]
 }
