@@ -26,6 +26,12 @@
         assign swatch_count = option.values | map: 'swatch' | compact | size
         assign picker_type = block.settings.picker_type
 
+        # GMC: a Color/Colour option shows swatches even when no swatch values were set in Shopify (colour names are mapped in swatch-input)
+        assign gmc_opt_name = option.name | downcase
+        if gmc_opt_name contains 'color' or gmc_opt_name contains 'colour'
+          assign swatch_count = swatch_count | plus: 1
+        endif
+
         if swatch_count > 0 and block.settings.swatch_shape != 'none'
           if block.settings.picker_type == 'dropdown'
             assign picker_type = 'swatch_dropdown'
