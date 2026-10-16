@@ -24,14 +24,39 @@
       <span class="gmc-pe__bs">{{ block.settings.text | escape }}</span>{%- when 'sizing_chart' -%}
       <details class="gmc-pe__sz"><summary>{{ block.settings.label | escape }}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- when 'text_icon' -%}
       <p class="gmc-pe__ti"><span style="font-size:2rem">{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 24 -%}{%- else -%}{{ block.settings.icon | escape }}{%- endif -%}</span> {{ block.settings.text | escape }}</p>{%- when 'custom_field' -%}
-      <label class="gmc-pe__cf">{{ block.settings.label | escape }}<input type="text" data-gmc-prop="properties[{{ block.settings.label | escape }}]" class="field__input" style="padding:.9rem" {% if block.settings.required %}required{% endif %}></label>{%- when 'breadcrumb' -%}
+      {%- liquid
+        assign cf_type = block.settings.field_type | default: 'text'
+        assign cf_name = block.settings.label | escape
+        assign cf_opts = block.settings.options | split: ','
+      -%}
+      <div class="gmc-pe__cf" data-gmc-cf data-required="{{ block.settings.required }}" data-type="{{ cf_type }}" data-error="{{ block.settings.error | default: 'Please complete this field.' | escape }}" style="margin-bottom:{{ block.settings.mb }}px">
+        <span class="gmc-pe__cfl" id="cf-{{ block.id }}-l">{{ cf_name }}{% if block.settings.required %} <abbr title="required" style="text-decoration:none">*</abbr>{% endif %}</span>
+        {%- case cf_type -%}
+          {%- when 'textarea' -%}
+            <textarea class="field__input" rows="3" data-gmc-prop="properties[{{ cf_name }}]" aria-labelledby="cf-{{ block.id }}-l" {% if block.settings.max_length > 0 %}maxlength="{{ block.settings.max_length }}"{% endif %} {% if block.settings.placeholder != blank %}placeholder="{{ block.settings.placeholder | escape }}"{% endif %} style="padding:.9rem"></textarea>
+          {%- when 'number' -%}
+            <input type="number" class="field__input" data-gmc-prop="properties[{{ cf_name }}]" aria-labelledby="cf-{{ block.id }}-l" {% if block.settings.number_min != blank %}min="{{ block.settings.number_min }}"{% endif %} {% if block.settings.number_max != blank %}max="{{ block.settings.number_max }}"{% endif %} {% if block.settings.placeholder != blank %}placeholder="{{ block.settings.placeholder | escape }}"{% endif %} style="padding:.9rem">
+          {%- when 'dropdown' -%}
+            <select class="field__input" data-gmc-prop="properties[{{ cf_name }}]" aria-labelledby="cf-{{ block.id }}-l" style="padding:.9rem">
+              <option value="">{{ block.settings.placeholder | default: 'Choose an option' | escape }}</option>
+              {%- for o in cf_opts -%}{%- assign ov = o | strip -%}{%- if ov != blank -%}<option value="{{ ov | escape }}">{{ ov | escape }}</option>{%- endif -%}{%- endfor -%}
+            </select>
+          {%- when 'pills' -%}
+            <div class="gmc-pe__pills" role="radiogroup" aria-labelledby="cf-{{ block.id }}-l">
+              {%- for o in cf_opts -%}{%- assign ov = o | strip -%}{%- if ov != blank -%}<label class="gmc-pe__pill"><input type="radio" name="cf-{{ block.id }}" value="{{ ov | escape }}" data-gmc-prop="properties[{{ cf_name }}]"><span>{{ ov | escape }}</span></label>{%- endif -%}{%- endfor -%}
+            </div>
+          {%- else -%}
+            <input type="text" class="field__input" data-gmc-prop="properties[{{ cf_name }}]" aria-labelledby="cf-{{ block.id }}-l" {% if block.settings.max_length > 0 %}maxlength="{{ block.settings.max_length }}"{% endif %} {% if block.settings.placeholder != blank %}placeholder="{{ block.settings.placeholder | escape }}"{% endif %} style="padding:.9rem">
+        {%- endcase -%}
+        <small class="gmc-pe__cferr" role="alert" hidden></small>
+      </div>{%- when 'breadcrumb' -%}
       <nav class="gmc-pe__bc"><a href="{{ routes.root_url }}">Home</a> › {%- if collection != blank %} <a href="{{ collection.url }}">{{ collection.title | escape }}</a> › {% endif %} {{ product.title | escape }}</nav>{%- when 'review_avatars' -%}
       {%- if block.settings.text != blank or block.settings.a1 != blank -%}<div class="gmc-pe__ra"><span class="gmc-pe__stack">{%- for i in (1..5) -%}{%- assign k = 'a' | append: i -%}{%- if block.settings[k] != blank -%}{{ block.settings[k] | image_url: width: 80 | image_tag: width: 32, height: 32, loading: 'lazy' }}{%- endif -%}{%- endfor -%}</span><span><span style="color:#f5a623">★★★★★</span> {{ block.settings.text | escape }}</span></div>{%- endif -%}{%- when 'divider' -%}<hr style="border:0;border-top:1px solid rgba(var(--color-foreground),.15)">{%- when 'liquid' -%}{{ block.settings.code }}
   {%- endcase -%}
   </div>
 {%- endfor -%}
 </div>
-<style>.gmc-pe__urg{color:#b91c1c;font-weight:600;margin:0}.gmc-pe__stock{color:#16a34a;margin:0}.gmc-pe__eta,.gmc-pe__ts,.gmc-pe__ti{margin:0}.gmc-pe__ben{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}.gmc-pe__ben li:before{content:"✅ "}.gmc-pe__cp{list-style:none;display:flex;justify-content:space-between;text-align:center;padding:0;margin:0}.gmc-pe__bs{display:inline-block;background:#f59e0b;color:#111;font-weight:700;padding:3px 12px;border-radius:var(--badge-corner-radius,99px);font-size:1.2rem}.gmc-pe__sz summary{cursor:pointer;font-weight:600;text-decoration:underline}.gmc-pe__cf{display:grid;gap:.4rem;font-weight:600}.gmc-pe__ra{display:flex;align-items:center;gap:1rem}.gmc-pe__stack{display:flex}.gmc-pe__stack img{border-radius:50%;border:2px solid rgb(var(--color-background));margin-left:-10px;object-fit:cover}.gmc-pe__stack img:first-child{margin-left:0}.gmc-pe__bc{font-size:1.2rem;opacity:.75}
+<style>.gmc-pe__urg{color:#b91c1c;font-weight:600;margin:0}.gmc-pe__stock{color:#16a34a;margin:0}.gmc-pe__eta,.gmc-pe__ts,.gmc-pe__ti{margin:0}.gmc-pe__ben{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}.gmc-pe__ben li:before{content:"✅ "}.gmc-pe__cp{list-style:none;display:flex;justify-content:space-between;text-align:center;padding:0;margin:0}.gmc-pe__bs{display:inline-block;background:#f59e0b;color:#111;font-weight:700;padding:3px 12px;border-radius:var(--badge-corner-radius,99px);font-size:1.2rem}.gmc-pe__sz summary{cursor:pointer;font-weight:600;text-decoration:underline}.gmc-pe__cf{display:grid;gap:.4rem;font-weight:600}.gmc-pe__cf[data-invalid] .field__input,.gmc-pe__cf[data-invalid] .gmc-pe__pill span{border-color:#b91c1c}.gmc-pe__cferr{color:#b91c1c;font-weight:400}.gmc-pe__pills{display:flex;gap:.6rem;flex-wrap:wrap}.gmc-pe__pill input{position:absolute;opacity:0;pointer-events:none}.gmc-pe__pill span{display:inline-block;padding:.7rem 1.4rem;border:1px solid rgba(var(--color-foreground),.3);border-radius:99px;cursor:pointer;font-weight:400}.gmc-pe__pill input:checked+span{background:rgb(var(--color-foreground));color:rgb(var(--color-background));border-color:rgb(var(--color-foreground))}.gmc-pe__pill input:focus-visible+span{outline:2px solid currentColor;outline-offset:2px}.gmc-pe__ra{display:flex;align-items:center;gap:1rem}.gmc-pe__stack{display:flex}.gmc-pe__stack img{border-radius:50%;border:2px solid rgb(var(--color-background));margin-left:-10px;object-fit:cover}.gmc-pe__stack img:first-child{margin-left:0}.gmc-pe__bc{font-size:1.2rem;opacity:.75}
 .gmc-pe__comp{display:flex;gap:1rem;align-items:center;padding:.9rem 1.1rem;border:1px dashed rgba(var(--color-foreground),.35);border-radius:var(--text-boxes-radius);cursor:pointer}.gmc-pe__comp img{border-radius:var(--media-radius);object-fit:cover}
 .gmc-pe__code{display:flex;gap:1rem;align-items:center;width:100%;padding:.9rem 1.2rem;border:2px dashed {{ settings.gmc_accent }};border-radius:10px;background:transparent;color:inherit;font:inherit;cursor:pointer;text-align:left}.gmc-pe__code b{background:{{ settings.gmc_accent }};color:#fff;padding:2px 10px;border-radius:6px}.gmc-pe__code small{margin-left:auto;opacity:.65}
 .gmc-pe__link{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;color:inherit;font:inherit}.gmc-pe__dlg{max-width:560px;width:92vw;border:0;border-radius:var(--text-boxes-radius);padding:2rem;position:relative}.gmc-pe__dlg::backdrop{background:rgba(0,0,0,.55)}.gmc-pe__dx{position:absolute;top:.5rem;right:1rem;background:none;border:0;font-size:2.6rem;cursor:pointer}
@@ -326,7 +351,7 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
           "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "⭐ Bestseller"
+          "default": "\u2b50 Bestseller"
         },
         {
           "type": "range",
@@ -376,7 +401,7 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
           "type": "text",
           "id": "icon",
           "label": "Emoji",
-          "default": "🚚"
+          "default": "\ud83d\ude9a"
         },
         {
           "type": "text",
@@ -411,6 +436,70 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
           "id": "label",
           "label": "Field label",
           "default": "Engraving text"
+        },
+        {
+          "type": "select",
+          "id": "field_type",
+          "label": "Field type",
+          "options": [
+            {
+              "value": "text",
+              "label": "Text"
+            },
+            {
+              "value": "textarea",
+              "label": "Text area"
+            },
+            {
+              "value": "number",
+              "label": "Number"
+            },
+            {
+              "value": "pills",
+              "label": "Pills"
+            },
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            }
+          ],
+          "default": "text"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "range",
+          "id": "max_length",
+          "min": 0,
+          "max": 500,
+          "step": 10,
+          "label": "Max characters (0 = no limit)",
+          "default": 0
+        },
+        {
+          "type": "number",
+          "id": "number_min",
+          "label": "Minimum (number field)"
+        },
+        {
+          "type": "number",
+          "id": "number_max",
+          "label": "Maximum (number field)"
+        },
+        {
+          "type": "textarea",
+          "id": "options",
+          "label": "Options (pills and dropdown)",
+          "info": "Separate options with commas, e.g. Small, Medium, Large."
+        },
+        {
+          "type": "text",
+          "id": "error",
+          "label": "Error message when required",
+          "default": "Please complete this field."
         },
         {
           "type": "checkbox",

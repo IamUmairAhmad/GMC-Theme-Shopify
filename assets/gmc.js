@@ -285,3 +285,16 @@ window.gmcMoney=function(c){var f=String((window.GMC&&GMC.moneyFormat)||'{{amoun
   var k=m?m[1]:'amount',v;
   switch(k){case 'amount_no_decimals':v=fd(c,0,',','.');break;case 'amount_with_comma_separator':v=fd(c,2,'.',',');break;case 'amount_no_decimals_with_comma_separator':v=fd(c,0,'.',',');break;case 'amount_with_apostrophe_separator':v=fd(c,2,"'",'.');break;default:v=fd(c,2,',','.');}
   return m?f.replace(re,v):f+v;};
+/* custom product field validation: blocks the add-to-cart (main button and sticky bar) until required fields are filled */
+(function(){
+  function val(w){var t=w.dataset.type;if(t==='pills'){var r=w.querySelector('input:checked');return r?r.value:'';}var el=w.querySelector('input,select,textarea');return el?String(el.value).trim():'';}
+  function check(w){var v=val(w),err=w.querySelector('.gmc-pe__cferr'),bad=false,msg=w.dataset.error;
+    if(w.dataset.required==='true'&&v==='')bad=true;
+    if(!bad&&w.dataset.type==='number'&&v!==''){var el=w.querySelector('input'),n=+v;if((el.min!==''&&n<+el.min)||(el.max!==''&&n>+el.max)){bad=true;msg=(el.min!==''?'Min '+el.min:'')+(el.min!==''&&el.max!==''?' – ':'')+(el.max!==''?'Max '+el.max:'');}}
+    w.toggleAttribute('data-invalid',bad);err.hidden=!bad;err.textContent=bad?msg:'';return !bad;}
+  document.addEventListener('submit',function(e){var f=e.target;if(!f.matches||!f.matches('form[action*="/cart/add"]'))return;
+    var first=null;document.querySelectorAll('[data-gmc-cf]').forEach(function(w){if(!check(w)&&!first)first=w;});
+    if(first){e.preventDefault();e.stopImmediatePropagation();first.scrollIntoView({behavior:'smooth',block:'center'});var i=first.querySelector('input,select,textarea');if(i&&i.type!=='radio')i.focus({preventScroll:true});}
+  },true);
+  document.addEventListener('change',function(e){var w=e.target.closest&&e.target.closest('[data-gmc-cf]');if(w&&w.hasAttribute('data-invalid'))check(w);});
+})();
