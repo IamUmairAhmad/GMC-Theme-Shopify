@@ -156,8 +156,8 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 
 /* price style + accordion extras */
 .gmc-pr .price-item--sale,.gmc-pr .price-item--regular{color:var(--gmc-pc,inherit)}.gmc-pr .price__sale .price-item--regular,.gmc-pr s.price-item{color:var(--gmc-cc,inherit)}
-.gmc-pr--sale_first .price__sale{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:.8rem;flex-wrap:wrap}.gmc-pr--sale_first .price__sale>*{order:0}
-.gmc-pr--compare_first .price__sale{display:flex;gap:.8rem;flex-wrap:wrap;align-items:baseline}
+.gmc-pr--sale_first .price--on-sale .price__sale{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:.8rem;flex-wrap:wrap}.gmc-pr--sale_first .price--on-sale .price__sale>*{order:0}
+.gmc-pr--compare_first .price--on-sale .price__sale{display:flex;gap:.8rem;flex-wrap:wrap;align-items:baseline}
 .gmc-acc--plus summary>svg.icon-caret{display:none}.gmc-acc--plus summary:after{content:"+";font-size:2.4rem;line-height:1;margin-left:auto}.gmc-acc--plus details[open] summary:after{content:"\2212"}
 .gmc-acc--notop{border-top:0!important}.gmc-acc--notop details{border-top:0!important}
 .gmc-acc--filled .summary__title svg{fill:currentColor}
