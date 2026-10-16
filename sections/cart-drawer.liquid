@@ -5,8 +5,207 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "The slide-out cart. Change what it shows under Theme settings > Cart."
+      "content": "Add, remove and reorder blocks to build your cart drawer. Amounts and colors are under Theme settings > Cart."
     }
-  ]
+  ],
+  "blocks": [
+    {
+      "type": "countdown_timer",
+      "name": "Countdown timer",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Your cart is reserved for"
+        },
+        {
+          "type": "range",
+          "id": "minutes",
+          "label": "Minutes",
+          "min": 1,
+          "max": 60,
+          "step": 1,
+          "default": 10,
+          "info": "Counts down per visitor. It does not reserve stock."
+        }
+      ]
+    },
+    {
+      "type": "checkpoints_bar",
+      "name": "Checkpoints bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Two milestones on one bar. Set the amounts in Theme settings > Cart."
+        },
+        {
+          "type": "text",
+          "id": "text_step_1",
+          "label": "Message before milestone 1",
+          "default": "Add {amount} more for free shipping"
+        },
+        {
+          "type": "text",
+          "id": "text_step_2",
+          "label": "Message before milestone 2",
+          "default": "Add {amount} more for a free gift"
+        },
+        {
+          "type": "text",
+          "id": "text_done",
+          "label": "Message when complete",
+          "default": "All rewards unlocked"
+        },
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Milestone 1 label",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Milestone 2 label",
+          "default": "Free gift"
+        }
+      ]
+    },
+    {
+      "type": "progress_bar",
+      "name": "Progress bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Free shipping progress. Set the amount in Theme settings > Cart."
+        },
+        {
+          "type": "text",
+          "id": "text_before",
+          "label": "Message before the goal",
+          "default": "Add {amount} more for free shipping"
+        },
+        {
+          "type": "text",
+          "id": "text_after",
+          "label": "Message after the goal",
+          "default": "You have unlocked free shipping"
+        }
+      ]
+    },
+    {
+      "type": "cart_items",
+      "name": "Cart items",
+      "limit": 1
+    },
+    {
+      "type": "discount_field",
+      "name": "Discount field",
+      "limit": 1
+    },
+    {
+      "type": "subtotals",
+      "name": "Subtotals",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_tax_note",
+          "label": "Show tax and shipping note",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "checkout_button",
+      "name": "Checkout button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button label",
+          "info": "Leave blank for the default text."
+        }
+      ]
+    },
+    {
+      "type": "payment_badges",
+      "name": "Payment badges",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text above the icons"
+        }
+      ]
+    },
+    {
+      "type": "icons_with_text",
+      "name": "Icons with text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_1",
+          "label": "Icon 1",
+          "default": "check",
+          "info": "Icon name from the theme icon library."
+        },
+        {
+          "type": "text",
+          "id": "text_1",
+          "label": "Text 1",
+          "default": "Your benefit text"
+        },
+        {
+          "type": "text",
+          "id": "icon_2",
+          "label": "Icon 2",
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "text_2",
+          "label": "Text 2"
+        },
+        {
+          "type": "text",
+          "id": "icon_3",
+          "label": "Icon 3",
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "text_3",
+          "label": "Text 3"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "cart_items"
+      },
+      {
+        "type": "discount_field"
+      },
+      {
+        "type": "subtotals"
+      },
+      {
+        "type": "checkout_button"
+      },
+      {
+        "type": "payment_badges"
+      },
+      {
+        "type": "icons_with_text"
+      }
+    ]
+  }
 }
 {% endschema %}

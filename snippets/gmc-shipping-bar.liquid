@@ -1,42 +1,53 @@
-{%- comment -%} GMC Theme: free shipping progress bar (original code). Threshold is in store currency units. {%- endcomment -%}
+{%- comment -%}
+  GMC Theme: cart progress / checkpoints bar (original code). Thresholds come from Theme settings > Cart (store currency units).
+  Params: mode ('progress' | 'checkpoints'), block (the cart drawer block holding the texts).
+{%- endcomment -%}
 {%- capture ship_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold, map: settings.gmc_ship_currency_map -%}{%- endcapture -%}
 {%- assign threshold = ship_cap | strip | plus: 0 | times: 100 -%}
-{%- if settings.gmc_ship_enabled and threshold > 0 -%}
+{%- capture t2_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold2, map: settings.gmc_ship2_currency_map -%}{%- endcapture -%}
+{%- assign t2 = t2_cap | strip | plus: 0 | times: 100 -%}
+{%- assign bs = block.settings -%}
+{%- if threshold > 0 -%}
   {%- assign remaining = threshold | minus: cart.total_price -%}
-  {%- assign pct = cart.total_price | times: 100 | divided_by: threshold -%}
-  {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
-  <div class="gmc-ship" style="padding:1rem 2rem 0">
-    <p class="gmc-ship__msg" style="margin:0 0 .5rem;font-size:1.3rem">
-      {%- if remaining > 0 -%}
-        Add <strong>{{ remaining | money }}</strong> more for free shipping
-      {%- else -%}
-        🎉 You've unlocked free shipping!
-      {%- endif -%}
-    </p>
-    <div style="height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);overflow:hidden">
-      <div style="height:100%;width:{{ pct }}%;background:{{ settings.gmc_accent }};transition:width .4s"></div>
+  {%- if mode == 'checkpoints' and t2 > threshold -%}
+    {%- assign pct = cart.total_price | times: 100 | divided_by: t2 -%}
+    {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+    {%- assign m1 = threshold | times: 100 | divided_by: t2 -%}
+    <div class="gmc-ship gmc-ship--checkpoints" style="padding:1rem 2rem 0" {{ block.shopify_attributes }}>
+      <p class="gmc-ship__msg" style="margin:0 0 1rem;font-size:1.3rem">
+        {%- if cart.total_price < threshold -%}
+          {%- assign rem_money = remaining | money -%}
+          {{ bs.text_step_1 | default: 'Add {amount} more for free shipping' | escape | replace: '{amount}', rem_money }}
+        {%- elsif cart.total_price < t2 -%}
+          {%- assign rem_money = t2 | minus: cart.total_price | money -%}
+          {{ bs.text_step_2 | default: 'Add {amount} more for a free gift' | escape | replace: '{amount}', rem_money }}
+        {%- else -%}
+          {{ bs.text_done | default: 'All rewards unlocked' | escape }}
+        {%- endif -%}
+      </p>
+      <div style="position:relative;height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);margin-bottom:2.2rem">
+        <div style="height:100%;width:{{ pct }}%;border-radius:99px;background:{{ settings.gmc_accent }};transition:width .4s"></div>
+        <span style="position:absolute;top:50%;left:{{ m1 }}%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:{% if cart.total_price >= threshold %}{{ settings.gmc_accent }}{% else %}rgb(var(--color-background)){% endif %};border:2px solid {{ settings.gmc_accent }}"></span>
+        <span style="position:absolute;top:50%;right:0;width:14px;height:14px;margin:-7px -7px 0 0;border-radius:50%;background:{% if cart.total_price >= t2 %}{{ settings.gmc_accent }}{% else %}rgb(var(--color-background)){% endif %};border:2px solid {{ settings.gmc_accent }}"></span>
+        <span style="position:absolute;top:1.6rem;left:{{ m1 }}%;transform:translateX(-50%);font-size:1.1rem;white-space:nowrap">{{ bs.label_1 | default: 'Free shipping' | escape }}</span>
+        <span style="position:absolute;top:1.6rem;right:0;font-size:1.1rem;white-space:nowrap">{{ bs.label_2 | default: 'Free gift' | escape }}</span>
+      </div>
     </div>
-    {%- capture t2_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold2, map: settings.gmc_ship2_currency_map -%}{%- endcapture -%}
-    {%- assign t2 = t2_cap | strip | plus: 0 | times: 100 -%}
-    {%- if t2 > threshold -%}
-      {%- assign pct2 = cart.total_price | times: 100 | divided_by: t2 -%}
-      {%- if pct2 > 100 -%}{%- assign pct2 = 100 -%}{%- endif -%}
-      <p style="margin:.8rem 0 .4rem;font-size:1.3rem">{%- if cart.total_price >= t2 -%}🎁 Free gift unlocked!{%- else -%}Add <strong>{{ t2 | minus: cart.total_price | money }}</strong> more for a free gift{%- endif -%}</p>
-      <div style="height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);overflow:hidden"><div style="height:100%;width:{{ pct2 }}%;background:#f59e0b;transition:width .4s"></div></div>
-    {%- endif -%}
-  </div>
-{%- endif -%}
-
-{%- if settings.gmc_cart_savings -%}
-  {%- assign gmc_saved = 0 -%}
-  {%- for item in cart.items -%}
-    {%- if item.variant.compare_at_price > item.variant.price -%}
-      {%- assign d = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity -%}
-      {%- assign gmc_saved = gmc_saved | plus: d -%}
-    {%- endif -%}
-  {%- endfor -%}
-  {%- assign gmc_saved = gmc_saved | plus: cart.total_discount -%}
-  {%- if gmc_saved > 0 -%}
-    <p style="margin:.8rem 2rem 0;font-size:1.3rem;color:{{ settings.gmc_accent }};font-weight:600">You're saving {{ gmc_saved | money }} on this order</p>
+  {%- else -%}
+    {%- assign pct = cart.total_price | times: 100 | divided_by: threshold -%}
+    {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+    <div class="gmc-ship" style="padding:1rem 2rem 0" {{ block.shopify_attributes }}>
+      <p class="gmc-ship__msg" style="margin:0 0 .5rem;font-size:1.3rem">
+        {%- if remaining > 0 -%}
+          {%- assign rem_money = remaining | money -%}
+          {{ bs.text_before | default: 'Add {amount} more for free shipping' | escape | replace: '{amount}', rem_money }}
+        {%- else -%}
+          {{ bs.text_after | default: 'You have unlocked free shipping' | escape }}
+        {%- endif -%}
+      </p>
+      <div style="height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);overflow:hidden">
+        <div style="height:100%;width:{{ pct }}%;background:{{ settings.gmc_accent }};transition:width .4s"></div>
+      </div>
+    </div>
   {%- endif -%}
 {%- endif -%}

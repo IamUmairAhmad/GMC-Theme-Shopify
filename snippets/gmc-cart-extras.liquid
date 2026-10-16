@@ -1,5 +1,5 @@
 {%- comment -%} GMC Theme: cart timer, toggle upsell, custom content, policy checkbox (original code) {%- endcomment -%}
-{%- if settings.gmc_cart_timer and cart.item_count > 0 -%}
+{%- if settings.gmc_cart_timer and cart.item_count > 0 and blocks_mode != true -%}
   <p class="gmc-cart-timer" style="margin:.8rem 2rem 0;font-size:1.3rem" data-min="{{ settings.gmc_cart_timer_min }}">{{ settings.gmc_cart_timer_text | escape }} <strong class="gmc-cart-timer__t">--:--</strong></p>
 {%- endif -%}
 {%- if settings.gmc_toggle_variant != blank and cart.item_count > 0 -%}
@@ -16,14 +16,14 @@
   <label class="gmc-policy" style="display:flex;gap:.8rem;align-items:flex-start;padding:.6rem 2rem;font-size:1.3rem"><input type="checkbox" class="gmc-policy__cb"><span>{{ settings.gmc_cart_policy_text | escape }}</span></label>
 {%- endif -%}
 
-{%- if settings.gmc_cart_lines != blank -%}
+{%- if settings.gmc_cart_lines != blank and blocks_mode != true -%}
   <ul style="list-style:none;margin:0;padding:.4rem 2rem;display:grid;gap:.5rem;font-size:1.3rem">
     {%- assign gl = settings.gmc_cart_lines | newline_to_br | split: '<br />' -%}
     {%- for ln in gl -%}{%- assign pr = ln | strip | split: '|' -%}{%- if pr.size > 1 -%}<li style="display:flex;gap:.7rem;align-items:center">{%- render 'gmc-icon', name: pr[0], size: 20 -%}<span>{{ pr[1] | strip | escape }}</span></li>{%- endif -%}{%- endfor -%}
   </ul>
 {%- endif -%}
 {%- if settings.gmc_cart_image != blank -%}<div style="padding:.6rem 2rem">{{ settings.gmc_cart_image | image_url: width: 800 | image_tag: loading: 'lazy', style: 'width:100%;height:auto;border-radius:8px', alt: '' }}</div>{%- endif -%}
-{%- if settings.gmc_cart_discount and cart.item_count > 0 -%}
+{%- if settings.gmc_cart_discount and cart.item_count > 0 and blocks_mode != true -%}
   <div class="gmc-disc" style="padding:.6rem 2rem">
     <div style="display:flex;gap:.6rem"><label class="visually-hidden" for="gmc-disc-in">{{ 'gmc.discount_code' | t }}</label>
       <input id="gmc-disc-in" class="field__input" style="padding:.9rem;flex:1;border-radius:6px" placeholder="{{ 'gmc.discount_code' | t }}" autocomplete="off">
