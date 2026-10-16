@@ -369,9 +369,10 @@ document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.
   function refresh(){return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(sec){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents)cd.renderContents({sections:sec});});}
   function sync(){if(busy)return;var blocks=document.querySelectorAll('.gmc-cgift');if(!blocks.length)return;
     fetch('/cart.js').then(function(r){return r.json();}).then(function(c){var add=[],rm=[];
-      blocks.forEach(function(g){var id=+g.dataset.variant,line=c.items.find(function(i){return i.variant_id===id&&i.properties&&i.properties._gmc_gift;});
-        if(g.dataset.state==='open'&&!line)add.push({id:id,quantity:1,properties:{_gmc_gift:'true'}});
-        if(g.dataset.state==='locked'&&line)rm.push(line.key);});
+      var want={};blocks.forEach(function(g){var id=+g.dataset.variant;if(g.dataset.state==='open')want[id]=true;else if(!want[id])want[id]=false;});
+      Object.keys(want).forEach(function(k){var id=+k,line=c.items.find(function(i){return i.variant_id===id&&i.properties&&i.properties._gmc_gift;});
+        if(want[k]&&!line)add.push({id:id,quantity:1,properties:{_gmc_gift:'true'}});
+        if(!want[k]&&line)rm.push(line.key);});
       if(!add.length&&!rm.length)return;busy=true;
       var p=Promise.resolve();
       if(add.length)p=p.then(function(){return fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:add})});});
