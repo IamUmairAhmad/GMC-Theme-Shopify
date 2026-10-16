@@ -177,37 +177,29 @@
           "type": "price",
           "settings": {}
         },
-        "variants": {
+        "variant_picker": {
           "type": "variant_picker",
-          "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
+          "settings": {}
         },
-        "qty": {
+        "quantity_selector": {
           "type": "quantity_selector",
           "settings": {}
         },
-        "buy": {
+        "buy_buttons": {
           "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": true
-          }
+          "settings": {}
         }
       },
       "block_order": [
         "title",
         "price",
-        "variants",
-        "qty",
-        "buy"
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons"
       ],
       "settings": {
-        "product": "gmc-demo-hoodie",
-        "color_scheme": "scheme-1",
-        "media_size": "large",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "product": "gmc-test-tee",
+        "color_scheme": "scheme-1"
       }
     },
     "rich_text_3": {
