@@ -7,7 +7,20 @@
     "gmc_gift_threshold": 150,
     "gmc_upsell_enabled": true,
     "gmc_upsell_collection": "all",
-    "cart_type": "drawer"
+    "cart_type": "drawer",
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FFFFFF",
+          "background_gradient": "linear-gradient(180deg, #F4F1EB 0%, #FFFFFF 100%)",
+          "text": "#121212",
+          "button": "#121212",
+          "button_label": "#FFFFFF",
+          "secondary_button_label": "#121212",
+          "shadow": "#121212"
+        }
+      }
+    }
   },
   "presets": {
     "GMC Theme": {
@@ -17,7 +30,7 @@
         "scheme-1": {
           "settings": {
             "background": "#FFFFFF",
-            "background_gradient": "",
+            "background_gradient": "linear-gradient(180deg, #F4F1EB 0%, #FFFFFF 100%)",
             "text": "#121212",
             "button": "#121212",
             "button_label": "#FFFFFF",
