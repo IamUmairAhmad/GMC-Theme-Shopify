@@ -4,12 +4,12 @@
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one message block.' -%}{%- endif -%}
 {%- comment -%} GMC Theme: scrolling announcement ticker (original code) {%- endcomment -%}
-<div class="gmc-ticker gmc-ticker-{{ section.id }}" style="--bg:{{ section.settings.bg }};--fg:{{ section.settings.fg }};--speed:{{ section.settings.speed }}s;--size:{{ section.settings.size }}px;--dir:{% if section.settings.reverse %}reverse{% else %}normal{% endif %}">
+<div class="gmc-ticker gmc-ticker-{{ section.id }}" style="--bg:{{ section.settings.bg }};--fg:{{ section.settings.fg }};--speed:{{ section.settings.speed }}s;--size:{{ section.settings.size }}px;--size-m:{{ section.settings.size_m }}px;--gap:{{ section.settings.gap_d }}px;--gap-m:{{ section.settings.gap_m }}px;--img:{{ section.settings.img_size }}px;--fw:{% if section.settings.bold %}700{% else %}400{% endif %};--fs:{% if section.settings.italic %}italic{% else %}normal{% endif %};--tt:{% if section.settings.uppercase %}uppercase{% else %}none{% endif %};--dir:{% if section.settings.reverse %}reverse{% else %}normal{% endif %}">
   <div class="gmc-ticker__track">
     {%- for i in (1..2) -%}
       <div class="gmc-ticker__group" {% if i == 2 %}aria-hidden="true"{% endif %}>
         {%- for block in section.blocks -%}
-          <span class="gmc-ticker__item" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}<span class="gmc-ticker__sep">{{ section.settings.separator | escape }}</span></span>
+          <span class="gmc-ticker__item" {{ block.shopify_attributes }}>{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 240 | image_tag: class: 'gmc-ticker__img', loading: 'lazy', alt: block.settings.image.alt | default: '' }}{%- endif -%}{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" style="color:inherit">{%- endif -%}{{ block.settings.text | escape }}{%- if block.settings.link != blank -%}</a>{%- endif -%}<span class="gmc-ticker__sep">{{ section.settings.separator | escape }}</span></span>
         {%- endfor -%}
       </div>
     {%- endfor -%}
@@ -20,7 +20,7 @@
   .gmc-ticker__track{display:flex;width:max-content;animation:gmc-marquee var(--speed) linear infinite;animation-direction:var(--dir)}
   .gmc-ticker:hover .gmc-ticker__track{animation-play-state:paused}
   .gmc-ticker__group{display:flex}
-  .gmc-ticker__item{padding:0 1.2em;font-weight:600;letter-spacing:.04em}
+  .gmc-ticker__item{padding:0 var(--gap,16px);font-weight:var(--fw,600);font-style:var(--fs,normal);text-transform:var(--tt,none);letter-spacing:.04em;display:inline-flex;align-items:center;gap:.6em}.gmc-ticker__img{height:var(--img,28px);width:auto;display:block}@media(max-width:749px){.gmc-ticker{font-size:var(--size-m,12px)}.gmc-ticker__item{padding:0 var(--gap-m,12px)}}
   .gmc-ticker__sep{margin-left:2.4em;opacity:.6}
   @keyframes gmc-marquee{to{transform:translateX(-50%)}}
   @media (prefers-reduced-motion:reduce){.gmc-ticker__track{animation:none}}
@@ -74,6 +74,63 @@
       "id": "reverse",
       "label": "Reverse direction",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "size_m",
+      "min": 10,
+      "max": 24,
+      "unit": "px",
+      "label": "Text size on mobile",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "bold",
+      "label": "Bold",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "italic",
+      "label": "Italic",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "img_size",
+      "min": 16,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Image height",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "gap_d",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between items (desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "gap_m",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between items (mobile)",
+      "default": 12
     },
     {
       "type": "header",
@@ -250,6 +307,16 @@
           "id": "text",
           "label": "Text",
           "default": "Your shipping message"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (optional)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
         }
       ]
     }

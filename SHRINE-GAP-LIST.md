@@ -52,8 +52,8 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | AN-01 ✅ | **Announcement bar layout**: columns desktop/mobile (0 = auto), spacing, separators, slider type (slide / loop / fade) with desktop/mobile switches, autoplay speed. | P2 |
 | AN-02 ✅ | Announcement block types: **discount code with copy button** and **social icons**; per-block icon (library or image), text sizes, vertical layout. | P2 |
 | AN-03 ✅ | **Show/hide on specific products** (handle lists) for announcement bars and tickers. | P2 |
-| TK-01 | **Horizontal ticker**: image items, italic/bold/uppercase, text and image sizes, spacing per device. | P3 |
-| TK-02 | **Vertical ticker**: row count, styling, side content panel (heading, text, button / ATC), background image + overlay. | P3 |
+| TK-01 ✅ | **Horizontal ticker**: image items, italic/bold/uppercase, text and image sizes, spacing per device. | P3 |
+| TK-02 ✅ | **Vertical ticker**: row count, styling, side content panel (heading, text, button / ATC), background image + overlay. | P3 |
 
 ## 4. Hero and banner sections
 

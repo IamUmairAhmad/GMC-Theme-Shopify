@@ -1,12 +1,23 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one message block.' -%}{%- endif -%}
-<div class="gmc-vt {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--bg:{{ section.settings.bg }};--fg:{{ section.settings.fg }};--h:{{ section.settings.height }}px;--speed:{{ section.blocks.size | times: 3 }}s">
-  <div class="gmc-vt__track">
-    {%- for i in (1..2) -%}{%- for block in section.blocks -%}<div class="gmc-vt__item" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</div>{%- endfor -%}{%- endfor -%}
+<div class="gmc-vtw {% render 'gmc-vis', hide: section.settings.hide_on %}{% if section.settings.panel_heading != blank or section.settings.panel_text != blank or section.settings.panel_btn != blank %} gmc-vtw--panel gmc-vtw--{{ section.settings.panel_side }}{% endif %}" style="--bg:{{ section.settings.bg }};--fg:{{ section.settings.fg }};--h:{{ section.settings.height }}px;--rows:{{ section.settings.rows }};--sz:{{ section.settings.size }}px;--fw:{% if section.settings.bold %}700{% else %}400{% endif %};--fs:{% if section.settings.italic %}italic{% else %}normal{% endif %};--tt:{% if section.settings.uppercase %}uppercase{% else %}none{% endif %};--al:{{ section.settings.align }};--speed:{{ section.blocks.size | times: section.settings.seconds }}s;--steps:{{ section.blocks.size | at_least: 1 }}">
+  {%- if section.settings.panel_heading != blank or section.settings.panel_text != blank or section.settings.panel_btn != blank -%}
+  <div class="gmc-vtw__panel">
+    {%- if section.settings.panel_heading != blank -%}<h2 class="h2">{{ section.settings.panel_heading | escape }}</h2>{%- endif -%}
+    {%- if section.settings.panel_text != blank -%}<p>{{ section.settings.panel_text | escape }}</p>{%- endif -%}
+    {%- if section.settings.panel_btn != blank -%}<a class="button" href="{{ section.settings.panel_link | default: '#' }}">{{ section.settings.panel_btn | escape }}</a>{%- endif -%}
+  </div>
+  {%- endif -%}
+  <div class="gmc-vt gmc-vt--{{ section.settings.motion }}">
+    <div class="gmc-vt__track">
+      {%- for i in (1..2) -%}{%- for block in section.blocks -%}<div class="gmc-vt__item" {{ block.shopify_attributes }}{% if i == 2 %} aria-hidden="true"{% endif %}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" style="color:inherit">{%- endif -%}{{ block.settings.text | escape }}{%- if block.settings.link != blank -%}</a>{%- endif -%}</div>{%- endfor -%}{%- endfor -%}
+    </div>
   </div>
 </div>
-<style>.gmc-vt{background:var(--bg);color:var(--fg);height:var(--h);overflow:hidden;text-align:center;font-weight:600}.gmc-vt__item{height:var(--h);line-height:var(--h)}.gmc-vt__track{animation:gmc-vt var(--speed) steps({{ section.blocks.size | at_least: 1 }}) infinite}@keyframes gmc-vt{to{transform:translateY(calc(var(--h) * -{{ section.blocks.size }}))}}@media(prefers-reduced-motion:reduce){.gmc-vt__track{animation:none}}</style>
+<style>.gmc-vtw{display:block;background:var(--bg);color:var(--fg)}.gmc-vtw--panel{display:grid;grid-template-columns:1fr 1.2fr;align-items:center;gap:2rem;padding:2rem}.gmc-vtw--right .gmc-vtw__panel{order:2}.gmc-vtw__panel h2{margin:0 0 1rem}.gmc-vtw__panel p{margin:0 0 1.2rem}@media(max-width:749px){.gmc-vtw--panel{grid-template-columns:1fr}}
+.gmc-vt{height:calc(var(--h) * var(--rows,1));overflow:hidden;text-align:var(--al,center);font-size:var(--sz,16px);font-weight:var(--fw,600);font-style:var(--fs,normal);text-transform:var(--tt,none)}.gmc-vt__item{height:var(--h);line-height:var(--h);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 1rem}
+.gmc-vt--step .gmc-vt__track{animation:gmc-vt var(--speed) steps(var(--steps)) infinite}.gmc-vt--smooth .gmc-vt__track{animation:gmc-vt var(--speed) linear infinite}@keyframes gmc-vt{to{transform:translateY(-50%)}}@media(prefers-reduced-motion:reduce){.gmc-vt__track{animation:none!important}}</style>
 {% schema %}
 {
   "name": "Vertical ticker",
@@ -29,10 +40,133 @@
       "type": "range",
       "id": "height",
       "min": 28,
-      "max": 80,
+      "max": 120,
       "unit": "px",
-      "label": "Height",
+      "label": "Row height",
       "default": 40
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Visible rows",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "motion",
+      "label": "Motion",
+      "options": [
+        {
+          "value": "step",
+          "label": "Row by row"
+        },
+        {
+          "value": "smooth",
+          "label": "Smooth scroll"
+        }
+      ],
+      "default": "step"
+    },
+    {
+      "type": "range",
+      "id": "seconds",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Seconds per message",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "min": 11,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "bold",
+      "label": "Bold",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "italic",
+      "label": "Italic",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Side panel"
+    },
+    {
+      "type": "text",
+      "id": "panel_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "panel_text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "panel_btn",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "panel_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "panel_side",
+      "label": "Panel side",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
     },
     {
       "type": "select",
@@ -213,6 +347,11 @@
           "id": "text",
           "label": "Text",
           "default": "Your shipping message"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
         }
       ]
     }

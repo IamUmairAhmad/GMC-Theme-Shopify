@@ -155,12 +155,73 @@
       "settings": {
         "product": "gmc-test-tee"
       }
+    },
+    "tk": {
+      "type": "gmc-ticker",
+      "blocks": {
+        "a": {
+          "type": "item",
+          "settings": {
+            "text": "Free shipping"
+          }
+        },
+        "b": {
+          "type": "item",
+          "settings": {
+            "text": "Easy returns"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {
+        "uppercase": true,
+        "italic": true
+      }
+    },
+    "vt": {
+      "type": "gmc-vertical-ticker",
+      "blocks": {
+        "a": {
+          "type": "item",
+          "settings": {
+            "text": "One"
+          }
+        },
+        "b": {
+          "type": "item",
+          "settings": {
+            "text": "Two"
+          }
+        },
+        "c": {
+          "type": "item",
+          "settings": {
+            "text": "Three"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c"
+      ],
+      "settings": {
+        "rows": 2,
+        "motion": "smooth",
+        "panel_heading": "Hello",
+        "panel_btn": "Go"
+      }
     }
   },
   "order": [
     "main",
     "ex",
     "more",
-    "fp"
+    "fp",
+    "tk",
+    "vt"
   ]
 }
