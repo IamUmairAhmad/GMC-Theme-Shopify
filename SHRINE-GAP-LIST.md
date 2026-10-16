@@ -96,7 +96,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | SC-09 ✅ | **Collapsible content**: video media, icon per row, collapse icon, top border. | P3 |
 | SC-10 ✅ | **Instagram stories**: several stories per user, verified badge, close-friends ring, time posted, background, media fit, autoplay speed. | P3 |
 | SC-11 ✅ | **Promo popup**: display modes, delay and frequency, countdown, success state showing a discount code with copy button, heading prefix/suffix. | P2 |
-| SC-12 | **Music player**: standalone section + global: volume, position, offsets, ripple, colour scheme. Ours takes only a URL. | P3 |
+| SC-12 ✅ | **Music player**: standalone section + global: volume, position, offsets, ripple, colour scheme. Ours takes only a URL. | P3 |
 | SC-13 ✅ | **Footer blocks**: email-signup block, featured product block, featured collection block, per-block desktop/mobile column width, image link. | P2 |
 | SC-14 ✅ | **Featured collection**: same-height cards option and badge selector. | P3 |
 | SC-15 ✅ | **Sections group** (pair two sections side by side by ID) and "Display section ID" checkbox on every section (helps scroll-to links). | P3 |
@@ -152,7 +152,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | DP-10 ✅ | **Payment badges** chosen by a list of about 24 named providers (Apple Pay, Klarna, Afterpay, iDEAL, etc.). | P3 |
 | DP-11 ✅ | **Icon picker with a very large library**: Shrine accepts any Google Material Symbol name with a "filled" switch, plus custom image icons, in nearly every block. Ours uses a smaller bundled set. | P2 |
 | DP-12 ✅ | **Copy-to-clipboard button** (discount code), **countdown-timer** and **modal** components reusable by any block. | P2 |
-| DP-13 | Section **"Display on" is a select in each Shrine section**; per-column and per-block visibility in Custom columns. We have it per section only. | P3 |
+| DP-13 ✅ | Section **"Display on" is a select in each Shrine section**; per-column and per-block visibility in Custom columns. We have it per section only. | P3 |
 
 ### Checked in the second pass and found already equal or better in GMC
 Customer pages (login, register, account, orders, addresses, reset and activate password) in Shrine are plain styled pages with only a padding setting, so the gap is only that we ship no templates for them (TP-01). The 404 page, article, blog, collection banner, list-collections and password pages match what we have. Translations are equal (both ship the Dawn language set).
@@ -174,8 +174,8 @@ Customer pages (login, register, account, orders, addresses, reset and activate 
 | TH-05 ✅ | **Section pairing script** (Sections group): puts two sections side by side and can reverse their order on mobile. | P3 |
 | TH-06 ✅ | **Dynamic dates script** for delivery estimates (day and month names per language). | P2 |
 | TH-07 ✅ | **Custom product field validation** that disables every Add to Cart button until required fields are filled, and writes the answers into line-item properties. | P1 |
-| TH-08 | **Brand information** in the footer (headline, description, image, width) and **nine social networks** with "Follow on Shop". We have the settings group; the footer block for brand image width and per-column widths is missing (SC-13). | P3 |
-| TH-09 | **Gift-card and password pages** use the full theme styling (buttons, inputs, cards, fonts). Ours use only the base styling. | P3 |
+| TH-08 ✅ | **Brand information** in the footer (headline, description, image, width) and **nine social networks** with "Follow on Shop". We have the settings group; the footer block for brand image width and per-column widths is missing (SC-13). | P3 |
+| TH-09 ✅ | **Gift-card and password pages** use the full theme styling (buttons, inputs, cards, fonts). Ours use only the base styling. | P3 |
 | TH-10 | **Disable copy / right-click / inspect** and **country block** exist in ours; Shrine's country check calls an outside lookup service **[EXT]**. We already have our own version. No action. | none |
 
 ## Review coverage (what has now been read)
@@ -285,7 +285,7 @@ Shrine's sections use two editor controls that ours never use:
 | ID | Missing feature | Pri |
 |---|---|---|
 | ST-01 ✅ | **Multi-product picker** (`product_list`) used for upsell and gift blocks: choose several products in one field. Ours takes one product per block. Needed for PP-04 and CD-06. | P1 |
-| ST-02 | **Gradient background picker** (`color_background`) used for section / scheme backgrounds (accent and background gradients). | P3 |
+| ST-02 ✅ | **Gradient background picker** (`color_background`) used for section / scheme backgrounds (accent and background gradients). | P3 |
 
 ## 24. Fifteenth pass: "add section" experience (presets)
 31 of Shrine's 32 block-based sections arrive in the editor already filled with sample content. In ours, 7 arrive empty, which makes them look broken the first time a merchant adds them.

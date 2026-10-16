@@ -102,6 +102,8 @@
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
     {%- endunless -%}
 
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'gmc.css' | asset_url | stylesheet_tag }}
     {{ 'template-giftcard.css' | asset_url | stylesheet_tag }}
   </head>
 

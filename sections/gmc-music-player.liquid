@@ -1,8 +1,9 @@
 {%- render 'gmc-scheme' -%}
-{%- if section.settings.url != blank -%}
-<div class="gmc-mp {% render 'gmc-vis', hide: section.settings.hide_on %}"><button type="button" id="gmc-mp-btn" aria-label="Toggle music">♪</button><audio id="gmc-mp-a" src="{{ section.settings.url }}" loop preload="none"></audio></div>
-<style>.gmc-mp{position:fixed;left:1.2rem;bottom:calc(var(--gmc-dock,0px) + 1.2rem);z-index:40}#gmc-mp-btn{width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;background:rgb(var(--color-foreground));color:rgb(var(--color-background));font-size:20px;box-shadow:0 2px 10px rgba(var(--color-shadow),.25)}#gmc-mp-btn.on{outline:3px solid {{ settings.gmc_accent }}}</style>
-<script>(function(){var b=document.getElementById('gmc-mp-btn'),a=document.getElementById('gmc-mp-a');b.addEventListener('click',function(){if(a.paused){a.play();b.classList.add('on');}else{a.pause();b.classList.remove('on');}});})();</script>
+{%- assign mp = section.settings -%}
+{%- if mp.url != blank -%}
+<div class="gmc-mp gmc-mp--{{ mp.position }} color-{{ mp.gmc_scheme }} {% render 'gmc-vis', hide: mp.hide_on %}" style="--mp-x:{{ mp.off_x }}px;--mp-y:{{ mp.off_y }}px;--mp-s:{{ mp.size }}px"><button type="button" id="gmc-mp-btn" aria-label="Toggle music" aria-pressed="false">{%- if mp.icon != blank -%}{%- render 'gmc-icon', name: mp.icon, size: 20 -%}{%- else -%}♪{%- endif -%}</button><audio id="gmc-mp-a" src="{{ mp.url }}" loop preload="none" data-vol="{{ mp.volume }}"></audio></div>
+<style>.gmc-mp{position:fixed;z-index:40}.gmc-mp--bottom-left{left:calc(1.2rem + var(--mp-x));bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--mp-y))}.gmc-mp--bottom-right{right:calc(1.2rem + var(--mp-x));bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--mp-y))}.gmc-mp--top-left{left:calc(1.2rem + var(--mp-x));top:calc(8rem + var(--mp-y))}.gmc-mp--top-right{right:calc(1.2rem + var(--mp-x));top:calc(8rem + var(--mp-y))}#gmc-mp-btn{position:relative;width:var(--mp-s,44px);height:var(--mp-s,44px);border-radius:50%;border:0;cursor:pointer;background:rgb(var(--color-foreground));color:rgb(var(--color-background));font-size:20px;display:grid;place-items:center;box-shadow:0 2px 10px rgba(var(--color-shadow),.25)}#gmc-mp-btn.on{outline:3px solid {{ settings.gmc_accent }}}{%- if mp.ripple -%}#gmc-mp-btn.on:after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid {{ settings.gmc_accent }};animation:gmc-mp-r 1.6s ease-out infinite}@keyframes gmc-mp-r{to{transform:scale(1.9);opacity:0}}@media(prefers-reduced-motion:reduce){#gmc-mp-btn.on:after{animation:none}}{%- endif -%}</style>
+<script>(function(){var b=document.getElementById('gmc-mp-btn'),a=document.getElementById('gmc-mp-a');a.volume=Math.max(0,Math.min(1,(+a.dataset.vol||60)/100));b.addEventListener('click',function(){if(a.paused){a.play();b.classList.add('on');b.setAttribute('aria-pressed','true');}else{a.pause();b.classList.remove('on');b.setAttribute('aria-pressed','false');}});})();</script>
 {%- endif -%}
 {% schema %}
 {
@@ -13,6 +14,82 @@
       "id": "url",
       "label": "Audio file URL (.mp3)",
       "info": "Upload the file under Content > Files and paste its URL. Plays only after the visitor taps the button."
+    },
+    {
+      "type": "range",
+      "id": "volume",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Volume",
+      "default": 60
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom right"
+        },
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "top-right",
+          "label": "Top right"
+        }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "range",
+      "id": "off_x",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Horizontal offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "off_y",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Vertical offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "min": 32,
+      "max": 72,
+      "step": 4,
+      "unit": "px",
+      "label": "Button size",
+      "default": 44
+    },
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Icon name (optional)",
+      "info": "From the icon library, for example music."
+    },
+    {
+      "type": "checkbox",
+      "id": "ripple",
+      "label": "Ripple animation while playing",
+      "default": true
     },
     {
       "type": "select",
