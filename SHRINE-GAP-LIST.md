@@ -239,3 +239,16 @@ Because neither theme has them, these are optional **"beat Shrine"** ideas for l
 | BX-03 | Back-in-stock email request | needs an email app or Shopify Flow **[EXT]** |
 | BX-04 | Product compare | P3 |
 | BX-05 | Gift-wrap / gift-message option in the cart | P3 |
+
+## 20. Eleventh pass: option lists inside the settings (earlier passes dropped them)
+Reading the actual choices in each dropdown found variants not captured before:
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| OP-01 | **Shaped section dividers**: 14 shapes (2 diagonal, 4 curved, 4 sharp, 3 wave, 1 random), flip horizontal / vertical, shape and background colour. Ours only draws a solid / dashed / dotted line. | P2 |
+| OP-02 | **Promo popup preview modes**: disabled / testing (always show) / success-state testing / enabled, so merchants can design the popup without waiting for the trigger. Ours has none. | P2 |
+| OP-03 | **Slideshow pagination styles**: dots, counter ("2 / 5") and numbers. | P3 |
+| OP-04 | **Pricing table**: 3 card styles. **Comparison table**: classic / centered / minimal styles. **Collapsible content**: layout none / row / section containers. | P3 |
+| OP-05 | **Vertical ticker side content** shown always / desktop only / never. | P3 |
+| OP-06 | **Sticky add-to-cart button function** options (add to cart, or scroll to info / variants / quantity breaks / pricing table). Already PP-05; confirmed as five exact choices. | P1 |
+| OP-07 | **Cart upsell block** adds a fifth style, a plain "Add" button, next to toggle switch / two checkbox styles / plus button. Extends CD-06. | P2 |
