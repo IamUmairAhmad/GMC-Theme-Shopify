@@ -34,8 +34,6 @@
             "menu": "footer"
           }
         },
-        "es1": {"type": "email_signup", "settings": {"gmc_wd": 40}},
-        "fp1": {"type": "featured_product", "settings": {"product": "gmc-test-tee", "add_to_cart": true}},
         "link_list_Q9dtGJ": {
           "type": "link_list",
           "settings": {
@@ -48,7 +46,7 @@
         "brand_information_w9j9Aj",
         "link_list_VVnaLi",
         "link_list_dck3bK",
-        "link_list_Q9dtGJ", "es1", "fp1"
+        "link_list_Q9dtGJ"
       ],
       "settings": {
         "color_scheme": "scheme-1",
