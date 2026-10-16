@@ -24,10 +24,27 @@
       {%- if block.settings.rating != blank -%}{%- assign tr = block.settings.rating | plus: 0.0 -%}{%- assign tcount = block.settings.text -%}
       {%- elsif mf != blank -%}{%- assign tr = mf.rating | plus: 0.0 | times: 5 | divided_by: mf.scale_max -%}{%- if mfc != blank -%}{%- capture tcount -%}({{ mfc }} reviews){%- endcapture -%}{%- endif -%}
       {%- else -%}{%- assign tr = nil -%}{%- endif -%}
-      {%- if tr != nil -%}{%- assign tfull = tr | round -%}<p class="gmc-pe__ts"><span style="color:#00b67a;font-size:1.8rem" aria-label="Rated {{ tr | round: 1 }} out of 5">{%- for i in (1..5) -%}{%- if i <= tfull -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</span> {{ tr | round: 1 }}/5 {{ tcount | escape }}</p>{%- endif -%}
+      {%- if tr != nil -%}{%- assign tfull = tr | round -%}{%- assign sc = block.settings.star_color | default: '#00b67a' -%}
+      <p class="gmc-pe__ts" style="font-size:{{ block.settings.size }}px">{%- if block.settings.link_to != blank -%}<a href="#{{ block.settings.link_to | escape }}" class="gmc-pe__tsl" style="color:inherit;text-decoration:none">{%- endif -%}<span class="gmc-pe__stars gmc-pe__stars--{{ block.settings.star_style }}" style="color:{{ sc }};font-size:{{ block.settings.size | times: 1.3 | round }}px" aria-label="Rated {{ tr | round: 1 }} out of 5">{%- for i in (1..5) -%}{%- if i <= tfull -%}<i class="on">★</i>{%- else -%}<i>★</i>{%- endif -%}{%- endfor -%}</span> {{ tr | round: 1 }}/5 {{ tcount | escape }}{%- if block.settings.link_to != blank -%}</a>{%- endif -%}</p>{%- endif -%}
+    {%- when 'reviews_slider' -%}
+      <div class="gmc-pe__rv gmc-sl" data-gmc-slider data-mode="slide" data-autoplay="{% if block.settings.autoplay %}5{% else %}0{% endif %}" data-loop="true" data-dots="true" data-arrows="false" data-drag="true" style="text-align:{{ block.settings.align }}"><div class="gmc-sl__vp"><div class="gmc-sl__tr">
+        {%- for i in (1..3) -%}{%- assign tk = 'text' | append: i -%}{%- assign nk = 'name' | append: i -%}{%- assign ak = 'avatar' | append: i -%}{%- assign rk = 'stars' | append: i -%}
+          {%- if block.settings[tk] != blank -%}<figure class="gmc-sl__s gmc-pe__rvi">{%- if block.settings[ak] != blank -%}{{ block.settings[ak] | image_url: width: 120 | image_tag: loading: 'lazy', class: 'gmc-pe__rva', width: 48, height: 48 }}{%- endif -%}<span style="color:{{ block.settings.star_color }}" aria-label="{{ block.settings[rk] }} out of 5">{%- for n in (1..5) -%}{%- if n <= block.settings[rk] -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</span><blockquote>{{ block.settings[tk] | escape }}</blockquote><figcaption>{{ block.settings[nk] | escape }}</figcaption></figure>{%- endif -%}
+        {%- endfor -%}
+      </div></div></div>
     {%- when 'bestseller' -%}
       <span class="gmc-pe__bs">{{ block.settings.text | escape }}</span>{%- when 'sizing_chart' -%}
-      <details class="gmc-pe__sz"><summary>{{ block.settings.label | escape }}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- when 'text_icon' -%}
+      {%- assign sz_id = 'gmc-sz-' | append: block.id -%}
+      <button type="button" class="gmc-pe__szb{% if block.settings.underline %} gmc-pe__szb--u{% endif %}{% if block.settings.style == 'button' %} button button--secondary{% endif %}" data-gmc-dlg="{{ sz_id }}" style="font-size:{{ block.settings.text_size }}px">{%- if block.settings.icon != blank -%}{%- render 'gmc-icon', name: block.settings.icon, size: block.settings.icon_size -%} {%- endif -%}{{ block.settings.label | escape }}</button>
+      <dialog class="gmc-dlg" id="{{ sz_id }}" aria-label="{{ block.settings.heading | escape }}"{% if block.settings.test_mode %} data-gmc-open{% endif %}>
+        <div class="gmc-dlg__in"><button type="button" class="gmc-dlg__x" data-gmc-dlgx aria-label="Close">×</button>
+          {%- if block.settings.heading != blank -%}<h3 class="gmc-dlg__h">{{ block.settings.heading | escape }}</h3>{%- endif -%}
+          {%- if block.settings.image_top != blank -%}{{ block.settings.image_top | image_url: width: 900 | image_tag: loading: 'lazy', class: 'gmc-dlg__img' }}{%- endif -%}
+          {%- if block.settings.header_row != blank -%}<p class="gmc-dlg__hr">{{ block.settings.header_row | escape }}</p>{%- endif -%}
+          <div class="rte gmc-dlg__body">{{ block.settings.content }}</div>
+          {%- if block.settings.image_bottom != blank -%}{{ block.settings.image_bottom | image_url: width: 900 | image_tag: loading: 'lazy', class: 'gmc-dlg__img' }}{%- endif -%}
+          {%- if block.settings.caption != blank -%}<p class="gmc-dlg__cap">{{ block.settings.caption | escape }}</p>{%- endif -%}
+        </div></dialog>{%- when 'text_icon' -%}
       <p class="gmc-pe__ti"><span style="font-size:2rem">{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 24 -%}{%- else -%}{{ block.settings.icon | escape }}{%- endif -%}</span> {{ block.settings.text | escape }}</p>{%- when 'custom_field' -%}
       {%- liquid
         assign cf_type = block.settings.field_type | default: 'text'
@@ -68,7 +85,7 @@
 .gmc-pe__sl{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem}.gmc-pe__sl>div{flex:0 0 85%;scroll-snap-align:start}.gmc-pe__sl img{width:100%;border-radius:var(--media-radius)}
 .gmc-pe__tn{display:flex;gap:.4rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}.gmc-pe__tn button{background:none;border:0;padding:.7rem 1rem;cursor:pointer;color:inherit;font:inherit;opacity:.6}.gmc-pe__tn button[aria-selected=true]{opacity:1;border-bottom:2px solid currentColor}.gmc-pe__tp{padding-top:1rem}
 .gmc-pe__rv{display:grid;gap:.8rem}.gmc-pe__rv blockquote{margin:0;padding:1rem 1.2rem;border-radius:var(--text-boxes-radius);background:rgba(var(--color-foreground),.05)}.gmc-pe__rv p{margin:.3rem 0}.gmc-pe__sv{color:{{ settings.gmc_accent }};font-weight:700;margin:0}.gmc-pe__cd{font-weight:600}
-.gmc-pe__cp--dated{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;position:relative}.gmc-pe__cp--dated li{display:flex;flex-direction:column;align-items:center;gap:.3rem;position:relative}.gmc-pe__cpi{width:4.4rem;height:4.4rem;border-radius:50%;display:grid;place-items:center;background:var(--gmc-cp,rgb(var(--color-foreground)));color:rgb(var(--color-background));position:relative;z-index:1}.gmc-pe__cp--dated li:not(:last-child):after{content:"";position:absolute;top:2.2rem;left:50%;width:100%;height:2px;background:var(--gmc-cp,rgb(var(--color-foreground)));opacity:.35}.gmc-pe__cpd{opacity:.75;font-size:1.15rem}.gmc-pe__ic{vertical-align:middle}</style>
+.gmc-pe__cp--dated{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;position:relative}.gmc-pe__cp--dated li{display:flex;flex-direction:column;align-items:center;gap:.3rem;position:relative}.gmc-pe__cpi{width:4.4rem;height:4.4rem;border-radius:50%;display:grid;place-items:center;background:var(--gmc-cp,rgb(var(--color-foreground)));color:rgb(var(--color-background));position:relative;z-index:1}.gmc-pe__cp--dated li:not(:last-child):after{content:"";position:absolute;top:2.2rem;left:50%;width:100%;height:2px;background:var(--gmc-cp,rgb(var(--color-foreground)));opacity:.35}.gmc-pe__cpd{opacity:.75;font-size:1.15rem}.gmc-pe__ic{vertical-align:middle}.gmc-pe__szb{background:none;border:0;padding:0;cursor:pointer;color:inherit;font-family:inherit;display:inline-flex;align-items:center;gap:.5rem}.gmc-pe__szb--u{text-decoration:underline;text-underline-offset:.3rem}.gmc-dlg{border:0;border-radius:var(--popup-corner-radius,8px);padding:0;max-width:min(92vw,64rem);width:100%;max-height:88vh;color:rgb(var(--color-foreground));background:rgb(var(--color-background))}.gmc-dlg::backdrop{background:rgba(0,0,0,.55)}.gmc-dlg__in{padding:2.4rem;position:relative}.gmc-dlg__x{position:absolute;top:.6rem;right:1rem;background:none;border:0;font-size:2.8rem;line-height:1;cursor:pointer;color:inherit}.gmc-dlg__h{margin:0 0 1.2rem}.gmc-dlg__hr{font-weight:700;margin:0 0 .8rem}.gmc-dlg__img{max-width:100%;height:auto;display:block;margin:1rem auto}.gmc-dlg__cap{font-size:1.3rem;opacity:.7;margin:1rem 0 0}.gmc-dlg table{width:100%;border-collapse:collapse}.gmc-dlg td,.gmc-dlg th{border:1px solid rgba(var(--color-foreground),.2);padding:.6rem 1rem;text-align:center}.gmc-pe__stars--outline i:not(.on){opacity:.35}.gmc-pe__stars i{font-style:normal}.gmc-pe__stars--outline i.on{color:transparent;-webkit-text-stroke:1.5px currentColor}.gmc-pe__stars--filled i:not(.on){opacity:.25}.gmc-pe__rvi{margin:0;padding:1rem 1.4rem;display:flex;flex-direction:column;gap:.4rem;align-items:inherit}.gmc-pe__rva{border-radius:50%;object-fit:cover}.gmc-pe__rvi blockquote{margin:0}.gmc-pe__rvi figcaption{font-weight:700;font-size:1.3rem}</style>
 <script>(function(){
   var dj=document.querySelector('.gmc-vdata'),data={};try{JSON.parse(dj.textContent).forEach(function(x){data[x.id]=x;});}catch(e){}
   function upd(id){var d=data[id];
@@ -602,6 +619,44 @@
         },
         {
           "type": "range",
+          "id": "size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Text size",
+          "default": 14
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star colour",
+          "default": "#00b67a"
+        },
+        {
+          "type": "select",
+          "id": "star_style",
+          "label": "Star style",
+          "options": [
+            {
+              "value": "filled",
+              "label": "Filled with faded background stars"
+            },
+            {
+              "value": "outline",
+              "label": "Outlined empty stars"
+            }
+          ],
+          "default": "filled"
+        },
+        {
+          "type": "text",
+          "id": "link_to",
+          "label": "Scroll to section ID",
+          "info": "Optional. The rating becomes a link to that section."
+        },
+        {
+          "type": "range",
           "id": "mb",
           "min": 0,
           "max": 40,
@@ -641,14 +696,95 @@
         {
           "type": "text",
           "id": "label",
-          "label": "Label",
+          "label": "Button label",
           "default": "Size guide"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "link",
+              "label": "Text link"
+            },
+            {
+              "value": "button",
+              "label": "Button"
+            }
+          ],
+          "default": "link"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "ruler",
+          "info": "Icon name from the theme library. Leave empty for none."
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 12,
+          "max": 32,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 12,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Button text size",
+          "default": 15
+        },
+        {
+          "type": "checkbox",
+          "id": "underline",
+          "label": "Underline",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Popup heading",
+          "default": "Size guide"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_top",
+          "label": "Image above table"
+        },
+        {
+          "type": "text",
+          "id": "header_row",
+          "label": "Header row text"
         },
         {
           "type": "richtext",
           "id": "content",
-          "label": "Content",
+          "label": "Table or text",
           "default": "<p>Add your sizing table or text here.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_bottom",
+          "label": "Image below table"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "checkbox",
+          "id": "test_mode",
+          "label": "Test mode (popup opens on load)",
+          "default": false
         },
         {
           "type": "range",
@@ -874,6 +1010,138 @@
           "type": "liquid",
           "id": "code",
           "label": "Liquid / HTML"
+        },
+        {
+          "type": "range",
+          "id": "mb",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Margin below",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "reviews_slider",
+      "name": "Reviews slider",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Reviews you have really received"
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star colour",
+          "default": "#00b67a"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Auto-rotate",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Review 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar1",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "name1",
+          "label": "Name"
+        },
+        {
+          "type": "range",
+          "id": "stars1",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Stars",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text1",
+          "label": "Review text"
+        },
+        {
+          "type": "header",
+          "content": "Review 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar2",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "name2",
+          "label": "Name"
+        },
+        {
+          "type": "range",
+          "id": "stars2",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Stars",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text2",
+          "label": "Review text"
+        },
+        {
+          "type": "header",
+          "content": "Review 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar3",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "name3",
+          "label": "Name"
+        },
+        {
+          "type": "range",
+          "id": "stars3",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Stars",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text3",
+          "label": "Review text"
         },
         {
           "type": "range",

@@ -440,3 +440,12 @@ document.addEventListener('DOMContentLoaded',function(){var d=document.querySele
   }
   run();document.addEventListener('shopify:section:load',function(e){run(e.target);});
 })();
+
+/* popup dialogs (sizing chart etc.) */
+(function(){
+  document.addEventListener('click',function(e){var o=e.target.closest('[data-gmc-dlg]');if(o){var d=document.getElementById(o.dataset.gmcDlg);if(d&&d.showModal){d.showModal();}return;}
+    var x=e.target.closest('[data-gmc-dlgx]');if(x){x.closest('dialog').close();return;}
+    if(e.target.tagName==='DIALOG'&&e.target.classList.contains('gmc-dlg')){e.target.close();}});
+  function t(){document.querySelectorAll('dialog.gmc-dlg[data-gmc-open]').forEach(function(d){if(!d.open&&d.showModal){d.showModal();}});}
+  t();document.addEventListener('shopify:section:load',t);
+})();
