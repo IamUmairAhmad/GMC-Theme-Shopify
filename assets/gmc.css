@@ -173,3 +173,5 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 @media(max-width:749px){.gmc-an-cols{display:grid;grid-template-columns:repeat(var(--cm,0),1fr)}.gmc-an-cols[style*="--cm:0"]{display:flex}.gmc-an-d-only{display:none!important}}
 .gmc-an-cols--sep>*+*{border-left:1px solid currentColor;padding-left:var(--gap,24px)}
 .gmc-an-code{background:transparent;border:1px dashed currentColor;color:inherit;border-radius:4px;padding:.1rem .8rem;cursor:pointer;font:inherit;display:inline-flex;gap:.6rem;align-items:center}.gmc-an-code small{opacity:.7}
+
+.gmc-an-sl .gmc-sl__a{width:2.8rem;height:2.8rem;background:transparent;color:inherit;box-shadow:none}.gmc-an-sl .gmc-sl__a svg{width:1.2rem;height:1.2rem}.gmc-an-sl .gmc-sl__pp{display:none}
