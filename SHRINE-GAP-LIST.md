@@ -279,3 +279,10 @@ Most differences are colour-scheme names (Shrine uses fixed accent / background 
 | GS-02 | Product-card **badge position "top centre"**, **title line limit** (unlimited / 1 / 2 / 3), **add button primary or secondary**. Part of DP-04. | P2 |
 | GS-03 | Sale and sold-out **badge colour scheme** choice, accent-icon colour (accent 1 / 2 / outline), variant-pill accent colour. Part of TS-04 / TS-05. | P3 |
 | GS-04 | **Arrow hover effect** for link and action buttons. Part of TS-03. | P3 |
+
+## 23. Fourteenth pass: editor setting types
+Shrine's sections use two editor controls that ours never use:
+| ID | Missing feature | Pri |
+|---|---|---|
+| ST-01 | **Multi-product picker** (`product_list`) used for upsell and gift blocks: choose several products in one field. Ours takes one product per block. Needed for PP-04 and CD-06. | P1 |
+| ST-02 | **Gradient background picker** (`color_background`) used for section / scheme backgrounds (accent and background gradients). | P3 |
