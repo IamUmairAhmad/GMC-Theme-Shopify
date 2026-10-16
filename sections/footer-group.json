@@ -17,28 +17,36 @@
         "brand_information_w9j9Aj": {
           "type": "brand_information",
           "settings": {
-            "show_social": true
+            "show_social": true,
+            "gmc_wd": 0,
+            "gmc_wm": 0
           }
         },
         "link_list_VVnaLi": {
           "type": "link_list",
           "settings": {
             "heading": "Shop",
-            "menu": "footer"
+            "menu": "shop",
+            "gmc_wd": 0,
+            "gmc_wm": 0
           }
         },
         "link_list_dck3bK": {
           "type": "link_list",
           "settings": {
-            "heading": "Information",
-            "menu": "footer"
+            "heading": "Store Policy",
+            "menu": "store-policy",
+            "gmc_wd": 0,
+            "gmc_wm": 0
           }
         },
         "link_list_Q9dtGJ": {
           "type": "link_list",
           "settings": {
             "heading": "Customer Service",
-            "menu": "footer"
+            "menu": "customer-service",
+            "gmc_wd": 0,
+            "gmc_wm": 0
           }
         }
       },
@@ -65,9 +73,14 @@
         "gmc_bg_overlay": 0,
         "gmc_atc_product": "",
         "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
         "gmc_atc_align": "center",
         "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     }
   },
@@ -75,4 +88,3 @@
     "footer"
   ]
 }
-
