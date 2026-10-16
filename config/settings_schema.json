@@ -2587,6 +2587,34 @@
         "id": "gmc_cursor",
         "label": "Custom cursor image",
         "info": "Small PNG, 32x32 recommended."
+      },
+      {
+        "type": "header",
+        "content": "Email signup"
+      },
+      {
+        "type": "select",
+        "id": "gmc_email_btn",
+        "label": "Email submit button",
+        "options": [
+          {
+            "value": "arrow",
+            "label": "Arrow in field (theme default)"
+          },
+          {
+            "value": "round",
+            "label": "Round arrow"
+          },
+          {
+            "value": "solid",
+            "label": "Solid block"
+          },
+          {
+            "value": "outline",
+            "label": "Outline block"
+          }
+        ],
+        "default": "arrow"
       }
     ]
   },

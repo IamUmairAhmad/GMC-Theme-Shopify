@@ -1,7 +1,7 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one message block.' -%}{%- endif -%}
-<div class="gmc-vtw {% render 'gmc-vis', hide: section.settings.hide_on %}{% if section.settings.panel_heading != blank or section.settings.panel_text != blank or section.settings.panel_btn != blank %} gmc-vtw--panel gmc-vtw--{{ section.settings.panel_side }}{% endif %}" style="--bg:{{ section.settings.bg }};--fg:{{ section.settings.fg }};--h:{{ section.settings.height }}px;--rows:{{ section.settings.rows }};--sz:{{ section.settings.size }}px;--fw:{% if section.settings.bold %}700{% else %}400{% endif %};--fs:{% if section.settings.italic %}italic{% else %}normal{% endif %};--tt:{% if section.settings.uppercase %}uppercase{% else %}none{% endif %};--al:{{ section.settings.align }};--speed:{{ section.blocks.size | times: section.settings.seconds }}s;--steps:{{ section.blocks.size | at_least: 1 }}">
+<div class="gmc-vtw {% render 'gmc-vis', hide: section.settings.hide_on %}{% if section.settings.panel_heading != blank or section.settings.panel_text != blank or section.settings.panel_btn != blank %} gmc-vtw--panel gmc-vtw--{{ section.settings.panel_side }}{% if section.settings.panel_show == 'desktop' %} gmc-vtw--pd{% elsif section.settings.panel_show == 'never' %} gmc-vtw--pn{% endif %}{% endif %}" style="--bg:{{ section.settings.bg }};--fg:{{ section.settings.fg }};--h:{{ section.settings.height }}px;--rows:{{ section.settings.rows }};--sz:{{ section.settings.size }}px;--fw:{% if section.settings.bold %}700{% else %}400{% endif %};--fs:{% if section.settings.italic %}italic{% else %}normal{% endif %};--tt:{% if section.settings.uppercase %}uppercase{% else %}none{% endif %};--al:{{ section.settings.align }};--speed:{{ section.blocks.size | times: section.settings.seconds }}s;--steps:{{ section.blocks.size | at_least: 1 }}">
   {%- if section.settings.panel_heading != blank or section.settings.panel_text != blank or section.settings.panel_btn != blank -%}
   <div class="gmc-vtw__panel">
     {%- if section.settings.panel_heading != blank -%}<h2 class="h2">{{ section.settings.panel_heading | escape }}</h2>{%- endif -%}
@@ -15,7 +15,7 @@
     </div>
   </div>
 </div>
-<style>.gmc-vtw{display:block;background:var(--bg);color:var(--fg)}.gmc-vtw--panel{display:grid;grid-template-columns:1fr 1.2fr;align-items:center;gap:2rem;padding:2rem}.gmc-vtw--right .gmc-vtw__panel{order:2}.gmc-vtw__panel h2{margin:0 0 1rem;color:var(--fg)}.gmc-vtw__panel p{color:var(--fg)}.gmc-vtw__panel p{margin:0 0 1.2rem}@media(max-width:749px){.gmc-vtw--panel{grid-template-columns:1fr}}
+<style>@media(max-width:749px){.gmc-vtw--pd .gmc-vtw__panel{display:none}}.gmc-vtw--pn .gmc-vtw__panel{display:none}.gmc-vtw--pn.gmc-vtw--panel{display:block}.gmc-vtw{display:block;background:var(--bg);color:var(--fg)}.gmc-vtw--panel{display:grid;grid-template-columns:1fr 1.2fr;align-items:center;gap:2rem;padding:2rem}.gmc-vtw--right .gmc-vtw__panel{order:2}.gmc-vtw__panel h2{margin:0 0 1rem;color:var(--fg)}.gmc-vtw__panel p{color:var(--fg)}.gmc-vtw__panel p{margin:0 0 1.2rem}@media(max-width:749px){.gmc-vtw--panel{grid-template-columns:1fr}}
 .gmc-vt{height:calc(var(--h) * var(--rows,1));overflow:hidden;text-align:var(--al,center);font-size:var(--sz,16px);font-weight:var(--fw,600);font-style:var(--fs,normal);text-transform:var(--tt,none)}.gmc-vt__item{height:var(--h);line-height:var(--h);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 1rem}
 .gmc-vt--step .gmc-vt__track{animation:gmc-vt var(--speed) steps(var(--steps)) infinite}.gmc-vt--smooth .gmc-vt__track{animation:gmc-vt var(--speed) linear infinite}@keyframes gmc-vt{to{transform:translateY(-50%)}}@media(prefers-reduced-motion:reduce){.gmc-vt__track{animation:none!important}}</style>
 {% schema %}
@@ -151,6 +151,26 @@
       "type": "url",
       "id": "panel_link",
       "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "panel_show",
+      "label": "Show side content",
+      "options": [
+        {
+          "value": "always",
+          "label": "Always"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop only"
+        },
+        {
+          "value": "never",
+          "label": "Never"
+        }
+      ],
+      "default": "always"
     },
     {
       "type": "select",

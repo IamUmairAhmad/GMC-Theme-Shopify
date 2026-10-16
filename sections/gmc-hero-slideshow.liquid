@@ -32,7 +32,7 @@
   endif
 -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add slides as blocks.' -%}{%- endif -%}
-<div class="gmc-hs gmc-sl" data-gmc-slider data-mode="{{ s.transition }}" data-autoplay="{% if s.autoplay %}{{ s.speed }}{% else %}0{% endif %}" data-loop="{{ s.loop }}" data-dots="{{ s.dots }}" data-arrows="{{ s.arrows }}" data-drag="{{ s.drag }}" style="--gmc-hs-h:{{ h_d }};--gmc-hs-hm:{{ h_m }};--gmc-dot:{{ s.dot_color | default: '#ffffff' }}" role="region" aria-roledescription="carousel" aria-label="{{ s.label | default: 'Slideshow' | escape }}">
+<div class="gmc-hs gmc-sl" data-gmc-slider data-mode="{{ s.transition }}" data-autoplay="{% if s.autoplay %}{{ s.speed }}{% else %}0{% endif %}" data-loop="{{ s.loop }}" data-dots="{{ s.dots }}" data-pag-style="{{ s.pag_style }}" data-pag-pos="{{ s.pag_pos }}" data-arrows="{{ s.arrows }}" data-drag="{{ s.drag }}" style="--gmc-hs-h:{{ h_d }};--gmc-hs-hm:{{ h_m }};--gmc-dot:{{ s.dot_color | default: '#ffffff' }}" role="region" aria-roledescription="carousel" aria-label="{{ s.label | default: 'Slideshow' | escape }}">
   <div class="gmc-sl__vp"><div class="gmc-sl__tr">
   {%- for block in section.blocks -%}
     {%- assign b = block.settings -%}
@@ -242,6 +242,42 @@
       "id": "dots",
       "label": "Show dots",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "pag_style",
+      "label": "Pagination style",
+      "options": [
+        {
+          "value": "dots",
+          "label": "Dots"
+        },
+        {
+          "value": "counter",
+          "label": "Counter (2 / 5)"
+        },
+        {
+          "value": "numbers",
+          "label": "Numbers"
+        }
+      ],
+      "default": "dots"
+    },
+    {
+      "type": "select",
+      "id": "pag_pos",
+      "label": "Pagination position",
+      "options": [
+        {
+          "value": "over",
+          "label": "Over the slides"
+        },
+        {
+          "value": "under",
+          "label": "Under the slides"
+        }
+      ],
+      "default": "over"
     },
     {
       "type": "color",

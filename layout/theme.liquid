@@ -323,6 +323,11 @@
       {%- endcase -%}
       {%- if settings.gmc_scroll_w > 0 -%}html{scrollbar-width:{% if settings.gmc_scroll_w < 8 %}thin{% else %}auto{% endif %};scrollbar-color:{{ settings.gmc_scroll_thumb }} {{ settings.gmc_scroll_track }}}::-webkit-scrollbar{width:{{ settings.gmc_scroll_w }}px;height:{{ settings.gmc_scroll_w }}px}::-webkit-scrollbar-track{background:{{ settings.gmc_scroll_track }}}::-webkit-scrollbar-thumb{background:{{ settings.gmc_scroll_thumb }};border-radius:{{ settings.gmc_scroll_w }}px}{%- endif -%}
       {%- if settings.gmc_cursor != blank -%}body{cursor:url('{{ settings.gmc_cursor | image_url: width: 64 }}') 4 4,auto}a,button,[role=button],summary,label{cursor:url('{{ settings.gmc_cursor | image_url: width: 64 }}') 4 4,pointer}{%- endif -%}
+      {%- case settings.gmc_email_btn -%}
+        {%- when 'round' -%}.newsletter-form__button{background:rgb(var(--color-button))!important;color:rgb(var(--color-button-text))!important;border-radius:50%;width:3.4rem;height:3.4rem;top:50%;transform:translateY(-50%);right:.6rem}
+        {%- when 'solid' -%}.newsletter-form__button{background:rgb(var(--color-button))!important;color:rgb(var(--color-button-text))!important;width:5.2rem}
+        {%- when 'outline' -%}.newsletter-form__button{box-shadow:inset 0 0 0 1px rgb(var(--color-foreground));width:5.2rem}
+      {%- endcase -%}
       {%- if settings.gmc_badge_offset > 0 -%}.card__badge{margin:{{ settings.gmc_badge_offset }}px}{%- endif -%}
       {%- if settings.gmc_title_lines > 0 -%}.card__heading a,.card__heading{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:{{ settings.gmc_title_lines }};overflow:hidden}{%- endif -%}
     </style>

@@ -8,7 +8,7 @@
       {%- if section.settings.caption != blank -%}<p class="gmc-ic__cap">{{ section.settings.caption | escape }}</p>{%- endif -%}
       {%- if section.settings.heading != blank -%}<h2 class="h1">{{ section.settings.heading | escape }}</h2>{%- endif -%}
       {%- if section.settings.text != blank -%}<div class="rte">{{ section.settings.text }}</div>{%- endif -%}
-      <ul class="gmc-ic__list" role="list" style="--ic:{{ section.settings.icon_color }}">
+      <ul class="gmc-ic__list gmc-ic__list--{{ section.settings.icon_pos }}" role="list" style="--ic:{{ section.settings.icon_color }};--icc:{{ section.settings.cols }};--iccm:{{ section.settings.cols_m }}">
         {%- for block in section.blocks -%}
           <li {{ block.shopify_attributes }}>
             <span class="gmc-ic__i" style="width:{{ section.settings.icon_size | plus: 12 }}px;height:{{ section.settings.icon_size | plus: 12 }}px">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 | image_tag: width: section.settings.icon_size, height: section.settings.icon_size, alt: '', loading: 'lazy' }}{%- else -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size -%}{%- endif -%}</span>
@@ -26,7 +26,7 @@
     {%- endif -%}
   </div>
 </div>
-<style>.gmc-ic__in{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}.gmc-ic__in--left .gmc-ic__media{order:-1}.gmc-ic__media img,.gmc-ic__media video{width:100%;height:auto;display:block;border-radius:var(--media-radius,8px)}.gmc-ic__cap{letter-spacing:.15em;text-transform:uppercase;font-size:1.2rem;opacity:.7;margin:0 0 .6rem}.gmc-ic__list{list-style:none;margin:1.6rem 0;padding:0;display:grid;gap:1.2rem}.gmc-ic__list li{display:flex;gap:1.2rem;align-items:center}.gmc-ic__i{display:grid;place-items:center;border-radius:50%;background:rgba(var(--color-foreground),.08);color:var(--ic,currentColor);flex:none}.gmc-ic__d{opacity:.75;font-size:1.4rem}@media(max-width:749px){.gmc-ic__in{grid-template-columns:1fr}.gmc-ic__in--left .gmc-ic__media{order:0}}</style>
+<style>.gmc-ic__list{grid-template-columns:repeat(var(--icc,1),1fr)}.gmc-ic__list--above li{flex-direction:column;text-align:center}.gmc-ic__list--text li{align-items:flex-start}@media(max-width:749px){.gmc-ic__list{grid-template-columns:repeat(var(--iccm,1),1fr)}}.gmc-ic__in{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}.gmc-ic__in--left .gmc-ic__media{order:-1}.gmc-ic__media img,.gmc-ic__media video{width:100%;height:auto;display:block;border-radius:var(--media-radius,8px)}.gmc-ic__cap{letter-spacing:.15em;text-transform:uppercase;font-size:1.2rem;opacity:.7;margin:0 0 .6rem}.gmc-ic__list{list-style:none;margin:1.6rem 0;padding:0;display:grid;gap:1.2rem}.gmc-ic__list li{display:flex;gap:1.2rem;align-items:center}.gmc-ic__i{display:grid;place-items:center;border-radius:50%;background:rgba(var(--color-foreground),.08);color:var(--ic,currentColor);flex:none}.gmc-ic__d{opacity:.75;font-size:1.4rem}@media(max-width:749px){.gmc-ic__in{grid-template-columns:1fr}.gmc-ic__in--left .gmc-ic__media{order:0}}</style>
 {% schema %}
 {
   "name": "Icons with content",
@@ -52,10 +52,48 @@
       "default": "<p>Explain your promise in a sentence or two.</p>"
     },
     {
+      "type": "select",
+      "id": "icon_pos",
+      "label": "Icon position",
+      "options": [
+        {
+          "value": "side",
+          "label": "Next to title and text"
+        },
+        {
+          "value": "above",
+          "label": "Above title"
+        },
+        {
+          "value": "text",
+          "label": "Next to text, aligned to top"
+        }
+      ],
+      "default": "side"
+    },
+    {
+      "type": "range",
+      "id": "cols",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "label": "Icon columns (desktop)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "cols_m",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "label": "Icon columns (mobile)",
+      "default": 1
+    },
+    {
       "type": "range",
       "id": "icon_size",
       "min": 16,
-      "max": 48,
+      "max": 96,
       "step": 2,
       "unit": "px",
       "label": "Icon size",

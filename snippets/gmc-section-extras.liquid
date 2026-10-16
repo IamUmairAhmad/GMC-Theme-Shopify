@@ -5,7 +5,9 @@
 {%- assign x_pt = section.settings.gmc_pad_top | default: 0 -%}
 {%- assign x_pb = section.settings.gmc_pad_bottom | default: 0 -%}
 {%- assign x_bgc = section.settings.gmc_bg_color -%}
+{%- assign x_tint = section.settings.gmc_card_tint | default: 0 -%}
 {%- assign x_mw = section.settings.gmc_max_width | default: 0 -%}
+{%- if x_tint > 0 -%}<style>#shopify-section-{{ section.id }} :is(.gmc-tm__card,.gmc-iconbar__item,.multicolumn-card,.gmc-pt__card,.gmc-pt__col){background:rgba(var(--color-foreground),{{ x_tint | divided_by: 100.0 }})!important;border-radius:var(--text-boxes-radius,8px);padding:1.2rem}</style>{%- endif -%}
 {%- if x_hide != blank or x_img != blank or x_vid != blank or x_pt > 0 or x_pb > 0 or x_bgc != blank or x_mw > 0 -%}
 <style>
   {%- if x_pt > 0 -%}#shopify-section-{{ section.id }}{padding-top:{{ x_pt }}px}{%- endif -%}
