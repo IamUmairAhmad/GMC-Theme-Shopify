@@ -32,3 +32,24 @@
 </div>
 {%- endif -%}
 {%- endif -%}
+
+{%- comment -%} Swipe row on mobile + slider autoplay {%- endcomment -%}
+{%- if section.settings.gmc_swipe_mobile -%}
+<style>@media(max-width:749px){#shopify-section-{{ section.id }} ul.grid:not(.slider),#shopify-section-{{ section.id }} .grid.gmc-swipeable{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:1rem;padding-bottom:1rem;-webkit-overflow-scrolling:touch}#shopify-section-{{ section.id }} ul.grid:not(.slider)>li,#shopify-section-{{ section.id }} .grid.gmc-swipeable>*{flex:0 0 78%!important;max-width:78%!important;scroll-snap-align:start}}</style>
+{%- endif -%}
+{%- if section.settings.gmc_slider_autoplay > 0 -%}<span hidden data-gmc-autoplay="{{ section.settings.gmc_slider_autoplay }}"></span>{%- endif -%}
+{%- comment -%} Add to cart button for a chosen product {%- endcomment -%}
+{%- assign x_atc = section.settings.gmc_atc_product -%}
+{%- if x_atc != blank and x_atc.available -%}
+<div class="gmc-sec-atc page-width" data-gmc-sec-atc style="text-align:{{ section.settings.gmc_atc_align | default: 'center' }};padding:1.5rem 0">
+  <form class="gmc-sec-atc__f" action="{{ routes.cart_add_url }}" method="post">
+    {%- if x_atc.variants.size > 1 -%}
+    <select class="select__select gmc-sec-atc__v" name="id" aria-label="{{ x_atc.title | escape }} options" style="max-width:26rem;margin-bottom:1rem">
+      {%- for v in x_atc.variants -%}<option value="{{ v.id }}"{% unless v.available %} disabled{% endunless %}>{{ v.title | escape }} — {{ v.price | money }}</option>{%- endfor -%}
+    </select><br>
+    {%- else -%}<input type="hidden" name="id" value="{{ x_atc.selected_or_first_available_variant.id }}">{%- endif -%}
+    <button type="submit" class="button button--primary">{{ section.settings.gmc_atc_label | default: 'Add to cart' | escape }}{%- if x_atc.variants.size == 1 -%} · {{ x_atc.price | money }}{%- endif -%}</button>
+    <p class="gmc-sec-atc__m" role="status" style="margin:.8rem 0 0"></p>
+  </form>
+</div>
+{%- endif -%}

@@ -70,7 +70,7 @@ Items on the page that are not theme features (marketing or services, not built 
 | Country selection + Markets | Uses Shopify's standard localization form; country blocker reads `localization.country`. Prices, languages and shipping come from the merchant's Markets setup | Built, untested on live store |
 
 ### C. Known limits
-- Subscription widget does not yet filter plans per selected variant.
+- Subscription widget now lists only the selling plans allocated to the selected variant (with their prices) and rebuilds on variant change. Needs a real subscription app to verify.
 - Quantity-break and bundle price reductions need Shopify automatic discounts; the theme only displays them.
 - Nothing has been run on a live Shopify store; Liquid rendering is only theme-checked.
 
@@ -79,3 +79,9 @@ Items on the page that are not theme features (marketing or services, not built 
 2. Add-on queueing after confirmed main add (added above).
 3. Metafield-driven review stars (added above).
 4. Recommended next: per-variant selling-plan filter; a Shopify Function for quantity-break discounts; Lighthouse/accessibility pass on a live store.
+
+### E. Follow-up pass
+- **Slider options in other sections:** every Dawn section with GMC extras now has "Swipe row on mobile" and "Slider autoplay" (loops, pauses on hover/focus, respects reduced-motion; only does something where the section has a slider or grid).
+- **Add to cart in sections:** every section with GMC extras can show an add-to-cart button (with variant dropdown) for a chosen product, added to the end of the section and using the cart drawer.
+- **Quantity-break pricing:** source for an optional Shopify Function is in `extras/quantity-break-function/` (not built, deployed or tested; excluded from theme upload by `.shopifyignore`).
+- **Live-store testing:** still not done. Test store "GMC Theme test" is connected, but the connection cannot upload this many files; install via GitHub or zip upload, then test.

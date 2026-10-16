@@ -154,6 +154,63 @@
       "unit": "%",
       "label": "Background overlay",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Add to cart in this section"
+    },
+    {
+      "type": "product",
+      "id": "gmc_atc_product",
+      "label": "Add-to-cart product",
+      "info": "Adds a button (with variant dropdown if needed) at the end of this section."
+    },
+    {
+      "type": "text",
+      "id": "gmc_atc_label",
+      "label": "Button label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "select",
+      "id": "gmc_atc_align",
+      "label": "Button alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Slider options"
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_swipe_mobile",
+      "label": "Swipe row on mobile",
+      "info": "Turns this section's grid into a swipeable row on phones.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "gmc_slider_autoplay",
+      "label": "Slider autoplay (seconds, 0 = off)",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0,
+      "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
     }
   ],
   "presets": [

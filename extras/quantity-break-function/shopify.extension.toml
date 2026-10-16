@@ -1,0 +1,15 @@
+api_version = "2025-07"
+
+[[extensions]]
+name = "GMC quantity breaks"
+handle = "gmc-quantity-breaks"
+type = "function"
+
+  [[extensions.targeting]]
+  target = "cart.lines.discounts.generate.run"
+  input_query = "src/run.graphql"
+  export = "cart-lines-discounts-generate-run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"

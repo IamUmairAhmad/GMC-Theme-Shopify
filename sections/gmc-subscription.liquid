@@ -1,18 +1,26 @@
 {%- comment -%} GMC Theme: subscribe & save widget using Shopify selling plans (original code). Requires a subscription app that creates selling plans. {%- endcomment -%}
 {%- if product != blank and product.selling_plan_groups.size > 0 -%}
-{%- assign group = product.selling_plan_groups.first -%}
-<fieldset class="gmc-sub" id="gmc-sub-{{ section.id }}">
+{%- assign cur = product.selected_or_first_available_variant -%}
+<fieldset class="gmc-sub" id="gmc-sub-{{ section.id }}" data-variant="{{ cur.id }}">
   <legend class="visually-hidden">Purchase options</legend>
   <label class="gmc-sub__o"><input type="radio" name="gmc-sub-{{ section.id }}" value="" checked><span><strong>{{ section.settings.one_time | escape }}</strong></span></label>
   <label class="gmc-sub__o"><input type="radio" name="gmc-sub-{{ section.id }}" value="plan"><span><strong>{{ section.settings.subscribe | escape }}</strong>{%- if section.settings.note != blank -%}<em>{{ section.settings.note | escape }}</em>{%- endif -%}</span></label>
-  <select class="gmc-sub__sel select__select" aria-label="Delivery frequency" hidden>
-    {%- for plan in group.selling_plans -%}<option value="{{ plan.id }}">{{ plan.name | escape }}</option>{%- endfor -%}
-  </select>
+  <select class="gmc-sub__sel select__select" aria-label="Delivery frequency" hidden></select>
 </fieldset>
+<script type="application/json" id="gmc-sub-data-{{ section.id }}">
+{ {%- for v in product.variants -%}"{{ v.id }}":[{%- for al in v.selling_plan_allocations -%}{"id":{{ al.selling_plan.id }},"name":{{ al.selling_plan.name | json }},"price":{{ al.price | money | json }},"was":{{ al.compare_at_price | money | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} }
+</script>
 <style>.gmc-sub{border:0;padding:0;margin:1.2rem 0;display:grid;gap:.7rem}.gmc-sub__o{display:flex;gap:1rem;align-items:center;padding:1rem 1.2rem;border:1px solid rgba(var(--color-foreground),.2);border-radius:10px;cursor:pointer}.gmc-sub__o:has(input:checked){border-color:rgb(var(--color-foreground));background:rgba(var(--color-foreground),.04)}.gmc-sub__o span{display:flex;flex-direction:column}.gmc-sub__o em{font-style:normal;font-size:1.25rem;opacity:.7}.gmc-sub__sel{border-radius:10px}</style>
-<script>(function(){var w=document.getElementById('gmc-sub-{{ section.id }}');if(!w)return;var sel=w.querySelector('select');
-function sync(){var on=w.querySelector('input[value=plan]').checked;sel.hidden=!on;gmcField('selling_plan',on?sel.value:'');}
-w.addEventListener('change',sync);window.addEventListener('load',sync);if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){subscribe(PUB_SUB_EVENTS.variantChange,function(){setTimeout(sync,50);});}})();</script>
+<script>(function(){var w=document.getElementById('gmc-sub-{{ section.id }}');if(!w)return;var sel=w.querySelector('select'),data={};
+try{data=JSON.parse(document.getElementById('gmc-sub-data-{{ section.id }}').textContent);}catch(e){}
+var vid=w.dataset.variant,planOpt=w.querySelectorAll('.gmc-sub__o')[1],planRadio=planOpt.querySelector('input'),oneRadio=w.querySelector('input[value=""]');
+function build(){var list=data[vid]||[];var prev=sel.value;sel.innerHTML='';list.forEach(function(p){var o=document.createElement('option');o.value=p.id;o.textContent=p.name+' — '+p.price+(p.was&&p.was!==p.price?' (was '+p.was+')':'');sel.appendChild(o);});
+  if(prev&&sel.querySelector('option[value="'+prev+'"]'))sel.value=prev;
+  /* a variant with no plans cannot be subscribed to */
+  planOpt.hidden=!list.length;if(!list.length){oneRadio.checked=true;}}
+function sync(){var on=planRadio.checked&&!planOpt.hidden;sel.hidden=!on;gmcField('selling_plan',on?sel.value:'');}
+build();w.addEventListener('change',sync);window.addEventListener('load',sync);
+if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;if(v&&v.id)vid=String(v.id);build();setTimeout(sync,50);});}})();</script>
 {%- endif -%}
 {% schema %}
 {"name":"Subscription widget","tag":"section","class":"section","enabled_on":{"templates":["product"]},"settings":[{"type":"text","id":"one_time","label":"One-time label","default":"One-time purchase"},{"type":"text","id":"subscribe","label":"Subscribe label","default":"Subscribe & save"},{"type":"text","id":"note","label":"Note","default":"Cancel or skip any time"},{"type":"paragraph","content":"Shows only for products that have selling plans from a subscription app."}],"presets":[{"name":"Subscription widget"}]}
