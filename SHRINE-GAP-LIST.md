@@ -217,3 +217,6 @@ Read in full, with every saved setting. They confirm the list and add three smal
 | DF-03 | **Shrine's default home page recipe**: slideshow → comparison table → icon bar (4 items) → results → contact form. | P3 |
 
 Everything else in those two files is a setting already listed under sections 1, 5 and 7.
+
+## 17. Eighth pass: remaining template and group defaults
+Collection, cart, blog, article, search, 404, password, contact, FAQ, track-order, header group and footer group were read with all saved settings. No new feature. Defaults worth matching in our templates: collection page with horizontal filters, quick add and a collage under the grid; header with a ticker (off by default), an announcement bar with an icon, active-link highlight and sticky-on-scroll-up; every content page ending with a newsletter band; password page with a "Opening soon" email signup.
