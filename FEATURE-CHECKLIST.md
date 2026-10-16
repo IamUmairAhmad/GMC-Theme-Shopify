@@ -85,3 +85,7 @@ Items on the page that are not theme features (marketing or services, not built 
 - **Add to cart in sections:** every section with GMC extras can show an add-to-cart button (with variant dropdown) for a chosen product, added to the end of the section and using the cart drawer.
 - **Quantity-break pricing:** source for an optional Shopify Function is in `extras/quantity-break-function/` (not built, deployed or tested; excluded from theme upload by `.shopifyignore`).
 - **Live-store testing:** still not done. Test store "GMC Theme test" is connected, but the connection cannot upload this many files; install via GitHub or zip upload, then test.
+
+### F. Live import test (test store, GitHub-connected)
+Shopify rejected several files that local theme-check accepted. All fixed and re-verified as imported: ranges with too many steps or off-step defaults (`gmc_zoom_level`, countdown, product-more), ranges with only 1 step (`columns_mobile`, now selects), empty-string text defaults, an over-long setting label, and `image_tag` calls with a filter chained onto an argument (a real rendering bug). After the fixes every section, block, snippet, asset and config file is present on the store.
+Not yet done: the storefront is password-protected, so no page has been rendered or clicked through. Test products "GMC Test Tee" (3 variants) and "GMC Test Free Gift" ($0) exist on the store.
