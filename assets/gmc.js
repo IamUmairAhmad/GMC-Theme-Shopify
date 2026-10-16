@@ -358,3 +358,25 @@ document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.
   upd();['change','input','click'].forEach(function(ev){document.addEventListener(ev,function(e){var t=e.target;if(t&&t.closest&&(t.closest('quantity-input,.gmc-qb')||(t.name==='quantity')))setTimeout(upd,60);},true);});
   window.addEventListener('load',function(){setTimeout(upd,150);});document.addEventListener('shopify:section:load',upd);
 })();
+
+/* drawer: cart note, upsell variant picker, gift blocks that add / remove their gift as the cart total changes */
+(function(){
+  document.addEventListener('change',function(e){var t=e.target;if(!t.matches)return;
+    if(t.matches('.gmc-cup__var')){var it=t.closest('.gmc-cup__item'),o=t.options[t.selectedIndex];it.querySelector('.gmc-cup__btn').dataset.gmcUpsell=t.value;it.querySelector('.gmc-cup__btn').disabled=o.disabled;it.querySelector('.gmc-cup__price').textContent=gmcMoney(+o.dataset.price);}
+    if(t.matches('.gmc-cnote__in')){fetch('/cart/update.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({note:t.value})});}
+  });
+  var busy=false;
+  function refresh(){return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(sec){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents)cd.renderContents({sections:sec});});}
+  function sync(){if(busy)return;var blocks=document.querySelectorAll('.gmc-cgift');if(!blocks.length)return;
+    fetch('/cart.js').then(function(r){return r.json();}).then(function(c){var add=[],rm=[];
+      blocks.forEach(function(g){var id=+g.dataset.variant,line=c.items.find(function(i){return i.variant_id===id&&i.properties&&i.properties._gmc_gift;});
+        if(g.dataset.state==='open'&&!line)add.push({id:id,quantity:1,properties:{_gmc_gift:'true'}});
+        if(g.dataset.state==='locked'&&line)rm.push(line.key);});
+      if(!add.length&&!rm.length)return;busy=true;
+      var p=Promise.resolve();
+      if(add.length)p=p.then(function(){return fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:add})});});
+      rm.forEach(function(k){p=p.then(function(){return fetch('/cart/change.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:k,quantity:0})});});});
+      return p.then(refresh).finally(function(){busy=false;});});}
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(sync,600);});
+  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,function(){setTimeout(sync,700);});});
+})();

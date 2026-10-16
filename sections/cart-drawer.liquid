@@ -228,6 +228,215 @@
       ]
     },
     {
+      "type": "gift",
+      "name": "Free gift",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Gift product"
+        },
+        {
+          "type": "number",
+          "id": "goal",
+          "label": "Spend goal (store currency)",
+          "info": "Gift unlocks when paid items reach this amount."
+        },
+        {
+          "type": "textarea",
+          "id": "rate_map",
+          "label": "Currency rates",
+          "info": "Optional. One per line, e.g. EUR:0.92."
+        },
+        {
+          "type": "product_list",
+          "id": "only_products",
+          "label": "Show only when the cart has these products",
+          "limit": 10
+        },
+        {
+          "type": "text",
+          "id": "locked_text",
+          "label": "Locked text",
+          "default": "Add [amount] more to unlock a free gift"
+        },
+        {
+          "type": "text",
+          "id": "unlocked_text",
+          "label": "Unlocked text",
+          "default": "Free gift unlocked"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_image",
+          "label": "Show gift image",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "locked_color",
+          "label": "Locked colour",
+          "default": "#9ca3af"
+        },
+        {
+          "type": "color",
+          "id": "unlocked_color",
+          "label": "Unlocked colour",
+          "default": "#16a34a"
+        }
+      ]
+    },
+    {
+      "type": "upsell_products",
+      "name": "Upsell products",
+      "settings": [
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Upsell products",
+          "limit": 3
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "You may also like"
+        },
+        {
+          "type": "product_list",
+          "id": "only_for",
+          "label": "Show only when the cart has these products",
+          "limit": 10
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_in_cart",
+          "label": "Hide products already in the cart",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button label",
+          "default": "Add"
+        },
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "options": [
+            {
+              "value": "column",
+              "label": "Column"
+            },
+            {
+              "value": "row",
+              "label": "Row"
+            }
+          ],
+          "default": "column"
+        }
+      ]
+    },
+    {
+      "type": "cart_note",
+      "name": "Cart note",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Order note"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "range",
+          "id": "rows",
+          "min": 2,
+          "max": 6,
+          "step": 1,
+          "label": "Rows",
+          "default": 3
+        }
+      ]
+    },
+    {
+      "type": "text_with_icon",
+      "name": "Text with icon",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "truck",
+          "info": "Icon name from the theme icon library."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free returns within 30 days"
+        },
+        {
+          "type": "range",
+          "id": "size",
+          "min": 11,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Text size",
+          "default": 13
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Text colour"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
       "type": "checkout_button",
       "name": "Checkout button",
       "limit": 1,
@@ -255,6 +464,12 @@
           "type": "text",
           "id": "text",
           "label": "Text above the icons"
+        },
+        {
+          "type": "text",
+          "id": "icons",
+          "label": "Payment icons",
+          "info": "Optional, comma separated, e.g. visa, master, paypal. Blank shows your store's enabled methods."
         }
       ]
     },
@@ -303,24 +518,38 @@
   "default": {
     "blocks": [
       {
-        "type": "progress_bar",
-        "settings": {
-          "goal": 50
-        }
-      },
-      {
-        "type": "checkpoints_bar",
-        "settings": {
-          "amount_1": 40,
-          "amount_2": 80,
-          "amount_3": 160,
-          "icon_3": "star",
-          "label_3": "VIP",
-          "text_3": "Add [amount] more for VIP"
-        }
-      },
-      {
         "type": "cart_items"
+      },
+      {
+        "type": "gift",
+        "settings": {
+          "product": "gmc-test-free-gift",
+          "goal": 40
+        }
+      },
+      {
+        "type": "gift",
+        "settings": {
+          "product": "gmc-test-free-gift",
+          "goal": 90
+        }
+      },
+      {
+        "type": "upsell_products",
+        "settings": {
+          "products": [
+            "gmc-demo-hoodie"
+          ]
+        }
+      },
+      {
+        "type": "cart_note"
+      },
+      {
+        "type": "text_with_icon"
+      },
+      {
+        "type": "image"
       },
       {
         "type": "discount_field"

@@ -73,6 +73,87 @@
       {%- endif -%}
     </div>
 
+  {%- when 'gift' -%}
+    {%- assign gp = bs.product -%}
+    {%- if gp != blank and bs.goal > 0 -%}
+      {%- capture gr_cap -%}{%- render 'gmc-rate', map: bs.rate_map -%}{%- endcapture -%}
+      {%- assign g_goal = bs.goal | times: gr_cap | times: 100 | round -%}
+      {%- assign g_paid = 0 -%}
+      {%- assign g_in_cart = false -%}
+      {%- assign g_var = gp.selected_or_first_available_variant -%}
+      {%- assign g_match = true -%}
+      {%- if bs.only_products != blank -%}{%- assign g_match = false -%}{%- endif -%}
+      {%- for it in cart.items -%}
+        {%- if it.properties._gmc_gift -%}
+          {%- if it.variant_id == g_var.id -%}{%- assign g_in_cart = true -%}{%- endif -%}
+        {%- else -%}
+          {%- assign g_paid = g_paid | plus: it.final_line_price -%}
+          {%- if bs.only_products != blank -%}{%- for op in bs.only_products -%}{%- if op.id == it.product_id -%}{%- assign g_match = true -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if g_match and cart.item_count > 0 -%}
+        {%- assign g_open = false -%}
+        {%- if g_paid >= g_goal -%}{%- assign g_open = true -%}{%- endif -%}
+        {%- assign g_need = g_goal | minus: g_paid | money -%}
+        <div class="gmc-cgift" data-variant="{{ g_var.id }}" data-state="{% if g_open %}open{% else %}locked{% endif %}" data-incart="{{ g_in_cart }}" style="--cg-lock:{{ bs.locked_color | default: '#9ca3af' }};--cg-open:{{ bs.unlocked_color | default: '#16a34a' }}" {{ block.shopify_attributes }}>
+          {%- if bs.show_image and gp.featured_image != blank -%}<span class="gmc-cgift__img">{{ gp.featured_image | image_url: width: 120 | image_tag: width: 48, height: 48, loading: 'lazy', alt: gp.title }}</span>{%- endif -%}
+          <span class="gmc-cgift__txt"><strong>{{ gp.title | escape }}</strong><small>{% if g_open %}{{ bs.unlocked_text | default: 'Free gift unlocked' | escape }}{% else %}{{ bs.locked_text | default: 'Add [amount] more to unlock a free gift' | escape | replace: '[amount]', g_need }}{% endif %}</small></span>
+          <span aria-hidden="true">{% if g_open %}🎁{% else %}🔒{% endif %}</span>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  {%- when 'upsell_products' -%}
+    {%- if bs.products != blank and cart.item_count > 0 -%}
+      {%- assign u_show = true -%}
+      {%- if bs.only_for != blank -%}
+        {%- assign u_show = false -%}
+        {%- for it in cart.items -%}{%- for op in bs.only_for -%}{%- if op.id == it.product_id -%}{%- assign u_show = true -%}{%- endif -%}{%- endfor -%}{%- endfor -%}
+      {%- endif -%}
+      {%- if u_show -%}
+        <div class="gmc-cup gmc-cup--{{ bs.layout }}" style="padding:.8rem 2rem" {{ block.shopify_attributes }}>
+          {%- if bs.heading != blank -%}<p class="gmc-cup__h">{{ bs.heading | escape }}</p>{%- endif -%}
+          <div class="gmc-cup__list">
+          {%- for up in bs.products limit: 3 -%}
+            {%- assign u_in = false -%}
+            {%- for it in cart.items -%}{%- if it.product_id == up.id -%}{%- assign u_in = true -%}{%- endif -%}{%- endfor -%}
+            {%- unless u_in and bs.hide_in_cart -%}
+              {%- assign uv = up.selected_or_first_available_variant -%}
+              <div class="gmc-cup__item">
+                {%- if up.featured_image != blank -%}<span class="gmc-cup__img">{{ up.featured_image | image_url: width: 120 | image_tag: width: 56, height: 56, loading: 'lazy', alt: up.title }}</span>{%- endif -%}
+                <span class="gmc-cup__txt"><strong>{{ up.title | escape }}</strong><span class="gmc-cup__price">{{ uv.price | money }}</span>
+                  {%- if up.variants.size > 1 -%}<select class="gmc-cup__var" aria-label="{{ up.title | escape }}">{%- for v in up.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}" {% if v.id == uv.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}</select>{%- endif -%}
+                </span>
+                <button type="button" class="button button--secondary gmc-cup__btn" data-gmc-upsell="{{ uv.id }}" {% unless uv.available %}disabled{% endunless %}>{{ bs.button | default: 'Add' | escape }}</button>
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  {%- when 'cart_note' -%}
+    <div class="gmc-cnote" style="padding:.6rem 2rem" {{ block.shopify_attributes }}>
+      <label for="gmc-cnote-{{ block.id }}" style="display:block;font-size:1.3rem;margin-bottom:.4rem">{{ bs.label | default: 'Order note' | escape }}</label>
+      <textarea id="gmc-cnote-{{ block.id }}" class="field__input gmc-cnote__in" rows="{{ bs.rows | default: 3 }}" placeholder="{{ bs.placeholder | escape }}" style="padding:.8rem;width:100%">{{ cart.note | escape }}</textarea>
+    </div>
+
+  {%- when 'text_with_icon' -%}
+    <div class="gmc-ctxt" style="display:flex;gap:.8rem;align-items:center;padding:.6rem 2rem;font-size:{{ bs.size | default: 13 }}px;text-align:{{ bs.align | default: 'left' }};{% if bs.bg != blank %}background:{{ bs.bg }};{% endif %}{% if bs.color != blank %}color:{{ bs.color }};{% endif %}" {{ block.shopify_attributes }}>
+      {%- if bs.icon != blank -%}{%- render 'gmc-icon', name: bs.icon, size: 22 -%}{%- endif -%}
+      <span style="flex:1">{{ bs.text | escape }}</span>
+    </div>
+
+  {%- when 'image' -%}
+    {%- if bs.image != blank -%}
+      <div style="padding:.6rem 2rem" {{ block.shopify_attributes }}>
+        {%- if bs.link != blank -%}<a href="{{ bs.link }}">{%- endif -%}
+        {{ bs.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400,800', style: 'width:100%;height:auto;border-radius:8px', alt: bs.image.alt | default: '' }}
+        {%- if bs.link != blank -%}</a>{%- endif -%}
+      </div>
+    {%- endif -%}
+
   {%- when 'checkout_button' -%}
     <div class="cart__ctas" {{ block.shopify_attributes }}>
       <button type="submit" id="CartDrawer-Checkout" class="cart__checkout-button button" name="checkout" form="CartDrawer-Form" {% if cart == empty %}disabled{% endif %}>
@@ -89,7 +170,7 @@
     <div class="gmc-cart-badges" style="padding:1rem 2rem;text-align:center;font-size:1.2rem" {{ block.shopify_attributes }}>
       {%- if bs.text != blank -%}<p style="margin:0 0 .6rem">{{ bs.text | escape }}</p>{%- endif -%}
       <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin:0;padding:0;list-style:none">
-        {%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}
+        {%- if bs.icons != blank -%}{%- assign pt_list = bs.icons | replace: ' ', '' | split: ',' -%}{%- else -%}{%- assign pt_list = shop.enabled_payment_types -%}{%- endif -%}{%- for type in pt_list -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}
       </ul>
     </div>
 

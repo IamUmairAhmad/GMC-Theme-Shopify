@@ -1,0 +1,10 @@
+{%- comment -%} Returns the multiplier for the shopper's currency from lines like EUR:0.92 (comma or newline separated). Param: map. Defaults to 1. {%- endcomment -%}
+{%- assign out = 1.0 -%}
+{%- if map != blank -%}
+  {%- assign rate_lines = map | newline_to_br | replace: ',', '<br />' | split: '<br />' -%}
+  {%- for rl in rate_lines -%}
+    {%- assign rkv = rl | strip | split: ':' -%}
+    {%- if rkv.size == 2 -%}{%- assign rk = rkv[0] | strip | upcase -%}{%- if rk == cart.currency.iso_code -%}{%- assign out = rkv[1] | strip | times: 1.0 -%}{%- endif -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{{- out -}}
