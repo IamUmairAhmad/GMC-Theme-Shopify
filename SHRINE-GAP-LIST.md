@@ -206,3 +206,14 @@ All 61 sections, all 17 page templates and group files, all 140+ snippets by nam
 - `settings_data` defaults read in full: they hold Shrine's style presets plus leftover settings from older Shrine cart versions (trust-badge width, cart timer text, two fixed upsell products). These are covered by our block-based cart drawer; no new feature.
 - Editor help texts (`en.default.schema.json`) are Shopify's standard theme strings; nothing Shrine-specific beyond what the schemas already showed.
 - Shrine's live storefront is behind a store password, so the rendered pages (animation feel, spacing, mobile behaviour) have not been seen. To compare visually, the store password or a preview link is needed; I did not try to bypass it.
+
+## 16. Seventh pass: Shrine's out-of-the-box page setups (home and product templates, full settings)
+Read in full, with every saved setting. They confirm the list and add three small items:
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| DF-01 | **Shop-name text token** (for example in the comparison table's "us" label) so default content adapts to each store. | P3 |
+| DF-02 | **Shrine's default product page recipe** (what a new merchant sees): thumbnail-slider gallery on the left, sticky info column, title → rating stars → price → variant picker (pills, dropdown, dropdown with "[name] - [selected]" labels) → quantity breaks "BUNDLE & SAVE" (1–4 units) → buy buttons → dated shipping checkpoints (ordered / ready / delivered) → sticky add-to-cart → description → reviews → collapsible tab; below it custom columns, image slider, icons-with-content, testimonials and a wave section divider; related products shipped switched off. Extends TP-02. | P2 |
+| DF-03 | **Shrine's default home page recipe**: slideshow → comparison table → icon bar (4 items) → results → contact form. | P3 |
+
+Everything else in those two files is a setting already listed under sections 1, 5 and 7.
