@@ -126,16 +126,16 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
 (function(){
   function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
   /* add-ons (complimentary, upsells, quantity-break gifts) are queued on submit and added only after Shopify confirms the main add */
-  window.gmcQueue=[];window.gmcQueueAddon=function(id){id=+id;if(id&&gmcQueue.indexOf(id)<0)gmcQueue.push(id);};
+  window.gmcQueue=[];window.gmcUnits=[];window.gmcQueueAddon=function(id){id=+id;if(id&&gmcQueue.indexOf(id)<0)gmcQueue.push(id);};window.gmcQueueUnit=function(id){id=+id;if(id)gmcUnits.push(id);};
   function flush(){
-    if(!gmcQueue.length||!gmcOnce('flush',1500))return;
-    var items=gmcQueue.map(function(id){return {id:id,quantity:1,properties:{_gmc_gift:'true'}};});gmcQueue=[];
+    if(!(gmcQueue.length||gmcUnits.length)||!gmcOnce('flush',1500))return;
+    var items=gmcQueue.map(function(id){return {id:id,quantity:1,properties:{_gmc_gift:'true'}};}).concat(gmcUnits.map(function(id){return {id:id,quantity:1};}));gmcQueue=[];gmcUnits=[];
     fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})}).then(function(r){return r.ok?r.json():null;}).then(function(){
       return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(sec){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents)cd.renderContents({sections:sec});});}).catch(function(){});
   }
   document.addEventListener('submit',function(e){
     var f=e.target;if(!f.matches||!f.matches('form[action*="/cart/add"]'))return;
-    gmcQueue=[];qa('[data-gmc-addon]').forEach(function(el){var on=el.type==='checkbox'?el.checked:true;if(on)gmcQueueAddon(el.dataset.gmcAddon);});
+    gmcQueue=[];gmcUnits=[];qa('[data-gmc-addon]').forEach(function(el){var on=el.type==='checkbox'?el.checked:true;if(on)gmcQueueAddon(el.dataset.gmcAddon);});
     /* the quantity-break gift listener runs after this one in the same event, so flush on the next tick when no cart UI will announce success */
     setTimeout(function(){if(!document.querySelector('cart-drawer, cart-notification'))flush();},0);
   },true);

@@ -1,0 +1,17 @@
+{%- comment -%} GMC Theme: replaces [quantity], [price], [compare_price], [price_each], [compare_price_each], [amount_saved], [amount_saved_rounded] in a text. Params: text, qty, total, cmp (all prices in cents). {%- endcomment -%}
+{%- liquid
+  assign gq_each = total | times: 1.0 | divided_by: qty | round
+  assign gq_cmp_each = cmp | times: 1.0 | divided_by: qty | round
+  assign gq_saved = cmp | minus: total
+  if gq_saved < 0
+    assign gq_saved = 0
+  endif
+  assign gq_saved_r = gq_saved | divided_by: 100.0 | round | times: 100
+  assign m_total = total | money
+  assign m_cmp = cmp | money
+  assign m_each = gq_each | money
+  assign m_cmp_each = gq_cmp_each | money
+  assign m_saved = gq_saved | money
+  assign m_saved_r = gq_saved_r | money_without_trailing_zeros
+  echo text | escape | replace: '[quantity]', qty | replace: '[price]', m_total | replace: '[compare_price]', m_cmp | replace: '[price_each]', m_each | replace: '[compare_price_each]', m_cmp_each | replace: '[amount_saved]', m_saved | replace: '[amount_saved_rounded]', m_saved_r
+-%}
