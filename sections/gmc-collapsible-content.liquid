@@ -1,0 +1,321 @@
+{%- render 'gmc-section-extras' -%}
+{%- assign s = section.settings -%}
+{%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add row blocks.' -%}{%- endif -%}
+<div class="gmc-cl page-width" id="gmc-cl-{{ section.id }}" style="--rad:{{ s.radius }}px;--gap:{{ s.gap }}px;padding-top:{{ s.pad_top }}px;padding-bottom:{{ s.pad_bottom }}px">
+  {%- if s.heading != blank -%}<h2 class="gmc-cl__h">{{ s.heading | escape }}</h2>{%- endif -%}
+  <div class="gmc-cl__wrap{% if s.image != blank %} gmc-cl__wrap--split gmc-cl__wrap--{{ s.image_side }}{% endif %}">
+    {%- if s.image != blank -%}<div class="gmc-cl__img">{{ s.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: 'object-position:' | append: s.image.presentation.focal_point, alt: s.image.alt }}</div>{%- endif -%}
+    <div class="gmc-cl__list gmc-cl__style--{{ s.style }}" data-single="{{ s.single_open }}">
+      {%- if s.show_toggle_all and section.blocks.size > 1 and s.single_open == false -%}<button type="button" class="gmc-cl__all" data-all>Expand all</button>{%- endif -%}
+      {%- for block in section.blocks -%}
+        <details class="gmc-cl__row" {% if forloop.first and s.open_first %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary class="gmc-cl__sum">
+            {%- if block.settings.icon_name != blank -%}<span class="gmc-cl__ic">{%- render 'gmc-icon', name: block.settings.icon_name, size: 22 -%}</span>{%- endif -%}
+            <span class="gmc-cl__q">{{ block.settings.title | escape }}</span>
+            <span class="gmc-cl__sign gmc-cl__sign--{{ s.indicator }}" aria-hidden="true"></span>
+          </summary>
+          <div class="gmc-cl__a rte">
+            {{ block.settings.content }}
+            {%- if block.settings.page != blank -%}{{ block.settings.page.content }}{%- endif -%}
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+{%- if s.faq_schema and section.blocks.size > 0 -%}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{%- for block in section.blocks -%}{%- capture ans -%}{{ block.settings.content }}{% if block.settings.page != blank %}{{ block.settings.page.content }}{% endif %}{%- endcapture -%}{"@type":"Question","name":{{ block.settings.title | json }},"acceptedAnswer":{"@type":"Answer","text":{{ ans | strip_html | json }}}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]}</script>
+{%- endif -%}
+<style>
+  #gmc-cl-{{ section.id }} .gmc-cl__h{text-align:center;margin:0 0 2.4rem}
+  #gmc-cl-{{ section.id }} .gmc-cl__wrap--split{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}#gmc-cl-{{ section.id }} .gmc-cl__wrap--right .gmc-cl__img{order:2}
+  #gmc-cl-{{ section.id }} .gmc-cl__img img{width:100%;height:auto;border-radius:var(--rad);display:block}
+  #gmc-cl-{{ section.id }} .gmc-cl__list{display:grid;gap:var(--gap);max-width:820px;margin:0 auto;width:100%}#gmc-cl-{{ section.id }} .gmc-cl__wrap--split .gmc-cl__list{margin:0}
+  #gmc-cl-{{ section.id }} .gmc-cl__sum{display:flex;align-items:center;gap:1rem;cursor:pointer;padding:1.4rem 0;list-style:none;font-weight:600}#gmc-cl-{{ section.id }} .gmc-cl__sum::-webkit-details-marker{display:none}
+  #gmc-cl-{{ section.id }} .gmc-cl__q{flex:1}
+  #gmc-cl-{{ section.id }} .gmc-cl__sign{position:relative;width:1.6rem;height:1.6rem;flex:none}
+  #gmc-cl-{{ section.id }} .gmc-cl__sign--plus::before,#gmc-cl-{{ section.id }} .gmc-cl__sign--plus::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:currentColor;transition:transform .25s}#gmc-cl-{{ section.id }} .gmc-cl__sign--plus::after{transform:rotate(90deg)}
+  #gmc-cl-{{ section.id }} details[open] .gmc-cl__sign--plus::after{transform:rotate(0)}
+  #gmc-cl-{{ section.id }} .gmc-cl__sign--chevron::before{content:"";position:absolute;inset:0;width:.9rem;height:.9rem;margin:auto;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-25%);transition:transform .25s}
+  #gmc-cl-{{ section.id }} details[open] .gmc-cl__sign--chevron::before{transform:rotate(-135deg)}
+  #gmc-cl-{{ section.id }} .gmc-cl__a{padding:0 0 1.6rem}#gmc-cl-{{ section.id }} .gmc-cl__a>:first-child{margin-top:0}
+  #gmc-cl-{{ section.id }} .gmc-cl__style--lines .gmc-cl__row{border-bottom:1px solid rgba(var(--color-foreground),.18)}#gmc-cl-{{ section.id }} .gmc-cl__style--lines{gap:0}
+  #gmc-cl-{{ section.id }} .gmc-cl__style--cards .gmc-cl__row,#gmc-cl-{{ section.id }} .gmc-cl__style--filled .gmc-cl__row{border-radius:var(--rad);padding:0 1.6rem}
+  #gmc-cl-{{ section.id }} .gmc-cl__style--cards .gmc-cl__row{border:1px solid rgba(var(--color-foreground),.2)}#gmc-cl-{{ section.id }} .gmc-cl__style--filled .gmc-cl__row{background:rgba(var(--color-foreground),.06)}
+  #gmc-cl-{{ section.id }} .gmc-cl__all{justify-self:end;background:none;border:0;text-decoration:underline;cursor:pointer;color:inherit;font:inherit}
+  #gmc-cl-{{ section.id }} summary:focus-visible,#gmc-cl-{{ section.id }} .gmc-cl__all:focus-visible{outline:2px solid rgb(var(--color-foreground));outline-offset:3px}
+  @media(max-width:749px){#gmc-cl-{{ section.id }} .gmc-cl__wrap--split{grid-template-columns:1fr}#gmc-cl-{{ section.id }} .gmc-cl__wrap--right .gmc-cl__img{order:0}}
+  @media(prefers-reduced-motion:reduce){#gmc-cl-{{ section.id }} *{transition:none!important}}
+</style>
+<script>(function(){var r=document.getElementById('gmc-cl-{{ section.id }}');if(!r)return;var l=r.querySelector('.gmc-cl__list'),rows=l.querySelectorAll('details');
+if(l.dataset.single==='true'){rows.forEach(function(d){d.addEventListener('toggle',function(){if(d.open)rows.forEach(function(o){if(o!==d)o.open=false;});});});}
+var b=r.querySelector('[data-all]');if(b)b.addEventListener('click',function(){var open=b.dataset.state!=='open';rows.forEach(function(d){d.open=open;});b.dataset.state=open?'open':'';b.textContent=open?'Collapse all':'Expand all';});})();</script>
+{% schema %}
+{
+ "name": "Collapsible (Advanced)",
+ "tag": "section",
+ "class": "section",
+ "settings": [
+  {
+   "type": "text",
+   "id": "heading",
+   "label": "Heading",
+   "default": "Frequently asked questions"
+  },
+  {
+   "type": "select",
+   "id": "style",
+   "label": "Style",
+   "options": [
+    {
+     "value": "lines",
+     "label": "Lines"
+    },
+    {
+     "value": "cards",
+     "label": "Bordered cards"
+    },
+    {
+     "value": "filled",
+     "label": "Filled cards"
+    }
+   ],
+   "default": "lines"
+  },
+  {
+   "type": "select",
+   "id": "indicator",
+   "label": "Indicator",
+   "options": [
+    {
+     "value": "plus",
+     "label": "Plus / minus"
+    },
+    {
+     "value": "chevron",
+     "label": "Chevron"
+    }
+   ],
+   "default": "plus"
+  },
+  {
+   "type": "checkbox",
+   "id": "open_first",
+   "label": "Open the first row",
+   "default": false
+  },
+  {
+   "type": "checkbox",
+   "id": "single_open",
+   "label": "Only one row open at a time",
+   "default": false
+  },
+  {
+   "type": "checkbox",
+   "id": "show_toggle_all",
+   "label": "Show \"Expand all\" button (when multiple rows may be open)",
+   "default": false
+  },
+  {
+   "type": "checkbox",
+   "id": "faq_schema",
+   "label": "Add FAQ structured data for search engines",
+   "info": "Only enable when these rows are genuine questions and answers visible on the page.",
+   "default": false
+  },
+  {
+   "type": "image_picker",
+   "id": "image",
+   "label": "Side image (optional)"
+  },
+  {
+   "type": "select",
+   "id": "image_side",
+   "label": "Image side",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left"
+    },
+    {
+     "value": "right",
+     "label": "Right"
+    }
+   ],
+   "default": "left"
+  },
+  {
+   "type": "range",
+   "id": "gap",
+   "min": 0,
+   "max": 40,
+   "step": 2,
+   "unit": "px",
+   "label": "Space between rows",
+   "default": 12
+  },
+  {
+   "type": "range",
+   "id": "radius",
+   "min": 0,
+   "max": 30,
+   "unit": "px",
+   "label": "Corner radius",
+   "default": 12
+  },
+  {
+   "type": "range",
+   "id": "pad_top",
+   "min": 0,
+   "max": 120,
+   "step": 4,
+   "unit": "px",
+   "label": "Top padding",
+   "default": 36
+  },
+  {
+   "type": "range",
+   "id": "pad_bottom",
+   "min": 0,
+   "max": 120,
+   "step": 4,
+   "unit": "px",
+   "label": "Bottom padding",
+   "default": 36
+  },
+  {
+   "type": "header",
+   "content": "Layout (GMC)"
+  },
+  {
+   "type": "select",
+   "id": "gmc_hide_on",
+   "label": "Hide section on",
+   "options": [
+    {
+     "value": "",
+     "label": "Show everywhere"
+    },
+    {
+     "value": "mobile",
+     "label": "Mobile"
+    },
+    {
+     "value": "desktop",
+     "label": "Desktop"
+    }
+   ],
+   "default": ""
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_top",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space above",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_pad_bottom",
+   "min": 0,
+   "max": 160,
+   "step": 4,
+   "unit": "px",
+   "label": "Extra space below",
+   "default": 0
+  },
+  {
+   "type": "range",
+   "id": "gmc_max_width",
+   "min": 0,
+   "max": 1600,
+   "step": 50,
+   "unit": "px",
+   "label": "Max content width (0 = theme default)",
+   "default": 0
+  },
+  {
+   "type": "color",
+   "id": "gmc_bg_color",
+   "label": "Section background color"
+  },
+  {
+   "type": "image_picker",
+   "id": "gmc_bg_image",
+   "label": "Background image"
+  },
+  {
+   "type": "video",
+   "id": "gmc_bg_video",
+   "label": "Background video (MP4 upload)"
+  },
+  {
+   "type": "range",
+   "id": "gmc_bg_overlay",
+   "min": 0,
+   "max": 80,
+   "step": 5,
+   "unit": "%",
+   "label": "Background overlay",
+   "default": 0
+  }
+ ],
+ "blocks": [
+  {
+   "type": "row",
+   "name": "Row",
+   "settings": [
+    {
+     "type": "text",
+     "id": "icon_name",
+     "label": "Icon name (optional)",
+     "info": "See assets/gmc-icon-list.txt"
+    },
+    {
+     "type": "text",
+     "id": "title",
+     "label": "Title",
+     "default": "Question or title"
+    },
+    {
+     "type": "richtext",
+     "id": "content",
+     "label": "Content",
+     "default": "<p>Answer or details.</p>"
+    },
+    {
+     "type": "page",
+     "id": "page",
+     "label": "Or show a page's content below"
+    }
+   ]
+  }
+ ],
+ "max_blocks": 25,
+ "presets": [
+  {
+   "name": "Collapsible (Advanced)",
+   "blocks": [
+    {
+     "type": "row"
+    },
+    {
+     "type": "row",
+     "settings": {
+      "title": "Second question"
+     }
+    },
+    {
+     "type": "row",
+     "settings": {
+      "title": "Third question"
+     }
+    }
+   ]
+  }
+ ]
+}
+{% endschema %}
