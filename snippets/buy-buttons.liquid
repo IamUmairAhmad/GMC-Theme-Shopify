@@ -10,7 +10,7 @@
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
-<div {{ block.shopify_attributes }}>
+<div {{ block.shopify_attributes }} class="gmc-buy{% if block.settings.uppercase %} gmc-buy--upper{% endif %}"{% if block.settings.button_color != blank %} style="--gmc-buy-bg:{{ block.settings.button_color }};--gmc-buy-fg:{{ block.settings.button_text_color | default: '#ffffff' }}"{% endif %}>
   {%- if product != blank -%}
     {%- liquid
       assign gift_card_recipient_feature_active = false
@@ -28,6 +28,8 @@
       class="product-form"
       data-hide-errors="{{ gift_card_recipient_feature_active }}"
       data-section-id="{{ section.id }}"
+      {% if block.settings.skip_cart %}data-gmc-skip="true"{% endif %}
+      {% if block.settings.price_in_button %}data-gmc-price="true"{% endif %}
     >
       <div class="product-form__error-message-wrapper" role="alert" hidden>
         <span class="svg-wrapper">

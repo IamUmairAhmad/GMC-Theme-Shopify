@@ -130,7 +130,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   function flush(){
     if(!(gmcQueue.length||gmcUnits.length)||!gmcOnce('flush',1500))return;
     var items=gmcQueue.map(function(id){return {id:id,quantity:1,properties:{_gmc_gift:'true'}};}).concat(gmcUnits.map(function(id){return {id:id,quantity:1};}));gmcQueue=[];gmcUnits=[];
-    fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})}).then(function(r){return r.ok?r.json():null;}).then(function(){
+    window.gmcPending=fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})}).then(function(r){return r.ok?r.json():null;}).then(function(){
       return fetch('/?sections=cart-drawer,cart-icon-bubble').then(function(r){return r.json();}).then(function(sec){var cd=document.querySelector('cart-drawer');if(cd&&cd.renderContents)cd.renderContents({sections:sec});});}).catch(function(){});
   }
   document.addEventListener('submit',function(e){
@@ -170,10 +170,10 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
 (function(){
   if(!window.GMC)return;
   function run(){
-    if(GMC.priceInBtn){qa('product-form button[type=submit][name=add]').forEach(function(b){
+    qa('product-form button[type=submit][name=add]').forEach(function(b){if(!(GMC.priceInBtn||(b.closest('product-form')&&b.closest('product-form').dataset.gmcPrice)))return;
       var info=b.closest('.product__info-container')||document;var pr=info.querySelector('.price-item--last, .price-item--sale, .price-item--regular');
       var span=b.querySelector('span');if(!span||!pr||b.disabled)return;
-      var base=b.dataset.gmcBase||span.textContent.split('—')[0].trim();b.dataset.gmcBase=base;var txt=base+' — '+pr.textContent.trim();if(span.textContent!==txt)span.textContent=txt;});}
+      var base=b.dataset.gmcBase||span.textContent.split('—')[0].trim();b.dataset.gmcBase=base;var txt=base+' — '+pr.textContent.trim();if(span.textContent!==txt)span.textContent=txt;});
     if(GMC.qtyInline){qa('product-form').forEach(function(pf){
       var info=pf.closest('.product__info-container')||document;var q=info.querySelector('.product-form__quantity');var btns=pf.querySelector('.product-form__buttons');
       if(q&&btns&&q.parentNode!==btns){btns.style.display='flex';btns.style.flexWrap='wrap';btns.style.gap='1rem';btns.style.alignItems='stretch';btns.insertBefore(q,btns.firstChild);q.style.margin='0';}});}
@@ -298,3 +298,22 @@ window.gmcMoney=function(c){var f=String((window.GMC&&GMC.moneyFormat)||'{{amoun
   },true);
   document.addEventListener('change',function(e){var w=e.target.closest&&e.target.closest('[data-gmc-cf]');if(w&&w.hasAttribute('data-invalid'))check(w);});
 })();
+
+/* per-option variant picker types: forced colour swatches and variant images */
+(function(){
+  function parse(txt){var m={};String(txt||'').split(/\n|,/).forEach(function(l){var i=l.indexOf(':');if(i>0)m[l.slice(0,i).trim().toLowerCase()]=l.slice(i+1).trim();});return m;}
+  function init(root){(root||document).querySelectorAll('fieldset[data-gmc-force]').forEach(function(fs){
+    var mode=fs.dataset.gmcForce,colors=parse(fs.dataset.gmcColors),imgs={};try{imgs=JSON.parse(fs.dataset.gmcImages||'{}');}catch(e){}
+    fs.querySelectorAll('input[type=radio]').forEach(function(inp){var l=inp.nextElementSibling;if(!l||l.tagName!=='LABEL')return;var v=inp.value;
+      if(mode==='swatch'){var c=colors[v.toLowerCase()]||v.toLowerCase().replace(/\s+/g,'');if(window.CSS&&CSS.supports('color',c)){l.classList.add('gmc-swatch');l.style.setProperty('--gmc-sw',c);l.title=v;}}
+      else if(mode==='image'&&imgs[v]){l.classList.add('gmc-imgsw');l.style.setProperty('--gmc-img','url("'+imgs[v]+'")');l.title=v;}
+    });});}
+  init();document.addEventListener('shopify:section:load',function(e){init(e.target);});
+  new MutationObserver(function(){init();}).observe(document.body,{childList:true,subtree:true});
+})();
+
+/* buy button option: skip the cart and go straight to checkout once the add (and any queued add-ons) finished */
+gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,function(ev){
+  if(!ev||ev.source!=='product-form'||!document.querySelector('product-form[data-gmc-skip]'))return;
+  setTimeout(function(){Promise.resolve(window.gmcPending).catch(function(){}).then(function(){window.location.href=(window.routes&&routes.root_url?routes.root_url.replace(/\/$/,''):'')+'/checkout';});},60);
+});});

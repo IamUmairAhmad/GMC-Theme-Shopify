@@ -19,6 +19,8 @@
     {% # theme-check-disable %}
     data-selected-price-amount="{{ product.selected_or_first_available_variant.price | default: 0 | money_amount | escape }}"
     {% # theme-check-enable %}
+    class="{% if block.settings.full_width_dropdown %}gmc-vs--fullw{% endif %}"
+    style="--gmc-sw-size:{{ block.settings.swatch_size | default: 36 }}px;--gmc-sw-r:{% case block.settings.swatch_radius %}{% when 'square' %}0{% when 'rounded' %}8px{% else %}50%{% endcase %}"
     {{ block.shopify_attributes }}
   >
     {%- for option in product.options_with_values -%}
@@ -38,11 +40,33 @@
             assign picker_type = 'swatch'
           endif
         endif
+
+        assign gmc_ts = 'type_' | append: forloop.index
+        assign gmc_ls = 'label_' | append: forloop.index
+        assign gmc_type = block.settings[gmc_ts] | default: 'auto'
+        assign gmc_label = block.settings[gmc_ls] | default: option.name
+        assign gmc_force = ''
+        assign opt_idx = forloop.index0
+        assign gmc_imgmap = ''
+        if gmc_type == 'pills'
+          assign picker_type = 'button'
+        elsif gmc_type == 'dropdown'
+          assign picker_type = 'dropdown'
+        elsif gmc_type == 'swatch'
+          assign picker_type = 'button'
+          assign gmc_force = 'swatch'
+        elsif gmc_type == 'image'
+          assign picker_type = 'button'
+          assign gmc_force = 'image'
+        endif
       -%}
+      {%- if gmc_force == 'image' -%}
+        {%- capture gmc_imgmap -%}{ {%- for value in option.values -%}{%- assign vstr = value | append: '' -%}{%- assign gm_img = '' -%}{%- for variant in product.variants -%}{%- assign vo = variant.options[opt_idx] -%}{%- if vo == vstr and variant.featured_image and gm_img == '' -%}{%- assign gm_img = variant.featured_image | image_url: width: 120 -%}{%- endif -%}{%- endfor -%}{{ vstr | json }}:{{ gm_img | json }}{% unless forloop.last %},{% endunless %}{%- endfor -%} }{%- endcapture -%}
+      {%- endif -%}
       {%- if picker_type == 'swatch' -%}
         <fieldset class="js product-form__input product-form__input--swatch">
           <legend class="form__label">
-            {{ option.name }}:
+            {{ gmc_label | escape }}:
             <span data-selected-value>
               {{- option.selected_value -}}
             </span>
@@ -55,8 +79,8 @@
           %}
         </fieldset>
       {%- elsif picker_type == 'button' -%}
-        <fieldset class="js product-form__input product-form__input--pill">
-          <legend class="form__label">{{ option.name }}</legend>
+        <fieldset class="js product-form__input product-form__input--pill"{% if gmc_force != blank %} data-gmc-force="{{ gmc_force }}" data-gmc-colors="{{ block.settings.swatch_colors | escape }}"{% endif %}{% if gmc_force == 'image' %} data-gmc-images="{{ gmc_imgmap | escape }}"{% endif %}>
+          <legend class="form__label">{{ gmc_label | escape }}{% if gmc_force != blank %} <span data-selected-value>{{ option.selected_value }}</span>{% endif %}</legend>
           {% render 'product-variant-options',
             product: product,
             option: option,
@@ -67,7 +91,7 @@
       {%- else -%}
         <div class="product-form__input product-form__input--dropdown">
           <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
-            {{ option.name }}
+            {{ gmc_label | escape }}
           </label>
           <div class="select">
             {%- if picker_type == 'swatch_dropdown' -%}

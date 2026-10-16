@@ -21,7 +21,7 @@
 .gmc-var-swatch .product-form__input--pill input[type=radio]+label,.gmc-var-boxed .product-form__input--pill input[type=radio]+label{border-radius:var(--badge-corner-radius,99px);padding:.8rem 1.6rem;transition:transform .15s,box-shadow .15s}
 .gmc-var-swatch .product-form__input--pill input[type=radio]+label:hover{transform:translateY(-2px)}
 .gmc-var-boxed .product-form__input--pill input[type=radio]+label{border-radius:var(--text-boxes-radius);min-width:7rem;text-align:center}
-label.gmc-swatch{width:3.6rem;height:3.6rem;padding:0!important;border-radius:50%!important;font-size:0!important;background:var(--gmc-sw);border:1px solid rgba(0,0,0,.2)!important;position:relative}
+label.gmc-swatch,label.gmc-imgsw{width:var(--gmc-sw-size,36px);height:var(--gmc-sw-size,36px);padding:0!important;border-radius:var(--gmc-sw-r,50%)!important;font-size:0!important;background:var(--gmc-sw);border:1px solid rgba(0,0,0,.2)!important;position:relative}
 .product-form__input--pill input[type=radio]:checked+label.gmc-swatch{box-shadow:0 0 0 2px rgb(var(--color-background)),0 0 0 4px rgb(var(--color-foreground))!important;background:var(--gmc-sw)!important;color:transparent}
 .gmc-var-swatch .select__select,.gmc-var-boxed .select__select{border-radius:var(--text-boxes-radius)}
 /* ---- header / mega / footer ---- */
@@ -93,3 +93,9 @@ body.gmc-sticky-on .gmc-scta{display:none}
 /* sync probe */
 .gmc-cart-express{margin-top:1rem}
 .gmc-cart-express [data-shopify-buttoncontainer]{justify-content:center}
+
+label.gmc-imgsw{font-size:0!important;background:var(--gmc-img) center/cover no-repeat;border:1px solid rgba(0,0,0,.2)!important;position:relative;min-width:0}
+.product-form__input--pill input[type=radio]:checked+label.gmc-imgsw{box-shadow:0 0 0 2px rgb(var(--color-background)),0 0 0 4px rgb(var(--color-foreground))!important;background:var(--gmc-img) center/cover no-repeat!important;color:transparent}
+.gmc-vs--fullw .select,.gmc-vs--fullw .select__select{width:100%;max-width:none}
+.gmc-buy--upper .product-form__submit,.gmc-buy--upper .shopify-payment-button__button{text-transform:uppercase;letter-spacing:.06em}
+.gmc-buy[style*="--gmc-buy-bg"] .product-form__submit{background-color:var(--gmc-buy-bg);color:var(--gmc-buy-fg)}
