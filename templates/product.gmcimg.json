@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "b": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/gmc-sample-product-image.png",
+        "gmc_image_mobile": "shopify://shop_images/gmc-sample-product-image.png"
+      }
+    },
+    "s": {
+      "type": "slideshow",
+      "blocks": {
+        "a": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/gmc-sample-product-image.png",
+            "image_mobile": "shopify://shop_images/gmc-sample-product-image.png"
+          }
+        }
+      },
+      "block_order": [
+        "a"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "b",
+    "s"
+  ]
+}

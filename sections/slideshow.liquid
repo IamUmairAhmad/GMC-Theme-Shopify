@@ -137,6 +137,8 @@
                 assign fetch_priority = 'high'
               endif
             -%}
+            {%- assign gmc_m = block.settings.image_mobile -%}
+            {%- if gmc_m != blank -%}<picture><source media="(max-width: 749px)" srcset="{{ gmc_m | image_url: width: 500 }} 500w, {{ gmc_m | image_url: width: 750 }} 750w, {{ gmc_m | image_url: width: 1100 }} 1100w" sizes="100vw">{%- endif -%}
             {%- if forloop.first %}
               {{
                 block.settings.image
@@ -150,6 +152,7 @@
                 | image_tag: loading: 'lazy', height: height, sizes: sizes, widths: widths
               }}
             {%- endif -%}
+            {%- if gmc_m != blank -%}</picture>{%- endif -%}
           {%- else -%}
             {%- assign placeholder_slide = forloop.index | modulo: 2 -%}
             {%- if placeholder_slide == 1 -%}
@@ -547,7 +550,13 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "t:sections.slideshow.blocks.slide.settings.image.label"
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image",
+          "info": "Shown on phones instead of the desktop image. Leave empty to use the desktop image."
         },
         {
           "type": "range",
