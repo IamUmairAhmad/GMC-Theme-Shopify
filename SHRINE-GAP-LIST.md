@@ -124,10 +124,10 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 
 | ID | Item | Note |
 |---|---|---|
-| EX-01 | Currency converter snippet **[EXT]** | Hard-wired to a third-party app. Use Shopify Markets instead. |
-| EX-02 | Print-on-demand snippet **[EXT]** | Hard-wired to one dropshipping app. Skip. |
-| EX-03 | Review display **[EXT]** | Needs a review app. Already supported through our `@app` block and `reviews.rating` metafields. |
-| EX-04 | Remote script in Shrine's `theme.liquid` | Loads a script from an outside domain and has an "Authentication token" setting. **Do not replicate**; it is a licence-check and supply-chain risk. |
+| EX-01 ➖ | Currency converter snippet **[EXT]** | Hard-wired to a third-party app. Use Shopify Markets instead. |
+| EX-02 ➖ | Print-on-demand snippet **[EXT]** | Hard-wired to one dropshipping app. Skip. |
+| EX-03 ➖ | Review display **[EXT]** | Needs a review app. Already supported through our `@app` block and `reviews.rating` metafields. |
+| EX-04 ➖ | Remote script in Shrine's `theme.liquid` | Loads a script from an outside domain and has an "Authentication token" setting. **Do not replicate**; it is a licence-check and supply-chain risk. |
 
 ---
 ## Suggested build order
@@ -236,7 +236,7 @@ Because neither theme has them, these are optional **"beat Shrine"** ideas for l
 |---|---|---|
 | BX-01 ✅ | Wishlist (saved in the browser, no app) | P3 |
 | BX-02 ✅ | Recently viewed products strip | P3 |
-| BX-03 | Back-in-stock email request | needs an email app or Shopify Flow **[EXT]** |
+| BX-03 ➖ | Back-in-stock email request | needs an email app or Shopify Flow **[EXT]** |
 | BX-04 ✅ | Product compare | P3 |
 | BX-05 ✅ | Gift-wrap / gift-message option in the cart | P3 |
 
@@ -309,3 +309,5 @@ Identical to ours (title, description, canonical, theme colour, preconnect, font
 |---|---|---|
 | SE-01 ✅ | `noscript` fallback so the page stays readable without JavaScript (hidden-until-animated content shows). | P3 |
 | BX-06 ✅ | (Organization + WebSite/site-search data are emitted from header.liquid) Beyond Shrine: neither theme adds **Organization** and **site-search** structured data on the home page; we could. Helps Google brand and sitelink results. | P3 |
+
+_Legend: ✅ built and checked on the live store. ➖ external-app item, marked only and not built on purpose (EX-01..04, BX-03). TH-10 needs no action._

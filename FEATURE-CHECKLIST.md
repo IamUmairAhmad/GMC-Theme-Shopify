@@ -113,3 +113,19 @@ Found and fixed from this test: invented sample content (Trustpilot "4.8 / 1,200
 - Home, collection-list and product default templates updated; six demo products with a sample image (kept out of the theme package).
 - Verified by script only: all schemas parse, no duplicate setting ids, every template section and rendered snippet exists. Live checks listed in section H still apply to these additions.
 - Gap list against Shrine Pro: see `SHRINE-GAP-LIST.md` (the work plan for what is still missing).
+
+## Gap-list pass (SHRINE-GAP-LIST.md)
+Every item in the gap list is built and checked on the live store, except the external-app items (EX-01..04, BX-03), which are marked and intentionally not built. Highlights added in this pass:
+
+| Area | Status | Where |
+|---|---|---|
+| Customer account pages (login, register, account, order, addresses, reset, activate) | Done | `sections/main-*.liquid`, `templates/customers/`. Stores on new customer accounts do not use these. |
+| Section ID, pair two sections side by side, background gradient, card tint | Done | "Section ID and pairing" and Layout (GMC) groups on every GMC section |
+| Shaped dividers (14 shapes), flip, colours | Done | Section divider |
+| Hero: parallax (10 layers, height modes), slideshow (pagination style/position, arrow position, per-slide add to cart) | Done | 3D parallax hero, Hero slideshow |
+| Stories (grouped, verified, close-friends, auto-advance), results (bars, media, add to cart), comparison table + slider styling, content tabs (icons, media, add to cart) | Done | Matching sections |
+| Wishlist, recently viewed, compare (browser storage, no app) | Done | Theme settings > GMC: Wishlist & compare, three sections |
+| Cart: gift wrap, cart-page discount field, upsell control styles, drawer size presets | Done | Cart drawer blocks, Cart footer block, GMC: Cart drawer |
+| Typography, hover effects, scrollbar, cursor, email button style, badge selector, same-height cards | Done | Theme settings > GMC: Typography & effects |
+| Popup preview modes, shop-name token, noscript fallback, documentation pages | Done | Popup settings, comparison table, `theme.liquid`, `docs/` |
+| Default product page recipe and home page recipe | Done | `templates/product.json`, `templates/page.gmc-home.json` |
