@@ -23,21 +23,21 @@
         "link_list_VVnaLi": {
           "type": "link_list",
           "settings": {
-            "heading": "Quick links",
+            "heading": "Shop",
             "menu": "footer"
           }
         },
         "link_list_dck3bK": {
           "type": "link_list",
           "settings": {
-            "heading": "Quick links",
+            "heading": "Information",
             "menu": "footer"
           }
         },
         "link_list_Q9dtGJ": {
           "type": "link_list",
           "settings": {
-            "heading": "Quick links",
+            "heading": "Customer Service",
             "menu": "footer"
           }
         }
