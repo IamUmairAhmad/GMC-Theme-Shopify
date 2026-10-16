@@ -200,26 +200,23 @@
     "pm_test": {
       "type": "gmc-product-more",
       "blocks": {
-        "u": {
-          "type": "upsells",
+        "b": {
+          "type": "bundle",
           "settings": {
+            "bundle_type": "main",
             "products": [
-              "gmc-demo-hoodie",
-              "gmc-test-free-gift"
+              "gmc-demo-hoodie"
             ],
-            "toggle_style": "switch",
-            "discount_type": "percent",
-            "discount_percent": 20,
-            "show_description": true,
-            "layout": "column",
-            "bg": "#f4f4f4",
+            "discount_percent": 15,
             "pad": 12,
-            "radius": 10
+            "radius": 10,
+            "border": 1,
+            "discount_code": ""
           }
         }
       },
       "block_order": [
-        "u"
+        "b"
       ],
       "settings": {}
     }

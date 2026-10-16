@@ -54,6 +54,45 @@
         {%- endfor -%}
         </div>
       </div>
+      {%- endif -%}{%- when 'bundle' -%}
+      {%- assign bps = block.settings.products -%}
+      {%- liquid
+        assign bs = block.settings
+        assign b_main = false
+        if bs.bundle_type == 'main'
+          assign b_main = true
+        endif
+      -%}
+      {%- if bps != blank or b_main -%}
+      <div class="gmc-bnd" data-block="{{ block.id }}" data-dtype="{{ bs.discount_type }}" data-dpct="{{ bs.discount_percent }}" data-dfix="{{ bs.discount_fixed | times: 100 | round }}" data-code="{{ bs.discount_code | escape }}" data-skip="{{ bs.skip_cart }}" data-save="{{ bs.save_text | default: 'You save [saved]' | escape }}" data-total="{{ bs.total_text | default: 'Bundle total' | escape }}" style="{% if bs.bg != blank %}background:{{ bs.bg }};{% endif %}border-radius:{{ bs.radius }}px;{% if bs.pad > 0 %}padding:{{ bs.pad }}px;{% endif %}{% if bs.border > 0 %}border:{{ bs.border }}px solid rgba(var(--color-foreground),.2);{% endif %}">
+        {%- if bs.heading != blank -%}<p class="gmc-ups__h">{{ bs.heading | escape }}</p>{%- endif -%}
+        <div class="gmc-bnd__list">
+          {%- if b_main -%}
+            {%- assign bmv = product.selected_or_first_available_variant -%}
+            <div class="gmc-bnd__item" data-main="true">
+              {%- if product.featured_image != blank -%}<span class="gmc-ups__img">{{ product.featured_image | image_url: width: 140 | image_tag: width: 56, height: 56, loading: 'lazy', alt: product.title }}</span>{%- endif -%}
+              <span class="gmc-ups__txt"><strong>{{ product.title | escape }}</strong>{%- if bs.show_description and product.description != blank -%}<small>{{ product.description | strip_html | truncate: 90 }}</small>{%- endif -%}
+                {%- if product.variants.size > 1 -%}<select class="gmc-bnd__var" aria-label="{{ product.title | escape }}">{%- for bv in product.variants -%}<option value="{{ bv.id }}" data-price="{{ bv.price }}" {% if bv.id == bmv.id %}selected{% endif %} {% unless bv.available %}disabled{% endunless %}>{{ bv.title | escape }}</option>{%- endfor -%}</select>{%- else -%}<input type="hidden" class="gmc-bnd__var" value="{{ bmv.id }}" data-price="{{ bmv.price }}">{%- endif -%}
+              </span>
+              <span class="gmc-ups__price" data-bnd-price></span>
+            </div>
+          {%- endif -%}
+          {%- for bp in bps limit: 3 -%}
+            {%- assign bpv = bp.selected_or_first_available_variant -%}
+            <div class="gmc-bnd__item">
+              {%- if bp.featured_image != blank -%}<span class="gmc-ups__img">{{ bp.featured_image | image_url: width: 140 | image_tag: width: 56, height: 56, loading: 'lazy', alt: bp.title }}</span>{%- endif -%}
+              <span class="gmc-ups__txt"><strong>{{ bp.title | escape }}</strong>{%- if bs.show_description and bp.description != blank -%}<small>{{ bp.description | strip_html | truncate: 90 }}</small>{%- endif -%}
+                {%- if bp.variants.size > 1 -%}<select class="gmc-bnd__var" aria-label="{{ bp.title | escape }}">{%- for bv in bp.variants -%}<option value="{{ bv.id }}" data-price="{{ bv.price }}" {% if bv.id == bpv.id %}selected{% endif %} {% unless bv.available %}disabled{% endunless %}>{{ bv.title | escape }}</option>{%- endfor -%}</select>{%- else -%}<input type="hidden" class="gmc-bnd__var" value="{{ bpv.id }}" data-price="{{ bpv.price }}">{%- endif -%}
+              </span>
+              <span class="gmc-ups__price" data-bnd-price></span>
+            </div>
+          {%- endfor -%}
+        </div>
+        <p class="gmc-bnd__sum"><span>{{ bs.total_text | default: 'Bundle total' | escape }}</span> <b data-bnd-total></b></p>
+        <p class="gmc-bnd__save" data-bnd-save hidden></p>
+        <button type="button" class="button button--full-width gmc-bnd__btn">{{ bs.button | default: 'Add bundle to cart' | escape }}</button>
+        <p class="gmc-bnd__err" role="alert" hidden></p>
+      </div>
       {%- endif -%}{%- when 'clickable_discount' -%}
       <button type="button" class="gmc-pe__code" data-gmc-code="{{ block.settings.code | escape }}"><span>🏷️ {{ block.settings.text | escape }}</span><b>{{ block.settings.code | escape }}</b><small>{{ block.settings.cta | default: 'Click to apply' | escape }}</small></button>{%- when 'popup_page' -%}
       {%- if block.settings.page != blank -%}<button type="button" class="gmc-pe__link" data-gmc-open="gmc-pop-{{ block.id }}">{{ block.settings.label | escape }}</button>
@@ -89,6 +128,7 @@
 .gmc-ups__tgl--switch{width:4rem;border-radius:99px;position:relative;display:block}.gmc-ups__tgl--switch:after{content:"";position:absolute;top:2px;left:2px;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(var(--color-foreground),.5);transition:.15s}.gmc-ups__in:checked+.gmc-ups__tgl--switch{background:{{ settings.gmc_accent }};border-color:{{ settings.gmc_accent }}}.gmc-ups__in:checked+.gmc-ups__tgl--switch:after{left:calc(100% - 1.4rem - 2px);background:#fff}
 .gmc-ups__tgl--plus{border-radius:50%}.gmc-ups__tgl--plus:after{content:"+";font-size:2rem;line-height:1}.gmc-ups__in:checked+.gmc-ups__tgl--plus{background:{{ settings.gmc_accent }};border-color:{{ settings.gmc_accent }};color:#fff}.gmc-ups__in:checked+.gmc-ups__tgl--plus:after{content:"✓";font-size:1.4rem}
 .gmc-ups__in:focus-visible+.gmc-ups__tgl{outline:2px solid currentColor;outline-offset:2px}.gmc-ups__var{margin-top:.6rem;width:100%;padding:.5rem;border-radius:var(--inputs-radius,4px)}
+.gmc-bnd{display:grid;gap:.8rem}.gmc-bnd__list{display:grid;gap:.6rem}.gmc-bnd__item{display:flex;gap:1rem;align-items:center;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:.9rem 1.1rem}.gmc-bnd__item select{margin-top:.4rem;width:100%;padding:.5rem;border-radius:var(--inputs-radius,4px)}.gmc-bnd__sum{display:flex;justify-content:space-between;margin:0;font-weight:700;font-size:1.1em}.gmc-bnd__save{margin:0;color:{{ settings.gmc_accent }};font-weight:600}.gmc-bnd__err{margin:0;color:#b91c1c}
 </style>
 <script>(function(){document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
 {% schema %}
@@ -323,6 +363,161 @@
           "type": "number",
           "id": "discount_fixed",
           "label": "Fixed amount off (store currency)"
+        },
+        {
+          "type": "header",
+          "content": "Container"
+        },
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Background"
+        },
+        {
+          "type": "range",
+          "id": "pad",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Padding",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "radius",
+          "min": 0,
+          "max": 24,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "border",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "unit": "px",
+          "label": "Border",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mb",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Margin below",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "bundle",
+      "name": "Bundle offer",
+      "settings": [
+        {
+          "type": "select",
+          "id": "bundle_type",
+          "label": "Bundle type",
+          "options": [
+            {
+              "value": "main",
+              "label": "Main product plus others"
+            },
+            {
+              "value": "separate",
+              "label": "Separate products only"
+            }
+          ],
+          "default": "main"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Bundle products",
+          "limit": 3
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Frequently bought together"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_description",
+          "label": "Show short descriptions",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "discount_type",
+          "label": "Bundle discount",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "percent",
+              "label": "Percentage off the total"
+            },
+            {
+              "value": "fixed",
+              "label": "Fixed amount off the total"
+            }
+          ],
+          "default": "percent"
+        },
+        {
+          "type": "range",
+          "id": "discount_percent",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "unit": "%",
+          "label": "Percentage off",
+          "default": 10
+        },
+        {
+          "type": "number",
+          "id": "discount_fixed",
+          "label": "Fixed amount off (store currency)"
+        },
+        {
+          "type": "text",
+          "id": "discount_code",
+          "label": "Discount code to apply",
+          "info": "Optional. Create the discount in Shopify admin; the code is applied to the customer's cart when they add the bundle, so checkout charges the reduced price."
+        },
+        {
+          "type": "text",
+          "id": "total_text",
+          "label": "Total label",
+          "default": "Bundle total"
+        },
+        {
+          "type": "text",
+          "id": "save_text",
+          "label": "Savings text",
+          "default": "You save [saved]",
+          "info": "[saved] becomes the amount saved."
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button label",
+          "default": "Add bundle to cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "skip_cart",
+          "label": "Skip the cart and go straight to checkout",
+          "default": false
         },
         {
           "type": "header",
