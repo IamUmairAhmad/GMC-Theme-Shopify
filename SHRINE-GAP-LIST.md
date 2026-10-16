@@ -109,7 +109,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | TS-02 | **Typography**: heading and body line-height and letter-spacing. | P3 |
 | TS-03 | **Link and action button hover effects** (glow / centre / left / arrow). | P3 |
 | TS-04 | **Variant pills** accent colour + bold text; **Variant dropdown** styling group (scheme, border, overlay, hover, radius, shadow). | P2 |
-| TS-05 | **Product cards**: badge position, push-to-side, **custom badges from tags** (`custom-badge-…`), sale badge text and discount icon, title line limit, add-button style, accent icon style. | P1 |
+| TS-05 ✅ | **Product cards**: badge position, push-to-side, **custom badges from tags** (`custom-badge-…`), sale badge text and discount icon, title line limit, add-button style, accent icon style. | P1 |
 | TS-06 | **Scrollbar** style, colours, width; **custom cursor** image. | P3 |
 | TS-07 | Secondary logo and mobile logo width. | P2 |
 
