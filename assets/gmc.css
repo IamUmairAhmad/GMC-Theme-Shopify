@@ -90,3 +90,4 @@ body.gmc-sticky-on .gmc-scta{display:none}
 .swatch-input__input+.swatch-input__label--text{--swatch-input--border-radius:var(--text-boxes-radius,2rem);border:1px solid rgba(var(--color-foreground),.25);padding:.9rem 1.6rem;min-width:4.4rem;text-align:center;line-height:1.2}
 .swatch-input__input:checked+.swatch-input__label--text{background:rgb(var(--color-foreground));color:rgb(var(--color-background))}
 .swatch-input__input.visually-disabled:not(:checked)+.swatch-input__label--text .swatch-input__text{text-decoration:line-through;opacity:.5}
+/* sync probe */
