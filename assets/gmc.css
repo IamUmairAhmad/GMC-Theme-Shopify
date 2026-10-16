@@ -99,3 +99,4 @@ label.gmc-imgsw{font-size:0!important;background:var(--gmc-img) center/cover no-
 .gmc-vs--fullw .select,.gmc-vs--fullw .select__select{width:100%;max-width:none}
 .gmc-buy--upper .product-form__submit,.gmc-buy--upper .shopify-payment-button__button{text-transform:uppercase;letter-spacing:.06em}
 .gmc-buy[style*="--gmc-buy-bg"] .product-form__submit{background-color:var(--gmc-buy-bg);color:var(--gmc-buy-fg)}
+
