@@ -2,14 +2,34 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add image layer blocks.' -%}{%- endif -%}
-<section class="gmc-ph {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-ph-{{ section.id }}" style="min-height:{{ section.settings.h }}vh">
-  {%- for block in section.blocks -%}{%- if block.settings.image != blank -%}<div class="gmc-ph__l" data-speed="{{ block.settings.speed }}" {{ block.shopify_attributes }}>{%- assign gmc_fp = 'object-position:' | append: block.settings.image.presentation.focal_point -%}{{ block.settings.image | image_url: width: 1800 | image_tag: loading: 'lazy', style: gmc_fp }}</div>{%- endif -%}{%- endfor -%}
-  <div class="gmc-ph__c page-width"><h1>{{ section.settings.heading | escape }}</h1><p>{{ section.settings.text | escape }}</p></div>
+<section class="gmc-ph {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-ph-{{ section.id }}" data-tilt="{{ section.settings.tilt }}" style="min-height:{{ section.settings.h }}vh">
+  {%- for block in section.blocks -%}
+    {%- assign b = block.settings -%}
+    {%- if b.image != blank -%}
+      <div class="gmc-ph__l{% if b.hide_mobile %} gmc-ph__l--nm{% endif %}" data-speed="{{ b.speed }}" data-x="{{ b.speed_x }}" data-zoom="{{ b.zoom }}" data-rot="{{ b.rotate }}" data-mouse="{{ b.mouse }}" style="z-index:{{ b.z }}" {{ block.shopify_attributes }}>
+        {%- assign gmc_fp = 'object-position:' | append: b.image.presentation.focal_point -%}
+        {%- if b.image_mobile != blank -%}
+          <picture><source media="(max-width:749px)" srcset="{{ b.image_mobile | image_url: width: 900 }}">{{ b.image | image_url: width: 1800 | image_tag: loading: 'lazy', widths: '750,1100,1500,1800', style: gmc_fp, alt: b.image.alt }}</picture>
+        {%- else -%}
+          {{ b.image | image_url: width: 1800 | image_tag: loading: 'lazy', widths: '750,1100,1500,1800', style: gmc_fp, alt: b.image.alt }}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+  <div class="gmc-ph__c page-width">
+    {%- if section.settings.prefix != blank -%}<p class="gmc-ph__pre">{{ section.settings.prefix | escape }}</p>{%- endif -%}
+    <h1 style="font-size:min({{ section.settings.head_size }}px,9vw)">{{ section.settings.heading | escape }}</h1>
+    {%- if section.settings.suffix != blank -%}<p class="gmc-ph__suf">{{ section.settings.suffix | escape }}</p>{%- endif -%}
+    {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
+    {%- if section.settings.btn != blank -%}<a class="button" href="{{ section.settings.btn_link | default: '#' }}">{{ section.settings.btn | escape }}</a>{%- endif -%}
+  </div>
 </section>
-<style>.gmc-ph{position:relative;overflow:hidden;display:grid;place-items:center;text-align:center;color:#fff}.gmc-ph__l{position:absolute;inset:-10% 0;will-change:transform}.gmc-ph__l img{width:100%;height:100%;object-fit:cover}.gmc-ph__c{position:relative;z-index:5;padding:3rem 0;text-shadow:0 2px 12px rgba(0,0,0,.45)}@media(prefers-reduced-motion:reduce){.gmc-ph__l{transform:none!important}}</style>
-<script>(function(){var s=document.getElementById('gmc-ph-{{ section.id }}');if(!s||matchMedia('(prefers-reduced-motion:reduce)').matches)return;var L=s.querySelectorAll('.gmc-ph__l');
-function u(){var r=s.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var c=r.top+r.height/2-innerHeight/2;L.forEach(function(l){l.style.transform='translateY('+(c*(+l.dataset.speed)/100)+'px)';});}
-addEventListener('scroll',u,{passive:true});u();})();</script>
+<style>.gmc-ph{position:relative;overflow:hidden;display:grid;place-items:center;text-align:center;color:#fff}.gmc-ph__l{position:absolute;inset:-10% 0;will-change:transform}.gmc-ph__l img{width:100%;height:100%;object-fit:cover}.gmc-ph__c{position:relative;z-index:20;padding:3rem 0;text-shadow:0 2px 12px rgba(0,0,0,.45)}.gmc-ph__pre,.gmc-ph__suf{letter-spacing:.2em;text-transform:uppercase;font-size:1.3rem;margin:0 0 1rem}.gmc-ph__suf{margin:1rem 0 0}.gmc-ph__c h1{margin:0}@media(max-width:749px){.gmc-ph__l--nm{display:none}}@media(prefers-reduced-motion:reduce){.gmc-ph__l{transform:none!important}}</style>
+<script>(function(){var s=document.getElementById('gmc-ph-{{ section.id }}');if(!s||matchMedia('(prefers-reduced-motion:reduce)').matches)return;var L=[].slice.call(s.querySelectorAll('.gmc-ph__l')),px=0,py=0;
+function u(){var r=s.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var c=r.top+r.height/2-innerHeight/2,p=c/innerHeight;L.forEach(function(l){var sp=+l.dataset.speed,x=+l.dataset.x,z=+l.dataset.zoom,ro=+l.dataset.rot,m=+l.dataset.mouse;
+ l.style.transform='translate3d('+(c*x/100+px*m)+'px,'+(c*sp/100+py*m)+'px,0) scale('+(1+p*z/100*-1)+') rotate('+(p*ro)+'deg)';});}
+addEventListener('scroll',u,{passive:true});u();
+if(s.dataset.tilt==='true'&&matchMedia('(pointer:fine)').matches){s.addEventListener('pointermove',function(e){var r=s.getBoundingClientRect();px=((e.clientX-r.left)/r.width-.5)*2;py=((e.clientY-r.top)/r.height-.5)*2;u();});}})();</script>
 {% schema %}
 {
   "name": "3D parallax hero",
@@ -26,6 +46,42 @@ addEventListener('scroll',u,{passive:true});u();})();</script>
       "type": "textarea",
       "id": "text",
       "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "prefix",
+      "label": "Heading prefix (small, above)"
+    },
+    {
+      "type": "text",
+      "id": "suffix",
+      "label": "Heading suffix (small, below)"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "head_size",
+      "min": 28,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 56
+    },
+    {
+      "type": "checkbox",
+      "id": "tilt",
+      "label": "Pointer tilt (desktop)",
+      "default": false
     },
     {
       "type": "range",
@@ -209,20 +265,81 @@ addEventListener('scroll',u,{passive:true});u();})();</script>
     {
       "type": "layer",
       "name": "Layer",
+      "limit": 10,
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image (back to front order)"
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_mobile",
+          "label": "Hide on mobile",
+          "default": false
         },
         {
           "type": "range",
           "id": "speed",
-          "min": -40,
-          "max": 40,
-          "step": 2,
-          "label": "Speed",
-          "default": 10
+          "min": -100,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Vertical speed",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "speed_x",
+          "min": -100,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Horizontal speed",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "zoom",
+          "min": -50,
+          "max": 50,
+          "step": 5,
+          "unit": "%",
+          "label": "Zoom while scrolling",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "rotate",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "unit": "\u00b0",
+          "label": "Rotation while scrolling",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "z",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "Stacking order (higher is in front)",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "mouse",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "label": "Pointer movement",
+          "default": 0
         }
       ]
     }

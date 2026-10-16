@@ -249,6 +249,88 @@
         "s1"
       ],
       "settings": {}
+    },
+    "tm": {
+      "type": "gmc-testimonials",
+      "blocks": {
+        "a": {
+          "type": "review",
+          "settings": {
+            "quote": "Great",
+            "name": "A"
+          }
+        },
+        "b": {
+          "type": "review",
+          "settings": {
+            "quote": "Nice",
+            "name": "B"
+          }
+        },
+        "c": {
+          "type": "review",
+          "settings": {
+            "quote": "Fine",
+            "name": "C"
+          }
+        },
+        "d": {
+          "type": "review",
+          "settings": {
+            "quote": "Good",
+            "name": "D"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "settings": {
+        "style": "slider",
+        "cols": 3,
+        "quote_marks": true
+      }
+    },
+    "tm2": {
+      "type": "gmc-testimonials",
+      "blocks": {
+        "a": {
+          "type": "review",
+          "settings": {
+            "quote": "Great",
+            "name": "A"
+          }
+        },
+        "b": {
+          "type": "review",
+          "settings": {
+            "quote": "Nice",
+            "name": "B"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {
+        "style": "minimal",
+        "cols": 2
+      }
+    },
+    "ph": {
+      "type": "gmc-parallax-hero",
+      "blocks": {},
+      "settings": {
+        "prefix": "Pre",
+        "heading": "Parallax",
+        "suffix": "Suf",
+        "btn": "Shop",
+        "tilt": true
+      }
     }
   },
   "order": [
@@ -259,6 +341,9 @@
     "tk",
     "vt",
     "ban",
-    "hs"
+    "hs",
+    "tm",
+    "tm2",
+    "ph"
   ]
 }
