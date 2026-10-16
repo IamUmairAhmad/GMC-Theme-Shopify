@@ -275,8 +275,8 @@ Most differences are colour-scheme names (Shrine uses fixed accent / background 
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| GS-01 | Separate **colour scheme choice for product cards, collection cards and blog cards** (cards can differ from the section background). | P2 |
-| GS-02 | Product-card **badge position "top centre"**, **title line limit** (unlimited / 1 / 2 / 3), **add button primary or secondary**. Part of DP-04. | P2 |
+| GS-01 ✅ | Separate **colour scheme choice for product cards, collection cards and blog cards** (cards can differ from the section background). | P2 |
+| GS-02 ✅ | Product-card **badge position "top centre"**, **title line limit** (unlimited / 1 / 2 / 3), **add button primary or secondary**. Part of DP-04. | P2 |
 | GS-03 | Sale and sold-out **badge colour scheme** choice, accent-icon colour (accent 1 / 2 / outline), variant-pill accent colour. Part of TS-04 / TS-05. | P3 |
 | GS-04 | **Arrow hover effect** for link and action buttons. Part of TS-03. | P3 |
 
