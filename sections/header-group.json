@@ -2,6 +2,13 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
+    "gmc-ticker": {
+      "type": "gmc-ticker",
+      "disabled": true,
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
     "announcement-bar": {
       "type": "announcement-bar",
       "settings": {
@@ -48,6 +55,7 @@
     }
   },
   "order": [
+    "gmc-ticker",
     "announcement-bar",
     "header"
   ]
