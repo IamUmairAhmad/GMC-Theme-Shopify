@@ -95,9 +95,9 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | SC-08 | **Content tabs**: icons on tabs, image / video per tab, ATC, button style (animation), header layout, full-width buttons. | P3 |
 | SC-09 | **Collapsible content**: video media, icon per row, collapse icon, top border. | P3 |
 | SC-10 | **Instagram stories**: several stories per user, verified badge, close-friends ring, time posted, background, media fit, autoplay speed. | P3 |
-| SC-11 | **Promo popup**: display modes, delay and frequency, countdown, success state showing a discount code with copy button, heading prefix/suffix. | P2 |
+| SC-11 ✅ | **Promo popup**: display modes, delay and frequency, countdown, success state showing a discount code with copy button, heading prefix/suffix. | P2 |
 | SC-12 | **Music player**: standalone section + global: volume, position, offsets, ripple, colour scheme. Ours takes only a URL. | P3 |
-| SC-13 | **Footer blocks**: email-signup block, featured product block, featured collection block, per-block desktop/mobile column width, image link. | P2 |
+| SC-13 ✅ | **Footer blocks**: email-signup block, featured product block, featured collection block, per-block desktop/mobile column width, image link. | P2 |
 | SC-14 | **Featured collection**: same-height cards option and badge selector. | P3 |
 | SC-15 | **Sections group** (pair two sections side by side by ID) and "Display section ID" checkbox on every section (helps scroll-to links). | P3 |
 
@@ -111,7 +111,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | TS-04 | **Variant pills** accent colour + bold text; **Variant dropdown** styling group (scheme, border, overlay, hover, radius, shadow). | P2 |
 | TS-05 ✅ | **Product cards**: badge position, push-to-side, **custom badges from tags** (`custom-badge-…`), sale badge text and discount icon, title line limit, add-button style, accent icon style. | P1 |
 | TS-06 | **Scrollbar** style, colours, width; **custom cursor** image. | P3 |
-| TS-07 | Secondary logo and mobile logo width. | P2 |
+| TS-07 ✅ | Secondary logo and mobile logo width. | P2 |
 
 ## 9. Templates
 

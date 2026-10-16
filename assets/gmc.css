@@ -177,3 +177,5 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 .gmc-an-sl .gmc-sl__a{width:2.8rem;height:2.8rem;background:transparent;color:inherit;box-shadow:none}.gmc-an-sl .gmc-sl__a svg{width:1.2rem;height:1.2rem}.gmc-an-sl .gmc-sl__pp{display:none}
 
 .gmc-pm__vid{position:relative;overflow:hidden}.gmc-pm__vid video{width:100%;display:block}.gmc-pm__vc{position:absolute;left:0;right:0;bottom:0;display:flex;gap:.6rem;align-items:center;padding:.6rem;background:linear-gradient(transparent,rgba(0,0,0,.5));z-index:3}.gmc-pm__vc button{background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:50%;width:3.2rem;height:3.2rem;cursor:pointer}.gmc-pm__vt{flex:1;height:4px;background:rgba(255,255,255,.35);border-radius:2px;overflow:hidden}.gmc-pm__vt b{display:block;height:100%;width:0;background:#fff}
+
+.gmc-ffeat{display:flex;gap:1rem;align-items:center;color:inherit;text-decoration:none;margin-bottom:.8rem}.gmc-ffeat img{width:72px;height:72px;object-fit:cover;border-radius:6px}.gmc-fsub__row{display:flex;gap:.6rem}.gmc-fsub__row input{flex:1;min-width:0}.gmc-fimg-link{display:block}

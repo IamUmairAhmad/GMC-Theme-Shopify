@@ -10,17 +10,20 @@
   {%- when 'not_cart' -%}{%- if pg != 'cart' -%}{%- assign allowed = true -%}{%- endif -%}
 {%- endcase -%}
 {%- if settings.gmc_popup_enabled and pg != 'password' and pg != 'customers/login' and allowed -%}
-<div class="gmc-pop" id="gmc-pop" hidden role="dialog" aria-modal="true" aria-labelledby="gmc-pop-h" data-trigger="{{ settings.gmc_popup_trigger }}" data-delay="{{ settings.gmc_popup_delay | times: 1000 }}" data-freq="{{ settings.gmc_popup_freq }}">
+<div class="gmc-pop gmc-pop--{{ settings.gmc_popup_display }}" id="gmc-pop" hidden role="dialog" aria-modal="true" aria-labelledby="gmc-pop-h" data-trigger="{{ settings.gmc_popup_trigger }}" data-delay="{{ settings.gmc_popup_delay | times: 1000 }}" data-freq="{{ settings.gmc_popup_freq }}">
   <div class="gmc-pop__box{% if settings.gmc_popup_image != blank %} gmc-pop__box--img{% endif %}">
     <button type="button" class="gmc-pop__x" aria-label="Close">×</button>
     {%- if settings.gmc_popup_image != blank -%}<div class="gmc-pop__im">{{ settings.gmc_popup_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: '' }}</div>{%- endif -%}
     <div class="gmc-pop__body">
+      {%- if settings.gmc_popup_prefix != blank -%}<p class="gmc-pop__pre">{{ settings.gmc_popup_prefix | escape }}</p>{%- endif -%}
       <h2 id="gmc-pop-h">{{ settings.gmc_popup_heading | escape }}</h2>
+      {%- if settings.gmc_popup_suffix != blank -%}<p class="gmc-pop__suf">{{ settings.gmc_popup_suffix | escape }}</p>{%- endif -%}
+      {%- if settings.gmc_popup_countdown > 0 -%}<p class="gmc-pop__cd" data-minutes="{{ settings.gmc_popup_countdown }}" aria-live="off">--:--</p>{%- endif -%}
       <p>{{ settings.gmc_popup_text | escape }}</p>
       {%- if settings.gmc_popup_mode == 'email' -%}
         {%- form 'customer', class: 'gmc-pop__form', id: 'gmc-pop-form' -%}
           {%- if form.posted_successfully? -%}
-            <p role="status" style="font-weight:700" data-gmc-posted>Thanks for subscribing!{% if settings.gmc_popup_code != blank %} Your code: <span class="gmc-pop__code">{{ settings.gmc_popup_code | escape }}</span>{% endif %}</p>
+            <p role="status" style="font-weight:700" data-gmc-posted>Thanks for subscribing!{% if settings.gmc_popup_code != blank %} Your code: <span class="gmc-pop__code">{{ settings.gmc_popup_code | escape }}</span> <button type="button" class="gmc-pop__copy" data-gmc-copy="{{ settings.gmc_popup_code | escape }}" data-done="Copied"><small>Copy</small></button>{% endif %}</p>
           {%- else -%}
             {%- if form.errors -%}<p role="alert" style="color:#b91c1c;margin:0">{{ form.errors | default_errors }}</p>{%- endif -%}
             <input type="hidden" name="contact[tags]" value="newsletter,popup">
@@ -42,6 +45,9 @@
   .gmc-pop__body{padding:2.5rem 2rem}.gmc-pop__body h2{margin:0 0 .6rem}.gmc-pop__body p{margin:0 0 1rem}
   .gmc-pop__x{position:absolute;top:.4rem;right:.9rem;background:none;border:0;font-size:2.6rem;cursor:pointer;color:inherit;z-index:2;line-height:1}
   .gmc-pop__form{display:grid;gap:.8rem;margin-top:1rem}.gmc-pop__code{display:inline-block;padding:.2rem 1rem;border:2px dashed currentColor;border-radius:var(--text-boxes-radius);letter-spacing:.08em}
+  .gmc-pop__pre,.gmc-pop__suf{letter-spacing:.15em;text-transform:uppercase;font-size:1.2rem;opacity:.7}.gmc-pop__cd{font-size:2.4rem;font-weight:700;font-variant-numeric:tabular-nums}.gmc-pop__copy{background:none;border:1px solid currentColor;border-radius:4px;color:inherit;cursor:pointer;padding:.1rem .6rem}
+  .gmc-pop--side{place-items:end start;background:transparent;pointer-events:none}.gmc-pop--side .gmc-pop__box{pointer-events:auto;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+  .gmc-pop--bar{place-items:end center;background:transparent;pointer-events:none;padding:0}.gmc-pop--bar .gmc-pop__box{pointer-events:auto;max-width:100%;border-radius:0;box-shadow:0 -4px 20px rgba(0,0,0,.2)}
   @media(max-width:749px){.gmc-pop__box--img{grid-template-columns:1fr}.gmc-pop__im{max-height:180px}}
 </style>
 <script>
@@ -49,7 +55,7 @@
   var days={session:0,day:1,week:7}[F]||0,now=Date.now();
   function seen(){try{if(localStorage.getItem(K)==='sub')return true;if(days===0)return !!sessionStorage.getItem(K);var t=+localStorage.getItem(K+'_t');return t&&now-t<days*86400000;}catch(e){return false;}}
   function mark(){try{sessionStorage.setItem(K,'1');localStorage.setItem(K+'_t',Date.now());}catch(e){}}
-  var prev=null;
+  var prev=null,cd=p.querySelector('.gmc-pop__cd');if(cd){var cend=Date.now()+(+cd.dataset.minutes)*60000;setInterval(function(){var r=Math.max(0,Math.floor((cend-Date.now())/1000));cd.textContent=String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');},1000);}
   function open(){if(!p.hidden)return;prev=document.activeElement;p.hidden=false;var x=p.querySelector('.gmc-pop__x');if(x)x.focus();}
   function close(){p.hidden=true;mark();if(prev&&prev.focus)prev.focus();}
   p.querySelector('.gmc-pop__x').addEventListener('click',close);

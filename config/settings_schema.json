@@ -242,7 +242,7 @@
         "type": "text",
         "id": "gmc_gift_text",
         "label": "Gift message",
-        "default": "🎁 Free gift unlocked!"
+        "default": "\ud83c\udf81 Free gift unlocked!"
       },
       {
         "type": "header",
@@ -273,7 +273,7 @@
         "type": "text",
         "id": "gmc_cart_timer_text",
         "label": "Timer text",
-        "default": "⏳ Your cart is reserved for"
+        "default": "\u23f3 Your cart is reserved for"
       },
       {
         "type": "checkbox",
@@ -744,6 +744,31 @@
         "default": "email"
       },
       {
+        "type": "select",
+        "id": "gmc_popup_display",
+        "label": "Popup display",
+        "options": [
+          {
+            "value": "center",
+            "label": "Centre modal"
+          },
+          {
+            "value": "side",
+            "label": "Slide in from the side"
+          },
+          {
+            "value": "bar",
+            "label": "Bottom bar"
+          }
+        ],
+        "default": "center"
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_prefix",
+        "label": "Heading prefix (small, above)"
+      },
+      {
         "type": "text",
         "id": "gmc_popup_heading",
         "label": "Heading",
@@ -754,6 +779,21 @@
         "id": "gmc_popup_text",
         "label": "Text",
         "default": "Join our list and get an exclusive discount."
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_suffix",
+        "label": "Heading suffix (small, below)"
+      },
+      {
+        "type": "range",
+        "id": "gmc_popup_countdown",
+        "min": 0,
+        "max": 60,
+        "step": 5,
+        "unit": "min",
+        "label": "Countdown in popup (0 = off)",
+        "default": 0
       },
       {
         "type": "image_picker",
@@ -890,7 +930,7 @@
         "type": "text",
         "id": "gmc_cart_trust",
         "label": "Cart trust text",
-        "default": "🔒 Secure checkout · 30-day returns"
+        "default": "\ud83d\udd12 Secure checkout \u00b7 30-day returns"
       },
       {
         "type": "header",
