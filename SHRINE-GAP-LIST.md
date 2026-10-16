@@ -161,3 +161,30 @@ Customer pages (login, register, account, orders, addresses, reset and activate 
 - I read Shrine's code and settings, not its live storefront behaviour; animation feel, slider smoothness and mobile polish still need a side-by-side visual test once we can preview both themes.
 - Shrine's `shrine.null.js` (125 KB) and `secondary.js` (70 KB) are minified; I listed their components but did not read the logic. Behaviours are written from the settings and snippet markup.
 - Our own side was compared from schemas and code, not by re-testing every section in a browser.
+
+---
+## 12. Third pass: hidden behaviours found in the page code and scripts
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| TH-01 | **Separate secondary variant picker** that keeps the sticky bar and the main picker in sync (combined "Black/S" dropdown or one dropdown per option). Also needed by PP-05. | P1 |
+| TH-02 | **Product-info upsell logic**: selected upsell products are added together with the main product in one request, and their price changes follow the chosen variant. | P1 |
+| TH-03 | **Bundle and quantity-gift logic** as scripts: live price recalculation, gift unlock states, cart cleanup when quantity drops. | P1 |
+| TH-04 | **Cart drawer scripts**: cart note, gift auto-add and remove, upsell add, countdown timer, item removal without reload. We cover gift, upsell and timer; the **cart note** block is missing (CD-07). | P2 |
+| TH-05 | **Section pairing script** (Sections group): puts two sections side by side and can reverse their order on mobile. | P3 |
+| TH-06 | **Dynamic dates script** for delivery estimates (day and month names per language). | P2 |
+| TH-07 | **Custom product field validation** that disables every Add to Cart button until required fields are filled, and writes the answers into line-item properties. | P1 |
+| TH-08 | **Brand information** in the footer (headline, description, image, width) and **nine social networks** with "Follow on Shop". We have the settings group; the footer block for brand image width and per-column widths is missing (SC-13). | P3 |
+| TH-09 | **Gift-card and password pages** use the full theme styling (buttons, inputs, cards, fonts). Ours use only the base styling. | P3 |
+| TH-10 | **Disable copy / right-click / inspect** and **country block** exist in ours; Shrine's country check calls an outside lookup service **[EXT]**. We already have our own version. No action. | none |
+
+## Review coverage (what has now been read)
+All 61 sections, all 17 page templates and group files, all 140+ snippets by name (about 40 read in detail), the global settings (about 180), `settings_data` defaults, header, footer, theme layout, password layout, gift card, cart drawer snippet, variant picker snippets, product card, facets, the two main scripts (component list only, because both are minified), the translation set, and the asset list.
+
+## Still pending on our side (not Shrine gaps)
+1. Rebuild `GMC-Theme.zip` (current one predates FAQ, reviews, track order, cart-drawer blocks and per-section colour schemes).
+2. Update `FEATURE-CHECKLIST.md` for features added after section H.
+3. Live browser tests not yet done: gift auto-add threshold, upsell add, bundle add, section add-to-cart, slider autoplay, Countdown / Progress / Checkpoints drawer blocks.
+4. Subscription plans and Markets need a store with a selling-plan app and a second market.
+5. The default home template still points at the demo product handle `gmc-test-tee`.
+6. Master-prompt sections 9–11 were never received.
