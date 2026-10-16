@@ -10,12 +10,12 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| PP-01 | **Quantity breaks inside the quantity selector**: up to 4 options, each with quantity, badge, image, label, benefit line, caption, % or fixed discount, price text, compare-price text, preselected option, styles normal/compact/vertical, and a variant picker per unit. Text boxes accept dynamic values (price, saving, quantity). Ours is a separate tier section without these fields. | P1 |
+| PP-01 ✅ | **Quantity breaks inside the quantity selector**: up to 4 options, each with quantity, badge, image, label, benefit line, caption, % or fixed discount, price text, compare-price text, preselected option, styles normal/compact/vertical, and a variant picker per unit. Text boxes accept dynamic values (price, saving, quantity). Ours is a separate tier section without these fields. | P1 |
 | PP-02 | **Gifts on quantity**: up to 4 gift products that unlock at a quantity, with locked/unlocked states, images and texts, gift-box colours. | P1 |
 | PP-03 | **Bundle offer block**: pre-made bundle of 2–3 products, "main product" or "separate" type, per-product discount, dynamic total with savings line, per-product description, variant pickers, skip-cart. | P1 |
 | PP-04 | **Product upsells block (multi)**: up to 3 upsell products, toggle styles (switch / checkbox / plus), preselected, per-product image, description, % / fixed discount, stacking row/column/slider, container styling. Ours supports one upsell. | P1 |
-| PP-05 | **Sticky add-to-cart depth**: button function (add to cart, or scroll to info / variants / quantity breaks / pricing table), show always or after scroll, combined or separate variant picker, rating stars, button colour, separate desktop and mobile toggles (image, title, price, badge, picker, full-width, price in button, transparent background). Ours has a label only. | P1 |
-| PP-06 | **Custom product field** types: text, number, textarea, pills, dropdown. Needs placeholder, max characters, min/max, required with custom error on the ATC button and sticky ATC. Ours is label + required only. | P1 |
+| PP-05 ✅ | **Sticky add-to-cart depth**: button function (add to cart, or scroll to info / variants / quantity breaks / pricing table), show always or after scroll, combined or separate variant picker, rating stars, button colour, separate desktop and mobile toggles (image, title, price, badge, picker, full-width, price in button, transparent background). Ours has a label only. | P1 |
+| PP-06 ✅ | **Custom product field** types: text, number, textarea, pills, dropdown. Needs placeholder, max characters, min/max, required with custom error on the ATC button and sticky ATC. Ours is label + required only. | P1 |
 | PP-07 | **Variant picker options**: type per option (pills / dropdown / swatches / image), custom labels, swatch size and radius, custom swatch colour list or from image alt, full-width dropdowns. | P1 |
 | PP-08 | **Buy buttons options**: skip cart (go straight to checkout), uppercase labels, price inside button, custom button colour. | P1 |
 | PP-09 | **Estimated shipping with real dates**: min/max days → formatted dates (six date formats), custom day and month labels, icon, alignment. | P2 |
@@ -141,7 +141,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | ID | Missing feature | Pri |
 |---|---|---|
 | DP-01 | **Quantity breaks as a variant-picker style**: a variant option can be shown as quantity-break cards (for stores whose quantities are separate SKUs), mixed per option, e.g. "swatches, dropdown, quantity breaks". Works with the clickable discount block. | P1 |
-| DP-02 | **Dynamic text tokens** usable in every text field of breaks, bundles and pickers: quantity, price, compare price, price each, compare price each, amount saved, amount saved rounded, option name / lowercase / uppercase / selected, option index. Per-option texts are comma-split, with an "empty" placeholder to skip one. | P1 |
+| DP-02 ✅ | **Dynamic text tokens** usable in every text field of breaks, bundles and pickers: quantity, price, compare price, price each, compare price each, amount saved, amount saved rounded, option name / lowercase / uppercase / selected, option index. Per-option texts are comma-split, with an "empty" placeholder to skip one. | P1 |
 | DP-03 | **Sale badge text with tokens** (for example "Save [percentage]") and **custom badges list driven by product tags** (for example BEST SELLER). | P1 |
 | DP-04 | **Product card options**: card style choice, add-button style, limit titles to N lines, badge position and push-to-side, sold-out badge scheme, quick-add on cards, accent-icon style. | P1 |
 | DP-05 | **Collection and search grid**: "make all cards same height", a badges selector (sale / sold-out / both / none) and a Display-on setting on the blog page. | P3 |
@@ -167,7 +167,7 @@ Customer pages (login, register, account, orders, addresses, reset and activate 
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| TH-01 | **Separate secondary variant picker** that keeps the sticky bar and the main picker in sync (combined "Black/S" dropdown or one dropdown per option). Also needed by PP-05. | P1 |
+| TH-01 ✅ | **Separate secondary variant picker** that keeps the sticky bar and the main picker in sync (combined "Black/S" dropdown or one dropdown per option). Also needed by PP-05. | P1 |
 | TH-02 | **Product-info upsell logic**: selected upsell products are added together with the main product in one request, and their price changes follow the chosen variant. | P1 |
 | TH-03 | **Bundle and quantity-gift logic** as scripts: live price recalculation, gift unlock states, cart cleanup when quantity drops. | P1 |
 | TH-04 | **Cart drawer scripts**: cart note, gift auto-add and remove, upsell add, countdown timer, item removal without reload. We cover gift, upsell and timer; the **cart note** block is missing (CD-07). | P2 |
@@ -226,7 +226,7 @@ All present in GMC Theme as well. One real gap found:
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| CD-09 | **Express checkout buttons (Shop Pay, Apple Pay, Google Pay, PayPal) inside the cart drawer**, switchable in the Checkout button block. Shrine shows them in the drawer and on the cart page; ours only on the cart page. | P1 |
+| CD-09 ✅ | **Express checkout buttons (Shop Pay, Apple Pay, Google Pay, PayPal) inside the cart drawer**, switchable in the Checkout button block. Shrine shows them in the drawer and on the cart page; ours only on the cart page. | P1 |
 
 ## 19. Tenth pass: script keyword scan, and ways to go beyond Shrine
 Both Shrine scripts were scanned for hidden features (wishlist, compare, recently viewed, back-in-stock, consent banner, infinite scroll, gift wrap, etc.). **None exist in Shrine**, so there is no further parity gap. Only upsell, discount, sticky, video, country/currency, countdown, predictive search and popup logic appear, all already listed.
@@ -250,7 +250,7 @@ Reading the actual choices in each dropdown found variants not captured before:
 | OP-03 | **Slideshow pagination styles**: dots, counter ("2 / 5") and numbers. | P3 |
 | OP-04 | **Pricing table**: 3 card styles. **Comparison table**: classic / centered / minimal styles. **Collapsible content**: layout none / row / section containers. | P3 |
 | OP-05 | **Vertical ticker side content** shown always / desktop only / never. | P3 |
-| OP-06 | **Sticky add-to-cart button function** options (add to cart, or scroll to info / variants / quantity breaks / pricing table). Already PP-05; confirmed as five exact choices. | P1 |
+| OP-06 ✅ | **Sticky add-to-cart button function** options (add to cart, or scroll to info / variants / quantity breaks / pricing table). Already PP-05; confirmed as five exact choices. | P1 |
 | OP-07 | **Cart upsell block** adds a fifth style, a plain "Add" button, next to toggle switch / two checkbox styles / plus button. Extends CD-06. | P2 |
 
 ## 21. Twelfth pass: every dropdown choice in Shrine compared with ours (automatic comparison)
