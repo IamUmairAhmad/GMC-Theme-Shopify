@@ -1,0 +1,8 @@
+{%- render 'gmc-section-extras' -%}
+<div class="page-width gmc-sg" style="padding-top:{{ section.settings.pt }}px;padding-bottom:{{ section.settings.pb }}px">
+  <div class="gmc-sg__in" style="display:grid;grid-template-columns:repeat({{ section.settings.columns }},1fr);gap:{{ section.settings.gap }}px;align-items:{{ section.settings.align }}">
+    {%- content_for 'blocks' -%}
+  </div>
+</div>
+<style>@media(max-width:749px){#shopify-section-{{ section.id }} .gmc-sg__in{grid-template-columns:repeat({{ section.settings.columns_mobile }},1fr)!important}}</style>
+{% schema %}{"name":"zz body","presets":[{"name":"zz body"}]}{% endschema %}

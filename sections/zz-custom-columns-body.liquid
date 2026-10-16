@@ -1,0 +1,14 @@
+{%- render 'gmc-section-extras' -%}
+{%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add column blocks.' -%}{%- endif -%}
+<div class="page-width gmc-cc {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--cols:{{ section.settings.columns }};--mcols:{{ section.settings.columns_mobile }};--ratio:{{ section.settings.ratio }};--gap:{{ section.settings.gap }}px;text-align:{{ section.settings.align }}">
+  {%- if section.settings.heading != blank -%}<h2 style="text-align:center;margin-bottom:1.5rem">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  <div class="gmc-cc__g">{%- for block in section.blocks -%}
+    <div class="gmc-cc__c" {{ block.shopify_attributes }}>
+      {%- if block.settings.image != blank -%}{%- assign gmc_fp = 'object-position:' | append: block.settings.image.presentation.focal_point -%}{{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300,500,800', style: gmc_fp }}{%- endif -%}
+      {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading | escape }}</h3>{%- endif -%}
+      {%- if block.settings.text != blank -%}<div class="rte">{{ block.settings.text }}</div>{%- endif -%}
+      {%- if block.settings.link != blank -%}<a class="button button--secondary" href="{{ block.settings.link }}">{{ block.settings.button | default: 'Learn more' | escape }}</a>{%- endif -%}
+    </div>{%- endfor -%}</div>
+</div>
+<style>.gmc-cc{padding:36px 0}.gmc-cc__g{display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:var(--gap)}.gmc-cc__c img{width:100%;height:auto;aspect-ratio:var(--ratio);object-fit:cover;border-radius:12px;margin-bottom:1rem}.gmc-cc__c h3{margin:.4rem 0}@media(max-width:749px){.gmc-cc__g{grid-template-columns:repeat(var(--mcols),1fr)}}</style>
+{% schema %}{"name":"zz body","presets":[{"name":"zz body"}]}{% endschema %}

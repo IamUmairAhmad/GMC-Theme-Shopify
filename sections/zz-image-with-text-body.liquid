@@ -1,0 +1,60 @@
+{%- render 'gmc-section-extras' -%}
+{%- if section.blocks.size == 0 and section.settings.image == blank and section.settings.video == blank -%}{%- render 'gmc-empty', msg: 'Add an image or MP4 and some content blocks.' -%}{%- endif -%}
+{%- assign s = section.settings -%}
+<div class="gmc-iwt page-width{% if s.reveal %} gmc-iwt--reveal{% endif %}" id="gmc-iwt-{{ section.id }}" style="--gap:{{ s.gap }}px;--split:{{ s.split }};--va:{{ s.valign }};--ta:{{ s.text_align }};--mratio:{{ s.ratio }};--rad:{{ s.radius }}px">
+  <div class="gmc-iwt__grid gmc-iwt__grid--{{ s.position }} gmc-iwt__mob--{{ s.mobile_order }}">
+    <div class="gmc-iwt__media{% if s.sticky %} gmc-iwt__media--sticky{% endif %}">
+      {%- if s.video != blank -%}
+        <video playsinline muted loop {% if s.video_autoplay %}autoplay{% else %}controls{% endif %} preload="metadata" {% if s.image != blank %}poster="{{ s.image | image_url: width: 1200 }}"{% endif %}>{%- for src in s.video.sources -%}{%- if src.format == 'mp4' -%}<source src="{{ src.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
+      {%- elsif s.image != blank -%}
+        {%- assign gmc_fp = 'object-position:' | append: s.image.presentation.focal_point -%}{{ s.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,700,1000,1400', sizes: '(min-width: 750px) 50vw, 100vw', style: gmc_fp, alt: s.image.alt }}
+      {%- else -%}
+        <div class="gmc-iwt__ph" aria-hidden="true"></div>
+      {%- endif -%}
+      {%- if s.badge != blank -%}<span class="gmc-iwt__badge">{{ s.badge | escape }}</span>{%- endif -%}
+    </div>
+    <div class="gmc-iwt__text{% if s.card %} gmc-iwt__text--card{% endif %}" {% if s.card %}style="background:{{ s.card_bg }};color:{{ s.card_fg }}"{% endif %}>
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'eyebrow' -%}<p class="gmc-iwt__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+          {%- when 'heading' -%}<h2 class="gmc-iwt__h gmc-iwt__h--{{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</h2>
+          {%- when 'text' -%}<div class="rte gmc-iwt__rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'bullet' -%}<div class="gmc-iwt__bul" {{ block.shopify_attributes }}>{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 24 -%}{%- else -%}<span aria-hidden="true">✓</span>{%- endif -%}<span>{{ block.settings.text | escape }}</span></div>
+          {%- when 'rating' -%}<p class="gmc-iwt__rate" {{ block.shopify_attributes }}>{%- if block.settings.score != blank -%}<span style="color:#f5a623" aria-hidden="true">★★★★★</span> <strong>{{ block.settings.score | escape }}</strong> {{ block.settings.text | escape }}{%- endif -%}</p>
+          {%- when 'quote' -%}<blockquote class="gmc-iwt__q" {{ block.shopify_attributes }}>“{{ block.settings.quote | escape }}”<footer>— {{ block.settings.author | escape }}</footer></blockquote>
+          {%- when 'divider' -%}<hr class="gmc-iwt__hr" {{ block.shopify_attributes }}>
+          {%- when 'buttons' -%}
+            <div class="gmc-iwt__btns" {{ block.shopify_attributes }}>
+              {%- if block.settings.label_1 != blank and block.settings.link_1 != blank -%}<a class="button" href="{{ block.settings.link_1 }}">{{ block.settings.label_1 | escape }}</a>{%- endif -%}
+              {%- if block.settings.label_2 != blank and block.settings.link_2 != blank -%}<a class="button button--secondary" href="{{ block.settings.link_2 }}">{{ block.settings.label_2 | escape }}</a>{%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+<style>
+  #gmc-iwt-{{ section.id }}{padding-top:{{ s.pad_top }}px;padding-bottom:{{ s.pad_bottom }}px}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__grid{display:grid;grid-template-columns:var(--split) 1fr;gap:var(--gap);align-items:var(--va)}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__grid--right{grid-template-columns:1fr var(--split)}#gmc-iwt-{{ section.id }} .gmc-iwt__grid--right .gmc-iwt__media{order:2}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__media{position:relative;border-radius:var(--rad);overflow:hidden}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__media--sticky{position:sticky;top:90px}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__media img,#gmc-iwt-{{ section.id }} .gmc-iwt__media video{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:var(--mratio)}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__ph{aspect-ratio:var(--mratio);background:rgba(var(--color-foreground),.08)}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__badge{position:absolute;top:1rem;left:1rem;background:{{ s.badge_bg }};color:{{ s.badge_fg }};padding:.3rem 1.2rem;border-radius:99px;font-weight:700;font-size:1.3rem}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__text{text-align:var(--ta);display:grid;gap:1.2rem;align-content:center}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__text--card{padding:3rem;border-radius:var(--rad)}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__eyebrow{margin:0;text-transform:uppercase;letter-spacing:.14em;font-size:1.2rem;opacity:.7}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__h{margin:0;line-height:1.1}.gmc-iwt__h--sm{font-size:clamp(2rem,3vw,2.6rem)}.gmc-iwt__h--md{font-size:clamp(2.4rem,4vw,3.6rem)}.gmc-iwt__h--lg{font-size:clamp(2.8rem,5.5vw,5rem)}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__bul{display:flex;gap:.8rem;align-items:center;justify-content:{% if s.text_align == 'center' %}center{% elsif s.text_align == 'right' %}flex-end{% else %}flex-start{% endif %}}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__rate,#gmc-iwt-{{ section.id }} .gmc-iwt__rte>:first-child{margin-top:0}#gmc-iwt-{{ section.id }} .gmc-iwt__rate{margin:0}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__q{margin:0;padding-left:1.4rem;border-left:3px solid currentColor;font-style:italic}.gmc-iwt__q footer{font-style:normal;font-size:1.3rem;opacity:.7;margin-top:.4rem}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__hr{width:100%;border:0;border-top:1px solid rgba(var(--color-foreground),.2);margin:0}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:{% if s.text_align == 'center' %}center{% elsif s.text_align == 'right' %}flex-end{% else %}flex-start{% endif %}}
+  #gmc-iwt-{{ section.id }}.gmc-iwt--reveal .gmc-iwt__media,#gmc-iwt-{{ section.id }}.gmc-iwt--reveal .gmc-iwt__text{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+  #gmc-iwt-{{ section.id }}.gmc-iwt--reveal.is-in .gmc-iwt__media,#gmc-iwt-{{ section.id }}.gmc-iwt--reveal.is-in .gmc-iwt__text{opacity:1;transform:none}
+  @media(max-width:749px){#gmc-iwt-{{ section.id }} .gmc-iwt__grid,#gmc-iwt-{{ section.id }} .gmc-iwt__grid--right{grid-template-columns:1fr}#gmc-iwt-{{ section.id }} .gmc-iwt__mob--text-first .gmc-iwt__text{order:-1}#gmc-iwt-{{ section.id }} .gmc-iwt__grid--right .gmc-iwt__media{order:0}#gmc-iwt-{{ section.id }} .gmc-iwt__media--sticky{position:static}#gmc-iwt-{{ section.id }} .gmc-iwt__text--card{padding:2rem}}
+  @media(prefers-reduced-motion:reduce){#gmc-iwt-{{ section.id }}.gmc-iwt--reveal .gmc-iwt__media,#gmc-iwt-{{ section.id }}.gmc-iwt--reveal .gmc-iwt__text{opacity:1;transform:none;transition:none}}
+</style>
+{%- if s.reveal -%}<script>(function(){var e=document.getElementById('gmc-iwt-{{ section.id }}');if(!e)return;if(!('IntersectionObserver' in window)||(window.Shopify&&Shopify.designMode)){e.classList.add('is-in');return;}var o=new IntersectionObserver(function(x){if(x[0].isIntersecting){e.classList.add('is-in');o.disconnect();}},{threshold:.15});o.observe(e);})();</script>{%- endif -%}
+{% schema %}{"name":"zz body","presets":[{"name":"zz body"}]}{% endschema %}

@@ -1,0 +1,531 @@
+<div></div>
+{% schema %}
+{
+  "name": "Image + text (Advanced)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "MP4 video (replaces image; image becomes poster)"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay muted loop (otherwise shows controls)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Media aspect ratio",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original"
+        },
+        {
+          "value": "1/1",
+          "label": "Square"
+        },
+        {
+          "value": "4/5",
+          "label": "Portrait"
+        },
+        {
+          "value": "3/2",
+          "label": "Landscape"
+        },
+        {
+          "value": "16/9",
+          "label": "Wide"
+        }
+      ],
+      "default": "4/5"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge on media"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg",
+      "label": "Badge background",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "badge_fg",
+      "label": "Badge text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Media position (desktop)",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_order",
+      "label": "Order on mobile",
+      "options": [
+        {
+          "value": "media-first",
+          "label": "Media first"
+        },
+        {
+          "value": "text-first",
+          "label": "Text first"
+        }
+      ],
+      "default": "media-first"
+    },
+    {
+      "type": "select",
+      "id": "split",
+      "label": "Media width",
+      "options": [
+        {
+          "value": "1fr",
+          "label": "Half"
+        },
+        {
+          "value": "0.75fr",
+          "label": "Narrow"
+        },
+        {
+          "value": "1.3fr",
+          "label": "Wide"
+        }
+      ],
+      "default": "1fr"
+    },
+    {
+      "type": "select",
+      "id": "valign",
+      "label": "Vertical alignment",
+      "options": [
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "start",
+          "label": "Top"
+        },
+        {
+          "value": "end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "min": 0,
+      "max": 40,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Keep media sticky while text scrolls (desktop)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "card",
+      "label": "Put text in a card",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "color",
+      "id": "card_fg",
+      "label": "Card text",
+      "default": "#111111"
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal",
+      "label": "Fade in when scrolled into view",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Layout (GMC)"
+    },
+    {
+      "type": "select",
+      "id": "gmc_hide_on",
+      "label": "Hide section on",
+      "options": [
+        {
+          "value": "",
+          "label": "Show everywhere"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "gmc_pad_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Extra space above",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "gmc_pad_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Extra space below",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "gmc_max_width",
+      "min": 0,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max content width (0 = theme default)",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "gmc_bg_color",
+      "label": "Section background color"
+    },
+    {
+      "type": "image_picker",
+      "id": "gmc_bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "video",
+      "id": "gmc_bg_video",
+      "label": "Background video (MP4 upload)"
+    },
+    {
+      "type": "range",
+      "id": "gmc_bg_overlay",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Background overlay",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Add to cart in this section"
+    },
+    {
+      "type": "product",
+      "id": "gmc_atc_product",
+      "label": "Add-to-cart product",
+      "info": "Adds a button (with variant dropdown if needed) at the end of this section."
+    },
+    {
+      "type": "text",
+      "id": "gmc_atc_label",
+      "label": "Button label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "select",
+      "id": "gmc_atc_align",
+      "label": "Button alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Slider options"
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_swipe_mobile",
+      "label": "Swipe row on mobile",
+      "info": "Turns this section's grid into a swipeable row on phones.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "gmc_slider_autoplay",
+      "label": "Slider autoplay (seconds, 0 = off)",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0,
+      "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Eyebrow",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "New"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Heading",
+          "default": "Tell your story"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            },
+            {
+              "value": "lg",
+              "label": "Large"
+            }
+          ],
+          "default": "md"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share details about your brand or product.</p>"
+        }
+      ]
+    },
+    {
+      "type": "bullet",
+      "name": "Bullet with icon",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_name",
+          "label": "Icon name",
+          "info": "From assets/gmc-icon-list.txt, e.g. check. Empty = tick mark."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "A key benefit"
+        }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "Rating line",
+      "settings": [
+        {
+          "type": "text",
+          "id": "score",
+          "label": "Your real rating",
+          "info": "Only shown when filled in, e.g. 4.8"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text after rating",
+          "default": ""
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": []
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Primary label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Primary link"
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Secondary label"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Secondary link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 14,
+  "presets": [
+    {
+      "name": "Image + text (Advanced)",
+      "blocks": [
+        {
+          "type": "eyebrow"
+        },
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "bullet"
+        },
+        {
+          "type": "bullet"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
