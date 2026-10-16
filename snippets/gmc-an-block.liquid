@@ -1,0 +1,17 @@
+{%- comment -%} GMC Theme: one announcement entry. Params: block, size {%- endcomment -%}
+{%- assign b = block.settings -%}
+<div class="gmc-an-item gmc-an-item--{{ b.layout | default: 'row' }}" {{ block.shopify_attributes }} style="{% if b.size > 0 %}font-size:{{ b.size }}px{% endif %}">
+  {%- case block.type -%}
+    {%- when 'social' -%}
+      {%- render 'social-icons' -%}
+    {%- when 'code' -%}
+      {%- if b.icon_image != blank -%}{{ b.icon_image | image_url: width: 60 | image_tag: class: 'gmc-an-ic', width: 20, height: 20, alt: '' }}{%- elsif b.icon_name != blank -%}<span class="gmc-an-ic">{%- render 'gmc-icon', name: b.icon_name, size: 18 -%}</span>{%- endif -%}
+      <span class="gmc-an-t">{{ b.text | escape }}</span>
+      <button type="button" class="gmc-an-code" data-gmc-copy="{{ b.code | escape }}" data-done="{{ b.copied_text | default: 'Copied' | escape }}"><b>{{ b.code | escape }}</b><small>{{ b.copy_label | default: 'Copy' | escape }}</small></button>
+    {%- else -%}
+      {%- if b.link != blank -%}<a href="{{ b.link }}" class="announcement-bar__link link link--text focus-inset animate-arrow gmc-an-link">{%- endif -%}
+      {%- if b.icon_image != blank -%}{{ b.icon_image | image_url: width: 60 | image_tag: class: 'gmc-an-ic', width: 20, height: 20, alt: '' }}{%- elsif b.icon_name != blank -%}<span class="gmc-an-ic">{%- render 'gmc-icon', name: b.icon_name, size: 18 -%}</span>{%- endif -%}
+      {%- if b.text != blank -%}<p class="announcement-bar__message h5"><span>{{ b.text | escape }}</span>{%- if b.link != blank -%}{{- 'icon-arrow.svg' | inline_asset_content -}}{%- endif -%}</p>{%- endif -%}
+      {%- if b.link != blank -%}</a>{%- endif -%}
+  {%- endcase -%}
+</div>

@@ -1,0 +1,19 @@
+{%- comment -%} GMC Theme: prints "hide" when a bar must not show on this page. Params: only, hide (comma separated product handles) {%- endcomment -%}
+{%- liquid
+  assign g_only = only | downcase | remove: ' ' | split: ','
+  assign g_hide = hide | downcase | remove: ' ' | split: ','
+  assign g_out = false
+  if only != blank
+    if template.name == 'product' and g_only contains product.handle
+      assign g_out = false
+    else
+      assign g_out = true
+    endif
+  endif
+  if hide != blank and template.name == 'product' and g_hide contains product.handle
+    assign g_out = true
+  endif
+  if g_out
+    echo 'hide'
+  endif
+-%}

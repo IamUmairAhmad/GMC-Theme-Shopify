@@ -1,3 +1,5 @@
+{%- capture gmc_gate -%}{%- render 'gmc-gate', only: section.settings.gmc_only, hide: section.settings.gmc_hide -%}{%- endcapture -%}
+{%- unless gmc_gate contains 'hide' -%}
 {%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: advanced announcement bar – rotating messages, optional countdown, dismiss button (original code). Add it to the Header group. {%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
@@ -25,6 +27,7 @@ var cd=b.querySelector('.gmc-ab-bar__cd');if(cd&&b.dataset.end){var end=new Date
 {%- elsif request.design_mode -%}
 <p style="padding:1rem;text-align:center;opacity:.7">Announcement bar: add at least one message block.</p>
 {%- endif -%}
+{%- endunless -%}
 {% schema %}
 {
   "name": "Announcement bar (GMC)",
@@ -69,7 +72,7 @@ var cd=b.querySelector('.gmc-ab-bar__cd');if(cd&&b.dataset.end){var end=new Date
       "type": "text",
       "id": "countdown_end",
       "label": "Countdown end (optional)",
-      "info": "e.g. 2026-12-31T23:59:00 — shows a live timer beside the message"
+      "info": "e.g. 2026-12-31T23:59:00 \u2014 shows a live timer beside the message"
     },
     {
       "type": "checkbox",
@@ -116,6 +119,22 @@ var cd=b.querySelector('.gmc-ab-bar__cd');if(cd&&b.dataset.end){var end=new Date
         }
       ],
       "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Show only on products"
+    },
+    {
+      "type": "textarea",
+      "id": "gmc_only",
+      "label": "Show only on these product handles",
+      "info": "Comma separated. Leave empty to show everywhere."
+    },
+    {
+      "type": "textarea",
+      "id": "gmc_hide",
+      "label": "Hide on these product handles",
+      "info": "Comma separated."
     }
   ],
   "blocks": [

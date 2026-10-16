@@ -482,3 +482,6 @@ document.querySelectorAll('.gmc-cdisc').forEach(function(c){try{if(sessionStorag
   });}
   init();document.addEventListener('shopify:section:load',function(e){init(e.target);});
 })();
+
+/* copy-to-clipboard buttons */
+document.addEventListener('click',function(e){var b=e.target.closest('[data-gmc-copy]');if(!b)return;try{navigator.clipboard.writeText(b.dataset.gmcCopy);}catch(x){}var s=b.querySelector('small');if(s){var o=s.textContent;s.textContent=b.dataset.done;setTimeout(function(){s.textContent=o;},1800);}});

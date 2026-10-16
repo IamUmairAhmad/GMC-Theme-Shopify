@@ -19,6 +19,8 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "c1": {"type": "code", "settings": {"code": "TESTCODE"}},
+        "c2": {"type": "social", "settings": {}},
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
@@ -28,10 +30,13 @@
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "announcement-bar-0", "c1", "c2"
       ],
       "settings": {
-        "auto_rotate": false,
+        "auto_rotate": true,
+        "gmc_layout_d": "columns",
+        "gmc_sep": true,
+        "gmc_cols_d": 3,
         "change_slides_speed": 5,
         "color_scheme": "scheme-1",
         "show_line_separator": true,
