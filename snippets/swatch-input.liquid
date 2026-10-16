@@ -42,11 +42,38 @@
     {{ additional_props }}
   {% endif %}
 >
+  {%- liquid
+  # GMC: options without a Shopify swatch (sizes, or colours not in the store's colour list) used to render as an empty dashed circle.
+  # Use the option name as a colour when it is a common colour name, otherwise show the name as a text pill.
+  assign gmc_has_swatch = false
+  if swatch.image or swatch.color
+    assign gmc_has_swatch = true
+  endif
+  assign gmc_name = value | downcase | strip
+  assign gmc_hex = null
+  assign gmc_map = 'black:#121212,white:#ffffff,grey:#9e9e9e,gray:#9e9e9e,silver:#c0c0c0,red:#d32f2f,maroon:#7b1e2b,burgundy:#7b1e2b,pink:#f4a6c0,rose:#e8a0b4,orange:#f08a24,yellow:#f5d442,gold:#c9a24a,beige:#d9c7a3,sand:#d8c3a0,cream:#f3ead7,ivory:#f6f1e4,tan:#c8a77a,brown:#7a5230,green:#3f8f5a,olive:#6b7a3a,mint:#a8d8c0,teal:#2a8c8c,blue:#2f6fcb,navy:#1f2a4d,sky:#8ec5ee,purple:#7a4fb5,lavender:#b9a6e0,violet:#7a4fb5' | split: ','
+  unless gmc_has_swatch
+    for pair in gmc_map
+      assign kv = pair | split: ':'
+      if gmc_name == kv[0] or gmc_name contains kv[0]
+        if gmc_name == kv[0] or gmc_hex == null
+          assign gmc_hex = kv[1]
+        endif
+      endif
+    endfor
+  endunless
+-%}
 <label
   for="{{ id }}"
   title="{{ value }}"
-  class="swatch-input__label{% if shape == 'square' %} swatch-input__label--square{% endif %}"
+  class="swatch-input__label{% if shape == 'square' %} swatch-input__label--square{% endif %}{% unless swatch.image or swatch.color %}{% if gmc_hex == blank %} swatch-input__label--text{% endif %}{% endunless %}"
 >
-  {% render 'swatch', swatch: swatch, shape: shape %}
+  {%- if gmc_has_swatch -%}
+    {% render 'swatch', swatch: swatch, shape: shape %}
+  {%- elsif gmc_hex != blank -%}
+    <span class="swatch{% if shape == 'square' %} swatch--square{% endif %}" style="--swatch--background: {{ gmc_hex }};"></span>
+  {%- else -%}
+    <span class="swatch-input__text">{{ value }}</span>
+  {%- endif -%}
   {{ help_text }}
 </label>
