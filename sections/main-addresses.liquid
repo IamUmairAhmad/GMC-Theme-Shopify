@@ -1,0 +1,62 @@
+{%- render 'gmc-scheme' -%}
+<div class="gmc-acct color-{{ section.settings.color_scheme }} gradient"><div class="page-width page-width--narrow" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+<p><a href="{{ routes.account_url }}">&larr; Back to account</a></p>
+<h1 class="h2">Addresses</h1>
+{%- paginate customer.addresses by 5 -%}
+<details class="gmc-acct__new"><summary class="button button--secondary">Add a new address</summary>
+{%- form 'customer_address', customer.new_address -%}
+  {%- if form.errors -%}<div class="gmc-acct__err" role="alert" tabindex="-1"><strong>{{ 'Please fix the following' }}</strong>{{ form.errors | default_errors }}</div>{%- endif -%}
+  {%- render 'gmc-address-fields', form: form, address: form.address, id: 'new' -%}
+  <input type="checkbox" id="AddressDefaultNew" name="address[default]" value="1"><label for="AddressDefaultNew">Set as default address</label>
+  <div><button class="button">Add address</button></div>
+{%- endform -%}</details>
+<ul class="gmc-acct__addr" role="list">
+{%- for address in customer.addresses -%}
+  <li><p>{%- if address == customer.default_address -%}<strong>Default</strong><br>{%- endif -%}{{ address | format_address }}</p>
+  <details><summary>Edit</summary>
+  {%- form 'customer_address', address -%}
+    {%- if form.errors -%}<div class="gmc-acct__err" role="alert" tabindex="-1"><strong>{{ 'Please fix the following' }}</strong>{{ form.errors | default_errors }}</div>{%- endif -%}
+    {%- render 'gmc-address-fields', form: form, address: address, id: address.id -%}
+    <input type="checkbox" id="AddressDefault-{{ address.id }}" name="address[default]" value="1"{% if address == customer.default_address %} checked{% endif %}><label for="AddressDefault-{{ address.id }}">Set as default address</label>
+    <div><button class="button">Update address</button></div>
+  {%- endform -%}
+  {%- form 'customer_address', address, method: 'delete' -%}<button class="button button--secondary" onclick="return confirm('Delete this address?')">Delete</button>{%- endform -%}
+  </details></li>
+{%- endfor -%}
+</ul>
+{%- if paginate.pages > 1 -%}{%- render 'pagination', paginate: paginate -%}{%- endif -%}
+{%- endpaginate -%}
+</div></div>
+{% schema %}
+{
+  "name": "Customer addresses",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

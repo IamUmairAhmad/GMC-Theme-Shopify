@@ -117,7 +117,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| TP-01 | **Classic customer account templates**: account, login, register, order, addresses, reset password, activate account (we ship none; stores with classic accounts get the bare default). | P2 |
+| TP-01 ✅ | **Classic customer account templates**: account, login, register, order, addresses, reset password, activate account (we ship none; stores with classic accounts get the bare default). | P2 |
 | TP-02 | Default product template pre-built with the full block set (title, stars, price, picker, quantity breaks, buy buttons, checkpoints, sticky ATC, reviews, tabs) and sample extra sections. | P3 |
 
 ## 10. External / not recommended

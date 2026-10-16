@@ -1,0 +1,58 @@
+{%- render 'gmc-scheme' -%}
+<div class="gmc-acct color-{{ section.settings.color_scheme }} gradient"><div class="page-width page-width--narrow" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+<h1 class="h2">Log in</h1>
+{%- form 'customer_login', novalidate: 'novalidate' -%}
+  {%- if form.errors -%}<div class="gmc-acct__err" role="alert" tabindex="-1"><strong>{{ 'Please fix the following' }}</strong>{{ form.errors | default_errors }}</div>{%- endif -%}
+  <div class="field"><input class="field__input" type="email" id="CustomerEmail" name="customer[email]" autocomplete="email" autocapitalize="off" placeholder="Email" required><label class="field__label" for="CustomerEmail">Email</label></div>
+  {%- if form.password_needed -%}<div class="field"><input class="field__input" type="password" id="CustomerPassword" name="customer[password]" autocomplete="current-password" placeholder="Password" required><label class="field__label" for="CustomerPassword">Password</label></div>
+  <p><a href="#recover" data-gmc-toggle="#recover">Forgot your password?</a></p>{%- endif -%}
+  <input type="hidden" name="return_to" value="{{ routes.account_url }}">
+  <button class="button">Sign in</button>
+  <p><a href="{{ routes.account_register_url }}">Create account</a></p>
+{%- endform -%}
+<div id="recover" hidden>
+  <h2 class="h3">Reset your password</h2>
+  {%- form 'recover_customer_password' -%}
+    {%- if form.posted_successfully? -%}<p role="status" data-gmc-recover-open>We have sent you an email with a link to update your password.</p>{%- endif -%}
+    <div class="field"><input class="field__input" type="email" id="RecoverEmail" name="email" autocomplete="email" placeholder="Email" required><label class="field__label" for="RecoverEmail">Email</label></div>
+    <button class="button">Submit</button>
+  {%- endform -%}
+</div>
+{%- if shop.checkout.guest_login -%}
+  <div class="gmc-acct__guest"><h2 class="h3">Continue as a guest</h2>{%- form 'guest_login' -%}<button class="button button--secondary">Continue as a guest</button>{%- endform -%}</div>
+{%- endif -%}
+<script>(function(){var r=document.getElementById('recover');document.addEventListener('click',function(e){var a=e.target.closest('[data-gmc-toggle]');if(a){e.preventDefault();r.hidden=!r.hidden;}});if(location.hash==='#recover'||document.querySelector('[data-gmc-recover-open]')){r.hidden=false;}})();</script>
+</div></div>
+{% schema %}
+{
+  "name": "Customer login",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

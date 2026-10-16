@@ -1,0 +1,8 @@
+{%- comment -%} GMC Theme: address form fields. Params: form, address, id {%- endcomment -%}
+{%- assign gmc_af = 'first_name,last_name,company,address1,address2,city,zip,phone' | split: ',' -%}
+{%- for f in gmc_af -%}
+  {%- assign label = f | replace: '_', ' ' | capitalize -%}
+  <div class="field"><input class="field__input" type="text" id="Addr-{{ f }}-{{ id }}" name="address[{{ f }}]" value="{{ address[f] | escape }}" placeholder="{{ label }}" autocomplete="{{ f | replace: 'address1', 'address-line1' | replace: 'address2', 'address-line2' | replace: 'first_name', 'given-name' | replace: 'last_name', 'family-name' | replace: 'city', 'address-level2' | replace: 'zip', 'postal-code' | replace: 'phone', 'tel' | replace: 'company', 'organization' }}"><label class="field__label" for="Addr-{{ f }}-{{ id }}">{{ label }}</label></div>
+{%- endfor -%}
+<div class="field"><select class="select__select" id="Addr-country-{{ id }}" name="address[country]" data-default="{{ address.country }}">{{ all_country_option_tags }}</select></div>
+<div class="field"><input class="field__input" type="text" id="Addr-province-{{ id }}" name="address[province]" value="{{ address.province | escape }}" placeholder="Province / state"><label class="field__label" for="Addr-province-{{ id }}">Province / state</label></div>

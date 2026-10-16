@@ -485,3 +485,6 @@ document.querySelectorAll('.gmc-cdisc').forEach(function(c){try{if(sessionStorag
 
 /* copy-to-clipboard buttons */
 document.addEventListener('click',function(e){var b=e.target.closest('[data-gmc-copy]');if(!b)return;try{navigator.clipboard.writeText(b.dataset.gmcCopy);}catch(x){}var s=b.querySelector('small');if(s){var o=s.textContent;s.textContent=b.dataset.done;setTimeout(function(){s.textContent=o;},1800);}});
+
+/* preselect saved country in address forms */
+document.querySelectorAll('select[data-default]').forEach(function(s){var d=s.dataset.default;if(!d)return;for(var i=0;i<s.options.length;i++){if(s.options[i].text===d||s.options[i].value===d){s.selectedIndex=i;break;}}});
