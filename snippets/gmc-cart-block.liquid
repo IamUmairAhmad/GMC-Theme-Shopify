@@ -140,6 +140,15 @@
       {%- endif -%}
     {%- endif -%}
 
+  {%- when 'gift_wrap' -%}
+    {%- assign gw_on = false -%}
+    {%- if cart.attributes['Gift wrap'] == 'Yes' -%}{%- assign gw_on = true -%}{%- endif -%}
+    {%- assign gw_v = bs.product.selected_or_first_available_variant -%}
+    <div class="gmc-gw" data-variant="{{ gw_v.id }}" style="padding:.6rem 2rem" {{ block.shopify_attributes }}>
+      <label class="gmc-gw__l" style="display:flex;gap:.8rem;align-items:center;cursor:pointer"><input type="checkbox" class="gmc-gw__cb" {% if gw_on %}checked{% endif %}> <span>{{ bs.label | default: 'Add gift wrap' | escape }}{%- if gw_v != blank -%} (+{{ gw_v.price | money }}){%- endif -%}</span></label>
+      {%- if bs.message -%}<textarea class="field__input gmc-gw__msg" rows="2" placeholder="{{ bs.placeholder | escape }}" style="padding:.8rem;width:100%;margin-top:.6rem;{% unless gw_on %}display:none{% endunless %}">{{ cart.attributes['Gift message'] | escape }}</textarea>{%- endif -%}
+    </div>
+
   {%- when 'cart_note' -%}
     <div class="gmc-cnote" style="padding:.6rem 2rem" {{ block.shopify_attributes }}>
       <label for="gmc-cnote-{{ block.id }}" style="display:block;font-size:1.3rem;margin-bottom:.4rem">{{ bs.label | default: 'Order note' | escape }}</label>

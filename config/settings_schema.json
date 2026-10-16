@@ -2837,6 +2837,56 @@
     ]
   },
   {
+    "name": "GMC: Wishlist & compare",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Wishlist"
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_wish_on",
+        "label": "Show a heart on product cards",
+        "info": "Saved in the visitor's browser. Show the list with the Wishlist section on any page.",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "gmc_wish_label",
+        "label": "Heart button accessible label",
+        "default": "Save to wishlist"
+      },
+      {
+        "type": "header",
+        "content": "Compare"
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_cmp_on",
+        "label": "Show a Compare button on product cards",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "gmc_cmp_label",
+        "label": "Compare button label",
+        "default": "Compare"
+      },
+      {
+        "type": "url",
+        "id": "gmc_cmp_page",
+        "label": "Compare page link",
+        "info": "A page that has the Compare products section."
+      },
+      {
+        "type": "text",
+        "id": "gmc_cmp_bar_text",
+        "label": "Floating bar text",
+        "default": "Compare"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.customer_accounts.name",
     "settings": [
       {

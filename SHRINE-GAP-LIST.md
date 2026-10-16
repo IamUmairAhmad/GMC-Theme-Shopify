@@ -234,11 +234,11 @@ Both Shrine scripts were scanned for hidden features (wishlist, compare, recentl
 Because neither theme has them, these are optional **"beat Shrine"** ideas for later, not parity work:
 | ID | Idea | Note |
 |---|---|---|
-| BX-01 | Wishlist (saved in the browser, no app) | P3 |
-| BX-02 | Recently viewed products strip | P3 |
+| BX-01 ✅ | Wishlist (saved in the browser, no app) | P3 |
+| BX-02 ✅ | Recently viewed products strip | P3 |
 | BX-03 | Back-in-stock email request | needs an email app or Shopify Flow **[EXT]** |
-| BX-04 | Product compare | P3 |
-| BX-05 | Gift-wrap / gift-message option in the cart | P3 |
+| BX-04 ✅ | Product compare | P3 |
+| BX-05 ✅ | Gift-wrap / gift-message option in the cart | P3 |
 
 ## 20. Eleventh pass: option lists inside the settings (earlier passes dropped them)
 Reading the actual choices in each dropdown found variants not captured before:
