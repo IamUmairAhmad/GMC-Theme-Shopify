@@ -1,52 +1,99 @@
 {%- comment -%}
-  GMC Theme: cart progress / checkpoints bar (original code). Thresholds come from Theme settings > Cart (store currency units).
-  Params: mode ('progress' | 'checkpoints'), block (the cart drawer block holding the texts).
+  GMC Theme: cart progress bar and checkpoints bar (original code).
+  Params: mode ('progress' | 'checkpoints'), block (cart drawer block holding goals and texts).
+  Goals come from the block (amounts in store currency, converted with the optional rate map); blank goals fall back to Theme settings > Cart.
 {%- endcomment -%}
-{%- capture ship_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold, map: settings.gmc_ship_currency_map -%}{%- endcapture -%}
-{%- assign threshold = ship_cap | strip | plus: 0 | times: 100 -%}
-{%- capture t2_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold2, map: settings.gmc_ship2_currency_map -%}{%- endcapture -%}
-{%- assign t2 = t2_cap | strip | plus: 0 | times: 100 -%}
 {%- assign bs = block.settings -%}
-{%- if threshold > 0 -%}
-  {%- assign remaining = threshold | minus: cart.total_price -%}
-  {%- if mode == 'checkpoints' and t2 > threshold -%}
-    {%- assign pct = cart.total_price | times: 100 | divided_by: t2 -%}
-    {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
-    {%- assign m1 = threshold | times: 100 | divided_by: t2 -%}
-    <div class="gmc-ship gmc-ship--checkpoints" style="padding:1rem 2rem 0" {{ block.shopify_attributes }}>
-      <p class="gmc-ship__msg" style="margin:0 0 1rem;font-size:1.3rem">
-        {%- if cart.total_price < threshold -%}
-          {%- assign rem_money = remaining | money -%}
-          {{ bs.text_step_1 | default: 'Add [amount] more for free shipping' | escape | replace: '[amount]', rem_money }}
-        {%- elsif cart.total_price < t2 -%}
-          {%- assign rem_money = t2 | minus: cart.total_price | money -%}
-          {{ bs.text_step_2 | default: 'Add [amount] more for a free gift' | escape | replace: '[amount]', rem_money }}
-        {%- else -%}
-          {{ bs.text_done | default: 'All rewards unlocked' | escape }}
-        {%- endif -%}
-      </p>
-      <div style="position:relative;height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);margin-bottom:2.2rem">
-        <div style="height:100%;width:{{ pct }}%;border-radius:99px;background:{{ settings.gmc_accent }};transition:width .4s"></div>
-        <span style="position:absolute;top:50%;left:{{ m1 }}%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:{% if cart.total_price >= threshold %}{{ settings.gmc_accent }}{% else %}rgb(var(--color-background)){% endif %};border:2px solid {{ settings.gmc_accent }}"></span>
-        <span style="position:absolute;top:50%;right:0;width:14px;height:14px;margin:-7px -7px 0 0;border-radius:50%;background:{% if cart.total_price >= t2 %}{{ settings.gmc_accent }}{% else %}rgb(var(--color-background)){% endif %};border:2px solid {{ settings.gmc_accent }}"></span>
-        <span style="position:absolute;top:1.6rem;left:{{ m1 }}%;transform:translateX(-50%);font-size:1.1rem;white-space:nowrap">{{ bs.label_1 | default: 'Free shipping' | escape }}</span>
-        <span style="position:absolute;top:1.6rem;right:0;font-size:1.1rem;white-space:nowrap">{{ bs.label_2 | default: 'Free gift' | escape }}</span>
-      </div>
-    </div>
+{%- assign rate = 1.0 -%}
+{%- if bs.rate_map != blank -%}
+  {%- assign rate_lines = bs.rate_map | newline_to_br | replace: ',', '<br />' | split: '<br />' -%}
+  {%- for rl in rate_lines -%}
+    {%- assign rkv = rl | strip | split: ':' -%}
+    {%- if rkv.size == 2 -%}{%- assign rk = rkv[0] | strip | upcase -%}{%- if rk == cart.currency.iso_code -%}{%- assign rate = rkv[1] | strip | times: 1.0 -%}{%- endif -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- comment -%} fall back to the legacy theme-wide thresholds {%- endcomment -%}
+{%- capture ship_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold, map: settings.gmc_ship_currency_map -%}{%- endcapture -%}
+{%- assign legacy1 = ship_cap | strip | plus: 0 | times: 100 -%}
+{%- capture t2_cap -%}{%- render 'gmc-threshold', base: settings.gmc_ship_threshold2, map: settings.gmc_ship2_currency_map -%}{%- endcapture -%}
+{%- assign legacy2 = t2_cap | strip | plus: 0 | times: 100 -%}
+{%- assign bar_color = bs.bar_color | default: settings.gmc_accent -%}
+{%- assign bar_h = bs.height | default: 8 -%}
+{%- if mode == 'progress' -%}
+  {%- if bs.goal > 0 -%}
+    {%- assign goal = bs.goal | times: rate | times: 100 | round -%}
   {%- else -%}
-    {%- assign pct = cart.total_price | times: 100 | divided_by: threshold -%}
+    {%- assign goal = legacy1 -%}
+  {%- endif -%}
+  {%- if goal > 0 -%}
+    {%- assign remaining = goal | minus: cart.total_price -%}
+    {%- assign pct = cart.total_price | times: 100 | divided_by: goal -%}
     {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
     <div class="gmc-ship" style="padding:1rem 2rem 0" {{ block.shopify_attributes }}>
-      <p class="gmc-ship__msg" style="margin:0 0 .5rem;font-size:1.3rem">
+      <p class="gmc-ship__msg" style="margin:0 0 .5rem;font-size:1.3rem;display:flex;gap:.6rem;align-items:center">
+        {%- if bs.icon != blank -%}<span style="color:{{ bar_color }};display:inline-flex">{%- render 'gmc-icon', name: bs.icon, size: 20 -%}</span>{%- endif -%}
+        <span>
         {%- if remaining > 0 -%}
           {%- assign rem_money = remaining | money -%}
           {{ bs.text_before | default: 'Add [amount] more for free shipping' | escape | replace: '[amount]', rem_money }}
         {%- else -%}
           {{ bs.text_after | default: 'You have unlocked free shipping' | escape }}
         {%- endif -%}
+        </span>
       </p>
-      <div style="height:8px;border-radius:99px;background:rgba(var(--color-foreground),.12);overflow:hidden">
-        <div style="height:100%;width:{{ pct }}%;background:{{ settings.gmc_accent }};transition:width .4s"></div>
+      <div style="height:{{ bar_h }}px;border-radius:99px;background:{{ bs.track_color | default: 'rgba(var(--color-foreground),.12)' }};overflow:hidden">
+        <div style="height:100%;width:{{ pct }}%;background:{{ bar_color }};transition:width .4s"></div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- else -%}
+  {%- assign steps = '' -%}
+  {%- for i in (1..3) -%}
+    {%- assign ak = 'amount_' | append: i -%}
+    {%- assign amt = bs[ak] -%}
+    {%- if amt > 0 -%}
+      {%- assign cents = amt | times: rate | times: 100 | round -%}
+    {%- elsif i == 1 and legacy1 > 0 and bs.amount_1 == blank and bs.amount_2 == blank and bs.amount_3 == blank -%}
+      {%- assign cents = legacy1 -%}
+    {%- elsif i == 2 and legacy2 > legacy1 and legacy1 > 0 and bs.amount_1 == blank and bs.amount_2 == blank and bs.amount_3 == blank -%}
+      {%- assign cents = legacy2 -%}
+    {%- else -%}
+      {%- assign cents = 0 -%}
+    {%- endif -%}
+    {%- if cents > 0 -%}{%- assign steps = steps | append: cents | append: ',' | append: i | append: ';' -%}{%- endif -%}
+  {%- endfor -%}
+  {%- assign step_list = steps | split: ';' -%}
+  {%- assign last_pair = step_list | last | split: ',' -%}
+  {%- assign max_c = last_pair[0] | plus: 0 -%}
+  {%- if step_list.size > 0 and max_c > 0 -%}
+    {%- assign pct = cart.total_price | times: 100 | divided_by: max_c -%}
+    {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+    {%- assign next_msg = '' -%}
+    {%- for st in step_list -%}
+      {%- assign pr = st | split: ',' -%}
+      {%- assign sc = pr[0] | plus: 0 -%}
+      {%- if cart.total_price < sc and next_msg == '' -%}
+        {%- assign tk = 'text_' | append: pr[1] -%}
+        {%- assign rem_money = sc | minus: cart.total_price | money -%}
+        {%- assign next_msg = bs[tk] | default: 'Add [amount] more to reach the next reward' | escape | replace: '[amount]', rem_money -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if next_msg == '' -%}{%- assign next_msg = bs.text_done | default: 'All rewards unlocked' | escape -%}{%- endif -%}
+    <div class="gmc-ship gmc-ship--checkpoints" style="padding:1rem 2rem 0" {{ block.shopify_attributes }}>
+      <p class="gmc-ship__msg" style="margin:0 0 1rem;font-size:1.3rem">{{ next_msg }}</p>
+      <div style="position:relative;height:{{ bar_h }}px;border-radius:99px;background:{{ bs.track_color | default: 'rgba(var(--color-foreground),.12)' }};margin-bottom:4.4rem">
+        <div style="height:100%;width:{{ pct }}%;border-radius:99px;background:{{ bar_color }};transition:width .4s"></div>
+        {%- for st in step_list -%}
+          {%- assign pr = st | split: ',' -%}
+          {%- assign sc = pr[0] | plus: 0 -%}
+          {%- assign sp = sc | times: 100 | divided_by: max_c -%}
+          {%- assign lk = 'label_' | append: pr[1] -%}
+          {%- assign ik = 'icon_' | append: pr[1] -%}
+          {%- assign reached = false -%}
+          {%- if cart.total_price >= sc -%}{%- assign reached = true -%}{%- endif -%}
+          <span class="gmc-ship__pt" style="position:absolute;top:50%;left:{{ sp }}%;transform:translate(-50%,-50%);width:{% if bs[ik] != blank %}30{% else %}14{% endif %}px;height:{% if bs[ik] != blank %}30{% else %}14{% endif %}px;border-radius:50%;display:grid;place-items:center;background:{% if reached %}{{ bar_color }}{% else %}rgb(var(--color-background)){% endif %};color:{% if reached %}#fff{% else %}{{ bar_color }}{% endif %};border:2px solid {{ bar_color }}">{%- if bs[ik] != blank -%}{%- render 'gmc-icon', name: bs[ik], size: 16 -%}{%- endif -%}</span>
+          <span style="position:absolute;top:2.4rem;left:{{ sp }}%;transform:translateX(-{% if forloop.last %}85{% else %}50{% endif %}%);font-size:1.1rem;white-space:nowrap;text-align:center;{% if reached %}font-weight:700{% endif %}">{{ bs[lk] | escape }}</span>
+        {%- endfor -%}
       </div>
     </div>
   {%- endif -%}

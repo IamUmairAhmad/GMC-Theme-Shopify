@@ -35,23 +35,80 @@
     {
       "type": "checkpoints_bar",
       "name": "Checkpoints bar",
-      "limit": 1,
       "settings": [
         {
           "type": "paragraph",
-          "content": "Two milestones on one bar. Set the amounts in Theme settings > Cart."
+          "content": "Up to three reward goals on one bar. Leave an amount blank to skip that checkpoint. Blank amounts everywhere use Theme settings > Cart."
+        },
+        {
+          "type": "number",
+          "id": "amount_1",
+          "label": "Goal 1 amount (store currency)"
         },
         {
           "type": "text",
-          "id": "text_step_1",
-          "label": "Message before milestone 1",
+          "id": "label_1",
+          "label": "Goal 1 label",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "icon_1",
+          "label": "Goal 1 icon",
+          "info": "Icon name from the theme icon library, e.g. truck or gift."
+        },
+        {
+          "type": "text",
+          "id": "text_1",
+          "label": "Message before goal 1",
+          "info": "[amount] becomes the amount still missing.",
           "default": "Add [amount] more for free shipping"
         },
         {
+          "type": "number",
+          "id": "amount_2",
+          "label": "Goal 2 amount (store currency)"
+        },
+        {
           "type": "text",
-          "id": "text_step_2",
-          "label": "Message before milestone 2",
+          "id": "label_2",
+          "label": "Goal 2 label",
+          "default": "Free gift"
+        },
+        {
+          "type": "text",
+          "id": "icon_2",
+          "label": "Goal 2 icon",
+          "info": "Icon name from the theme icon library, e.g. truck or gift."
+        },
+        {
+          "type": "text",
+          "id": "text_2",
+          "label": "Message before goal 2",
+          "info": "[amount] becomes the amount still missing.",
           "default": "Add [amount] more for a free gift"
+        },
+        {
+          "type": "number",
+          "id": "amount_3",
+          "label": "Goal 3 amount (store currency)"
+        },
+        {
+          "type": "text",
+          "id": "label_3",
+          "label": "Goal 3 label"
+        },
+        {
+          "type": "text",
+          "id": "icon_3",
+          "label": "Goal 3 icon",
+          "info": "Icon name from the theme icon library, e.g. truck or gift."
+        },
+        {
+          "type": "text",
+          "id": "text_3",
+          "label": "Message before goal 3",
+          "info": "[amount] becomes the amount still missing."
         },
         {
           "type": "text",
@@ -60,27 +117,52 @@
           "default": "All rewards unlocked"
         },
         {
-          "type": "text",
-          "id": "label_1",
-          "label": "Milestone 1 label",
-          "default": "Free shipping"
+          "type": "textarea",
+          "id": "rate_map",
+          "label": "Currency rates",
+          "info": "Optional. One per line, e.g. EUR:0.92. Multiplies the goal amounts for that currency."
         },
         {
-          "type": "text",
-          "id": "label_2",
-          "label": "Milestone 2 label",
-          "default": "Free gift"
+          "type": "color",
+          "id": "bar_color",
+          "label": "Bar colour"
+        },
+        {
+          "type": "color",
+          "id": "track_color",
+          "label": "Track colour"
+        },
+        {
+          "type": "range",
+          "id": "height",
+          "min": 4,
+          "max": 16,
+          "step": 2,
+          "unit": "px",
+          "label": "Bar height",
+          "default": 8
         }
       ]
     },
     {
       "type": "progress_bar",
       "name": "Progress bar",
-      "limit": 1,
       "settings": [
         {
           "type": "paragraph",
-          "content": "Free shipping progress. Set the amount in Theme settings > Cart."
+          "content": "Progress toward a goal such as free shipping. A blank goal uses Theme settings > Cart."
+        },
+        {
+          "type": "number",
+          "id": "goal",
+          "label": "Goal amount (store currency)"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "truck",
+          "info": "Icon name from the theme icon library."
         },
         {
           "type": "text",
@@ -93,6 +175,32 @@
           "id": "text_after",
           "label": "Message after the goal",
           "default": "You have unlocked free shipping"
+        },
+        {
+          "type": "textarea",
+          "id": "rate_map",
+          "label": "Currency rates",
+          "info": "Optional. One per line, e.g. EUR:0.92. Multiplies the goal for that currency."
+        },
+        {
+          "type": "color",
+          "id": "bar_color",
+          "label": "Bar colour"
+        },
+        {
+          "type": "color",
+          "id": "track_color",
+          "label": "Track colour"
+        },
+        {
+          "type": "range",
+          "id": "height",
+          "min": 4,
+          "max": 16,
+          "step": 2,
+          "unit": "px",
+          "label": "Bar height",
+          "default": 8
         }
       ]
     },
@@ -194,6 +302,23 @@
   ],
   "default": {
     "blocks": [
+      {
+        "type": "progress_bar",
+        "settings": {
+          "goal": 50
+        }
+      },
+      {
+        "type": "checkpoints_bar",
+        "settings": {
+          "amount_1": 40,
+          "amount_2": 80,
+          "amount_3": 160,
+          "icon_3": "star",
+          "label_3": "VIP",
+          "text_3": "Add [amount] more for VIP"
+        }
+      },
       {
         "type": "cart_items"
       },
