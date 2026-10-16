@@ -1,42 +1,102 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "slideshow": {
+      "type": "slideshow",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "s1": {
+          "type": "slide",
           "settings": {
             "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "subheading": "",
+            "button_label": "Shop all",
+            "link": "shopify://collections/all"
           }
         },
-        "button": {
-          "type": "buttons",
+        "s2": {
+          "type": "slide",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "heading": "New arrivals",
+            "subheading": "Fresh picks for the season",
+            "button_label": "Shop now",
+            "link": "shopify://collections/all"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "s1",
+        "s2"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "layout": "full_bleed",
+        "slide_height": "medium",
+        "auto_rotate": true,
+        "change_slides_speed": 5,
+        "slider_visual": "counter"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all"
+          }
+        }
+      },
+      "block_order": [
+        "c1"
+      ],
+      "settings": {
+        "title": "Shop by collection",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "show_view_all": false,
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_1": {
+      "type": "rich-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Shop our best sellers",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A short introduction to your store and what you offer.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop all",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     },
     "featured_collection": {
@@ -67,94 +127,314 @@
         "padding_bottom": 36
       }
     },
-    "collection_list": {
-      "type": "collection-list",
+    "rich_text_2": {
+      "type": "rich-text",
       "blocks": {
-        "c1": {
-          "type": "featured_collection",
+        "h": {
+          "type": "heading",
           "settings": {
-            "collection": "all"
+            "heading": "Made with care",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share your story, your values, or what sets your products apart.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Our story",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false
           }
         }
       },
       "block_order": [
-        "c1"
+        "h",
+        "t",
+        "b"
       ],
       "settings": {
-        "title": "Shop by collection",
-        "heading_size": "h1",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "columns_mobile": "2",
+        "desktop_content_position": "center",
+        "content_alignment": "center",
         "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "swipe_on_mobile": false,
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variants": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "qty": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variants",
+        "qty",
+        "buy"
+      ],
+      "settings": {
+        "product": "gmc-demo-hoodie",
+        "color_scheme": "scheme-1",
+        "media_size": "large",
         "padding_top": 36,
         "padding_bottom": 36
       }
     },
-    "featured_collection_2": {
-      "type": "featured-collection",
+    "rich_text_3": {
+      "type": "rich-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Why shoppers choose us",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Highlight a few reasons to buy from your store.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
+        "desktop_content_position": "center",
+        "content_alignment": "center",
         "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     },
-    "featured_collection_3": {
-      "type": "featured-collection",
+    "image_with_text_1": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Feature one",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Add a short description here. Tell shoppers what makes this special.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
         "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_2": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Feature two",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Add a short description here. Tell shoppers what makes this special.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_3": {
+      "type": "image-with-text",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Feature three",
+            "heading_size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Add a short description here. Tell shoppers what makes this special.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": true
+          }
+        }
+      },
+      "block_order": [
+        "h",
+        "t",
+        "b"
+      ],
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "section": {
+      "type": "gmc-section-group",
+      "blocks": {
+        "t": {
+          "type": "_gmc-text",
+          "settings": {
+            "heading": "A section you can build on",
+            "text": "Add text, images, buttons and icons using blocks.",
+            "align": "center"
+          }
+        }
+      },
+      "block_order": [
+        "t"
+      ],
+      "settings": {
+        "columns": 1
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Subscribe to our emails",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
+          }
+        },
+        "email_form": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "paragraph",
+        "email_form"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "full_width": true
       }
     }
   },
   "order": [
-    "image_banner",
+    "slideshow",
     "collection_list",
+    "rich_text_1",
     "featured_collection",
-    "featured_collection_2",
-    "featured_collection_3"
+    "rich_text_2",
+    "featured_product",
+    "rich_text_3",
+    "image_with_text_1",
+    "image_with_text_2",
+    "image_with_text_3",
+    "section",
+    "newsletter"
   ]
 }
