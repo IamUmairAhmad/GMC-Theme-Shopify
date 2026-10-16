@@ -198,21 +198,6 @@
           "settings": {
             "color_scheme": "scheme-1"
           }
-        },
-        "cart-drawer": {
-          "type": "cart-drawer",
-          "blocks": {
-            "gw": {
-              "type": "gift_wrap",
-              "settings": {
-                "label": "GWTEST"
-              }
-            }
-          },
-          "block_order": [
-            "gw"
-          ],
-          "settings": {}
         }
       }
     }
