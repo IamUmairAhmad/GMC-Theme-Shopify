@@ -13,7 +13,7 @@
 </div>
 <style>
   .gmc-qb{margin:1.2rem 0;display:grid;gap:.7rem}.gmc-qb__title{margin:0;font-weight:700}
-  .gmc-qb__opt{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;border:1px solid rgba(var(--color-foreground),.2);border-radius:10px;cursor:pointer;position:relative}
+  .gmc-qb__opt{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);cursor:pointer;position:relative}
   .gmc-qb__opt:has(input:checked){border-color:rgb(var(--color-foreground));background:rgba(var(--color-foreground),.04)}
   .gmc-qb__label{flex:1;display:flex;flex-direction:column}.gmc-qb__label em{font-size:.85em;opacity:.7;font-style:normal}
   .gmc-qb__gift{color:{{ settings.gmc_accent }};font-weight:600}.gmc-qb__badge{background:{{ settings.gmc_accent }};color:#fff;font-size:.75em;padding:2px 8px;border-radius:99px}

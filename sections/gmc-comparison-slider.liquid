@@ -17,14 +17,14 @@
 </div>
 <style>
   .gmc-cmp-wrap{padding:36px 0}.gmc-cmp-title{text-align:center;margin:0 0 1.5rem}
-  .gmc-cmp{position:relative;overflow:hidden;max-width:900px;margin:0 auto;border-radius:12px;user-select:none}
+  .gmc-cmp{position:relative;overflow:hidden;max-width:900px;margin:0 auto;border-radius:var(--text-boxes-radius);user-select:none}
   .gmc-cmp__img img{display:block;width:100%;height:auto}
   .gmc-cmp__before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
   .gmc-cmp__before img{height:100%;object-fit:cover}
-  .gmc-cmp__handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;background:#fff;transform:translateX(-50%);box-shadow:0 0 6px rgba(0,0,0,.4);pointer-events:none}
+  .gmc-cmp__handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;background:#fff;transform:translateX(-50%);box-shadow:0 0 6px rgba(var(--color-shadow),.4);pointer-events:none}
   .gmc-cmp__handle:after{content:"↔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center}
   .gmc-cmp__range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
-  .gmc-cmp__tag{position:absolute;top:12px;padding:3px 10px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;border-radius:20px;pointer-events:none}
+  .gmc-cmp__tag{position:absolute;top:12px;padding:3px 10px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;border-radius:var(--text-boxes-radius);pointer-events:none}
   .gmc-cmp__tag--l{left:12px}.gmc-cmp__tag--r{right:12px}
 </style>
 <script>

@@ -38,7 +38,7 @@
   #gmc-iwt-{{ section.id }} .gmc-iwt__grid{display:grid;grid-template-columns:var(--split) 1fr;gap:var(--gap);align-items:var(--va)}
   #gmc-iwt-{{ section.id }} .gmc-iwt__grid--right{grid-template-columns:1fr var(--split)}#gmc-iwt-{{ section.id }} .gmc-iwt__grid--right .gmc-iwt__media{order:2}
   #gmc-iwt-{{ section.id }} .gmc-iwt__media{position:relative;border-radius:var(--rad);overflow:hidden}
-  #gmc-iwt-{{ section.id }} .gmc-iwt__media--sticky{position:sticky;top:90px}
+  #gmc-iwt-{{ section.id }} .gmc-iwt__media--sticky{position:sticky;top:calc(var(--header-height,60px) + 2rem)}
   #gmc-iwt-{{ section.id }} .gmc-iwt__media img,#gmc-iwt-{{ section.id }} .gmc-iwt__media video{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:var(--mratio)}
   #gmc-iwt-{{ section.id }} .gmc-iwt__ph{aspect-ratio:var(--mratio);background:rgba(var(--color-foreground),.08)}
   #gmc-iwt-{{ section.id }} .gmc-iwt__badge{position:absolute;top:1rem;left:1rem;background:{{ s.badge_bg }};color:{{ s.badge_fg }};padding:.3rem 1.2rem;border-radius:99px;font-weight:700;font-size:1.3rem}
@@ -120,7 +120,7 @@
       "type": "color",
       "id": "badge_bg",
       "label": "Badge background",
-      "default": "#111111"
+      "default": "#121212"
     },
     {
       "type": "color",
@@ -245,13 +245,13 @@
       "type": "color",
       "id": "card_bg",
       "label": "Card background",
-      "default": "#f4f4f4"
+      "default": "#F4F1EB"
     },
     {
       "type": "color",
       "id": "card_fg",
       "label": "Card text",
-      "default": "#111111"
+      "default": "#121212"
     },
     {
       "type": "checkbox",

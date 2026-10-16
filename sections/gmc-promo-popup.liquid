@@ -36,11 +36,11 @@
 </div>
 <style>
   .gmc-pop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:grid;place-items:center;padding:1.5rem}.gmc-pop[hidden]{display:none}
-  .gmc-pop__box{position:relative;background:rgb(var(--color-background));color:rgb(var(--color-foreground));max-width:440px;width:100%;border-radius:14px;overflow:hidden;text-align:center}
+  .gmc-pop__box{position:relative;background:rgb(var(--color-background));color:rgb(var(--color-foreground));max-width:440px;width:100%;border-radius:var(--text-boxes-radius);overflow:hidden;text-align:center}
   .gmc-pop__box--img{max-width:760px;display:grid;grid-template-columns:1fr 1fr}.gmc-pop__im img{width:100%;height:100%;object-fit:cover;display:block}
   .gmc-pop__body{padding:2.5rem 2rem}.gmc-pop__body h2{margin:0 0 .6rem}.gmc-pop__body p{margin:0 0 1rem}
   .gmc-pop__x{position:absolute;top:.4rem;right:.9rem;background:none;border:0;font-size:2.6rem;cursor:pointer;color:inherit;z-index:2;line-height:1}
-  .gmc-pop__form{display:grid;gap:.8rem;margin-top:1rem}.gmc-pop__code{display:inline-block;padding:.2rem 1rem;border:2px dashed currentColor;border-radius:6px;letter-spacing:.08em}
+  .gmc-pop__form{display:grid;gap:.8rem;margin-top:1rem}.gmc-pop__code{display:inline-block;padding:.2rem 1rem;border:2px dashed currentColor;border-radius:var(--text-boxes-radius);letter-spacing:.08em}
   @media(max-width:749px){.gmc-pop__box--img{grid-template-columns:1fr}.gmc-pop__im{max-height:180px}}
 </style>
 <script>

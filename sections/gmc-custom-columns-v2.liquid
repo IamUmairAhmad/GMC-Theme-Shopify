@@ -9,7 +9,7 @@
       {%- if block.settings.link != blank -%}<a class="button" style="margin-top:1rem;align-self:{% if block.settings.align == 'center' %}center{% else %}flex-start{% endif %}" href="{{ block.settings.link }}">{{ block.settings.button | default: 'Shop now' | escape }}</a>{%- endif -%}
     </div>{%- endfor -%}</div>
 </div>
-<style>.gmc-c2{padding:30px 0}.gmc-c2__g{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gap)}.gmc-c2__c{display:flex;flex-direction:column;border-radius:14px;grid-column:span 4}.gmc-c2__c--3{grid-column:span 3}.gmc-c2__c--4{grid-column:span 4}.gmc-c2__c--6{grid-column:span 6}.gmc-c2__c--8{grid-column:span 8}.gmc-c2__c--12{grid-column:span 12}@media(max-width:749px){.gmc-c2__c{grid-column:span 12!important}}</style>
+<style>.gmc-c2{padding:30px 0}.gmc-c2__g{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gap)}.gmc-c2__c{display:flex;flex-direction:column;border-radius:var(--text-boxes-radius);grid-column:span 4}.gmc-c2__c--3{grid-column:span 3}.gmc-c2__c--4{grid-column:span 4}.gmc-c2__c--6{grid-column:span 6}.gmc-c2__c--8{grid-column:span 8}.gmc-c2__c--12{grid-column:span 12}@media(max-width:749px){.gmc-c2__c{grid-column:span 12!important}}</style>
 {% schema %}
 {
   "name": "Custom columns V2",
@@ -227,13 +227,13 @@
           "type": "color",
           "id": "bg",
           "label": "Background",
-          "default": "#f4f4f4"
+          "default": "#F4F1EB"
         },
         {
           "type": "color",
           "id": "fg",
           "label": "Text",
-          "default": "#111111"
+          "default": "#121212"
         },
         {
           "type": "select",

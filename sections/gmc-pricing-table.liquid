@@ -10,7 +10,7 @@
       {%- if block.settings.link != blank -%}<a class="button" href="{{ block.settings.link }}">{{ block.settings.button | escape }}</a>{%- endif -%}
     </div>{%- endfor -%}</div>
 </div>
-<style>.gmc-pt{padding:36px 0}.gmc-pt__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-pt__card{position:relative;border:1px solid rgba(var(--color-foreground),.2);border-radius:14px;padding:2rem;text-align:center}.gmc-pt__card--hl{border:2px solid rgb(var(--color-foreground));transform:scale(1.03)}.gmc-pt__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:{{ settings.gmc_accent }};color:#fff;padding:2px 12px;border-radius:99px;font-size:12px}.gmc-pt__price{font-size:2.6rem;font-weight:700;margin:.5rem 0}</style>
+<style>.gmc-pt{padding:36px 0}.gmc-pt__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-pt__card{position:relative;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:2rem;text-align:center}.gmc-pt__card--hl{border:2px solid rgb(var(--color-foreground));transform:scale(1.03)}.gmc-pt__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:{{ settings.gmc_accent }};color:#fff;padding:2px 12px;border-radius:99px;font-size:12px}.gmc-pt__price{font-size:2.6rem;font-weight:700;margin:.5rem 0}</style>
 {% schema %}
 {
   "name": "Pricing table",

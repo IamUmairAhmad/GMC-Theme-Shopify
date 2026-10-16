@@ -8,7 +8,7 @@
   </div>
 </div>
 <style>
-  .gmc-satc{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgb(var(--color-background));border-top:1px solid rgba(var(--color-foreground),.15);padding:.8rem 0;box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+  .gmc-satc{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgb(var(--color-background));border-top:1px solid rgba(var(--color-foreground),.15);padding:.8rem 0;box-shadow:0 -4px 16px rgba(var(--color-shadow),.08)}
   .gmc-satc[hidden]{display:none}
   .gmc-satc__in{display:flex;align-items:center;gap:1.5rem}.gmc-satc__name{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
@@ -16,7 +16,7 @@
   (function(){var bar=document.getElementById('gmc-satc'),btn=document.getElementById('gmc-satc-btn');
   var form=document.querySelector('product-form form, form[action*="/cart/add"]');if(!bar||!form)return;
   var target=form.querySelector('[type=submit]')||form;
-  new IntersectionObserver(function(e){bar.hidden=e[0].isIntersecting||e[0].boundingClientRect.top>0;document.body.classList.toggle('gmc-sticky-on',!bar.hidden);}).observe(target);
+  new IntersectionObserver(function(e){bar.hidden=e[0].isIntersecting||e[0].boundingClientRect.top>0;document.body.classList.toggle('gmc-sticky-on',!bar.hidden);document.documentElement.style.setProperty('--gmc-dock',bar.hidden?'0px':bar.offsetHeight+'px');}).observe(target);
   gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;var pr=document.getElementById('gmc-satc-price');
   if(!v){btn.disabled=true;return;}
   try{pr.textContent=new Intl.NumberFormat(undefined,{style:'currency',currency:(window.GMC&&GMC.money)||'USD'}).format(v.price/100);}catch(e){}

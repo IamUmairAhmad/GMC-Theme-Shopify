@@ -9,7 +9,7 @@
       <figcaption>{%- if block.settings.avatar != blank -%}{{ block.settings.avatar | image_url: width: 80 | image_tag: width: 40, height: 40, loading: 'lazy', class: 'gmc-tm__av' }}{%- endif -%}<span>{{ block.settings.name | escape }}{% if block.settings.verified %} <small>✔ Verified buyer</small>{% endif %}</span></figcaption>
     </figure>{%- endfor -%}</div>
 </div>
-<style>.gmc-tm{padding:36px 0}.gmc-tm__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-tm__card{margin:0;padding:1.6rem;border:1px solid rgba(var(--color-foreground),.15);border-radius:14px}.gmc-tm__stars{color:#f5a623;letter-spacing:2px}.gmc-tm__card blockquote{margin:.8rem 0 1rem}.gmc-tm__card figcaption{display:flex;align-items:center;gap:.8rem;font-weight:600}.gmc-tm__av{border-radius:50%;object-fit:cover}.gmc-tm__card small{display:block;font-weight:400;opacity:.65}</style>
+<style>.gmc-tm{padding:36px 0}.gmc-tm__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-tm__card{margin:0;padding:1.6rem;border:1px solid rgba(var(--color-foreground),.15);border-radius:var(--text-boxes-radius)}.gmc-tm__stars{color:#f5a623;letter-spacing:2px}.gmc-tm__card blockquote{margin:.8rem 0 1rem}.gmc-tm__card figcaption{display:flex;align-items:center;gap:.8rem;font-weight:600}.gmc-tm__av{border-radius:50%;object-fit:cover}.gmc-tm__card small{display:block;font-weight:400;opacity:.65}</style>
 {% schema %}
 {
   "name": "Testimonials",
