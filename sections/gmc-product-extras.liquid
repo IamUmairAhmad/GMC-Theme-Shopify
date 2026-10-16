@@ -1,24 +1,25 @@
 {%- comment -%} GMC Theme: product page info blocks. Add this section to the product template and stack the blocks you want. {%- endcomment -%}
 {%- assign v = product.selected_or_first_available_variant -%}
 <div class="gmc-pe {% render 'gmc-vis', hide: section.settings.hide_on %}">
+<script type="application/json" class="gmc-vdata">[{%- for pv in product.variants -%}{"id":{{ pv.id }},"a":{{ pv.available | json }},"q":{% if pv.inventory_management != blank %}{{ pv.inventory_quantity | default: 0 }}{% else %}null{% endif %}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]</script>
 {%- for block in section.blocks -%}
   <div class="gmc-pe__b" style="margin-bottom:{{ block.settings.mb }}px" {{ block.shopify_attributes }}>
   {%- case block.type -%}{%- when 'urgency' -%}
-      {%- if v.inventory_management != blank and v.inventory_quantity > 0 and v.inventory_quantity <= block.settings.threshold -%}
-        <p class="gmc-pe__urg">🔥 Only {{ v.inventory_quantity }} left in stock — order soon</p>
-      {%- elsif block.settings.fallback != blank -%}<p class="gmc-pe__urg">{{ block.settings.fallback | escape }}</p>{%- endif -%}{%- when 'inventory' -%}
-      {%- if v.available -%}<p class="gmc-pe__stock">● In stock{% if v.inventory_management != blank and v.inventory_quantity > 0 and block.settings.show_qty %} ({{ v.inventory_quantity }} available){% endif %}</p>{%- else -%}<p style="color:#b91c1c">● Out of stock</p>{%- endif -%}{%- when 'estimated_delivery' -%}
+      <p class="gmc-pe__urg" data-gmc-urg data-threshold="{{ block.settings.threshold }}" data-fallback="{{ block.settings.fallback | escape }}" {% unless v.inventory_management != blank and v.inventory_quantity > 0 and v.inventory_quantity <= block.settings.threshold or block.settings.fallback != blank and v.available %}hidden{% endunless %}>{%- if v.inventory_management != blank and v.inventory_quantity > 0 and v.inventory_quantity <= block.settings.threshold -%}🔥 Only {{ v.inventory_quantity }} left in stock — order soon{%- elsif v.available -%}{{ block.settings.fallback | escape }}{%- endif -%}</p>
+    {%- when 'inventory' -%}
+      <p class="gmc-pe__stock" data-gmc-inv data-showqty="{{ block.settings.show_qty }}" {% unless v.available %}style="color:#b91c1c"{% endunless %}>{%- if v.available -%}● In stock{% if v.inventory_management != blank and v.inventory_quantity > 0 and block.settings.show_qty %} ({{ v.inventory_quantity }} available){% endif %}{%- else -%}● Out of stock{%- endif -%}</p>
+    {%- when 'estimated_delivery' -%}
       <p class="gmc-pe__eta">🚚 Order today and get it between <strong class="gmc-eta" data-min="{{ block.settings.min_days }}" data-max="{{ block.settings.max_days }}">…</strong></p>{%- when 'benefits' -%}
       <ul class="gmc-pe__ben">{%- for i in (1..5) -%}{%- assign k = 'b' | append: i -%}{%- if block.settings[k] != blank -%}<li>{{ block.settings[k] | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- when 'payment_badges' -%}
       <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none">{%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>{%- when 'shipping_checkpoints' -%}
       <ol class="gmc-pe__cp"><li>📦<br><small>Ordered</small></li><li>🏭<br><small>Shipped</small></li><li>🚚<br><small>In transit</small></li><li>🏠<br><small>Delivered</small></li></ol>{%- when 'trust_stars' -%}
-      <p class="gmc-pe__ts"><span style="color:#00b67a;font-size:1.8rem">★★★★★</span> {{ block.settings.text | escape }}</p>{%- when 'bestseller' -%}
+      {%- if block.settings.rating != blank -%}{%- assign tr = block.settings.rating | plus: 0.0 -%}{%- assign tfull = tr | round -%}<p class="gmc-pe__ts"><span style="color:#00b67a;font-size:1.8rem" aria-label="Rated {{ block.settings.rating | escape }} out of 5">{%- for i in (1..5) -%}{%- if i <= tfull -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</span> {{ block.settings.rating | escape }}/5 {{ block.settings.text | escape }}</p>{%- endif -%}{%- when 'bestseller' -%}
       <span class="gmc-pe__bs">{{ block.settings.text | escape }}</span>{%- when 'sizing_chart' -%}
       <details class="gmc-pe__sz"><summary>{{ block.settings.label | escape }}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- when 'text_icon' -%}
       <p class="gmc-pe__ti"><span style="font-size:2rem">{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 24 -%}{%- else -%}{{ block.settings.icon | escape }}{%- endif -%}</span> {{ block.settings.text | escape }}</p>{%- when 'custom_field' -%}
       <label class="gmc-pe__cf">{{ block.settings.label | escape }}<input type="text" data-gmc-prop="properties[{{ block.settings.label | escape }}]" class="field__input" style="padding:.9rem" {% if block.settings.required %}required{% endif %}></label>{%- when 'breadcrumb' -%}
       <nav class="gmc-pe__bc"><a href="{{ routes.root_url }}">Home</a> › {%- if collection != blank %} <a href="{{ collection.url }}">{{ collection.title | escape }}</a> › {% endif %} {{ product.title | escape }}</nav>{%- when 'review_avatars' -%}
-      <div class="gmc-pe__ra"><span class="gmc-pe__stack">{%- for i in (1..5) -%}{%- assign k = 'a' | append: i -%}{%- if block.settings[k] != blank -%}{{ block.settings[k] | image_url: width: 80 | image_tag: width: 32, height: 32, loading: 'lazy' }}{%- endif -%}{%- endfor -%}</span><span><span style="color:#f5a623">★★★★★</span> {{ block.settings.text | escape }}</span></div>{%- when 'divider' -%}<hr style="border:0;border-top:1px solid rgba(var(--color-foreground),.15)">{%- when 'liquid' -%}{{ block.settings.code }}
+      {%- if block.settings.text != blank or block.settings.a1 != blank -%}<div class="gmc-pe__ra"><span class="gmc-pe__stack">{%- for i in (1..5) -%}{%- assign k = 'a' | append: i -%}{%- if block.settings[k] != blank -%}{{ block.settings[k] | image_url: width: 80 | image_tag: width: 32, height: 32, loading: 'lazy' }}{%- endif -%}{%- endfor -%}</span><span><span style="color:#f5a623">★★★★★</span> {{ block.settings.text | escape }}</span></div>{%- endif -%}{%- when 'divider' -%}<hr style="border:0;border-top:1px solid rgba(var(--color-foreground),.15)">{%- when 'liquid' -%}{{ block.settings.code }}
   {%- endcase -%}
   </div>
 {%- endfor -%}
@@ -31,7 +32,16 @@
 .gmc-pe__tn{display:flex;gap:.4rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}.gmc-pe__tn button{background:none;border:0;padding:.7rem 1rem;cursor:pointer;color:inherit;font:inherit;opacity:.6}.gmc-pe__tn button[aria-selected=true]{opacity:1;border-bottom:2px solid currentColor}.gmc-pe__tp{padding-top:1rem}
 .gmc-pe__rv{display:grid;gap:.8rem}.gmc-pe__rv blockquote{margin:0;padding:1rem 1.2rem;border-radius:10px;background:rgba(var(--color-foreground),.05)}.gmc-pe__rv p{margin:.3rem 0}.gmc-pe__sv{color:{{ settings.gmc_accent }};font-weight:700;margin:0}.gmc-pe__cd{font-weight:600}
 </style>
-<script>(function(){document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
+<script>(function(){
+  var dj=document.querySelector('.gmc-vdata'),data={};try{JSON.parse(dj.textContent).forEach(function(x){data[x.id]=x;});}catch(e){}
+  function upd(id){var d=data[id];
+    document.querySelectorAll('[data-gmc-inv]').forEach(function(el){if(!d){return;}el.style.color=d.a?'':'#b91c1c';el.textContent=d.a?('● In stock'+(el.dataset.showqty==='true'&&d.q>0?' ('+d.q+' available)':'')):'● Out of stock';});
+    document.querySelectorAll('[data-gmc-urg]').forEach(function(el){if(!d){el.hidden=true;return;}var th=+el.dataset.threshold;
+      if(d.q!==null&&d.q>0&&d.q<=th){el.textContent='🔥 Only '+d.q+' left in stock — order soon';el.hidden=false;}
+      else if(d.a&&el.dataset.fallback){el.textContent=el.dataset.fallback;el.hidden=false;}else{el.hidden=true;}});}
+  if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;upd(v?v.id:null);});}
+})();
+document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
 {% schema %}
 {
  "name": "Product info blocks",
@@ -80,8 +90,8 @@
     {
      "type": "text",
      "id": "fallback",
-     "label": "Fallback text (when stock is not tracked)",
-     "default": "⚡ Selling fast — don't miss out"
+     "label": "Message when stock is above the limit or not tracked (leave empty to show nothing)",
+     "default": ""
     },
     {
      "type": "range",
@@ -230,9 +240,15 @@
    "settings": [
     {
      "type": "text",
+     "id": "rating",
+     "label": "Your real rating (0-5)",
+     "info": "Only shown when filled in. Enter your actual Trustpilot/review score, e.g. 4.7"
+    },
+    {
+     "type": "text",
      "id": "text",
-     "label": "Text",
-     "default": "Rated Excellent by our customers"
+     "label": "Text after rating (e.g. \"from 320 reviews\")",
+     "default": ""
     },
     {
      "type": "range",
@@ -406,8 +422,8 @@
     {
      "type": "text",
      "id": "text",
-     "label": "Text",
-     "default": "Loved by 1,200+ happy customers"
+     "label": "Text (use only a claim you can back up)",
+     "default": ""
     },
     {
      "type": "range",

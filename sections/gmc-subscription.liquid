@@ -12,7 +12,7 @@
 <style>.gmc-sub{border:0;padding:0;margin:1.2rem 0;display:grid;gap:.7rem}.gmc-sub__o{display:flex;gap:1rem;align-items:center;padding:1rem 1.2rem;border:1px solid rgba(var(--color-foreground),.2);border-radius:10px;cursor:pointer}.gmc-sub__o:has(input:checked){border-color:rgb(var(--color-foreground));background:rgba(var(--color-foreground),.04)}.gmc-sub__o span{display:flex;flex-direction:column}.gmc-sub__o em{font-style:normal;font-size:1.25rem;opacity:.7}.gmc-sub__sel{border-radius:10px}</style>
 <script>(function(){var w=document.getElementById('gmc-sub-{{ section.id }}');if(!w)return;var sel=w.querySelector('select');
 function sync(){var on=w.querySelector('input[value=plan]').checked;sel.hidden=!on;gmcField('selling_plan',on?sel.value:'');}
-w.addEventListener('change',sync);window.addEventListener('load',sync);})();</script>
+w.addEventListener('change',sync);window.addEventListener('load',sync);if(typeof subscribe==='function'&&typeof PUB_SUB_EVENTS!=='undefined'){subscribe(PUB_SUB_EVENTS.variantChange,function(){setTimeout(sync,50);});}})();</script>
 {%- endif -%}
 {% schema %}
 {"name":"Subscription widget","tag":"section","class":"section","enabled_on":{"templates":["product"]},"settings":[{"type":"text","id":"one_time","label":"One-time label","default":"One-time purchase"},{"type":"text","id":"subscribe","label":"Subscribe label","default":"Subscribe & save"},{"type":"text","id":"note","label":"Note","default":"Cancel or skip any time"},{"type":"paragraph","content":"Shows only for products that have selling plans from a subscription app."}],"presets":[{"name":"Subscription widget"}]}

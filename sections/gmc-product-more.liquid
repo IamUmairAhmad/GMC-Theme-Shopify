@@ -21,7 +21,10 @@
       </div>{%- when 'tabs' -%}
       <div class="gmc-pe__tabs"><div class="gmc-pe__tn">{%- for i in (1..3) -%}{%- assign tk = 't' | append: i -%}{%- if block.settings[tk] != blank -%}<button type="button" aria-selected="{% if i == 1 %}true{% else %}false{% endif %}" data-t="{{ i }}">{{ block.settings[tk] | escape }}</button>{%- endif -%}{%- endfor -%}</div>
         {%- for i in (1..3) -%}{%- assign ck = 'c' | append: i -%}{%- assign tk = 't' | append: i -%}{%- if block.settings[tk] != blank -%}<div class="gmc-pe__tp rte" data-t="{{ i }}" {% unless i == 1 %}hidden{% endunless %}>{{ block.settings[ck] }}</div>{%- endif -%}{%- endfor -%}</div>{%- when 'reviews' -%}
-      <div class="gmc-pe__rv">{%- for i in (1..3) -%}{%- assign rk = 'r' | append: i -%}{%- assign nk = 'n' | append: i -%}{%- if block.settings[rk] != blank -%}<blockquote><span style="color:#f5a623">★★★★★</span><p>{{ block.settings[rk] | escape }}</p><small>— {{ block.settings[nk] | escape }}</small></blockquote>{%- endif -%}{%- endfor -%}</div>{%- when 'savings' -%}
+      <div class="gmc-pe__rv">{%- for i in (1..3) -%}{%- assign rk = 'r' | append: i -%}{%- assign nk = 'n' | append: i -%}{%- if block.settings[rk] != blank -%}<blockquote><span style="color:#f5a623">★★★★★</span><p>{{ block.settings[rk] | escape }}</p><small>— {{ block.settings[nk] | escape }}</small></blockquote>{%- endif -%}{%- endfor -%}</div>{%- when 'metafield' -%}
+      {%- assign mf = product.metafields[block.settings.namespace][block.settings.key] -%}
+      {%- if mf != blank -%}{%- if block.settings.label != blank -%}<strong>{{ block.settings.label | escape }}: </strong>{%- endif -%}{{ mf | metafield_tag }}{%- endif -%}
+    {%- when 'savings' -%}
       <p class="gmc-pe__sv" data-text="{{ block.settings.text | escape }}" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>{% if v.compare_at_price > v.price %}{{ block.settings.text | escape }} {{ v.compare_at_price | minus: v.price | money }} ({{ v.compare_at_price | minus: v.price | times: 100 | divided_by: v.compare_at_price }}%){% endif %}</p>{%- endcase -%}
   </div>
 {%- endfor -%}
@@ -545,6 +548,39 @@
      "id": "text",
      "label": "Text",
      "default": "You save"
+    },
+    {
+     "type": "range",
+     "id": "mb",
+     "min": 0,
+     "max": 40,
+     "step": 4,
+     "unit": "px",
+     "label": "Margin below",
+     "default": 12
+    }
+   ]
+  },
+  {
+   "type": "metafield",
+   "name": "Product metafield",
+   "settings": [
+    {
+     "type": "text",
+     "id": "namespace",
+     "label": "Metafield namespace",
+     "default": "custom"
+    },
+    {
+     "type": "text",
+     "id": "key",
+     "label": "Metafield key",
+     "info": "Create the metafield in Settings > Custom data > Products. Shown only if the product has a value."
+    },
+    {
+     "type": "text",
+     "id": "label",
+     "label": "Label (optional)"
     },
     {
      "type": "range",
