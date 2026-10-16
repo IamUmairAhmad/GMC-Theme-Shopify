@@ -18,8 +18,8 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | PP-06 ✅ | **Custom product field** types: text, number, textarea, pills, dropdown. Needs placeholder, max characters, min/max, required with custom error on the ATC button and sticky ATC. Ours is label + required only. | P1 |
 | PP-07 ✅ | **Variant picker options**: type per option (pills / dropdown / swatches / image), custom labels, swatch size and radius, custom swatch colour list or from image alt, full-width dropdowns. | P1 |
 | PP-08 ✅ | **Buy buttons options**: skip cart (go straight to checkout), uppercase labels, price inside button, custom button colour. | P1 |
-| PP-09 | **Estimated shipping with real dates**: min/max days → formatted dates (six date formats), custom day and month labels, icon, alignment. | P2 |
-| PP-10 | **Shipping checkpoints with dates**: four checkpoints, icon, top/bottom text, per-step day range, auto start/end date tokens, colour scheme. | P2 |
+| PP-09 ✅ | **Estimated shipping with real dates**: min/max days → formatted dates (six date formats), custom day and month labels, icon, alignment. | P2 |
+| PP-10 ✅ | **Shipping checkpoints with dates**: four checkpoints, icon, top/bottom text, per-step day range, auto start/end date tokens, colour scheme. | P2 |
 | PP-11 | **Sizing chart popup**: button (icon, size, underline), popup with heading, header row, rich body table, images above/below, caption, test mode. | P2 |
 | PP-12 | **Rating stars block** (manual value, colours, outlined/full background stars, label, scroll-to-section link) and **Reviews slider block** (3 reviews with avatars, stars, alignment). | P2 |
 | PP-13 | **Clickable discount**: auto-apply a code with non-applied and applied states (text, icon, colours). Ours exists but with fewer controls. | P2 |
@@ -140,7 +140,7 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 
 | ID | Missing feature | Pri |
 |---|---|---|
-| DP-01 | **Quantity breaks as a variant-picker style**: a variant option can be shown as quantity-break cards (for stores whose quantities are separate SKUs), mixed per option, e.g. "swatches, dropdown, quantity breaks". Works with the clickable discount block. | P1 |
+| DP-01 ✅ | **Quantity breaks as a variant-picker style**: a variant option can be shown as quantity-break cards (for stores whose quantities are separate SKUs), mixed per option, e.g. "swatches, dropdown, quantity breaks". Works with the clickable discount block. | P1 |
 | DP-02 ✅ | **Dynamic text tokens** usable in every text field of breaks, bundles and pickers: quantity, price, compare price, price each, compare price each, amount saved, amount saved rounded, option name / lowercase / uppercase / selected, option index. Per-option texts are comma-split, with an "empty" placeholder to skip one. | P1 |
 | DP-03 ✅ | **Sale badge text with tokens** (for example "Save [percentage]") and **custom badges list driven by product tags** (for example BEST SELLER). | P1 |
 | DP-04 ✅ | **Product card options**: card style choice, add-button style, limit titles to N lines, badge position and push-to-side, sold-out badge scheme, quick-add on cards, accent-icon style. | P1 |

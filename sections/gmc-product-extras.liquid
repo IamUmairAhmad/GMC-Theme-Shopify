@@ -10,10 +10,15 @@
     {%- when 'inventory' -%}
       <p class="gmc-pe__stock" data-gmc-inv data-showqty="{{ block.settings.show_qty }}" {% unless v.available %}style="color:#b91c1c"{% endunless %}>{%- if v.available -%}● In stock{% if v.inventory_management != blank and v.inventory_quantity > 0 and block.settings.show_qty %} ({{ v.inventory_quantity }} available){% endif %}{%- else -%}● Out of stock{%- endif -%}</p>
     {%- when 'estimated_delivery' -%}
-      <p class="gmc-pe__eta">🚚 Order today and get it between <strong class="gmc-eta" data-min="{{ block.settings.min_days }}" data-max="{{ block.settings.max_days }}">…</strong></p>{%- when 'benefits' -%}
+      <p class="gmc-pe__eta" data-gmc-eta data-min="{{ block.settings.min_days }}" data-max="{{ block.settings.max_days }}" data-skip="{{ block.settings.skip_weekends }}" data-fmt="{{ block.settings.date_format }}" data-days="{{ block.settings.day_names | escape }}" data-months="{{ block.settings.month_names | escape }}" data-tpl="{{ block.settings.text | default: 'Order today and get it between [start_date] and [end_date]' | escape }}" style="text-align:{{ block.settings.align }}">{%- if block.settings.icon != blank -%}<span class="gmc-pe__ic">{%- render 'gmc-icon', name: block.settings.icon, size: 22 -%}</span> {%- endif -%}<span class="gmc-pe__eta-t">{{ block.settings.text | default: 'Order today and get it between [start_date] and [end_date]' | escape }}</span></p>{%- when 'benefits' -%}
       <ul class="gmc-pe__ben">{%- for i in (1..5) -%}{%- assign k = 'b' | append: i -%}{%- if block.settings[k] != blank -%}<li>{{ block.settings[k] | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- when 'payment_badges' -%}
       <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none">{%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>{%- when 'shipping_checkpoints' -%}
-      <ol class="gmc-pe__cp"><li>📦<br><small>{{ block.settings.step1 | escape }}</small></li><li>🏭<br><small>{{ block.settings.step2 | escape }}</small></li><li>🚚<br><small>{{ block.settings.step3 | escape }}</small></li><li>🏠<br><small>{{ block.settings.step4 | escape }}</small></li></ol>{%- when 'trust_stars' -%}
+      <ol class="gmc-pe__cp gmc-pe__cp--dated" data-gmc-cp data-skip="{{ block.settings.skip_weekends }}" data-fmt="{{ block.settings.date_format }}" data-days="{{ block.settings.day_names | escape }}" data-months="{{ block.settings.month_names | escape }}" style="{% if block.settings.accent != blank %}--gmc-cp:{{ block.settings.accent }};{% endif %}">
+        {%- for i in (1..4) -%}
+          {%- assign lk = 'step' | append: i -%}{%- assign ik = 'icon' | append: i -%}{%- assign fk = 'from' | append: i -%}{%- assign tk = 'to' | append: i -%}{%- assign bk = 'bottom' | append: i -%}
+          <li data-from="{{ block.settings[fk] }}" data-to="{{ block.settings[tk] }}" data-tpl="{{ block.settings[bk] | escape }}"><span class="gmc-pe__cpi">{%- render 'gmc-icon', name: block.settings[ik], size: 22 -%}</span><b>{{ block.settings[lk] | escape }}</b><small class="gmc-pe__cpd">{{ block.settings[bk] | escape }}</small></li>
+        {%- endfor -%}
+      </ol>{%- when 'trust_stars' -%}
       {%- assign mf = product.metafields.reviews.rating.value -%}
       {%- assign mfc = product.metafields.reviews.rating_count.value -%}
       {%- if block.settings.rating != blank -%}{%- assign tr = block.settings.rating | plus: 0.0 -%}{%- assign tcount = block.settings.text -%}
@@ -63,7 +68,7 @@
 .gmc-pe__sl{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem}.gmc-pe__sl>div{flex:0 0 85%;scroll-snap-align:start}.gmc-pe__sl img{width:100%;border-radius:var(--media-radius)}
 .gmc-pe__tn{display:flex;gap:.4rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}.gmc-pe__tn button{background:none;border:0;padding:.7rem 1rem;cursor:pointer;color:inherit;font:inherit;opacity:.6}.gmc-pe__tn button[aria-selected=true]{opacity:1;border-bottom:2px solid currentColor}.gmc-pe__tp{padding-top:1rem}
 .gmc-pe__rv{display:grid;gap:.8rem}.gmc-pe__rv blockquote{margin:0;padding:1rem 1.2rem;border-radius:var(--text-boxes-radius);background:rgba(var(--color-foreground),.05)}.gmc-pe__rv p{margin:.3rem 0}.gmc-pe__sv{color:{{ settings.gmc_accent }};font-weight:700;margin:0}.gmc-pe__cd{font-weight:600}
-</style>
+.gmc-pe__cp--dated{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;position:relative}.gmc-pe__cp--dated li{display:flex;flex-direction:column;align-items:center;gap:.3rem;position:relative}.gmc-pe__cpi{width:4.4rem;height:4.4rem;border-radius:50%;display:grid;place-items:center;background:var(--gmc-cp,rgb(var(--color-foreground)));color:rgb(var(--color-background));position:relative;z-index:1}.gmc-pe__cp--dated li:not(:last-child):after{content:"";position:absolute;top:2.2rem;left:50%;width:100%;height:2px;background:var(--gmc-cp,rgb(var(--color-foreground)));opacity:.35}.gmc-pe__cpd{opacity:.75;font-size:1.15rem}.gmc-pe__ic{vertical-align:middle}</style>
 <script>(function(){
   var dj=document.querySelector('.gmc-vdata'),data={};try{JSON.parse(dj.textContent).forEach(function(x){data[x.id]=x;});}catch(e){}
   function upd(id){var d=data[id];
@@ -72,8 +77,7 @@
       if(d.q!==null&&d.q>0&&d.q<=th){el.textContent='🔥 Only '+d.q+' left in stock — order soon';el.hidden=false;}
       else if(d.a&&el.dataset.fallback){el.textContent=el.dataset.fallback;el.hidden=false;}else{el.hidden=true;}});}
   gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;upd(v?v.id:null);});});
-})();
-document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
+})();</script>
 {% schema %}
 {
   "name": "Product info blocks",
@@ -190,11 +194,19 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
       "name": "Estimated shipping",
       "settings": [
         {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Order today and get it between [start_date] and [end_date]",
+          "info": "[start_date] and [end_date] become real dates."
+        },
+        {
           "type": "range",
           "id": "min_days",
           "min": 1,
           "max": 30,
-          "label": "Min days",
+          "step": 1,
+          "label": "Minimum days",
           "default": 4
         },
         {
@@ -202,8 +214,86 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
           "id": "max_days",
           "min": 2,
           "max": 40,
-          "label": "Max days",
+          "step": 1,
+          "label": "Maximum days",
           "default": 8
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "truck",
+          "info": "Icon name from the theme icon library."
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "select",
+          "id": "date_format",
+          "label": "Date format",
+          "options": [
+            {
+              "value": "short",
+              "label": "Mon, Oct 20"
+            },
+            {
+              "value": "long",
+              "label": "Monday, October 20"
+            },
+            {
+              "value": "day_month",
+              "label": "20 Oct"
+            },
+            {
+              "value": "month_day",
+              "label": "Oct 20"
+            },
+            {
+              "value": "dmy",
+              "label": "20/10/2026"
+            },
+            {
+              "value": "mdy",
+              "label": "10/20/2026"
+            }
+          ],
+          "default": "short"
+        },
+        {
+          "type": "text",
+          "id": "day_names",
+          "label": "Custom day names",
+          "info": "Optional. Seven names separated by commas, starting with Sunday."
+        },
+        {
+          "type": "text",
+          "id": "month_names",
+          "label": "Custom month names",
+          "info": "Optional. Twelve names separated by commas, starting with January."
+        },
+        {
+          "type": "checkbox",
+          "id": "skip_weekends",
+          "label": "Skip weekends when counting days",
+          "default": false
         },
         {
           "type": "range",
@@ -281,20 +371,41 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
       "name": "Shipping checkpoints",
       "settings": [
         {
-          "type": "range",
-          "id": "mb",
-          "min": 0,
-          "max": 40,
-          "step": 4,
-          "unit": "px",
-          "label": "Margin below",
-          "default": 12
-        },
-        {
           "type": "text",
           "id": "step1",
           "label": "Step 1 label",
           "default": "Ordered"
+        },
+        {
+          "type": "text",
+          "id": "icon1",
+          "label": "Step 1 icon",
+          "default": "package"
+        },
+        {
+          "type": "range",
+          "id": "from1",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "label": "Step 1 earliest day",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "to1",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "label": "Step 1 latest day",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "bottom1",
+          "label": "Step 1 text below",
+          "default": "[start_date]",
+          "info": "[start_date] and [end_date] become real dates."
         },
         {
           "type": "text",
@@ -304,15 +415,173 @@ document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=ne
         },
         {
           "type": "text",
+          "id": "icon2",
+          "label": "Step 2 icon",
+          "default": "building-warehouse"
+        },
+        {
+          "type": "range",
+          "id": "from2",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "label": "Step 2 earliest day",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "to2",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "label": "Step 2 latest day",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "bottom2",
+          "label": "Step 2 text below",
+          "default": "[start_date]",
+          "info": "[start_date] and [end_date] become real dates."
+        },
+        {
+          "type": "text",
           "id": "step3",
           "label": "Step 3 label",
           "default": "In transit"
         },
         {
           "type": "text",
+          "id": "icon3",
+          "label": "Step 3 icon",
+          "default": "truck"
+        },
+        {
+          "type": "range",
+          "id": "from3",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "label": "Step 3 earliest day",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "to3",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "label": "Step 3 latest day",
+          "default": 6
+        },
+        {
+          "type": "text",
+          "id": "bottom3",
+          "label": "Step 3 text below",
+          "default": "[start_date]",
+          "info": "[start_date] and [end_date] become real dates."
+        },
+        {
+          "type": "text",
           "id": "step4",
           "label": "Step 4 label",
           "default": "Delivered"
+        },
+        {
+          "type": "text",
+          "id": "icon4",
+          "label": "Step 4 icon",
+          "default": "home"
+        },
+        {
+          "type": "range",
+          "id": "from4",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "label": "Step 4 earliest day",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "to4",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "label": "Step 4 latest day",
+          "default": 8
+        },
+        {
+          "type": "text",
+          "id": "bottom4",
+          "label": "Step 4 text below",
+          "default": "[end_date]",
+          "info": "[start_date] and [end_date] become real dates."
+        },
+        {
+          "type": "select",
+          "id": "date_format",
+          "label": "Date format",
+          "options": [
+            {
+              "value": "short",
+              "label": "Mon, Oct 20"
+            },
+            {
+              "value": "long",
+              "label": "Monday, October 20"
+            },
+            {
+              "value": "day_month",
+              "label": "20 Oct"
+            },
+            {
+              "value": "month_day",
+              "label": "Oct 20"
+            },
+            {
+              "value": "dmy",
+              "label": "20/10/2026"
+            },
+            {
+              "value": "mdy",
+              "label": "10/20/2026"
+            }
+          ],
+          "default": "short"
+        },
+        {
+          "type": "text",
+          "id": "day_names",
+          "label": "Custom day names",
+          "info": "Optional. Seven names separated by commas, starting with Sunday."
+        },
+        {
+          "type": "text",
+          "id": "month_names",
+          "label": "Custom month names",
+          "info": "Optional. Twelve names separated by commas, starting with January."
+        },
+        {
+          "type": "checkbox",
+          "id": "skip_weekends",
+          "label": "Skip weekends when counting days",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "accent",
+          "label": "Colour"
+        },
+        {
+          "type": "range",
+          "id": "mb",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Margin below",
+          "default": 12
         }
       ]
     },

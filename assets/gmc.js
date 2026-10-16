@@ -301,6 +301,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
     var mode=fs.dataset.gmcForce,colors=parse(fs.dataset.gmcColors),imgs={};try{imgs=JSON.parse(fs.dataset.gmcImages||'{}');}catch(e){}
     fs.querySelectorAll('input[type=radio]').forEach(function(inp){var l=inp.nextElementSibling;if(!l||l.tagName!=='LABEL')return;var v=inp.value;
       if(mode==='swatch'){var c=colors[v.toLowerCase()]||v.toLowerCase().replace(/\s+/g,'');if(window.CSS&&CSS.supports('color',c)){l.classList.add('gmc-swatch');l.style.setProperty('--gmc-sw',c);l.title=v;}}
+      else if(mode==='cards'){l.classList.add('gmc-vcard');if(!l.querySelector('.gmc-vcard__p')&&imgs[v]){var sp=document.createElement('span');sp.className='gmc-vcard__p';sp.textContent=imgs[v];l.appendChild(sp);}}
       else if(mode==='image'&&imgs[v]){l.classList.add('gmc-imgsw');l.style.setProperty('--gmc-img','url("'+imgs[v]+'")');l.title=v;}
     });});}
   init();document.addEventListener('shopify:section:load',function(e){init(e.target);});
@@ -422,4 +423,20 @@ document.addEventListener('DOMContentLoaded',function(){var d=document.querySele
   function scan(root){(root||document).querySelectorAll('[data-gmc-slider]').forEach(init);}
   scan();document.addEventListener('shopify:section:load',function(e){scan(e.target);});
   window.gmcSliderScan=scan;
+})();
+
+/* estimated delivery and shipping checkpoints: real dates from day ranges */
+(function(){
+  var DN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function names(csv,def,n){var a=String(csv||'').split(',').map(function(x){return x.trim();}).filter(Boolean);return a.length===n?a:def;}
+  function add(d,n,skip){var r=new Date(d.getFullYear(),d.getMonth(),d.getDate());n=+n||0;while(n>0){r.setDate(r.getDate()+1);if(!skip||(r.getDay()!==0&&r.getDay()!==6))n--;}return r;}
+  function fmt(d,f,dn,mn){var D=dn[d.getDay()],M=mn[d.getMonth()],dd=d.getDate(),yy=d.getFullYear();
+    switch(f){case 'long':return D+', '+M+' '+dd;case 'day_month':return dd+' '+M.slice(0,3);case 'month_day':return M.slice(0,3)+' '+dd;case 'dmy':return ('0'+dd).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+yy;case 'mdy':return ('0'+(d.getMonth()+1)).slice(-2)+'/'+('0'+dd).slice(-2)+'/'+yy;default:return D.slice(0,3)+', '+M.slice(0,3)+' '+dd;}}
+  function run(root){
+    (root||document).querySelectorAll('[data-gmc-eta]').forEach(function(el){var dn=names(el.dataset.days,DN,7),mn=names(el.dataset.months,MN,12),sk=el.dataset.skip==='true',now=new Date();
+      el.querySelector('.gmc-pe__eta-t').textContent=el.dataset.tpl.split('[start_date]').join(fmt(add(now,el.dataset.min,sk),el.dataset.fmt,dn,mn)).split('[end_date]').join(fmt(add(now,el.dataset.max,sk),el.dataset.fmt,dn,mn));});
+    (root||document).querySelectorAll('[data-gmc-cp]').forEach(function(ol){var dn=names(ol.dataset.days,DN,7),mn=names(ol.dataset.months,MN,12),sk=ol.dataset.skip==='true',now=new Date();
+      ol.querySelectorAll('li').forEach(function(li){var a=fmt(add(now,li.dataset.from,sk),ol.dataset.fmt,dn,mn),b=fmt(add(now,li.dataset.to,sk),ol.dataset.fmt,dn,mn);li.querySelector('.gmc-pe__cpd').textContent=li.dataset.tpl.split('[start_date]').join(a).split('[end_date]').join(b);});});
+  }
+  run();document.addEventListener('shopify:section:load',function(e){run(e.target);});
 })();

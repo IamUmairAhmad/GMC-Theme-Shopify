@@ -58,8 +58,14 @@
         elsif gmc_type == 'image'
           assign picker_type = 'button'
           assign gmc_force = 'image'
+        elsif gmc_type == 'cards'
+          assign picker_type = 'button'
+          assign gmc_force = 'cards'
         endif
       -%}
+      {%- if gmc_force == 'cards' -%}
+        {%- capture gmc_imgmap -%}{ {%- for value in option.values -%}{%- assign vstr = value | append: '' -%}{%- assign gm_pr = '' -%}{%- for variant in product.variants -%}{%- assign vo = variant.options[opt_idx] -%}{%- if vo == vstr and gm_pr == '' -%}{%- assign gm_pr = variant.price | money -%}{%- endif -%}{%- endfor -%}{{ vstr | json }}:{{ gm_pr | json }}{% unless forloop.last %},{% endunless %}{%- endfor -%} }{%- endcapture -%}
+      {%- endif -%}
       {%- if gmc_force == 'image' -%}
         {%- capture gmc_imgmap -%}{ {%- for value in option.values -%}{%- assign vstr = value | append: '' -%}{%- assign gm_img = '' -%}{%- for variant in product.variants -%}{%- assign vo = variant.options[opt_idx] -%}{%- if vo == vstr and variant.featured_image and gm_img == '' -%}{%- assign gm_img = variant.featured_image | image_url: width: 120 -%}{%- endif -%}{%- endfor -%}{{ vstr | json }}:{{ gm_img | json }}{% unless forloop.last %},{% endunless %}{%- endfor -%} }{%- endcapture -%}
       {%- endif -%}
@@ -79,7 +85,7 @@
           %}
         </fieldset>
       {%- elsif picker_type == 'button' -%}
-        <fieldset class="js product-form__input product-form__input--pill"{% if gmc_force != blank %} data-gmc-force="{{ gmc_force }}" data-gmc-colors="{{ block.settings.swatch_colors | escape }}"{% endif %}{% if gmc_force == 'image' %} data-gmc-images="{{ gmc_imgmap | escape }}"{% endif %}>
+        <fieldset class="js product-form__input product-form__input--pill"{% if gmc_force != blank %} data-gmc-force="{{ gmc_force }}" data-gmc-colors="{{ block.settings.swatch_colors | escape }}"{% endif %}{% if gmc_force == 'image' or gmc_force == 'cards' %} data-gmc-images="{{ gmc_imgmap | escape }}"{% endif %}>
           <legend class="form__label">{{ gmc_label | escape }}{% if gmc_force != blank %} <span data-selected-value>{{ option.selected_value }}</span>{% endif %}</legend>
           {% render 'product-variant-options',
             product: product,
