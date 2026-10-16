@@ -68,6 +68,7 @@
               {%- if b.button2 != blank -%}<a class="button {% if b.style2 == 'secondary' %}button--secondary{% elsif b.style2 == 'outline' %}gmc-hs__outline{% endif %}" {% if b.link2 != blank %}href="{{ b.link2 }}"{% endif %}>{{ b.button2 | escape }}</a>{%- endif -%}
             </div>
           {%- endif -%}
+          {%- render 'gmc-inline-atc', product: b.atc_product, label: b.atc_label, skip: b.atc_skip, align: b.h_align -%}
         </div>
       </div>
       {%- if b.video != blank and b.sound_button -%}<button type="button" class="gmc-hs__snd" aria-pressed="false" aria-label="Turn sound on">🔇</button>{%- endif -%}
@@ -579,6 +580,27 @@
             }
           ],
           "default": "outline"
+        },
+        {
+          "type": "header",
+          "content": "Add to cart on this slide"
+        },
+        {
+          "type": "product",
+          "id": "atc_product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "atc_label",
+          "label": "Button label",
+          "default": "Add to cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "atc_skip",
+          "label": "Go straight to checkout",
+          "default": false
         }
       ]
     }

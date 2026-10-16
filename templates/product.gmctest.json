@@ -214,6 +214,41 @@
         "panel_heading": "Hello",
         "panel_btn": "Go"
       }
+    },
+    "ban": {
+      "type": "image-banner",
+      "blocks": {
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Banner test"
+          }
+        }
+      },
+      "block_order": [
+        "h"
+      ],
+      "settings": {
+        "gmc_link": "/collections/all",
+        "gmc_box_clear": true,
+        "gmc_atc_product": "gmc-test-tee"
+      }
+    },
+    "hs": {
+      "type": "gmc-hero-slideshow",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Slide one",
+            "atc_product": "gmc-test-tee"
+          }
+        }
+      },
+      "block_order": [
+        "s1"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -222,6 +257,8 @@
     "more",
     "fp",
     "tk",
-    "vt"
+    "vt",
+    "ban",
+    "hs"
   ]
 }

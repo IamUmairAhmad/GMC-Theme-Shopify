@@ -61,8 +61,8 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 |---|---|---|
 | HS-01 ✅ | **Slideshow hero** (new section): min height presets/pixels per device, desktop + mobile background image or video per slide with overlays, prefix/heading/suffix, two buttons, content width, vertical/horizontal position, sound button, dots, drag, autoplay. | P1 |
 | HS-02 | **3D parallax hero** depth: per-layer horizontal/vertical speed, zoom, rotation, stacking index, mobile image, hide-on-mobile, up to 10 layers, content block with heading prefix/suffix, background video. | P2 |
-| HS-03 | **Slideshow**: separate mobile image per slide, per-slide Add-to-cart button, transparent container text colour. | P2 |
-| HS-04 | **Image banner**: second image with per-device display rules, whole-banner link, ATC button, transparent container colour. | P3 |
+| HS-03 ✅ | **Slideshow**: separate mobile image per slide, per-slide Add-to-cart button, transparent container text colour. | P2 |
+| HS-04 ✅ | **Image banner**: second image with per-device display rules, whole-banner link, ATC button, transparent container colour. | P3 |
 
 ## 5. Shared slider framework (Image slider, Multicolumn, Testimonials, Icon bar, Featured on, Reviews)
 

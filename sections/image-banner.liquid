@@ -54,10 +54,10 @@
 
 <div
   id="Banner-{{ section.id }}"
-  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  class="{% if section.settings.gmc_link != blank %}gmc-ban--linked {% endif %}banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
 >
   {%- if section.settings.image != blank -%}
-    <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    <div class="gmc-ban-i1 banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- liquid
         assign image_height = section.settings.image.width | divided_by: section.settings.image.aspect_ratio
         if section.settings.image_2 != blank
@@ -89,7 +89,7 @@
     </div>
   {%- endif -%}
   {%- if section.settings.image_2 != blank -%}
-    <div class="banner__media media{% if section.settings.image != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    <div class="gmc-ban-i2 banner__media media{% if section.settings.image != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- liquid
         assign image_height_2 = section.settings.image_2.width | divided_by: section.settings.image_2.aspect_ratio
         if section.settings.image != blank
@@ -116,6 +116,7 @@
       }}
     </div>
   {%- endif -%}
+  {%- if section.settings.gmc_link != blank -%}<a class="gmc-ban-link" href="{{ section.settings.gmc_link }}" aria-label="{{ section.settings.gmc_link_label | default: 'Open banner link' | escape }}"></a>{%- endif -%}
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
     <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
       {%- for block in section.blocks -%}
@@ -167,6 +168,13 @@
   </div>
 </div>
 
+<style>
+  {%- if section.settings.gmc_i1_on == 'desktop' -%}@media(max-width:749px){#Banner-{{ section.id }} .gmc-ban-i1{display:none}#Banner-{{ section.id }} .gmc-ban-i2{width:100%}}{%- elsif section.settings.gmc_i1_on == 'mobile' -%}@media(min-width:750px){#Banner-{{ section.id }} .gmc-ban-i1{display:none}#Banner-{{ section.id }} .gmc-ban-i2{width:100%}}{%- endif -%}
+  {%- if section.settings.gmc_i2_on == 'desktop' -%}@media(max-width:749px){#Banner-{{ section.id }} .gmc-ban-i2{display:none}#Banner-{{ section.id }} .gmc-ban-i1{width:100%}}{%- elsif section.settings.gmc_i2_on == 'mobile' -%}@media(min-width:750px){#Banner-{{ section.id }} .gmc-ban-i2{display:none}#Banner-{{ section.id }} .gmc-ban-i1{width:100%}}{%- endif -%}
+  {%- if section.settings.gmc_box_clear -%}#Banner-{{ section.id }} .banner__box{background:transparent!important;box-shadow:none!important;border:0!important}{%- endif -%}
+  {%- if section.settings.gmc_box_text != blank -%}#Banner-{{ section.id }} .banner__box,#Banner-{{ section.id }} .banner__box *:not(.button){color:{{ section.settings.gmc_box_text }}}{%- endif -%}
+  .gmc-ban--linked{position:relative}.gmc-ban-link{position:absolute;inset:0;z-index:1}.gmc-ban--linked .banner__content{pointer-events:none;z-index:2}.gmc-ban--linked .banner__box a,.gmc-ban--linked .banner__box button,.gmc-ban--linked .banner__box select{pointer-events:auto}
+</style>
 {%- render 'gmc-section-extras' -%}
 {% schema %}
 {
@@ -189,6 +197,67 @@
       "type": "image_picker",
       "id": "image_2",
       "label": "t:sections.image-banner.settings.image_2.label"
+    },
+    {
+      "type": "select",
+      "id": "gmc_i1_on",
+      "label": "Show first image on",
+      "options": [
+        {
+          "value": "all",
+          "label": "All devices"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop only"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "select",
+      "id": "gmc_i2_on",
+      "label": "Show second image on",
+      "options": [
+        {
+          "value": "all",
+          "label": "All devices"
+        },
+        {
+          "value": "desktop",
+          "label": "Desktop only"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile only"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "url",
+      "id": "gmc_link",
+      "label": "Link the whole banner"
+    },
+    {
+      "type": "text",
+      "id": "gmc_link_label",
+      "label": "Banner link accessibility label"
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_box_clear",
+      "label": "Transparent text container",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "gmc_box_text",
+      "label": "Container text colour"
     },
     {
       "type": "range",
