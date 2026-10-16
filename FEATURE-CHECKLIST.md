@@ -102,3 +102,14 @@ Found and fixed from this test: invented sample content (Trustpilot "4.8 / 1,200
 - Live-tested earlier: variant switching, quantity tiers + free gift (Buy 3 -> 3 tees + gift, 15% automatic discount), cart drawer, shipping bar, mobile overflow (none).
 - NOT live-verified in the final pass (store rate-limited the test browser, HTTP 429): gift auto-add at threshold/removal, upsell Add button, bundle add, section add-to-cart, slider autoplay, cart-drawer visuals.
 - Not testable yet: subscriptions (store has no selling plan groups), country switching (store has a single "Worldwide" market).
+
+## I. Later additions (after section H)
+- **FAQ** (`gmc-faq` section, `page.faq` template): accordion with optional FAQPage structured data.
+- **Per-section colour scheme** on 53 sections and **Display on** (all devices / mobile only / desktop only) on 85 sections.
+- **Block-based cart drawer** (`cart-drawer` section): countdown timer, checkpoints bar, progress bar, cart items, discount field, subtotals, checkout button, payment badges, icons with text. Editable and re-orderable in the theme editor.
+- **Product reviews** (`gmc-reviews`): app-block host, rating summary from `reviews.rating` metafields, write-review button. Review collection itself needs a review app.
+- **Track your order** (`gmc-track-your-order`, `page.track-order`): lookup by order number + email/phone, or tracking number; works with a tracking-page URL template or falls back to the contact form.
+- **Featured product**: Display on, background options and an add-to-cart-in-section option.
+- Home, collection-list and product default templates updated; six demo products with a sample image (kept out of the theme package).
+- Verified by script only: all schemas parse, no duplicate setting ids, every template section and rendered snippet exists. Live checks listed in section H still apply to these additions.
+- Gap list against Shrine Pro: see `SHRINE-GAP-LIST.md` (the work plan for what is still missing).
