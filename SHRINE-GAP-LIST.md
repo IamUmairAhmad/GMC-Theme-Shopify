@@ -220,3 +220,10 @@ Everything else in those two files is a setting already listed under sections 1,
 
 ## 17. Eighth pass: remaining template and group defaults
 Collection, cart, blog, article, search, 404, password, contact, FAQ, track-order, header group and footer group were read with all saved settings. No new feature. Defaults worth matching in our templates: collection page with horizontal filters, quick add and a collage under the grid; header with a ticker (off by default), an announcement bar with an icon, active-link highlight and sticky-on-scroll-up; every content page ending with a newsletter band; password page with a "Opening soon" email signup.
+
+## 18. Ninth pass: platform features checked inside the code (structured data, selling plans, pickup, unit price, cart note, recommendations, quantity rules, metafields)
+All present in GMC Theme as well. One real gap found:
+
+| ID | Missing feature | Pri |
+|---|---|---|
+| CD-09 | **Express checkout buttons (Shop Pay, Apple Pay, Google Pay, PayPal) inside the cart drawer**, switchable in the Checkout button block. Shrine shows them in the drawer and on the cart page; ours only on the cart page. | P1 |
