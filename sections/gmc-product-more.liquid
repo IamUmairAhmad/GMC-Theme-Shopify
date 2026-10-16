@@ -103,13 +103,15 @@
         <span class="gmc-qg__ic" aria-hidden="true">🔒</span>
       </div>
       {%- endif -%}{%- when 'clickable_discount' -%}
-      <button type="button" class="gmc-pe__code" data-gmc-code="{{ block.settings.code | escape }}"><span>🏷️ {{ block.settings.text | escape }}</span><b>{{ block.settings.code | escape }}</b><small>{{ block.settings.cta | default: 'Click to apply' | escape }}</small></button>{%- when 'popup_page' -%}
+      <button type="button" class="gmc-pe__code gmc-cdisc" data-gmc-code="{{ block.settings.code | escape }}" data-t-on="{{ block.settings.applied_cta | default: 'Code applied' | escape }}" data-t-off="{{ block.settings.cta | default: 'Click to apply' | escape }}" data-i-on="{{ block.settings.applied_icon | default: 'check' }}" style="--cd-bg:{{ block.settings.bg | default: 'transparent' }};--cd-fg:{{ block.settings.fg | default: 'inherit' }};--cd-bd:{{ block.settings.border | default: settings.gmc_accent }};--cd-abg:{{ block.settings.applied_bg | default: '#e8f7ee' }};--cd-afg:{{ block.settings.applied_fg | default: '#14532d' }}"><span class="gmc-cdisc__i">{%- render 'gmc-icon', name: block.settings.icon, size: 20 -%}</span><span>{{ block.settings.text | escape }}</span><b>{{ block.settings.code | escape }}</b><small class="gmc-cdisc__s">{{ block.settings.cta | default: 'Click to apply' | escape }}</small></button>{%- when 'popup_page' -%}
       {%- if block.settings.page != blank -%}<button type="button" class="gmc-pe__link" data-gmc-open="gmc-pop-{{ block.id }}">{{ block.settings.label | escape }}</button>
       <dialog id="gmc-pop-{{ block.id }}" class="gmc-pe__dlg"><form method="dialog"><button class="gmc-pe__dx" aria-label="Close">×</button></form><h3>{{ block.settings.page.title | escape }}</h3><div class="rte">{{ block.settings.page.content }}</div></dialog>{%- endif -%}{%- when 'scroll_to' -%}
       <button type="button" class="button button--secondary button--full-width" data-gmc-scroll="{{ block.settings.target | escape }}">{{ block.settings.label | escape }}</button>{%- when 'link_button' -%}
       <a class="button{% if block.settings.secondary %} button--secondary{% endif %} button--full-width" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | escape }}</a>{%- when 'image' -%}
-      {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,600,900', style: 'width:100%;height:auto;border-radius:10px' }}{%- endif -%}{%- when 'video' -%}
-      {%- if block.settings.video != blank -%}<video controls playsinline preload="none" style="width:100%;border-radius:10px" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 900 }}"{% endif %}>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>{%- endif -%}{%- when 'countdown' -%}
+      {%- if block.settings.image != blank -%}<div class="gmc-pm__img{% if block.settings.mobile_full %} gmc-pm__img--mfull{% endif %}" style="--w:{{ block.settings.width }}%;text-align:{{ block.settings.align }}">{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '300,600,900,1200', style: 'width:100%;height:auto;border-radius:' | append: block.settings.radius | append: 'px' }}</div>{%- endif -%}{%- when 'video' -%}
+      {%- if block.settings.video != blank -%}<div class="gmc-pm__vid" data-gmc-vid style="border-radius:{{ block.settings.radius }}px"><video playsinline preload="metadata" {% if block.settings.autoplay %}autoplay muted{% endif %} {% if block.settings.loop %}loop{% endif %} {% unless block.settings.autoplay or block.settings.custom_ui %}controls{% endunless %} {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 900 }}"{% endif %}>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
+        {%- if block.settings.custom_ui -%}<div class="gmc-pm__vc"><button type="button" data-gmc-vplay aria-label="Play or pause">❚❚</button>{%- if block.settings.sound_btn -%}<button type="button" data-gmc-vsound aria-label="Sound on or off">🔇</button>{%- endif -%}{%- if block.settings.timeline -%}<i class="gmc-pm__vt"><b></b></i>{%- endif -%}</div>{%- endif -%}
+        {%- if block.settings.ripple -%}<span class="gmc-pm__ripple" aria-hidden="true"></span>{%- endif -%}</div>{%- endif -%}{%- when 'countdown' -%}
       <div class="gmc-pe__cd" data-minutes="{{ block.settings.minutes }}" data-key="{{ block.id }}">⏰ {{ block.settings.text | escape }} <b class="gmc-pe__cdt">--:--</b></div>{%- when 'slider' -%}
       <div class="gmc-pe__sl">{%- for i in (1..5) -%}{%- assign k = 'i' | append: i -%}{%- if block.settings[k] != blank -%}<div>{{ block.settings[k] | image_url: width: 700 | image_tag: loading: 'lazy' }}</div>{%- endif -%}{%- endfor -%}</div>{%- when 'container_start' -%}
       <div class="gmc-pe__ctr" style="background:{{ block.settings.bg }};color:{{ block.settings.fg }};padding:{{ block.settings.pad }}px;border-radius:{{ block.settings.radius }}px;border:{{ block.settings.border }}px solid currentColor">{%- when 'container_end' -%}
@@ -139,7 +141,7 @@
 .gmc-ups__in:focus-visible+.gmc-ups__tgl{outline:2px solid currentColor;outline-offset:2px}.gmc-ups__var{margin-top:.6rem;width:100%;padding:.5rem;border-radius:var(--inputs-radius,4px)}
 .gmc-bnd{display:grid;gap:.8rem}.gmc-bnd__list{display:grid;gap:.6rem}.gmc-bnd__item{display:flex;gap:1rem;align-items:center;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:.9rem 1.1rem}.gmc-bnd__item select{margin-top:.4rem;width:100%;padding:.5rem;border-radius:var(--inputs-radius,4px)}.gmc-bnd__sum{display:flex;justify-content:space-between;margin:0;font-weight:700;font-size:1.1em}.gmc-bnd__save{margin:0;color:{{ settings.gmc_accent }};font-weight:600}.gmc-bnd__err{margin:0;color:#b91c1c}
 .gmc-qg{display:flex;gap:1rem;align-items:center;border:2px dashed var(--qg-lock);border-radius:var(--text-boxes-radius);padding:.9rem 1.1rem;transition:.2s}.gmc-qg .gmc-ups__img img{filter:grayscale(1);opacity:.6;transition:.2s}.gmc-qg__ic{font-size:2rem}.gmc-qg[data-state=open]{border:2px solid var(--qg-open);background:color-mix(in srgb,var(--qg-open) 8%,transparent)}.gmc-qg[data-state=open] .gmc-ups__img img{filter:none;opacity:1}.gmc-qg[data-state=open] .gmc-qg__msg{color:var(--qg-open);font-weight:600;opacity:1}
-</style>
+.gmc-pm__img{width:var(--w,100%);margin-inline:auto}@media(max-width:749px){.gmc-pm__img--mfull{width:100%}}.gmc-pm__vid{position:relative;overflow:hidden}.gmc-pm__vid video{width:100%;display:block}.gmc-pm__vc{position:absolute;left:0;right:0;bottom:0;display:flex;gap:.6rem;align-items:center;padding:.6rem;background:linear-gradient(transparent,rgba(0,0,0,.5))}.gmc-pm__vc button{background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:50%;width:3.2rem;height:3.2rem;cursor:pointer}.gmc-pm__vt{flex:1;height:4px;background:rgba(255,255,255,.35);border-radius:2px;overflow:hidden}.gmc-pm__vt b{display:block;height:100%;width:0;background:#fff}.gmc-pm__ripple{position:absolute;inset:auto auto 1rem 1rem;width:3rem;height:3rem;border-radius:50%;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:gmcrip 2s infinite;pointer-events:none}@keyframes gmcrip{to{box-shadow:0 0 0 18px rgba(255,255,255,0)}}@media(prefers-reduced-motion:reduce){.gmc-pm__ripple{animation:none}}</style>
 <script>(function(){document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
 {% schema %}
 {
@@ -674,6 +676,59 @@
           "id": "cta",
           "label": "Hint text",
           "default": "Click to apply"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "discount"
+        },
+        {
+          "type": "header",
+          "content": "Not applied"
+        },
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "fg",
+          "label": "Text colour"
+        },
+        {
+          "type": "color",
+          "id": "border",
+          "label": "Border colour"
+        },
+        {
+          "type": "header",
+          "content": "Applied"
+        },
+        {
+          "type": "text",
+          "id": "applied_cta",
+          "label": "Applied text",
+          "default": "Code applied"
+        },
+        {
+          "type": "text",
+          "id": "applied_icon",
+          "label": "Applied icon",
+          "default": "check"
+        },
+        {
+          "type": "color",
+          "id": "applied_bg",
+          "label": "Applied background",
+          "default": "#e8f7ee"
+        },
+        {
+          "type": "color",
+          "id": "applied_fg",
+          "label": "Applied text colour",
+          "default": "#14532d"
         }
       ]
     },
@@ -777,6 +832,48 @@
         },
         {
           "type": "range",
+          "id": "width",
+          "min": 20,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Width",
+          "default": 100
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_full",
+          "label": "Full width on mobile",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "radius",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 10
+        },
+        {
+          "type": "range",
           "id": "mb",
           "min": 0,
           "max": 40,
@@ -800,6 +897,52 @@
           "type": "image_picker",
           "id": "poster",
           "label": "Poster"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay muted",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "loop",
+          "label": "Loop",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_ui",
+          "label": "Simple play/pause controls",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "sound_btn",
+          "label": "Sound on/off button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "timeline",
+          "label": "Show timeline",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "ripple",
+          "label": "Animated ripple marker",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "radius",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 10
         },
         {
           "type": "range",

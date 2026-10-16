@@ -12,7 +12,8 @@
     {%- when 'estimated_delivery' -%}
       <p class="gmc-pe__eta" data-gmc-eta data-min="{{ block.settings.min_days }}" data-max="{{ block.settings.max_days }}" data-skip="{{ block.settings.skip_weekends }}" data-fmt="{{ block.settings.date_format }}" data-days="{{ block.settings.day_names | escape }}" data-months="{{ block.settings.month_names | escape }}" data-tpl="{{ block.settings.text | default: 'Order today and get it between [start_date] and [end_date]' | escape }}" style="text-align:{{ block.settings.align }}">{%- if block.settings.icon != blank -%}<span class="gmc-pe__ic">{%- render 'gmc-icon', name: block.settings.icon, size: 22 -%}</span> {%- endif -%}<span class="gmc-pe__eta-t">{{ block.settings.text | default: 'Order today and get it between [start_date] and [end_date]' | escape }}</span></p>{%- when 'benefits' -%}
       <ul class="gmc-pe__ben">{%- for i in (1..5) -%}{%- assign k = 'b' | append: i -%}{%- if block.settings[k] != blank -%}<li>{{ block.settings[k] | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- when 'payment_badges' -%}
-      <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none">{%- for type in shop.enabled_payment_types -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>{%- when 'shipping_checkpoints' -%}
+      {%- if block.settings.types != blank -%}{%- assign pt_list = block.settings.types | remove: ' ' | split: ',' -%}{%- else -%}{%- assign pt_list = shop.enabled_payment_types -%}{%- endif -%}
+      <ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none;justify-content:{{ block.settings.align }}">{%- for type in pt_list -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>{%- when 'shipping_checkpoints' -%}
       <ol class="gmc-pe__cp gmc-pe__cp--dated" data-gmc-cp data-skip="{{ block.settings.skip_weekends }}" data-fmt="{{ block.settings.date_format }}" data-days="{{ block.settings.day_names | escape }}" data-months="{{ block.settings.month_names | escape }}" style="{% if block.settings.accent != blank %}--gmc-cp:{{ block.settings.accent }};{% endif %}">
         {%- for i in (1..4) -%}
           {%- assign lk = 'step' | append: i -%}{%- assign ik = 'icon' | append: i -%}{%- assign fk = 'from' | append: i -%}{%- assign tk = 'to' | append: i -%}{%- assign bk = 'bottom' | append: i -%}
@@ -45,7 +46,7 @@
           {%- if block.settings.image_bottom != blank -%}{{ block.settings.image_bottom | image_url: width: 900 | image_tag: loading: 'lazy', class: 'gmc-dlg__img' }}{%- endif -%}
           {%- if block.settings.caption != blank -%}<p class="gmc-dlg__cap">{{ block.settings.caption | escape }}</p>{%- endif -%}
         </div></dialog>{%- when 'text_icon' -%}
-      <p class="gmc-pe__ti"><span style="font-size:2rem">{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 24 -%}{%- else -%}{{ block.settings.icon | escape }}{%- endif -%}</span> {{ block.settings.text | escape }}</p>{%- when 'custom_field' -%}
+      <div class="gmc-pe__ti{% if block.settings.box %} gmc-pe__ti--box{% endif %}" style="text-align:{{ block.settings.align }};{% if block.settings.box %}border:{{ block.settings.border_w }}px solid {{ block.settings.border_c }};border-radius:{{ block.settings.radius }}px;background:{{ block.settings.bg }};padding:1rem 1.4rem;{% endif %}"><span class="gmc-pe__tii" style="font-size:{{ block.settings.icon_size }}px;color:{{ block.settings.icon_c }}">{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: block.settings.icon_size -%}{%- else -%}{{ block.settings.icon | escape }}{%- endif -%}</span><span class="gmc-pe__tit"><strong>{{ block.settings.text | escape }}</strong>{%- if block.settings.text2 != blank -%}<br>{{ block.settings.text2 | escape }}{%- endif -%}{%- if block.settings.text3 != blank -%}<br><small>{{ block.settings.text3 | escape }}</small>{%- endif -%}</span></div>{%- when 'custom_field' -%}
       {%- liquid
         assign cf_type = block.settings.field_type | default: 'text'
         assign cf_name = block.settings.label | escape
@@ -85,7 +86,7 @@
 .gmc-pe__sl{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem}.gmc-pe__sl>div{flex:0 0 85%;scroll-snap-align:start}.gmc-pe__sl img{width:100%;border-radius:var(--media-radius)}
 .gmc-pe__tn{display:flex;gap:.4rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}.gmc-pe__tn button{background:none;border:0;padding:.7rem 1rem;cursor:pointer;color:inherit;font:inherit;opacity:.6}.gmc-pe__tn button[aria-selected=true]{opacity:1;border-bottom:2px solid currentColor}.gmc-pe__tp{padding-top:1rem}
 .gmc-pe__rv{display:grid;gap:.8rem}.gmc-pe__rv blockquote{margin:0;padding:1rem 1.2rem;border-radius:var(--text-boxes-radius);background:rgba(var(--color-foreground),.05)}.gmc-pe__rv p{margin:.3rem 0}.gmc-pe__sv{color:{{ settings.gmc_accent }};font-weight:700;margin:0}.gmc-pe__cd{font-weight:600}
-.gmc-pe__cp--dated{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;position:relative}.gmc-pe__cp--dated li{display:flex;flex-direction:column;align-items:center;gap:.3rem;position:relative}.gmc-pe__cpi{width:4.4rem;height:4.4rem;border-radius:50%;display:grid;place-items:center;background:var(--gmc-cp,rgb(var(--color-foreground)));color:rgb(var(--color-background));position:relative;z-index:1}.gmc-pe__cp--dated li:not(:last-child):after{content:"";position:absolute;top:2.2rem;left:50%;width:100%;height:2px;background:var(--gmc-cp,rgb(var(--color-foreground)));opacity:.35}.gmc-pe__cpd{opacity:.75;font-size:1.15rem}.gmc-pe__ic{vertical-align:middle}.gmc-pe__szb{background:none;border:0;padding:0;cursor:pointer;color:inherit;font-family:inherit;display:inline-flex;align-items:center;gap:.5rem}.gmc-pe__szb--u{text-decoration:underline;text-underline-offset:.3rem}.gmc-dlg{border:0;border-radius:var(--popup-corner-radius,8px);padding:0;max-width:min(92vw,64rem);width:100%;max-height:88vh;color:rgb(var(--color-foreground));background:rgb(var(--color-background))}.gmc-dlg::backdrop{background:rgba(0,0,0,.55)}.gmc-dlg__in{padding:2.4rem;position:relative}.gmc-dlg__x{position:absolute;top:.6rem;right:1rem;background:none;border:0;font-size:2.8rem;line-height:1;cursor:pointer;color:inherit}.gmc-dlg__h{margin:0 0 1.2rem}.gmc-dlg__hr{font-weight:700;margin:0 0 .8rem}.gmc-dlg__img{max-width:100%;height:auto;display:block;margin:1rem auto}.gmc-dlg__cap{font-size:1.3rem;opacity:.7;margin:1rem 0 0}.gmc-dlg table{width:100%;border-collapse:collapse}.gmc-dlg td,.gmc-dlg th{border:1px solid rgba(var(--color-foreground),.2);padding:.6rem 1rem;text-align:center}.gmc-pe__stars--outline i:not(.on){opacity:.35}.gmc-pe__stars i{font-style:normal}.gmc-pe__stars--outline i.on{color:transparent;-webkit-text-stroke:1.5px currentColor}.gmc-pe__stars--filled i:not(.on){opacity:.25}.gmc-pe__rvi{margin:0;padding:1rem 1.4rem;display:flex;flex-direction:column;gap:.4rem;align-items:inherit}.gmc-pe__rva{border-radius:50%;object-fit:cover}.gmc-pe__rvi blockquote{margin:0}.gmc-pe__rvi figcaption{font-weight:700;font-size:1.3rem}</style>
+.gmc-pe__cp--dated{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;position:relative}.gmc-pe__cp--dated li{display:flex;flex-direction:column;align-items:center;gap:.3rem;position:relative}.gmc-pe__cpi{width:4.4rem;height:4.4rem;border-radius:50%;display:grid;place-items:center;background:var(--gmc-cp,rgb(var(--color-foreground)));color:rgb(var(--color-background));position:relative;z-index:1}.gmc-pe__cp--dated li:not(:last-child):after{content:"";position:absolute;top:2.2rem;left:50%;width:100%;height:2px;background:var(--gmc-cp,rgb(var(--color-foreground)));opacity:.35}.gmc-pe__cpd{opacity:.75;font-size:1.15rem}.gmc-pe__ic{vertical-align:middle}.gmc-pe__szb{background:none;border:0;padding:0;cursor:pointer;color:inherit;font-family:inherit;display:inline-flex;align-items:center;gap:.5rem}.gmc-pe__szb--u{text-decoration:underline;text-underline-offset:.3rem}.gmc-dlg{border:0;border-radius:var(--popup-corner-radius,8px);padding:0;max-width:min(92vw,64rem);width:100%;max-height:88vh;color:rgb(var(--color-foreground));background:rgb(var(--color-background))}.gmc-dlg::backdrop{background:rgba(0,0,0,.55)}.gmc-dlg__in{padding:2.4rem;position:relative}.gmc-dlg__x{position:absolute;top:.6rem;right:1rem;background:none;border:0;font-size:2.8rem;line-height:1;cursor:pointer;color:inherit}.gmc-dlg__h{margin:0 0 1.2rem}.gmc-dlg__hr{font-weight:700;margin:0 0 .8rem}.gmc-dlg__img{max-width:100%;height:auto;display:block;margin:1rem auto}.gmc-dlg__cap{font-size:1.3rem;opacity:.7;margin:1rem 0 0}.gmc-dlg table{width:100%;border-collapse:collapse}.gmc-dlg td,.gmc-dlg th{border:1px solid rgba(var(--color-foreground),.2);padding:.6rem 1rem;text-align:center}.gmc-pe__stars--outline i:not(.on){opacity:.35}.gmc-pe__stars i{font-style:normal}.gmc-pe__stars--outline i.on{color:transparent;-webkit-text-stroke:1.5px currentColor}.gmc-pe__stars--filled i:not(.on){opacity:.25}.gmc-pe__rvi{margin:0;padding:1rem 1.4rem;display:flex;flex-direction:column;gap:.4rem;align-items:inherit}.gmc-pe__rva{border-radius:50%;object-fit:cover}.gmc-pe__rvi blockquote{margin:0}.gmc-pe__rvi figcaption{font-weight:700;font-size:1.3rem}.gmc-pe__ti{display:flex;gap:1rem;align-items:center}.gmc-pe__tii{display:inline-flex;flex:none}.gmc-pe__tit{flex:1}</style>
 <script>(function(){
   var dj=document.querySelector('.gmc-vdata'),data={};try{JSON.parse(dj.textContent).forEach(function(x){data[x.id]=x;});}catch(e){}
   function upd(id){var d=data[id];
@@ -371,6 +372,32 @@
       "type": "payment_badges",
       "name": "Payment badges",
       "settings": [
+        {
+          "type": "text",
+          "id": "types",
+          "label": "Chosen payment icons",
+          "info": "Optional. Comma separated, for example visa, master, paypal, apple_pay. Leave empty to show the methods your store accepts."
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ],
+          "default": "flex-start"
+        },
         {
           "type": "range",
           "id": "mb",
@@ -819,6 +846,90 @@
           "id": "text",
           "label": "Text",
           "default": "Your shipping message"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Second line"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Third line (small)"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 16,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 24
+        },
+        {
+          "type": "color",
+          "id": "icon_c",
+          "label": "Icon colour",
+          "default": "#000000"
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "box",
+          "label": "Show container",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Container background",
+          "default": "#f6f6f6"
+        },
+        {
+          "type": "color",
+          "id": "border_c",
+          "label": "Border colour",
+          "default": "#dddddd"
+        },
+        {
+          "type": "range",
+          "id": "border_w",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "unit": "px",
+          "label": "Border width",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "radius",
+          "min": 0,
+          "max": 24,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 8
         },
         {
           "type": "range",

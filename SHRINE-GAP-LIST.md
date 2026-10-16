@@ -20,10 +20,10 @@ Legend: **P1** drives sales, **P2** page-building power, **P3** polish. **[EXT]*
 | PP-08 ✅ | **Buy buttons options**: skip cart (go straight to checkout), uppercase labels, price inside button, custom button colour. | P1 |
 | PP-09 ✅ | **Estimated shipping with real dates**: min/max days → formatted dates (six date formats), custom day and month labels, icon, alignment. | P2 |
 | PP-10 ✅ | **Shipping checkpoints with dates**: four checkpoints, icon, top/bottom text, per-step day range, auto start/end date tokens, colour scheme. | P2 |
-| PP-11 | **Sizing chart popup**: button (icon, size, underline), popup with heading, header row, rich body table, images above/below, caption, test mode. | P2 |
-| PP-12 | **Rating stars block** (manual value, colours, outlined/full background stars, label, scroll-to-section link) and **Reviews slider block** (3 reviews with avatars, stars, alignment). | P2 |
-| PP-13 | **Clickable discount**: auto-apply a code with non-applied and applied states (text, icon, colours). Ours exists but with fewer controls. | P2 |
-| PP-14 | **Content blocks**: text-with-icon (3 lines with container, border, background), image block (width, mobile full, radius), video block (loop, muted autoplay, play/pause, sound button, timeline, ripple), urgency text, emoji benefits, payment badges with chosen icons. | P2 |
+| PP-11 ✅ | **Sizing chart popup**: button (icon, size, underline), popup with heading, header row, rich body table, images above/below, caption, test mode. | P2 |
+| PP-12 ✅ | **Rating stars block** (manual value, colours, outlined/full background stars, label, scroll-to-section link) and **Reviews slider block** (3 reviews with avatars, stars, alignment). | P2 |
+| PP-13 ✅ | **Clickable discount**: auto-apply a code with non-applied and applied states (text, icon, colours). Ours exists but with fewer controls. | P2 |
+| PP-14 ✅ | **Content blocks**: text-with-icon (3 lines with container, border, background), image block (width, mobile full, radius), video block (loop, muted autoplay, play/pause, sound button, timeline, ripple), urgency text, emoji benefits, payment badges with chosen icons. | P2 |
 | PP-15 | **Gallery options**: thumbnail-slider layout, show variant image first, thumbnail counts, mobile thumbnails, mobile slide spacing and next-slide preview, pagination (numeric / dots under / dots overlay), hide arrows, dots colour, **trust badge overlay** (image, 4 positions, 3 sizes), separate mobile and desktop padding. | P2 |
 | PP-16 | Per-block **margins** (top/bottom) on every product block, and **inline price layout / colours** (price first or second, price and compare colours, hide sale badge). | P3 |
 | PP-17 | Collapsible tab extras: plus/caret icon, heading size, custom or filled icon, top border toggle. | P3 |

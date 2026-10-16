@@ -145,7 +145,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   document.addEventListener('click',function(e){
     var c=e.target.closest('[data-gmc-code]');
     if(c){var code=c.dataset.gmcCode;try{navigator.clipboard.writeText(code);}catch(x){}
-      fetch('/discount/'+encodeURIComponent(code)).then(function(){var s=c.querySelector('small');if(s)s.textContent=gmcT('code_saved');});}
+      fetch('/discount/'+encodeURIComponent(code)).then(function(){gmcCodeOn(c,true);try{sessionStorage.setItem('gmc_code_'+code,'1');}catch(x){}});}
     var o=e.target.closest('[data-gmc-open]');if(o){var d=document.getElementById(o.dataset.gmcOpen);if(d&&d.showModal)d.showModal();}
     var sc=e.target.closest('[data-gmc-scroll]');if(sc){var t=null;try{t=document.querySelector(sc.dataset.gmcScroll);}catch(x){}if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
     var tb=e.target.closest('.gmc-pe__tn button');if(tb){var w=tb.closest('.gmc-pe__tabs');qa('.gmc-pe__tn button',w).forEach(function(b){b.setAttribute('aria-selected',b===tb);});qa('.gmc-pe__tp',w).forEach(function(p){p.hidden=p.dataset.t!==tb.dataset.t;});}
@@ -448,4 +448,18 @@ document.addEventListener('DOMContentLoaded',function(){var d=document.querySele
     if(e.target.tagName==='DIALOG'&&e.target.classList.contains('gmc-dlg')){e.target.close();}});
   function t(){document.querySelectorAll('dialog.gmc-dlg[data-gmc-open]').forEach(function(d){if(!d.open&&d.showModal){d.showModal();}});}
   t();document.addEventListener('shopify:section:load',t);
+})();
+
+function gmcCodeOn(c,on){var s=c.querySelector('small');c.classList.toggle('is-on',on);if(s)s.textContent=on?c.dataset.tOn:c.dataset.tOff;var ic=c.querySelector('.gmc-cdisc__i use');if(ic&&c.dataset.iOn){if(!c._i0)c._i0=ic.getAttribute('href');ic.setAttribute('href',on?'#gmc-i-'+c.dataset.iOn:c._i0);}}
+document.querySelectorAll('.gmc-cdisc').forEach(function(c){try{if(sessionStorage.getItem('gmc_code_'+c.dataset.gmcCode))gmcCodeOn(c,true);}catch(x){}});
+
+/* product video blocks: play/pause, sound, timeline */
+(function(){
+  function init(root){(root||document).querySelectorAll('[data-gmc-vid]').forEach(function(w){if(w._g)return;w._g=1;var v=w.querySelector('video'),pb=w.querySelector('[data-gmc-vplay]'),sb=w.querySelector('[data-gmc-vsound]'),bar=w.querySelector('.gmc-pm__vt b');
+    if(pb)pb.addEventListener('click',function(){if(v.paused){v.play();}else{v.pause();}});
+    if(v&&pb){v.addEventListener('play',function(){pb.textContent='❚❚';});v.addEventListener('pause',function(){pb.textContent='▶';});}
+    if(sb)sb.addEventListener('click',function(){v.muted=!v.muted;sb.textContent=v.muted?'🔇':'🔊';});
+    if(bar)v.addEventListener('timeupdate',function(){bar.style.width=(v.currentTime/(v.duration||1)*100)+'%';});
+    if('IntersectionObserver' in window&&v.autoplay){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){v.play().catch(function(){});}else{v.pause();}});}).observe(w);}});}
+  init();document.addEventListener('shopify:section:load',function(e){init(e.target);});
 })();
