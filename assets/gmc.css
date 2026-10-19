@@ -34,6 +34,20 @@ label.gmc-swatch,label.gmc-imgsw{width:var(--gmc-sw-size,36px);height:var(--gmc-
 .gmc-mega-promo{display:block;position:relative;width:28rem;border-radius:var(--text-boxes-radius);overflow:hidden;text-decoration:none;color:#fff;align-self:stretch}
 .gmc-mega-promo img{display:block;width:100%;height:100%;object-fit:cover;min-height:16rem}
 .gmc-mega-promo span{position:absolute;left:0;right:0;bottom:0;padding:1.2rem;background:linear-gradient(transparent,rgba(0,0,0,.7));font-weight:700}
+.gmc-pmega__grid{display:grid;grid-template-columns:minmax(18rem,24rem) 1fr;gap:2.4rem;align-items:start}
+.gmc-pmega__nav{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.gmc-pmega__tab{display:flex;align-items:center;gap:1rem;width:100%;text-align:left;background:transparent;border:0;color:inherit;font:inherit;padding:.8rem;border-radius:var(--text-boxes-radius);cursor:pointer}
+.gmc-pmega__tab.is-active,.gmc-pmega__tab:hover{background:rgba(var(--color-foreground),.06)}
+.gmc-pmega__thumb{width:4.4rem;height:4.4rem;object-fit:cover;border-radius:.6rem}
+.gmc-pmega__goto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.gmc-pmega__cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1.2rem}
+.gmc-pmega__cards[hidden]{display:none}
+.gmc-pmega__textlink{display:block;padding:1rem;font-weight:600}
+.gmc-pmega-mini{list-style:none;margin:.4rem 0 1rem;padding:0 1.6rem;display:grid;gap:.6rem}
+.gmc-pmega-mini a{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:inherit}
+.gmc-pmega-mini img{width:4rem;height:4rem;object-fit:cover;border-radius:.4rem}
+.gmc-pmega-mini small{margin-left:auto;opacity:.7}
+@media (max-width:989px){.gmc-pmega__grid{grid-template-columns:1fr}}
 .gmc-ftr .footer{padding-top:2rem}.gmc-ftr .footer-block__details-content a:hover,.gmc-ftr .footer__list-social a:hover{opacity:.7;transform:translateX(2px);transition:.15s}
 .gmc-ftr .footer-block__heading{letter-spacing:.06em;text-transform:uppercase;font-size:1.3rem}
 /* ---- zoom ---- */

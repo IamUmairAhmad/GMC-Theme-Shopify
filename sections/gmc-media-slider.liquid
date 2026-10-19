@@ -2,7 +2,7 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add slide blocks with an image or MP4.' -%}{%- endif -%}
-<div class="gmc-ms {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-ms-{{ section.id }}" style="--ratio:{{ section.settings.ratio }}">
+<div class="gmc-ms{% if section.settings.center %} gmc-ms--center{% endif %} {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-ms-{{ section.id }}" style="--ratio:{{ section.settings.ratio }};--gmc-ms-gap:{{ section.settings.gap }}px;--gmc-ms-radius:{{ section.settings.radius }}px">
   <div class="gmc-ms__track">{%- for block in section.blocks -%}
     <div class="gmc-ms__s" {{ block.shopify_attributes }}>
       {%- if block.settings.video != blank -%}<div class="gmc-pm__vid gmc-ms__vid" data-gmc-vid><video playsinline preload="metadata" {% if block.settings.autoplay %}autoplay muted{% endif %}{% if block.settings.loop %} loop{% endif %}{% unless block.settings.autoplay or block.settings.custom_ui %} controls{% endunless %}{% if block.settings.image != blank %} poster="{{ block.settings.image | image_url: width: 1200 }}"{% endif %}>{%- for s in block.settings.video.sources -%}{%- if s.format == 'mp4' -%}<source src="{{ s.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
@@ -12,10 +12,15 @@
       {%- if block.settings.desc != blank -%}<div class="gmc-ms__desc color-{{ block.settings.desc_scheme }} gradient" style="text-align:{{ block.settings.desc_align }}">{{ block.settings.desc | escape }}</div>{%- endif -%}
     </div>{%- endfor -%}</div>
   <button type="button" class="gmc-ms__b gmc-ms__b--p" aria-label="Previous">‹</button><button type="button" class="gmc-ms__b gmc-ms__b--n" aria-label="Next">›</button>
+  {%- if section.settings.dots -%}<div class="gmc-ms__dots">{%- for block in section.blocks -%}<button type="button" class="gmc-ms__dot{% if forloop.first %} is-on{% endif %}" data-gmc-ms-dot data-i="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>{%- endfor -%}</div>{%- endif -%}
 </div>
-<style>.gmc-ms__desc{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.4rem;z-index:2}.gmc-ms__vid{width:100%;height:100%}.gmc-ms__vid video{width:100%;height:100%;object-fit:cover}.gmc-ms{position:relative}.gmc-ms__track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.gmc-ms__track::-webkit-scrollbar{display:none}.gmc-ms__s{flex:0 0 {{ section.settings.per_view }}%;scroll-snap-align:start;position:relative;aspect-ratio:var(--ratio)}.gmc-ms__s img,.gmc-ms__s video{width:100%;height:100%;object-fit:cover;display:block}.gmc-ms__cap{position:absolute;left:1rem;bottom:1rem;background:rgba(0,0,0,.6);color:#fff;padding:.4rem 1rem;border-radius:var(--badge-corner-radius,99px)}.gmc-ms__cap a{color:#fff}.gmc-ms__b{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#111;font-size:26px;cursor:pointer}.gmc-ms__b--p{left:.8rem}.gmc-ms__b--n{right:.8rem}@media(max-width:749px){.gmc-ms__s{flex-basis:{{ section.settings.per_view_mobile }}%}}</style>
+<style>.gmc-ms__desc{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.4rem;z-index:2}.gmc-ms__vid{width:100%;height:100%}.gmc-ms__vid video{width:100%;height:100%;object-fit:cover}.gmc-ms{position:relative}.gmc-ms__track{display:flex;gap:var(--gmc-ms-gap,0px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.gmc-ms__track::-webkit-scrollbar{display:none}.gmc-ms__s{flex:0 0 {{ section.settings.per_view }}%;scroll-snap-align:start;position:relative;aspect-ratio:var(--ratio);border-radius:var(--gmc-ms-radius,0);overflow:hidden}.gmc-ms--center .gmc-ms__s{scroll-snap-align:center}{% if section.settings.per_view >= 75 %}.gmc-ms--center .gmc-ms__s{flex-basis:calc({{ section.settings.per_view }}% - 12%)}.gmc-ms--center .gmc-ms__track{padding-inline:6%}{% endif %}.gmc-ms__s img,.gmc-ms__s video{width:100%;height:100%;object-fit:cover;display:block}.gmc-ms__cap{position:absolute;left:1rem;bottom:1rem;background:rgba(0,0,0,.6);color:#fff;padding:.4rem 1rem;border-radius:var(--badge-corner-radius,99px)}.gmc-ms__cap a{color:#fff}.gmc-ms__b{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#111;font-size:26px;cursor:pointer}.gmc-ms__b--p{left:.8rem}.gmc-ms__b--n{right:.8rem}.gmc-ms__dots{display:flex;gap:.6rem;justify-content:center;margin-top:.8rem}.gmc-ms__dot{width:1rem;height:1rem;border-radius:50%;border:1px solid rgb(var(--color-foreground));background:transparent;padding:0;cursor:pointer}.gmc-ms__dot.is-on{background:rgb(var(--color-foreground))}@media(max-width:749px){.gmc-ms__s,.gmc-ms--center .gmc-ms__s{flex-basis:{{ section.settings.per_view_mobile }}%}}</style>
 <script>(function(){var w=document.getElementById('gmc-ms-{{ section.id }}'),t=w.querySelector('.gmc-ms__track');
 w.querySelector('.gmc-ms__b--n').onclick=function(){t.scrollBy({left:t.clientWidth*.9,behavior:'smooth'});};w.querySelector('.gmc-ms__b--p').onclick=function(){t.scrollBy({left:-t.clientWidth*.9,behavior:'smooth'});};
+var dots=w.querySelectorAll('[data-gmc-ms-dot]');
+function gmcMsSync(){if(!dots.length)return;var slides=Array.prototype.slice.call(t.children),i=0,best=1e9;slides.forEach(function(slide,k){var d=Math.abs(slide.offsetLeft-t.scrollLeft);if(!(d>=best)){best=d;i=k;}});dots.forEach(function(dot,k){dot.classList.toggle('is-on',k===i);});}
+t.addEventListener('scroll',gmcMsSync,{passive:true});
+dots.forEach(function(dot){dot.addEventListener('click',function(){var s=t.children[+dot.dataset.i];if(s)t.scrollTo({left:s.offsetLeft-t.offsetLeft,behavior:'smooth'});});});
 {% if section.settings.autoplay %}if(!matchMedia('(prefers-reduced-motion:reduce)').matches){var iv=setInterval(function(){if(t.scrollLeft+t.clientWidth>=t.scrollWidth-4)t.scrollTo({left:0,behavior:'smooth'});else t.scrollBy({left:t.clientWidth*.9,behavior:'smooth'});},{{ section.settings.interval | times: 1000 }});w.addEventListener('mouseenter',function(){clearInterval(iv);});w.addEventListener('focusin',function(){clearInterval(iv);});}{% endif %}})();</script>
 {% schema %}
 {
@@ -63,6 +68,39 @@ w.querySelector('.gmc-ms__b--n').onclick=function(){t.scrollBy({left:t.clientWid
       "unit": "s",
       "label": "Interval",
       "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "center",
+      "label": "Centre the active slide",
+      "info": "Shows a peek of the slides on either side.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Show dots",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between slides",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 0
     },
     {
       "type": "select",

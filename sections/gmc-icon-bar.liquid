@@ -2,19 +2,26 @@
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one item block.' -%}{%- endif -%}
 {%- comment -%} GMC Theme: trust badge / icon bar (original code) {%- endcomment -%}
-<div class="page-width gmc-iconbar">
+<div class="page-width gmc-iconbar" style="--cols:{{ section.settings.columns }};--cols-m:{{ section.settings.columns_m }};--ic:{{ section.settings.icon_color }};text-align:{{ section.settings.align }}">
   {%- if section.settings.heading != blank -%}<h2 class="gmc-iconbar__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-  <ul class="gmc-iconbar__list gmc-iconbar__list--{{ section.settings.item_layout }}" style="--cols:{{ section.settings.columns }};--cols-m:{{ section.settings.columns_m }};--ic:{{ section.settings.icon_color }};text-align:{{ section.settings.align }}">
+  {%- capture gmc_icon_items -%}
     {%- for block in section.blocks -%}
-      <li class="gmc-iconbar__item" {{ block.shopify_attributes }}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="gmc-iconbar__a">{%- endif -%}
-        {%- if block.settings.icon_name != blank -%}<span class="gmc-iconbar__ic" style="color:var(--ic)">{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size -%}</span>{%- elsif block.settings.icon != blank -%}
+      <li class="gmc-iconbar__item{% if section.settings.as_slider %} gmc-sl__s{% endif %}{% if section.settings.show_cards %} color-{{ section.settings.card_scheme }} gradient{% endif %}" {{ block.shopify_attributes }}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="gmc-iconbar__a">{%- endif -%}
+        {%- if block.settings.icon_name != blank -%}<span class="gmc-iconbar__ic" style="color:var(--ic)">{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: section.settings.filled_icons -%}</span>{%- elsif block.settings.icon != blank -%}
           <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.icon.alt | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
         {%- endif -%}
         <strong>{{ block.settings.title | escape }}</strong>
         {%- if block.settings.text != blank -%}<span>{{ block.settings.text | escape }}</span>{%- endif -%}
       {%- if block.settings.link != blank -%}</a>{%- endif -%}</li>
     {%- endfor -%}
-  </ul>
+  {%- endcapture -%}
+  {%- if section.settings.as_slider -%}
+    <div class="gmc-sl gmc-iconbar__sl gmc-iconbar__list--{{ section.settings.item_layout }}" data-gmc-slider data-mode="slide" data-autoplay="{{ section.settings.gmc_slider_autoplay }}" data-loop="true" data-dots="{{ section.settings.slider_dots }}" data-arrows="{{ section.settings.slider_arrows }}" data-drag="true" data-perview="{{ section.settings.columns }}" data-perview-m="{{ section.settings.columns_m }}" style="--per:{{ section.settings.columns }};--per-m:{{ section.settings.columns_m }};--gmc-gap:1.6rem;--gmc-dot:rgb(var(--color-foreground))">
+      <div class="gmc-sl__vp"><ul class="gmc-sl__tr gmc-iconbar__list" role="list">{{ gmc_icon_items }}</ul></div>
+    </div>
+  {%- else -%}
+    <ul class="gmc-iconbar__list gmc-iconbar__list--{{ section.settings.item_layout }}" role="list">{{ gmc_icon_items }}</ul>
+  {%- endif -%}
 </div>
 <style>
   .gmc-iconbar__list--side .gmc-iconbar__a,.gmc-iconbar__list--side .gmc-iconbar__item{display:flex;gap:1rem;align-items:center;text-align:left}.gmc-iconbar__a{color:inherit;text-decoration:none;display:block}@media(max-width:749px){.gmc-iconbar__list{grid-template-columns:repeat(var(--cols-m,2),1fr)!important}}
@@ -23,6 +30,8 @@
   .gmc-iconbar__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:1.5rem;text-align:center}
   .gmc-iconbar__item{display:flex;flex-direction:column;align-items:center;gap:.4rem}
   .gmc-iconbar__item img{object-fit:contain}
+  .gmc-iconbar__item.gradient{padding:1.2rem;border-radius:var(--text-boxes-radius,8px)}
+  .gmc-iconbar__sl .gmc-iconbar__list{display:flex!important;grid-template-columns:none!important}
   .gmc-iconbar__item span{opacity:.75;font-size:.9em}
   @media(max-width:749px){.gmc-iconbar__list{grid-template-columns:repeat(2,1fr)}}
 </style>
@@ -85,6 +94,43 @@
         }
       ],
       "default": "stack"
+    },
+    {
+      "type": "checkbox",
+      "id": "filled_icons",
+      "label": "Filled icons",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cards",
+      "label": "Put each item on a card",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "card_scheme",
+      "label": "Card colour",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "as_slider",
+      "label": "Slide the icons",
+      "info": "Uses the column counts above. Arrows, dots and autoplay are in Slider options.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_arrows",
+      "label": "Slider arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_dots",
+      "label": "Slider dots",
+      "default": true
     },
     {
       "type": "select",

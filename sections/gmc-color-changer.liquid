@@ -4,10 +4,13 @@
 {%- assign fg = section.settings.fg | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
 {%- assign ac = section.settings.accent | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
 {%- assign bt = section.settings.button_text | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
+{%- if section.settings.outline != blank -%}
+  {%- assign ol = section.settings.outline | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
+{%- endif -%}
 <style>
-  body,[class*="color-"]{--color-background:{{ bg }};--color-foreground:{{ fg }};--color-button:{{ ac }};--color-button-text:{{ bt }};--color-link:{{ ac }};--color-base-background-1:{{ bg }};--color-base-text:{{ fg }};--gradient-background:{{ section.settings.bg }}}
-  body{background:{{ section.settings.bg }}}
-  [class*="color-"].gradient{background:{{ section.settings.bg }}}
+  body,[class*="color-"]{--color-background:{{ bg }};--color-foreground:{{ fg }};--color-button:{{ ac }};--color-button-text:{{ bt }};--color-secondary-button:{{ bg }};--color-link:{% if ol != blank %}{{ ol }}{% else %}{{ ac }}{% endif %};--color-badge-foreground:{{ fg }};--color-badge-background:{{ bg }};--color-badge-border:{{ fg }};{% if ol != blank %}--color-secondary-button-text:{{ ol }};{% endif %}--gradient-background:{% if section.settings.gradient != blank %}{{ section.settings.gradient }}{% else %}{{ section.settings.bg }}{% endif %}}
+  body{background:{% if section.settings.gradient != blank %}{{ section.settings.gradient }}{% else %}{{ section.settings.bg }}{% endif %}}
+  [class*="color-"].gradient{background:{% if section.settings.gradient != blank %}{{ section.settings.gradient }}{% else %}{{ section.settings.bg }}{% endif %}}
 </style>
 {% schema %}
 {
@@ -40,6 +43,17 @@
       "id": "button_text",
       "label": "Button text",
       "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "outline",
+      "label": "Outline buttons and links",
+      "info": "Leave empty to use the buttons colour for links."
+    },
+    {
+      "type": "color_background",
+      "id": "gradient",
+      "label": "Background gradient"
     },
     {
       "type": "color_scheme",

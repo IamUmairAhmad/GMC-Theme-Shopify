@@ -13,8 +13,12 @@
   <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
-{%- if section.settings.menu_type_desktop == 'mega' -%}
+{%- if section.settings.menu_type_desktop == 'mega' or section.settings.gmc_mega_products != blank -%}
   <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- endif -%}
+{%- if section.settings.gmc_mega_products != blank -%}
+  <link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
 <style>
@@ -189,7 +193,7 @@
         render 'header-drawer', show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: social_links
       endif
 
-      if render_search_left
+      if render_search_left and section.settings.gmc_show_search
         render 'header-search', input_id: 'Search-In-Modal-1'
       endif
     -%}
@@ -300,7 +304,9 @@
           </localization-form>
         {%- endif -%}
       </div>
-      {% render 'header-search', input_id: 'Search-In-Modal' %}
+      {%- if section.settings.gmc_show_search -%}
+        {% render 'header-search', input_id: 'Search-In-Modal' %}
+      {%- endif -%}
 
       {%- if shop.customer_accounts_enabled -%}
         <shopify-account
@@ -540,6 +546,33 @@
   document.addEventListener('shopify:section:load',function(){on();size();});})();
 </script>
 {%- endif -%}
+{%- if section.settings.gmc_mega_products != blank -%}
+  <script>
+    if (!customElements.get('gmc-products-menu')) {
+      customElements.define('gmc-products-menu', class extends HTMLElement {
+        connectedCallback() {
+          const buttons = this.querySelectorAll('[data-gmc-pmega]');
+          const panels = this.querySelectorAll('[data-gmc-pmega-panel]');
+          const show = (id) => {
+            panels.forEach((panel) => {
+              panel.hidden = panel.id !== id;
+            });
+            buttons.forEach((button) => {
+              const on = button.getAttribute('aria-controls') === id;
+              button.setAttribute('aria-expanded', on ? 'true' : 'false');
+              button.classList.toggle('is-active', on);
+            });
+          };
+          buttons.forEach((button) => {
+            const open = () => show(button.getAttribute('aria-controls'));
+            button.addEventListener('mouseenter', open);
+            button.addEventListener('focus', open);
+          });
+        }
+      });
+    }
+  </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.header.name",
@@ -658,6 +691,40 @@
       "id": "menu_color_scheme",
       "label": "t:sections.header.settings.menu_color_scheme.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Products mega menu"
+    },
+    {
+      "type": "textarea",
+      "id": "gmc_mega_products",
+      "label": "Menu items that open a products mega menu",
+      "info": "Comma-separated titles from the menu above, for example Shop, Collections. Those items show child links beside product cards."
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_mega_from_collection",
+      "label": "Show products from the collection",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_mega_col_images",
+      "label": "Collection images on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_mega_col_images_m",
+      "label": "Collection images on mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "gmc_show_search",
+      "label": "Show search icon",
+      "default": true
     },
     {
       "type": "select",

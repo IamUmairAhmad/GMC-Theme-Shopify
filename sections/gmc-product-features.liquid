@@ -6,12 +6,30 @@
   {%- if section.settings.layout == 'sides' -%}
   <div class="gmc-pf__g">
     <div class="gmc-pf__side">{%- for block in section.blocks -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 0 -%}<div class="gmc-pf__f" {{ block.shopify_attributes }}>{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 32 -%}{%- endif -%}<h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></div>{%- endif -%}{%- endfor -%}</div>
-    <div class="gmc-pf__img">{%- if section.settings.image != blank -%}{{ section.settings.image | image_url: width: 900 | image_tag: loading: 'lazy' }}{%- endif -%}</div>
+    <div class="gmc-pf__img">{%- if section.settings.image != blank -%}
+      {%- if section.settings.image_mobile != blank -%}
+        <picture>
+          <source media="(max-width: 749px)" srcset="{{ section.settings.image_mobile | image_url: width: 800 }}">
+          {{ section.settings.image | image_url: width: 900 | image_tag: loading: 'lazy' }}
+        </picture>
+      {%- else -%}
+        {{ section.settings.image | image_url: width: 900 | image_tag: loading: 'lazy' }}
+      {%- endif -%}
+    {%- endif -%}</div>
     <div class="gmc-pf__side">{%- for block in section.blocks -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 1 -%}<div class="gmc-pf__f" {{ block.shopify_attributes }}>{%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 32 -%}{%- endif -%}<h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></div>{%- endif -%}{%- endfor -%}</div>
   </div>
   {%- else -%}
   <div class="gmc-pf__map gmc-pf__map--{{ section.settings.layout }}" style="--lc:{{ section.settings.line_color }}">
-    {%- if section.settings.image != blank -%}{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400' }}{%- endif -%}
+    {%- if section.settings.image != blank -%}
+      {%- if section.settings.image_mobile != blank -%}
+        <picture>
+          <source media="(max-width: 749px)" srcset="{{ section.settings.image_mobile | image_url: width: 900 }}">
+          {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400' }}
+        </picture>
+      {%- else -%}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400' }}
+      {%- endif -%}
+    {%- endif -%}
     {%- if section.settings.layout == 'leader' -%}
     <svg class="gmc-pf__svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       {%- for block in section.blocks -%}{%- assign b = block.settings -%}
@@ -26,7 +44,7 @@
       <div class="gmc-pf__pt" style="--x:{{ b.x }}%;--y:{{ b.y }}%;--xm:{% if bm %}{{ b.x_m }}{% else %}{{ b.x }}{% endif %}%;--ym:{% if bm %}{{ b.y_m }}{% else %}{{ b.y }}{% endif %}%" {{ block.shopify_attributes }}>
         {%- if section.settings.layout == 'hotspots' -%}
           <button type="button" class="gmc-pf__dot" data-gmc-dlg="gmc-pf-{{ block.id }}" aria-label="{{ b.title | escape }}">+</button>
-          <dialog class="gmc-dlg" id="gmc-pf-{{ block.id }}" aria-label="{{ b.title | escape }}"><div class="gmc-dlg__in"><button type="button" class="gmc-dlg__x" data-gmc-dlgx aria-label="Close">×</button><h3 class="gmc-dlg__h">{{ b.title | escape }}</h3><p>{{ b.text | escape }}</p></div></dialog>
+          <dialog class="gmc-dlg gmc-pf__dlg" id="gmc-pf-{{ block.id }}" aria-label="{{ b.title | escape }}" style="--gmc-pf-w:{{ section.settings.popup_width }}px"><div class="gmc-dlg__in">{%- if b.popup_image != blank -%}{{ b.popup_image | image_url: width: 640 | image_tag: loading: 'lazy', class: 'gmc-pf__shot' }}{%- endif -%}<button type="button" class="gmc-dlg__x" data-gmc-dlgx aria-label="Close">×</button><h3 class="gmc-dlg__h">{{ b.title | escape }}</h3><p>{{ b.text | escape }}</p></div></dialog>
         {%- else -%}
           <span class="gmc-pf__dot gmc-pf__dot--s"></span>
         {%- endif -%}
@@ -41,7 +59,8 @@
   {%- if section.settings.layout == 'leader' -%}<ul class="gmc-pf__ml" role="list">{%- for block in section.blocks -%}<li><strong>{{ block.settings.title | escape }}</strong> {{ block.settings.text | escape }}</li>{%- endfor -%}</ul>{%- endif -%}
   {%- endif -%}
 </div>
-<style>.gmc-pf__map{position:relative;max-width:900px;margin:1.5rem auto}.gmc-pf__map>img{width:100%;height:auto;display:block;border-radius:16px}.gmc-pf__svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.gmc-pf__pt{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%)}.gmc-pf__dot{width:28px;height:28px;border-radius:50%;background:#fff;color:#111;border:0;display:grid;place-items:center;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35)}.gmc-pf__dot--s{width:12px;height:12px;background:var(--lc,#fff);cursor:default}.gmc-pf__lb{position:absolute;transform:translateY(-50%);max-width:30%;font-size:1.3rem;display:grid;gap:.2rem;background:rgba(255,255,255,.9);color:#111;padding:.5rem .8rem;border-radius:6px}.gmc-pf__lb--left{transform:translate(-100%,-50%);text-align:right}.gmc-pf__ml{display:none;list-style:none;padding:0;margin:1rem 0;gap:.6rem}@media(max-width:749px){.gmc-pf__pt{left:var(--xm);top:var(--ym)}.gmc-pf__map--leader .gmc-pf__lb,.gmc-pf__map--leader .gmc-pf__svg{display:none}.gmc-pf__ml{display:grid}}.gmc-pf{padding:36px 0}.gmc-pf__g{display:grid;grid-template-columns:1fr minmax(240px,420px) 1fr;gap:2rem;align-items:center;margin-top:1.5rem}.gmc-pf__img img{width:100%;height:auto;border-radius:16px}.gmc-pf__side{display:grid;gap:2rem}.gmc-pf__f h3{margin:.4rem 0}.gmc-pf__f p{margin:0;opacity:.8}.gmc-pf__side:first-child{text-align:right}.gmc-pf__side:first-child .gmc-icon{margin-left:auto;display:block}@media(max-width:749px){.gmc-pf__g{grid-template-columns:1fr}.gmc-pf__side:first-child{text-align:left}.gmc-pf__img{order:-1}}</style>
+<style>.gmc-pf__map{position:relative;max-width:900px;margin:1.5rem auto}.gmc-pf__map>img{width:100%;height:auto;display:block;border-radius:16px}.gmc-pf__svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.gmc-pf__pt{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%)}.gmc-pf__dot{width:28px;height:28px;border-radius:50%;background:#fff;color:#111;border:0;display:grid;place-items:center;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35)}.gmc-pf__dot--s{width:12px;height:12px;background:var(--lc,#fff);cursor:default}.gmc-pf__lb{position:absolute;transform:translateY(-50%);max-width:30%;font-size:1.3rem;display:grid;gap:.2rem;background:rgba(255,255,255,.9);color:#111;padding:.5rem .8rem;border-radius:6px}.gmc-pf__lb--left{transform:translate(-100%,-50%);text-align:right}.gmc-pf__ml{display:none;list-style:none;padding:0;margin:1rem 0;gap:.6rem}@media(max-width:749px){.gmc-pf__pt{left:var(--xm);top:var(--ym)}.gmc-pf__map--leader .gmc-pf__lb,.gmc-pf__map--leader .gmc-pf__svg{display:none}.gmc-pf__ml{display:grid}}.gmc-pf{padding:36px 0}.gmc-pf__g{display:grid;grid-template-columns:1fr minmax(240px,420px) 1fr;gap:2rem;align-items:center;margin-top:1.5rem}.gmc-pf__img img{width:100%;height:auto;border-radius:16px}.gmc-pf__side{display:grid;gap:2rem}.gmc-pf__dlg{max-width:min(92vw,var(--gmc-pf-w,32rem))}.gmc-pf__shot{width:100%;height:auto;border-radius:8px;margin-bottom:1rem}
+.gmc-pf__f h3{margin:.4rem 0}.gmc-pf__f p{margin:0;opacity:.8}.gmc-pf__side:first-child{text-align:right}.gmc-pf__side:first-child .gmc-icon{margin-left:auto;display:block}@media(max-width:749px){.gmc-pf__g{grid-template-columns:1fr}.gmc-pf__side:first-child{text-align:left}.gmc-pf__img{order:-1}}</style>
 {% schema %}
 {
   "name": "Product features",
@@ -58,6 +77,21 @@
       "type": "image_picker",
       "id": "image",
       "label": "Center image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image"
+    },
+    {
+      "type": "range",
+      "id": "popup_width",
+      "min": 240,
+      "max": 560,
+      "step": 20,
+      "unit": "px",
+      "label": "Hotspot popup width",
+      "default": 320
     },
     {
       "type": "select",
@@ -304,6 +338,11 @@
           "id": "text",
           "label": "Text",
           "default": "Describe this benefit."
+        },
+        {
+          "type": "image_picker",
+          "id": "popup_image",
+          "label": "Image in the hotspot popup"
         },
         {
           "type": "header",
