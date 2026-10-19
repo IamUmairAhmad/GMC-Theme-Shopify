@@ -1,318 +1,546 @@
-{%- comment -%} gmc {%- endcomment -%}
+{%- comment -%} GMC Theme: layered hero whose images and text move as the page scrolls. {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
-{%- render 'gmc-section-extras' -%}
-{%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add image layer blocks.' -%}{%- endif -%}
-<section class="gmc-ph{% if section.settings.h_mobile > 0 %} gmc-ph--hm{% endif %} {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-ph-{{ section.id }}" data-tilt="{{ section.settings.tilt }}" style="--ph-h:{{ section.settings.h }}vh;--ph-hm:{%- if section.settings.h_mobile > 0 -%}{{ section.settings.h_mobile }}px{%- else -%}var(--ph-h){%- endif -%};min-height:{%- case section.settings.h_mode -%}{%- when 'px' -%}{{ section.settings.h_px }}px{%- when 'auto' -%}0{%- when 'full' -%}100vh{%- else -%}{{ section.settings.h }}vh{%- endcase -%}">
+{%- liquid
+  assign desk_min = '0px'
+  if section.settings.desktop_height == 'pixels'
+    assign desk_min = section.settings.desktop_height_px | append: 'px'
+  elsif section.settings.desktop_height == '100vh'
+    assign desk_min = '100vh'
+  endif
+
+  assign mob_min = '0px'
+  if section.settings.mobile_height == 'pixels'
+    assign mob_min = section.settings.mobile_height_px | append: 'px'
+  elsif section.settings.mobile_height == '100vh'
+    assign mob_min = '100vh'
+  endif
+
+  assign lift = '0px'
+  if section.settings.transparent_header
+    assign lift = 'var(--header-height, 0px)'
+  endif
+
+  assign has_mobile_bg = false
+  if section.settings.mobile_image != blank or section.settings.mobile_video != blank
+    assign has_mobile_bg = true
+  endif
+  assign has_desktop_bg = false
+  if section.settings.desktop_image != blank or section.settings.desktop_video != blank
+    assign has_desktop_bg = true
+  endif
+-%}
+{%- style -%}
+  #gmc-p3-{{ section.id }} {
+    --p3-desk: {{ desk_min }};
+    --p3-mob: {{ mob_min }};
+    --p3-pad-t: {{ section.settings.padding_top }}px;
+    --p3-pad-b: {{ section.settings.padding_bottom }}px;
+    --p3-lift: {{ lift }};
+    --p3-shade: {{ section.settings.overlay_color }};
+    --p3-shade-o: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    display: block;
+    min-height: var(--p3-mob);
+  }
+  {%- if section.settings.transparent_header -%}
+    #shopify-section-{{ section.id }} {
+      position: relative;
+      z-index: 0;
+      margin-top: calc(-1 * var(--header-height, 0px));
+    }
+  {%- endif -%}
+  @media screen and (min-width: 750px) {
+    #gmc-p3-{{ section.id }} { min-height: var(--p3-desk); }
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__bg,
+  #gmc-p3-{{ section.id }} .gmc-p3__shade,
+  #gmc-p3-{{ section.id }} .gmc-p3__imgl {
+    position: absolute;
+    inset: 0;
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__bg img,
+  #gmc-p3-{{ section.id }} .gmc-p3__bg video,
+  #gmc-p3-{{ section.id }} .gmc-p3__imgl img,
+  #gmc-p3-{{ section.id }} .gmc-p3__imgl video,
+  #gmc-p3-{{ section.id }} .gmc-p3__imgl svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__m { display: none; }
+  #gmc-p3-{{ section.id }} .gmc-p3__shade {
+    z-index: 1;
+    background: var(--p3-shade);
+    opacity: var(--p3-shade-o);
+    pointer-events: none;
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__imgl { pointer-events: none; z-index: calc(var(--z, 1) + 2); }
+  #gmc-p3-{{ section.id }} .gmc-p3__content {
+    position: relative;
+    z-index: calc(var(--z, 0) + 2);
+    display: flex;
+    align-items: var(--y, center);
+    justify-content: var(--x, center);
+    text-align: var(--align, center);
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--p3-mob);
+    padding-top: calc(var(--p3-pad-t) * 0.75 + var(--p3-lift));
+    padding-bottom: calc(var(--p3-pad-b) * 0.75);
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__content--full {
+    max-width: none;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__box {
+    width: 100%;
+    max-width: var(--box, none);
+    padding: 2rem 2.4rem;
+    border-radius: var(--text-boxes-radius);
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__heading {
+    margin: 0;
+    line-height: 1.05;
+    font-size: var(--h-mob);
+  }
+  #gmc-p3-{{ section.id }} .gmc-p3__prefix { margin: 0 0 0.6rem; }
+  #gmc-p3-{{ section.id }} .gmc-p3__suffix { margin: 0.6rem 0 0; }
+  #gmc-p3-{{ section.id }} .gmc-p3__text { margin-top: 1rem; }
+  #gmc-p3-{{ section.id }} .gmc-p3__text > :first-child { margin-top: 0; }
+  #gmc-p3-{{ section.id }} .gmc-p3__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.6rem;
+    justify-content: var(--btn, center);
+  }
+  @media screen and (max-width: 749px) {
+    #gmc-p3-{{ section.id }} .gmc-p3__content {
+      align-items: var(--mob-y, var(--y, center));
+      text-align: var(--mob-align, var(--align, center));
+    }
+    #gmc-p3-{{ section.id }} .gmc-p3__btns { justify-content: var(--mob-btn, var(--btn, center)); }
+    #gmc-p3-{{ section.id }} .gmc-p3__box--pct { max-width: 100%; }
+    #gmc-p3-{{ section.id }} .gmc-p3__split .gmc-p3__d,
+    #gmc-p3-{{ section.id }} .gmc-p3__imgl--split .gmc-p3__d { display: none; }
+    #gmc-p3-{{ section.id }} .gmc-p3__split .gmc-p3__m,
+    #gmc-p3-{{ section.id }} .gmc-p3__imgl--split .gmc-p3__m { display: block; }
+    #gmc-p3-{{ section.id }} .gmc-p3__imgl--nm { display: none; }
+  }
+  @media screen and (min-width: 750px) {
+    #gmc-p3-{{ section.id }} .gmc-p3__content {
+      min-height: var(--p3-desk);
+      padding-top: calc(var(--p3-pad-t) + var(--p3-lift));
+      padding-bottom: var(--p3-pad-b);
+    }
+    #gmc-p3-{{ section.id }} .gmc-p3__content--full { padding-left: 5rem; padding-right: 5rem; }
+    #gmc-p3-{{ section.id }} .gmc-p3__heading { font-size: var(--h-desk); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #gmc-p3-{{ section.id }} [data-layer] { transform: none !important; }
+  }
+  {%- if section.settings.transparent_header -%}
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header-wrapper {
+      background: transparent !important;
+      border-bottom-color: transparent !important;
+      box-shadow: none !important;
+    }
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header a,
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header summary,
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header button,
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header .h2,
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header .header__icon {
+      color: {{ section.settings.header_link_color }} !important;
+    }
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header__active-menu-item,
+    body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header__menu-item[aria-current='page'] {
+      color: {{ section.settings.header_highlight_color }} !important;
+      background: {{ section.settings.header_link_color }};
+      border-radius: 2rem;
+    }
+    {%- if section.settings.header_hover_color != blank and section.settings.header_hover_color.alpha > 0 -%}
+      body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header a:hover,
+      body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header summary:hover {
+        color: {{ section.settings.header_hover_color }} !important;
+      }
+    {%- endif -%}
+    {%- if section.settings.header_logo == 'secondary' -%}
+      .gmc-logo-light { display: none; }
+      body.gmc-p3-clear .section-header:not(.scrolled-past-header) .header__heading-logo { display: none; }
+      body.gmc-p3-clear .section-header:not(.scrolled-past-header) .gmc-logo-light { display: block; height: auto; }
+    {%- endif -%}
+    {%- if section.settings.hide_announcements -%}
+      body.gmc-p3-clear .shopify-section-group-header-group .announcement-bar,
+      body.gmc-p3-clear .shopify-section-group-header-group .utility-bar,
+      body.gmc-p3-clear .shopify-section-group-header-group .gmc-ab-bar { display: none !important; }
+    {%- endif -%}
+  {%- endif -%}
+{%- endstyle -%}
+
+<gmc-parallax-hero
+  id="gmc-p3-{{ section.id }}"
+  class="gmc-parallax-hero gmc-hero"
+  data-clear="{% if section.settings.transparent_header %}true{% else %}false{% endif %}"
+>
+  {%- if has_desktop_bg or has_mobile_bg -%}
+    <div class="gmc-p3__bg{% if has_mobile_bg %} gmc-p3__split{% endif %}">
+      {%- if section.settings.desktop_video != blank -%}
+        {{ section.settings.desktop_video | video_tag: image_size: '2000x', autoplay: true, loop: true, muted: true, controls: false, class: 'gmc-p3__d' }}
+      {%- elsif section.settings.desktop_image != blank -%}
+        {{ section.settings.desktop_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '375, 550, 750, 1100, 1500, 2000, 2400', sizes: '100vw', class: 'gmc-p3__d', alt: section.settings.desktop_image.alt }}
+      {%- endif -%}
+      {%- if section.settings.mobile_video != blank -%}
+        {{ section.settings.mobile_video | video_tag: image_size: '1200x', autoplay: true, loop: true, muted: true, controls: false, class: 'gmc-p3__m' }}
+      {%- elsif section.settings.mobile_image != blank -%}
+        {{ section.settings.mobile_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '375, 550, 750, 1100, 1200', sizes: '100vw', class: 'gmc-p3__m', alt: section.settings.mobile_image.alt }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  <div class="gmc-p3__shade" aria-hidden="true">&nbsp;</div>
+
   {%- for block in section.blocks -%}
-    {%- assign b = block.settings -%}
-    {%- if b.image != blank -%}
-      <div class="gmc-ph__l{% if b.hide_mobile %} gmc-ph__l--nm{% endif %}" data-speed="{{ b.speed }}" data-x="{{ b.speed_x }}" data-zoom="{{ b.zoom }}" data-rot="{{ b.rotate }}" data-mouse="{{ b.mouse }}" style="z-index:{{ b.z }}" {{ block.shopify_attributes }}>
-        {%- assign gmc_fp = 'object-position:' | append: b.image.presentation.focal_point -%}
+    {%- liquid
+      assign b = block.settings
+      case b.text_alignment
+        when 'left'
+          assign btn_x = 'flex-start'
+        when 'right'
+          assign btn_x = 'flex-end'
+        else
+          assign btn_x = 'center'
+      endcase
+      case b.mobile_text_alignment
+        when 'left'
+          assign mob_btn = 'flex-start'
+        when 'right'
+          assign mob_btn = 'flex-end'
+        else
+          assign mob_btn = 'center'
+      endcase
+      assign box_max = 'none'
+      if b.content_width == 'pixels'
+        assign box_max = b.content_width_px | append: 'px'
+      elsif b.content_width == 'percentage'
+        assign box_max = b.content_width_percent | append: '%'
+      endif
+    -%}
+    {%- if block.type == 'content' -%}
+      <div
+        class="gmc-p3__content{% if b.full_width %} gmc-p3__content--full{% else %} page-width{% endif %}"
+        style="--y:{{ b.vertical_position }};--x:{{ b.horizontal_position }};--align:{{ b.text_alignment }};--mob-y:{{ b.mobile_vertical_position }};--mob-align:{{ b.mobile_text_alignment }};--btn:{{ btn_x }};--mob-btn:{{ mob_btn }};--h-desk:{{ b.heading_size }}px;--h-mob:{{ b.heading_size_mobile }}px;--box:{{ box_max }};--z:{{ b.z_index }};"
+        data-layer
+        data-y="{{ b.scroll_y }}"
+        data-x="{{ b.scroll_x }}"
+        data-zoom="{{ b.zoom }}"
+        data-turn="{{ b.rotation }}"
+        {{ block.shopify_attributes }}
+      >
+        <div class="gmc-p3__box gradient color-{{ b.color_scheme }}{% if b.content_width == 'percentage' %} gmc-p3__box--pct{% endif %}">
+          {%- if b.heading_prefix != blank -%}
+            <p class="gmc-p3__prefix {{ b.affix_size }}">{{ b.heading_prefix | escape }}</p>
+          {%- endif -%}
+          {%- if b.heading != blank -%}
+            <h2 class="gmc-p3__heading">{{ b.heading | escape }}</h2>
+          {%- endif -%}
+          {%- if b.heading_suffix != blank -%}
+            <p class="gmc-p3__suffix {{ b.affix_size }}">{{ b.heading_suffix | escape }}</p>
+          {%- endif -%}
+          {%- if b.text != blank -%}
+            <div class="gmc-p3__text rte">{{ b.text }}</div>
+          {%- endif -%}
+          {%- if b.button_label_1 != blank or b.button_label_2 != blank -%}
+            <div class="gmc-p3__btns">
+              {%- if b.button_label_1 != blank -%}
+                <a
+                  {% if b.button_link_1 == blank %}role="link" aria-disabled="true"{% else %}href="{{ b.button_link_1 }}"{% endif %}
+                  class="button{% if b.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %}"
+                >{{ b.button_label_1 | escape }}</a>
+              {%- endif -%}
+              {%- if b.button_label_2 != blank -%}
+                <a
+                  {% if b.button_link_2 == blank %}role="link" aria-disabled="true"{% else %}href="{{ b.button_link_2 }}"{% endif %}
+                  class="button{% if b.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}"
+                >{{ b.button_label_2 | escape }}</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- elsif block.type == 'image' -%}
+      {%- liquid
+        assign layer_mobile = false
+        if b.image_mobile != blank
+          assign layer_mobile = true
+        endif
+      -%}
+      <div
+        class="gmc-p3__imgl{% if b.hide_mobile %} gmc-p3__imgl--nm{% endif %}{% if layer_mobile %} gmc-p3__imgl--split{% endif %}"
+        style="--z:{{ b.z_index }};"
+        data-layer
+        data-y="{{ b.scroll_y }}"
+        data-x="{{ b.scroll_x }}"
+        data-zoom="{{ b.zoom }}"
+        data-turn="{{ b.rotation }}"
+        {{ block.shopify_attributes }}
+      >
+        {%- if b.image != blank -%}
+          {{ b.image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '375, 550, 750, 1100, 1500, 2000, 2400', sizes: '100vw', class: 'gmc-p3__d', alt: b.image.alt }}
+        {%- elsif request.design_mode -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'gmc-p3__d gmc-p3__ph' }}
+        {%- endif -%}
         {%- if b.image_mobile != blank -%}
-          <picture><source media="(max-width:749px)" srcset="{{ b.image_mobile | image_url: width: 900 }}">{{ b.image | image_url: width: 1800 | image_tag: loading: 'lazy', widths: '750,1100,1500,1800', style: gmc_fp, alt: b.image.alt }}</picture>
-        {%- else -%}
-          {{ b.image | image_url: width: 1800 | image_tag: loading: 'lazy', widths: '750,1100,1500,1800', style: gmc_fp, alt: b.image.alt }}
+          {{ b.image_mobile | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '375, 550, 750, 1100, 1200', sizes: '100vw', class: 'gmc-p3__m', alt: b.image_mobile.alt }}
         {%- endif -%}
       </div>
     {%- endif -%}
   {%- endfor -%}
-  <div class="gmc-ph__c page-width">
-    {%- if section.settings.prefix != blank -%}<p class="gmc-ph__pre">{{ section.settings.prefix | escape }}</p>{%- endif -%}
-    <h1 style="font-size:min({{ section.settings.head_size }}px,9vw)">{{ section.settings.heading | escape }}</h1>
-    {%- if section.settings.suffix != blank -%}<p class="gmc-ph__suf">{{ section.settings.suffix | escape }}</p>{%- endif -%}
-    {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
-    {%- if section.settings.btn != blank -%}<a class="button" href="{{ section.settings.btn_link | default: '#' }}">{{ section.settings.btn | escape }}</a>{%- endif -%}
-  </div>
-</section>
-<style>.gmc-ph{position:relative;overflow:hidden;display:grid;place-items:center;text-align:center;color:#fff}.gmc-ph__l{position:absolute;inset:-10% 0;will-change:transform}.gmc-ph__l img{width:100%;height:100%;object-fit:cover}.gmc-ph__c{position:relative;z-index:20;padding:3rem 0;text-shadow:0 2px 12px rgba(0,0,0,.45)}.gmc-ph__pre,.gmc-ph__suf{letter-spacing:.2em;text-transform:uppercase;font-size:1.3rem;margin:0 0 1rem}.gmc-ph__suf{margin:1rem 0 0}.gmc-ph__c h1{margin:0}@media(max-width:749px){.gmc-ph__l--nm{display:none}.gmc-ph--hm{min-height:var(--ph-hm)!important}}@media(prefers-reduced-motion:reduce){.gmc-ph__l{transform:none!important}}</style>
-<script>(function(){var s=document.getElementById('gmc-ph-{{ section.id }}');if(!s||matchMedia('(prefers-reduced-motion:reduce)').matches)return;var L=[].slice.call(s.querySelectorAll('.gmc-ph__l')),px=0,py=0;
-function u(){var r=s.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var c=r.top+r.height/2-innerHeight/2,p=c/innerHeight;L.forEach(function(l){var sp=+l.dataset.speed,x=+l.dataset.x,z=+l.dataset.zoom,ro=+l.dataset.rot,m=+l.dataset.mouse;
- l.style.transform='translate3d('+(c*x/100+px*m)+'px,'+(c*sp/100+py*m)+'px,0) scale('+(1+p*z/100*-1)+') rotate('+(p*ro)+'deg)';});}
-addEventListener('scroll',u,{passive:true});u();
-if(s.dataset.tilt==='true'&&matchMedia('(pointer:fine)').matches){s.addEventListener('pointermove',function(e){var r=s.getBoundingClientRect();px=((e.clientX-r.left)/r.width-.5)*2;py=((e.clientY-r.top)/r.height-.5)*2;u();});}})();</script>
+</gmc-parallax-hero>
+
+{%- render 'gmc-section-extras' -%}
+
+{% javascript %}
+  if (!customElements.get('gmc-parallax-hero')) {
+    class GmcParallaxHero extends HTMLElement {
+      connectedCallback() {
+        this.layers = this.querySelectorAll('[data-layer]');
+        this.motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        this.onScroll = () => {
+          if (this.frame) return;
+          this.frame = requestAnimationFrame(() => {
+            this.frame = 0;
+            this.paint();
+          });
+        };
+        window.addEventListener('scroll', this.onScroll, { passive: true });
+        window.addEventListener('resize', this.onScroll);
+        this.paint();
+        if (this.dataset.clear === 'true') this.watchHeader();
+      }
+
+      disconnectedCallback() {
+        window.removeEventListener('scroll', this.onScroll);
+        window.removeEventListener('resize', this.onScroll);
+        if (this.headerTick) {
+          window.removeEventListener('scroll', this.headerTick);
+          window.removeEventListener('resize', this.headerTick);
+          document.body.classList.remove('gmc-p3-clear');
+        }
+      }
+
+      paint() {
+        if (this.motion.matches) {
+          this.layers.forEach((layer) => {
+            layer.style.transform = '';
+          });
+          return;
+        }
+        const rect = this.getBoundingClientRect();
+        let travelled = 0;
+        if (rect.top < 0) travelled = Math.min(-rect.top, rect.height);
+        const progress = rect.height > 0 ? travelled / rect.height : 0;
+        this.layers.forEach((layer) => {
+          const y = travelled * (Number(layer.dataset.y) / 100);
+          const x = Number(layer.dataset.x) * progress;
+          const scale = (100 + (Number(layer.dataset.zoom) - 100) * progress) / 100;
+          const turn = 3.6 * Number(layer.dataset.turn) * progress;
+          layer.style.transform = 'translateY(' + y + 'px) translateX(' + x + '%) scale(' + scale + ') rotate(' + turn + 'deg)';
+        });
+      }
+
+      watchHeader() {
+        const tick = () => {
+          const bar = document.querySelector('.section-header');
+          if (bar) document.documentElement.style.setProperty('--header-height', bar.offsetHeight + 'px');
+          document.body.classList.toggle('gmc-p3-clear', window.scrollY <= 8);
+        };
+        this.headerTick = tick;
+        tick();
+        window.addEventListener('scroll', tick, { passive: true });
+        window.addEventListener('resize', tick);
+      }
+    }
+    customElements.define('gmc-parallax-hero', GmcParallaxHero);
+  }
+{% endjavascript %}
+
 {% schema %}
 {
-  "name": "3D parallax hero",
+  "name": "3D Parallax hero",
   "tag": "section",
   "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Depth in motion"
-    },
-    {
-      "type": "textarea",
-      "id": "text",
-      "label": "Text"
-    },
-    {
-      "type": "text",
-      "id": "prefix",
-      "label": "Heading prefix (small, above)"
-    },
-    {
-      "type": "text",
-      "id": "suffix",
-      "label": "Heading suffix (small, below)"
-    },
-    {
-      "type": "text",
-      "id": "btn",
-      "label": "Button label"
-    },
-    {
-      "type": "url",
-      "id": "btn_link",
-      "label": "Button link"
-    },
-    {
-      "type": "range",
-      "id": "head_size",
-      "min": 28,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Heading size",
-      "default": 56
-    },
-    {
-      "type": "checkbox",
-      "id": "tilt",
-      "label": "Pointer tilt (desktop)",
-      "default": false
+      "type": "header",
+      "content": "Height"
     },
     {
       "type": "select",
-      "id": "h_mode",
-      "label": "Height mode",
+      "id": "desktop_height",
+      "label": "Minimum desktop height",
       "options": [
-        {
-          "value": "vh",
-          "label": "Percentage of screen (slider below)"
-        },
-        {
-          "value": "px",
-          "label": "Fixed pixels"
-        },
-        {
-          "value": "full",
-          "label": "Full screen"
-        },
-        {
-          "value": "auto",
-          "label": "Fit content"
-        }
+        { "value": "autofit", "label": "Fit the content" },
+        { "value": "pixels", "label": "Fixed pixels" },
+        { "value": "100vh", "label": "Full screen" }
       ],
-      "default": "vh"
+      "default": "pixels"
     },
     {
-      "type": "range",
-      "id": "h_px",
-      "min": 200,
-      "max": 1200,
-      "step": 20,
-      "unit": "px",
-      "label": "Fixed height",
+      "type": "number",
+      "id": "desktop_height_px",
+      "label": "Desktop minimum height in pixels",
       "default": 600
     },
     {
-      "type": "range",
-      "id": "h_mobile",
-      "min": 0,
-      "max": 900,
-      "step": 20,
-      "unit": "px",
-      "label": "Mobile height (0 = same as desktop)",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "h",
-      "min": 40,
-      "max": 100,
-      "unit": "vh",
-      "label": "Height",
-      "default": 70
-    },
-    {
       "type": "select",
-      "id": "hide_on",
-      "label": "Hide on",
+      "id": "mobile_height",
+      "label": "Minimum mobile height",
       "options": [
-        {
-          "value": "",
-          "label": "Show everywhere"
-        },
-        {
-          "value": "mobile",
-          "label": "Mobile"
-        },
-        {
-          "value": "desktop",
-          "label": "Desktop"
-        }
+        { "value": "autofit", "label": "Fit the content" },
+        { "value": "pixels", "label": "Fixed pixels" },
+        { "value": "100vh", "label": "Full screen" }
       ],
-      "default": ""
+      "default": "pixels"
+    },
+    {
+      "type": "number",
+      "id": "mobile_height_px",
+      "label": "Mobile minimum height in pixels",
+      "default": 400
     },
     {
       "type": "header",
-      "content": "Layout (GMC)"
+      "content": "Header"
     },
     {
-      "type": "range",
-      "id": "gmc_pad_top",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "label": "Extra space above",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "gmc_pad_bottom",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "label": "Extra space below",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "gmc_max_width",
-      "min": 0,
-      "max": 1600,
-      "step": 50,
-      "unit": "px",
-      "label": "Max content width (0 = theme default)",
-      "default": 0
+      "type": "checkbox",
+      "id": "transparent_header",
+      "label": "Transparent header",
+      "default": false,
+      "info": "Pulls this hero under the header and clears the header background until the page scrolls. Top padding grows by the header height."
     },
     {
       "type": "color",
-      "id": "gmc_bg_color",
-      "label": "Section background color"
+      "id": "header_link_color",
+      "label": "Transparent header links and icons",
+      "default": "#FFFFFF"
     },
     {
-      "type": "text",
-      "id": "gmc_bg_gradient",
-      "label": "Section background gradient (CSS)",
-      "info": "For example: linear-gradient(135deg, #ff7a18, #af002d). Overrides the colour above."
+      "type": "color",
+      "id": "header_highlight_color",
+      "label": "Transparent header current link",
+      "default": "#121212",
+      "info": "Text colour of the current menu item. Its background uses the link colour."
+    },
+    {
+      "type": "color",
+      "id": "header_hover_color",
+      "label": "Transparent header hovered link"
+    },
+    {
+      "type": "select",
+      "id": "header_logo",
+      "label": "Transparent header logo",
+      "options": [
+        { "value": "main", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" }
+      ],
+      "default": "main",
+      "info": "Secondary uses the header secondary logo, or the secondary logo in theme settings."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_announcements",
+      "label": "Hide announcement bars",
+      "default": false,
+      "info": "Hides announcement bars in the header group while the header is clear."
+    },
+    {
+      "type": "header",
+      "content": "Background"
     },
     {
       "type": "image_picker",
-      "id": "gmc_bg_image",
-      "label": "Background image"
+      "id": "desktop_image",
+      "label": "Desktop background image"
     },
     {
       "type": "video",
-      "id": "gmc_bg_video",
-      "label": "Background video (MP4 upload)"
+      "id": "desktop_video",
+      "label": "Desktop background video",
+      "info": "Plays in place of the desktop image when a video is selected."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile background image"
+    },
+    {
+      "type": "video",
+      "id": "mobile_video",
+      "label": "Mobile background video",
+      "info": "Plays in place of the mobile image when a video is selected."
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Background overlay color",
+      "default": "#000000"
     },
     {
       "type": "range",
-      "id": "gmc_bg_overlay",
+      "id": "overlay_opacity",
       "min": 0,
-      "max": 80,
-      "step": 5,
+      "max": 100,
+      "step": 1,
       "unit": "%",
-      "label": "Background overlay",
+      "label": "Background overlay opacity",
       "default": 0
     },
     {
       "type": "header",
-      "content": "Add to cart in this section"
-    },
-    {
-      "type": "product",
-      "id": "gmc_atc_product",
-      "label": "Add-to-cart product",
-      "info": "Adds a button (with variant dropdown if needed) at the end of this section."
-    },
-    {
-      "type": "text",
-      "id": "gmc_atc_label",
-      "label": "Button label",
-      "default": "Add to cart"
-    },
-    {
-      "type": "checkbox",
-      "id": "gmc_atc_skip",
-      "label": "Add to cart button: skip the cart and go to checkout",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "gmc_atc_align",
-      "label": "Button alignment",
-      "default": "center",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Slider options"
-    },
-    {
-      "type": "checkbox",
-      "id": "gmc_swipe_mobile",
-      "label": "Swipe row on mobile",
-      "info": "Turns this section's grid into a swipeable row on phones.",
-      "default": false
+      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
       "type": "range",
-      "id": "gmc_slider_autoplay",
-      "label": "Slider autoplay (seconds, 0 = off)",
+      "id": "padding_top",
       "min": 0,
-      "max": 12,
-      "step": 1,
-      "default": 0,
-      "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 50
     },
     {
-      "type": "color_scheme",
-      "id": "gmc_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "GMC extras"
     },
     {
       "type": "select",
       "id": "gmc_display_on",
       "label": "Display on",
       "options": [
-        {
-          "value": "all",
-          "label": "All devices"
-        },
-        {
-          "value": "mobile",
-          "label": "Mobile only"
-        },
-        {
-          "value": "desktop",
-          "label": "Desktop only"
-        }
+        { "value": "all", "label": "All devices" },
+        { "value": "mobile", "label": "Mobile only" },
+        { "value": "desktop", "label": "Desktop only" }
       ],
       "default": "all"
-    },
-    {
-      "type": "header",
-      "content": "Section ID and pairing"
     },
     {
       "type": "text",
@@ -324,7 +552,7 @@ if(s.dataset.tilt==='true'&&matchMedia('(pointer:fine)').matches){s.addEventList
       "type": "text",
       "id": "gmc_pair_with",
       "label": "Place beside the section with this ID",
-      "info": "Enter another section's ID. The two sections sit side by side on desktop. [Guide](https://github.com/IamUmairAhmad/GMC-Theme-Shopify/blob/main/docs/sections.md)"
+      "info": "Enter another section's ID. The two sections sit side by side on desktop."
     },
     {
       "type": "checkbox",
@@ -335,19 +563,285 @@ if(s.dataset.tilt==='true'&&matchMedia('(pointer:fine)').matches){s.addEventList
   ],
   "blocks": [
     {
-      "type": "layer",
-      "name": "Layer",
+      "type": "content",
+      "name": "Content",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Parallax"
+        },
+        {
+          "type": "range",
+          "id": "scroll_y",
+          "min": -300,
+          "max": 300,
+          "step": 10,
+          "unit": "%",
+          "label": "Vertical scrolling",
+          "default": 0,
+          "info": "0 moves with the page. 100 holds the layer still while the hero scrolls away. Negative values move it up."
+        },
+        {
+          "type": "range",
+          "id": "scroll_x",
+          "min": -300,
+          "max": 300,
+          "step": 10,
+          "unit": "%",
+          "label": "Horizontal scrolling",
+          "default": 0,
+          "info": "0 stays put sideways. Negative moves left and positive moves right as the hero scrolls away."
+        },
+        {
+          "type": "range",
+          "id": "zoom",
+          "min": 0,
+          "max": 400,
+          "step": 10,
+          "unit": "%",
+          "label": "Zoom level",
+          "default": 100,
+          "info": "Size once the hero has scrolled away. 100 stays the same size."
+        },
+        {
+          "type": "range",
+          "id": "rotation",
+          "min": -100,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Rotation",
+          "default": 0,
+          "info": "Turn once the hero has scrolled away. 100 is one full turn. Negative turns left."
+        },
+        {
+          "type": "range",
+          "id": "z_index",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "label": "Stacking index",
+          "default": 0,
+          "info": "Higher numbers sit in front."
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "heading_prefix",
+          "label": "Heading prefix"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Parallax hero"
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "min": 30,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Desktop heading size",
+          "default": 80
+        },
+        {
+          "type": "range",
+          "id": "heading_size_mobile",
+          "min": 18,
+          "max": 90,
+          "step": 3,
+          "unit": "px",
+          "label": "Mobile heading size",
+          "default": 36
+        },
+        {
+          "type": "text",
+          "id": "heading_suffix",
+          "label": "Heading suffix"
+        },
+        {
+          "type": "select",
+          "id": "affix_size",
+          "label": "Heading prefix and suffix size",
+          "options": [
+            { "value": "h5", "label": "Extra small" },
+            { "value": "h4", "label": "Small" },
+            { "value": "h3", "label": "Medium" },
+            { "value": "h2", "label": "Large" }
+          ],
+          "default": "h4"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Stack image layers that move at different speeds.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "label": "First button label",
+          "default": "Button label",
+          "info": "Leave blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "First button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_1",
+          "label": "Use outline button style",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Second button label",
+          "info": "Leave blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Second button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_2",
+          "label": "Use outline button style",
+          "default": false
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "t:sections.all.colors.label",
+          "default": "scheme-1"
+        },
+        {
+          "type": "header",
+          "content": "Desktop content layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Use full page width",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "content_width",
+          "label": "Content maximum width",
+          "options": [
+            { "value": "unlimited", "label": "Unlimited" },
+            { "value": "pixels", "label": "Fixed pixels" },
+            { "value": "percentage", "label": "Percentage" }
+          ],
+          "default": "unlimited"
+        },
+        {
+          "type": "number",
+          "id": "content_width_px",
+          "label": "Content maximum width in pixels",
+          "default": 500
+        },
+        {
+          "type": "range",
+          "id": "content_width_percent",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Content maximum width in percentage",
+          "default": 50,
+          "info": "Percentage of the content area. On mobile this is always the full width."
+        },
+        {
+          "type": "select",
+          "id": "vertical_position",
+          "label": "Content vertical position",
+          "options": [
+            { "value": "flex-start", "label": "Top" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Bottom" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "horizontal_position",
+          "label": "Content horizontal position",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Content text alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Mobile content layout"
+        },
+        {
+          "type": "select",
+          "id": "mobile_vertical_position",
+          "label": "Mobile content vertical position",
+          "options": [
+            { "value": "flex-start", "label": "Top" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Bottom" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "mobile_text_alignment",
+          "label": "Mobile content text alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image layer",
       "limit": 10,
       "settings": [
         {
+          "type": "header",
+          "content": "Image"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Desktop image"
         },
         {
           "type": "image_picker",
           "id": "image_mobile",
-          "label": "Mobile image"
+          "label": "Mobile image",
+          "info": "Uses the desktop image when empty."
         },
         {
           "type": "checkbox",
@@ -356,92 +850,77 @@ if(s.dataset.tilt==='true'&&matchMedia('(pointer:fine)').matches){s.addEventList
           "default": false
         },
         {
-          "type": "range",
-          "id": "speed",
-          "min": -100,
-          "max": 100,
-          "step": 5,
-          "unit": "%",
-          "label": "Vertical speed",
-          "default": 20
+          "type": "header",
+          "content": "Parallax"
         },
         {
           "type": "range",
-          "id": "speed_x",
-          "min": -100,
-          "max": 100,
-          "step": 5,
+          "id": "scroll_y",
+          "min": -300,
+          "max": 300,
+          "step": 10,
           "unit": "%",
-          "label": "Horizontal speed",
-          "default": 0
+          "label": "Vertical scrolling",
+          "default": 0,
+          "info": "0 moves with the page. 100 holds the layer still while the hero scrolls away. Negative values move it up."
+        },
+        {
+          "type": "range",
+          "id": "scroll_x",
+          "min": -300,
+          "max": 300,
+          "step": 10,
+          "unit": "%",
+          "label": "Horizontal scrolling",
+          "default": 0,
+          "info": "0 stays put sideways. Negative moves left and positive moves right as the hero scrolls away."
         },
         {
           "type": "range",
           "id": "zoom",
-          "min": -50,
-          "max": 50,
-          "step": 5,
+          "min": 0,
+          "max": 400,
+          "step": 10,
           "unit": "%",
-          "label": "Zoom while scrolling",
-          "default": 0
+          "label": "Zoom level",
+          "default": 0,
+          "info": "Size once the hero has scrolled away. 100 stays the same size."
         },
         {
           "type": "range",
-          "id": "rotate",
-          "min": -30,
-          "max": 30,
-          "step": 1,
-          "unit": "\u00b0",
-          "label": "Rotation while scrolling",
-          "default": 0
+          "id": "rotation",
+          "min": -100,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Rotation",
+          "default": 0,
+          "info": "Turn once the hero has scrolled away. 100 is one full turn. Negative turns left."
         },
         {
           "type": "range",
-          "id": "z",
-          "min": 1,
+          "id": "z_index",
+          "min": 0,
           "max": 10,
           "step": 1,
-          "label": "Stacking order (higher is in front)",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "mouse",
-          "min": 0,
-          "max": 50,
-          "step": 5,
-          "label": "Pointer movement",
-          "default": 0
+          "label": "Stacking index",
+          "default": 1,
+          "info": "Higher numbers sit in front."
         }
       ]
     }
   ],
-  "max_blocks": 10,
+  "max_blocks": 11,
   "presets": [
     {
-      "name": "3D parallax hero",
+      "name": "3D Parallax hero",
       "blocks": [
-        {
-          "type": "layer",
-          "settings": {
-            "speed": 5
-          }
-        },
-        {
-          "type": "layer",
-          "settings": {
-            "speed": 20
-          }
-        },
-        {
-          "type": "layer",
-          "settings": {
-            "speed": 30
-          }
-        }
+        { "type": "content" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
       ]
     }
   ]
 }
 {% endschema %}
-
