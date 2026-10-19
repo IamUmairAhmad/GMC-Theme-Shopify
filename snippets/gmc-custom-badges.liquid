@@ -1,10 +1,53 @@
-{%- comment -%} GMC Theme: extra badges from product tags named custom-badge-Your text (original code). Param: product. {%- endcomment -%}
-{%- if settings.gmc_custom_badges -%}
+{% doc %}
+  Extra product-card badges from product tags.
+  A tag custom-badge-1 uses the first preset label, custom-badge-2 the second.
+  Any other custom-badge- tag prints the text after the prefix.
+  [percentage] and [amount] are filled from the compare-at price.
+
+  @param {product} product - Product whose tags and prices feed the badges
+{% enddoc %}
+{%- if settings.gmc_custom_badges and product != blank -%}
+  {%- liquid
+    assign gmc_compare = product.compare_at_price
+    assign gmc_price = product.price
+    assign gmc_off_pct = 0
+    assign gmc_off_amt = ''
+    if gmc_compare > gmc_price and gmc_compare > 0
+      assign gmc_off_pct = gmc_compare | minus: gmc_price | times: 100 | divided_by: gmc_compare
+      assign gmc_off_amt = gmc_compare | minus: gmc_price | money_without_trailing_zeros
+    endif
+    assign gmc_presets = settings.gmc_badge_presets | split: ','
+  -%}
   {%- for tag in product.tags -%}
     {%- assign tag_head = tag | downcase | slice: 0, 13 -%}
     {%- if tag_head == 'custom-badge-' -%}
-      {%- assign cb_text = tag | slice: 13, 60 | strip -%}
-      {%- if cb_text != blank -%}<span class="badge badge--bottom-left gmc-badge-extra color-{{ settings.gmc_custom_badge_scheme }}">{{ cb_text | escape }}</span>{%- endif -%}
+      {%- liquid
+        assign cb_rest = tag | slice: 13, 80 | strip
+        assign cb_num = cb_rest | plus: 0
+        assign cb_num_str = cb_num | append: ''
+        assign cb_label = ''
+        assign cb_show = false
+        if cb_rest == cb_num_str and cb_num > 0
+          for cb_item in gmc_presets
+            if forloop.index == cb_num
+              assign cb_label = cb_item | strip
+            endif
+          endfor
+        else
+          assign cb_label = cb_rest
+        endif
+        if cb_label != blank
+          if cb_label contains '[percentage]' or cb_label contains '[amount]'
+            if gmc_compare > gmc_price and gmc_compare > 0
+              assign cb_label = cb_label | replace: '[percentage]', gmc_off_pct | replace: '[amount]', gmc_off_amt
+              assign cb_show = true
+            endif
+          else
+            assign cb_show = true
+          endif
+        endif
+      -%}
+      {%- if cb_show -%}<span class="badge badge--bottom-left gmc-badge-extra color-{{ settings.gmc_custom_badge_scheme }}">{{ cb_label | escape }}</span>{%- endif -%}
     {%- endif -%}
   {%- endfor -%}
 {%- endif -%}

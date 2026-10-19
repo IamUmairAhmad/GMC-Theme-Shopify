@@ -1,0 +1,62 @@
+{% doc %}
+  Prints variant-dropdown CSS from the theme settings for background, text,
+  border, tint, shadow, and hover. Renders nothing when every control is left
+  at its default.
+{% enddoc %}
+{%- liquid
+  assign gmc_dd_on = false
+  if settings.gmc_dd_bg != blank or settings.gmc_dd_border != blank or settings.gmc_dd_text != blank or settings.gmc_dd_radius > 0 or settings.gmc_dd_shadow or settings.gmc_dd_shadow_o > 0 or settings.gmc_dd_overlay_o > 0 or settings.gmc_dd_thick != 1 or settings.gmc_dd_hover != blank or settings.gmc_dd_hover_overlay > 0
+    assign gmc_dd_on = true
+  endif
+-%}
+{%- if gmc_dd_on -%}
+.product-form__input--dropdown .select__select{
+  {%- if settings.gmc_dd_bg != blank -%}background-color:{{ settings.gmc_dd_bg }};{%- endif -%}
+  {%- if settings.gmc_dd_text != blank -%}color:{{ settings.gmc_dd_text }};{%- endif -%}
+  {%- if settings.gmc_dd_radius > 0 -%}border-radius:{{ settings.gmc_dd_radius }}px;{%- endif -%}
+  {%- if settings.gmc_dd_border != blank or settings.gmc_dd_thick != 1 -%}
+    {%- if settings.gmc_dd_border != blank and settings.gmc_dd_border_o < 100 -%}
+      {%- assign gmc_dd_ba = settings.gmc_dd_border_o | divided_by: 100.0 -%}
+      border:{{ settings.gmc_dd_thick }}px solid {{ settings.gmc_dd_border | color_modify: 'alpha', gmc_dd_ba }} !important;
+    {%- elsif settings.gmc_dd_border != blank -%}
+      border:{{ settings.gmc_dd_thick }}px solid {{ settings.gmc_dd_border }} !important;
+    {%- else -%}
+      border-width:{{ settings.gmc_dd_thick }}px;
+    {%- endif -%}
+  {%- endif -%}
+  {%- if settings.gmc_dd_overlay_o > 0 and settings.gmc_dd_overlay != blank -%}
+    {%- assign gmc_dd_oa = settings.gmc_dd_overlay_o | divided_by: 100.0 -%}
+    background-image:linear-gradient({{ settings.gmc_dd_overlay | color_modify: 'alpha', gmc_dd_oa }}, {{ settings.gmc_dd_overlay | color_modify: 'alpha', gmc_dd_oa }});
+  {%- endif -%}
+  {%- if settings.gmc_dd_shadow_o > 0 -%}
+    {%- assign gmc_dd_sa = settings.gmc_dd_shadow_o | divided_by: 100.0 -%}
+    box-shadow:{{ settings.gmc_dd_shadow_x }}px {{ settings.gmc_dd_shadow_y }}px {{ settings.gmc_dd_shadow_blur }}px rgba(0,0,0,{{ gmc_dd_sa }});
+  {%- elsif settings.gmc_dd_shadow -%}
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+  {%- endif -%}
+}
+{%- if settings.gmc_dd_border != blank -%}.product-form__input--dropdown .select:after,.product-form__input--dropdown .select:before{display:none}{%- endif -%}
+{%- if settings.gmc_dd_text != blank -%}.product-form__input--dropdown .select .svg-wrapper{color:{{ settings.gmc_dd_text }}}{%- endif -%}
+{%- if settings.gmc_dd_hover != blank or settings.gmc_dd_hover_overlay > 0 or settings.gmc_dd_hover_border > 0 -%}
+.product-form__input--dropdown .select__select:hover{
+  {%- if settings.gmc_dd_hover != blank or settings.gmc_dd_hover_border > 0 -%}
+    {%- liquid
+      assign gmc_dd_hc = settings.gmc_dd_hover
+      if gmc_dd_hc == blank
+        assign gmc_dd_hc = settings.gmc_dd_border
+      endif
+    -%}
+    {%- if gmc_dd_hc != blank and settings.gmc_dd_hover_border > 0 -%}
+      {%- assign gmc_dd_ha = settings.gmc_dd_hover_border | divided_by: 100.0 -%}
+      border-color:{{ gmc_dd_hc | color_modify: 'alpha', gmc_dd_ha }} !important;
+    {%- elsif gmc_dd_hc != blank -%}
+      border-color:{{ gmc_dd_hc }} !important;
+    {%- endif -%}
+  {%- endif -%}
+  {%- if settings.gmc_dd_hover_overlay > 0 and settings.gmc_dd_overlay != blank -%}
+    {%- assign gmc_dd_hoa = settings.gmc_dd_hover_overlay | divided_by: 100.0 -%}
+    background-image:linear-gradient({{ settings.gmc_dd_overlay | color_modify: 'alpha', gmc_dd_hoa }}, {{ settings.gmc_dd_overlay | color_modify: 'alpha', gmc_dd_hoa }});
+  {%- endif -%}
+}
+{%- endif -%}
+{%- endif -%}

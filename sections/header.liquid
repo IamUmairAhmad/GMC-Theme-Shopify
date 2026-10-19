@@ -173,12 +173,22 @@
   {%- if section.settings.gmc_menu2 != blank and gmc_m2.links.size > 0 -%}
   <nav class="gmc-menu2 page-width" aria-label="{{ gmc_m2.title | escape }}" style="justify-content:{{ section.settings.gmc_menu2_align }}">{%- for l2 in gmc_m2.links -%}<a href="{{ l2.url }}" class="link link--text"{% if l2.current %} aria-current="page"{% endif %}>{{ l2.title | escape }}</a>{%- endfor -%}</nav>
   {%- endif -%}
+  {%- liquid
+    assign gmc_light_logo = section.settings.logo_light
+    if gmc_light_logo == blank
+      assign gmc_light_logo = settings.gmc_logo_secondary
+    endif
+    assign gmc_logo_m = section.settings.gmc_logo_w_m
+    if gmc_logo_m == 0
+      assign gmc_logo_m = settings.gmc_logo_mobile
+    endif
+  -%}
   <style>
     {%- if section.settings.gmc_active_style != 'none' -%}
     .header__menu-item[aria-current="page"],.header__active-menu-item,.header__inline-menu a[aria-current="page"]{ {%- if section.settings.gmc_active_color != blank -%}color:{{ section.settings.gmc_active_color }};{%- endif -%}
       {%- case section.settings.gmc_active_style -%}{%- when 'underline' -%}text-decoration:underline;text-underline-offset:.6rem;text-decoration-thickness:2px;{%- when 'pill' -%}background:{{ section.settings.gmc_active_color | default: 'currentColor' }};color:rgb(var(--color-background));border-radius:2rem;padding:.2rem 1rem;{%- when 'bold' -%}font-weight:700;{%- endcase -%} }
     {%- endif -%}
-    {%- if section.settings.gmc_logo_w_m > 0 -%}@media (max-width: 989px){ .header__heading-logo-wrapper{ width:{{ section.settings.gmc_logo_w_m }}px !important; max-width:60vw } }{%- endif -%}
+    {%- if gmc_logo_m > 0 -%}@media (max-width: 989px){ .header__heading-logo-wrapper{ width:{{ gmc_logo_m }}px !important; max-width:60vw } }{%- endif -%}
     .gmc-menu2{display:flex;gap:2rem;padding-top:.5rem;padding-bottom:.5rem;font-size:1.3rem}
     .gmc-menu2 a[aria-current]{text-decoration:underline}
   </style>
@@ -221,8 +231,8 @@
                 sizes: sizes,
                 preload: true
             }}
-            {%- if section.settings.logo_light != blank -%}
-              {{ section.settings.logo_light | image_url: width: 600 | image_tag: class: 'gmc-logo-light', widths: '300, 450, 600', width: settings.logo_width, alt: '', loading: 'lazy' }}
+            {%- if gmc_light_logo != blank -%}
+              {{ gmc_light_logo | image_url: width: 600 | image_tag: class: 'gmc-logo-light', widths: '300, 450, 600', width: settings.logo_width, alt: '', loading: 'lazy' }}
             {%- endif -%}
           </div>
         {%- else -%}
@@ -267,8 +277,8 @@
                 sizes: sizes,
                 preload: true
             }}
-            {%- if section.settings.logo_light != blank -%}
-              {{ section.settings.logo_light | image_url: width: 600 | image_tag: class: 'gmc-logo-light', widths: '300, 450, 600', width: settings.logo_width, alt: '', loading: 'lazy' }}
+            {%- if gmc_light_logo != blank -%}
+              {{ gmc_light_logo | image_url: width: 600 | image_tag: class: 'gmc-logo-light', widths: '300, 450, 600', width: settings.logo_width, alt: '', loading: 'lazy' }}
             {%- endif -%}
           </div>
         {%- else -%}
@@ -532,7 +542,7 @@
   .gmc-hdr-trans:not(.gmc-hdr-solid) .header a,.gmc-hdr-trans:not(.gmc-hdr-solid) .header summary,.gmc-hdr-trans:not(.gmc-hdr-solid) .header button,.gmc-hdr-trans:not(.gmc-hdr-solid) .header .h2,.gmc-hdr-trans:not(.gmc-hdr-solid) .header .header__icon{color:{{ section.settings.gmc_trans_text | default: '#ffffff' }}!important}
   {%- if section.settings.gmc_trans_hover != blank -%}.gmc-hdr-trans:not(.gmc-hdr-solid) .header a:hover,.gmc-hdr-trans:not(.gmc-hdr-solid) .header summary:hover{color:{{ section.settings.gmc_trans_hover }}!important}{%- endif -%}
   .gmc-logo-light{display:none}
-  {%- if section.settings.logo_light != blank -%}.gmc-hdr-trans:not(.gmc-hdr-solid) .header__heading-logo{display:none}.gmc-hdr-trans:not(.gmc-hdr-solid) .gmc-logo-light{display:block;height:auto}{%- endif -%}
+  {%- if gmc_light_logo != blank -%}.gmc-hdr-trans:not(.gmc-hdr-solid) .header__heading-logo{display:none}.gmc-hdr-trans:not(.gmc-hdr-solid) .gmc-logo-light{display:block;height:auto}{%- endif -%}
   {%- if section.settings.gmc_trans_hide_ann -%}.gmc-hdr-trans:not(.gmc-hdr-solid) .announcement-bar,.gmc-hdr-trans:not(.gmc-hdr-solid) .utility-bar{display:none}{%- endif -%}
 </style>
 <script>
