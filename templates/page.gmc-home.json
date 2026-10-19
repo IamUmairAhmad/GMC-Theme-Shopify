@@ -110,27 +110,24 @@
       "type": "gmc-results",
       "blocks": {
         "a": {
-          "type": "stat",
+          "type": "row",
           "settings": {
-            "number": 100,
-            "suffix": "+",
-            "label": "Edit this statistic"
+            "percentage": 90,
+            "row_text": "<p>Edit this statistic</p>"
           }
         },
         "b": {
-          "type": "stat",
+          "type": "row",
           "settings": {
-            "number": 100,
-            "suffix": "+",
-            "label": "Edit this statistic"
+            "percentage": 76,
+            "row_text": "<p>Edit this statistic</p>"
           }
         },
         "c": {
-          "type": "stat",
+          "type": "row",
           "settings": {
-            "number": 100,
-            "suffix": "+",
-            "label": "Edit this statistic"
+            "percentage": 64,
+            "row_text": "<p>Edit this statistic</p>"
           }
         }
       },
@@ -139,7 +136,12 @@
         "b",
         "c"
       ],
-      "settings": {}
+      "settings": {
+        "heading": "Results that speak",
+        "intro": "",
+        "results_heading": "",
+        "caption": ""
+      }
     },
     "contact": {
       "type": "contact-form",
