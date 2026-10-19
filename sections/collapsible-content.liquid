@@ -2,6 +2,12 @@
 {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
 {{ 'collapsible-content.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign cc_has_media = false
+  if section.settings.image != blank or section.settings.video != blank
+    assign cc_has_media = true
+  endif
+-%}
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -14,12 +20,28 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  #shopify-section-{{ section.id }} .collapsible-content__media video {
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .accordion .svg-wrapper .gmc-icon--img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  {%- unless section.settings.display_top_border -%}
+    #shopify-section-{{ section.id }} .collapsible-none-layout .accordion,
+    #shopify-section-{{ section.id }} .collapsible-section-layout .accordion {
+      border-top: 0;
+    }
+  {%- endunless -%}
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="collapsible-content collapsible-{{ section.settings.layout }}-layout isolate{% if section.settings.layout == 'section' %} page-width{% elsif section.settings.layout == 'none' %} content-container content-container--full-width{% endif %}">
     <div class="collapsible-content__wrapper section-{{ section.id }}-padding{% if section.settings.layout == 'section' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}">
-      <div class="{% if section.settings.image == blank %}collapsible-content-wrapper-narrow{% else %}page-width{% endif %}">
+      <div class="{% if cc_has_media %}page-width{% else %}collapsible-content-wrapper-narrow{% endif %}">
         <div
           class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           style="text-align: {{ section.settings.heading_alignment }};"
@@ -38,41 +60,47 @@
           {% endif %}
         </div>
         <div class="grid grid--1-col grid--2-col-tablet collapsible-content__grid{% if section.settings.desktop_layout == 'image_second' %} collapsible-content__grid--reverse{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          {%- if section.settings.image != blank -%}
+          {%- if cc_has_media -%}
             <div class="grid__item collapsible-content__grid-item">
               <div
                 class="collapsible-content__media collapsible-content__media--{{ section.settings.image_ratio }} media global-media-settings gradient"
-                {% if section.settings.image_ratio == 'adapt' %}
+                {% if section.settings.image_ratio == 'adapt' and section.settings.video != blank and section.settings.video.aspect_ratio != blank %}
+                  style="padding-bottom: {{ 1 | divided_by: section.settings.video.aspect_ratio | times: 100 }}%;"
+                {% elsif section.settings.image_ratio == 'adapt' and section.settings.image != blank %}
                   style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
                 {% endif %}
               >
-                {%- liquid
-                  assign padding_multiplier = 1
-                  if section.settings.layout == 'section'
-                    assign padding_multiplier = 2
-                  endif
-                  assign desktop_tablet_padding = 100 | times: padding_multiplier | append: 'px'
-                  assign mobile_padding = 30 | times: padding_multiplier | append: 'px'
-                -%}
-                {%- capture sizes -%}
-                  (min-width: {{ settings.page_width }}px) calc(({{ settings.page_width }}px - {{ desktop_tablet_padding }}) / 2),
-                  (min-width: 750px) calc((100vw - {{ desktop_tablet_padding }}) / 2),
-                  calc(100vw - {{ mobile_padding }})
-                {%- endcapture -%}
-                {{
-                  section.settings.image
-                  | image_url: width: 3200
-                  | image_tag:
-                    sizes: sizes,
-                    widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200'
-                }}
+                {%- if section.settings.video != blank -%}
+                  {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+                {%- elsif section.settings.image != blank -%}
+                  {%- liquid
+                    assign padding_multiplier = 1
+                    if section.settings.layout == 'section'
+                      assign padding_multiplier = 2
+                    endif
+                    assign desktop_tablet_padding = 100 | times: padding_multiplier | append: 'px'
+                    assign mobile_padding = 30 | times: padding_multiplier | append: 'px'
+                  -%}
+                  {%- capture sizes -%}
+                    (min-width: {{ settings.page_width }}px) calc(({{ settings.page_width }}px - {{ desktop_tablet_padding }}) / 2),
+                    (min-width: 750px) calc((100vw - {{ desktop_tablet_padding }}) / 2),
+                    calc(100vw - {{ mobile_padding }})
+                  {%- endcapture -%}
+                  {{
+                    section.settings.image
+                    | image_url: width: 3200
+                    | image_tag:
+                      sizes: sizes,
+                      widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200'
+                  }}
+                {%- endif -%}
               </div>
             </div>
           {% endif %}
           <div class="grid__item">
             {%- for block in section.blocks -%}
               <div
-                class="accordion{% if section.settings.layout == 'row' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}"
+                class="accordion gmc-acc{% if section.settings.collapse_icon == 'plus' %} gmc-acc--plus{% endif %}{% if block.settings.filled_icon %} gmc-acc--filled{% endif %}{% if section.settings.layout == 'row' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}"
                 {{ block.shopify_attributes }}
               >
                 <details
@@ -82,8 +110,18 @@
                   {% endif %}
                 >
                   <summary id="Summary-{{ block.id }}-{{ section.id }}">
-                    {% render 'icon-accordion', icon: block.settings.icon %}
-                    <h3 class="accordion__title inline-richtext h4">
+                    {%- if block.settings.custom_icon != blank -%}
+                      <span class="svg-wrapper">
+                        {%- render 'gmc-icon', image: block.settings.custom_icon, size: 22 -%}
+                      </span>
+                    {%- elsif block.settings.icon_name != blank -%}
+                      <span class="svg-wrapper">
+                        {%- render 'gmc-icon', name: block.settings.icon_name, size: 22, filled: block.settings.filled_icon -%}
+                      </span>
+                    {%- else -%}
+                      {% render 'icon-accordion', icon: block.settings.icon %}
+                    {%- endif -%}
+                    <h3 class="accordion__title inline-richtext {{ section.settings.row_heading_size | default: 'h4' }}">
                       {{ block.settings.heading | default: block.settings.page.title | escape }}
                     </h3>
                     {{- 'icon-caret.svg' | inline_asset_content -}}
@@ -223,12 +261,22 @@
     },
     {
       "type": "header",
-      "content": "t:sections.collapsible_content.settings.header.content"
+      "content": "Media"
     },
     {
       "type": "image_picker",
       "id": "image",
       "label": "t:sections.collapsible_content.settings.image.label"
+    },
+    {
+      "type": "header",
+      "content": "Or"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Plays inline, muted, and looped. Shown instead of the image when a video is chosen."
     },
     {
       "type": "select",
@@ -264,7 +312,55 @@
         }
       ],
       "default": "image_second",
-      "label": "t:sections.collapsible_content.settings.desktop_layout.label"
+      "label": "t:sections.collapsible_content.settings.desktop_layout.label",
+      "info": "On phones the media stays above the rows."
+    },
+    {
+      "type": "header",
+      "content": "Rows"
+    },
+    {
+      "type": "select",
+      "id": "row_heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h5",
+          "label": "Small"
+        },
+        {
+          "value": "h4",
+          "label": "Medium"
+        },
+        {
+          "value": "h3",
+          "label": "Large"
+        }
+      ],
+      "default": "h4"
+    },
+    {
+      "type": "select",
+      "id": "collapse_icon",
+      "label": "Collapse icon",
+      "options": [
+        {
+          "value": "caret",
+          "label": "Caret"
+        },
+        {
+          "value": "plus",
+          "label": "Plus"
+        }
+      ],
+      "default": "caret"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_top_border",
+      "label": "Display top border",
+      "default": true,
+      "info": "Shows the line above stacked rows. Rows that sit against each other still share one divider."
     },
     {
       "type": "header",
@@ -633,7 +729,25 @@
             }
           ],
           "default": "check_mark",
-          "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.label"
+          "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.label",
+          "info": "Used when Icon name and Custom icon are empty."
+        },
+        {
+          "type": "text",
+          "id": "icon_name",
+          "label": "Icon name",
+          "info": "A name from the theme icon library, such as check_box. Replaces the icon menu. A custom icon image replaces both."
+        },
+        {
+          "type": "checkbox",
+          "id": "filled_icon",
+          "label": "Filled icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon"
         },
         {
           "type": "richtext",
