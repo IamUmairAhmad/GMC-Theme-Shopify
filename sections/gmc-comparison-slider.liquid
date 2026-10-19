@@ -1,8 +1,12 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- comment -%} GMC Theme: before/after image slider (original code) {%- endcomment -%}
-<div class="page-width gmc-cmp-wrap">
-  {%- if section.settings.heading != blank -%}<h2 class="gmc-cmp-title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+<div class="page-width gmc-cmp-wrap gmc-cmp-wrap--{{ section.settings.layout | default: 'stacked' }}">
+  <div class="gmc-cmp-copy">
+    {%- if section.settings.heading != blank -%}<h2 class="gmc-cmp-title {{ section.settings.heading_size | default: 'h1' }}">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+    {%- if section.settings.text != blank -%}<div class="rte">{{ section.settings.text }}</div>{%- endif -%}
+    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>{%- endif -%}
+  </div>
   {%- if section.settings.before != blank and section.settings.after != blank -%}
   <div class="gmc-cmp gmc-cmp--{{ section.settings.handle_style }} gmc-cmp--tags-{{ section.settings.tag_pos }}" id="gmc-cmp-{{ section.id }}" style="--pos:50%;--cl:{{ section.settings.line_color }};--cw:{{ section.settings.line_w }}px;--tg:{{ section.settings.tag_bg }};--tf:{{ section.settings.tag_fg }}">
     <div class="gmc-cmp__img">{{ section.settings.after | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', alt: section.settings.after_label }}</div>
@@ -18,7 +22,7 @@
 </div>
 <style>
   .gmc-cmp__handle{background:var(--cl,#fff)!important;width:var(--cw,3px)!important}.gmc-cmp__tag{background:var(--tg)!important;color:var(--tf)!important}.gmc-cmp--bar .gmc-cmp__handle:after{content:"";width:8px;height:44px;border-radius:4px}.gmc-cmp--arrows .gmc-cmp__handle:after{content:"‹ ›";width:auto;height:auto;padding:.3rem .9rem;border-radius:99px;letter-spacing:.3em}.gmc-cmp--line .gmc-cmp__handle:after{display:none}.gmc-cmp--tags-bottom .gmc-cmp__tag{top:auto!important;bottom:1rem}
-  .gmc-cmp-wrap{padding:36px 0}.gmc-cmp-title{text-align:center;margin:0 0 1.5rem}
+  .gmc-cmp-wrap{padding:36px 0;display:grid;gap:2rem;align-items:center}.gmc-cmp-title{margin:0 0 1rem}.gmc-cmp-copy{display:grid;gap:1rem;justify-items:start}.gmc-cmp-wrap--stacked{justify-items:center}.gmc-cmp-wrap--stacked .gmc-cmp-copy{justify-items:center;text-align:center}.gmc-cmp-wrap--stacked .gmc-cmp{width:100%}.gmc-cmp-wrap--stacked .gmc-cmp,.gmc-cmp-wrap--slider-left .gmc-cmp{order:-1}@media(min-width:750px){.gmc-cmp-wrap--slider-left,.gmc-cmp-wrap--slider-right{grid-template-columns:1.1fr .9fr}.gmc-cmp-wrap--slider-left .gmc-cmp,.gmc-cmp-wrap--slider-right .gmc-cmp{max-width:none}}
   .gmc-cmp{position:relative;overflow:hidden;max-width:900px;margin:0 auto;border-radius:var(--text-boxes-radius);user-select:none}
   .gmc-cmp__img img{display:block;width:100%;height:auto}
   .gmc-cmp__before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
@@ -44,6 +48,43 @@
       "id": "heading",
       "label": "Heading",
       "default": "See the difference"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Slider placement",
+      "options": [
+        { "value": "stacked", "label": "Above the text" },
+        { "value": "slider-left", "label": "Left of the text" },
+        { "value": "slider-right", "label": "Right of the text" }
+      ],
+      "default": "stacked"
     },
     {
       "type": "image_picker",

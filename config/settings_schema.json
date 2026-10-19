@@ -866,6 +866,18 @@
         "default": "Get 10% off your first order"
       },
       {
+        "type": "select",
+        "id": "gmc_popup_heading_size",
+        "label": "Heading size",
+        "options": [
+          { "value": "h3", "label": "Small" },
+          { "value": "h2", "label": "Medium" },
+          { "value": "h1", "label": "Large" },
+          { "value": "h0", "label": "Extra large" }
+        ],
+        "default": "h2"
+      },
+      {
         "type": "textarea",
         "id": "gmc_popup_text",
         "label": "Text",
@@ -890,6 +902,56 @@
         "type": "image_picker",
         "id": "gmc_popup_image",
         "label": "Image (optional)"
+      },
+      {
+        "type": "select",
+        "id": "gmc_popup_image_side",
+        "label": "Image side on desktop",
+        "options": [
+          { "value": "start", "label": "Left" },
+          { "value": "end", "label": "Right" }
+        ],
+        "default": "start"
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_dismiss",
+        "label": "Dismiss button label",
+        "default": "No thanks"
+      },
+      {
+        "type": "header",
+        "content": "After signup"
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_ok_heading",
+        "label": "Success heading",
+        "default": "You are in"
+      },
+      {
+        "type": "textarea",
+        "id": "gmc_popup_ok_text",
+        "label": "Success text",
+        "default": "Thanks for subscribing."
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_popup_ok_image",
+        "label": "Show the image on the success screen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_copy",
+        "label": "Copy button label",
+        "default": "Copy"
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_copied",
+        "label": "Copied message",
+        "default": "Copied"
       },
       {
         "type": "text",
