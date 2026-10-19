@@ -1,419 +1,504 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
-{%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one review block.' -%}{%- endif -%}
-<div class="page-width gmc-tm gmc-tm--{{ section.settings.style }} {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--tm-cols:{{ section.settings.cols }};--tm-star:{{ section.settings.star_color }};--tm-quote:{{ section.settings.quote_color }};--tm-ratio:{{ section.settings.media_ratio }}">
-  {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-  {%- capture cards -%}{%- for block in section.blocks -%}{%- assign b = block.settings -%}
-    <figure class="gmc-tm__card color-{{ section.settings.card_scheme }} gradient{% if section.settings.style == 'slider' %} gmc-sl__s{% endif %}" {{ block.shopify_attributes }}>
-      {%- if b.video != blank -%}<div class="gmc-tm__media gmc-pm__vid" data-gmc-vid><video playsinline preload="metadata" controls {% if b.image != blank %}poster="{{ b.image | image_url: width: 800 }}"{% endif %}>{%- for vs in b.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>
-      {%- elsif b.image != blank -%}<div class="gmc-tm__media">{{ b.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: b.name }}</div>{%- endif -%}
-      <div class="gmc-tm__body">
-      {%- if section.settings.show_stars -%}<div class="gmc-tm__stars" aria-label="{{ b.rating }} out of 5">{%- for i in (1..5) -%}{%- if i <= b.rating -%}★{%- elsif section.settings.empty_stars -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</div>{%- endif -%}
-      {%- if section.settings.quote_marks -%}<span class="gmc-tm__qm" aria-hidden="true">“</span>{%- endif -%}
-      <blockquote>{{ b.quote | escape }}</blockquote>
-      <figcaption>{%- if b.avatar != blank -%}{{ b.avatar | image_url: width: 80 | image_tag: width: 40, height: 40, loading: 'lazy', class: 'gmc-tm__av' }}{%- endif -%}<span>{{ b.name | escape }}{% if b.verified %} <small>✔ Verified buyer</small>{% endif %}</span></figcaption>
-      </div>
-    </figure>{%- endfor -%}{%- endcapture -%}
-  {%- if section.settings.style == 'slider' -%}
-    <div class="gmc-sl gmc-tm__sl" data-gmc-slider data-mode="slide" data-autoplay="0" data-loop="false" data-dots="true" data-arrows="true" data-drag="true" data-perview="{{ section.settings.cols }}" data-perview-m="1" style="--per:{{ section.settings.cols }};--per-m:1;--gmc-gap:16px;--gmc-peek:{{ section.settings.peek }}px;--gmc-dot:rgb(var(--color-foreground))"><div class="gmc-sl__vp"><div class="gmc-sl__tr">{{ cards }}</div></div></div>
-  {%- else -%}
-    <div class="gmc-tm__grid">{{ cards }}</div>
+{%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one testimonial.' -%}{%- endif -%}
+{%- liquid
+  assign s = section.settings
+  assign gap = s.spacing
+  assign peek_m = 0
+  if s.preview > 0
+    assign peek_m = 24
+  endif
+-%}
+<div
+  class="gmc-tm gmc-tm--{{ s.style }} gmc-tm--{{ s.align }}{% if s.full_width %} gmc-tm--full{% else %} page-width{% endif %}{% if s.transparent %} gmc-tm--clear{% endif %} gmc-tm--arr-{{ s.arrows }} gmc-tm--dots-{{ s.dots }}"
+  style="--tm-cols:{{ s.columns }};--tm-gap:{{ gap }}px;--tm-star:{{ s.star_color }}"
+>
+  {%- if s.heading != blank or s.text != blank -%}
+    <div class="gmc-tm__head">
+      {%- if s.heading != blank -%}<h2 class="gmc-tm__title {{ s.heading_size }}">{{ s.heading | escape }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="gmc-tm__intro rte">{{ s.text }}</div>{%- endif -%}
+    </div>
   {%- endif -%}
+  <div
+    class="gmc-tm__sl"
+    id="gmc-tm-{{ section.id }}"
+    data-gmc-tm
+    data-per="{{ s.columns }}"
+    data-peek="{{ s.preview }}"
+    data-peek-m="{{ peek_m }}"
+    data-desk="{% if s.slider_desktop %}true{% else %}false{% endif %}"
+    data-mob="{% if s.slider_mobile %}true{% else %}false{% endif %}"
+    data-loop="{% if s.slider_type == 'loop' %}true{% else %}false{% endif %}"
+    data-autoplay="{% if s.autoplay %}{{ s.speed }}{% else %}0{% endif %}"
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="{{ s.heading | default: 'Testimonials' | escape }}"
+    tabindex="0"
+  >
+    <div class="gmc-tm__vp">
+      <div class="gmc-tm__tr">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <article class="gmc-tm__card color-{{ s.card_scheme }}" {{ block.shopify_attributes }}>
+            {%- if s.style == 'cards' -%}
+              {%- if b.video != blank -%}
+                <div class="gmc-tm__media gmc-tm__media--{{ s.image_width }} gmc-tm__media--{{ s.image_ratio }} gmc-pm__vid" data-gmc-vid {% if s.image_ratio == 'adapt' and b.video.aspect_ratio %}style="--tm-ar:{{ b.video.aspect_ratio }}"{% endif %}>
+                  {%- liquid
+                    assign poster = b.video_thumbnail
+                    if poster == blank
+                      assign poster = b.video.preview_image
+                    endif
+                  -%}
+                  <video playsinline preload="metadata" {% if poster != blank %}poster="{{ poster | image_url: width: 1200 }}"{% endif %}>
+                    {%- for vs in b.video.sources -%}
+                      {%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}
+                    {%- endfor -%}
+                  </video>
+                  <button type="button" class="gmc-tm__play" data-gmc-vplay aria-label="Play video">
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                  </button>
+                  <div class="gmc-pm__vt" aria-hidden="true"><b></b></div>
+                </div>
+              {%- elsif b.image != blank -%}
+                <div class="gmc-tm__media gmc-tm__media--{{ s.image_width }} gmc-tm__media--{{ s.image_ratio }}" {% if s.image_ratio == 'adapt' %}style="--tm-ar:{{ b.image.aspect_ratio }}"{% endif %}>
+                  {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '300, 600, 900, 1200', alt: b.title }}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+            <div class="gmc-tm__body">
+              {%- if s.show_stars -%}
+                <p class="gmc-tm__stars" aria-label="{{ b.rating }} out of 5">{%- for i in (1..b.rating) -%}★{%- endfor -%}</p>
+              {%- endif -%}
+              {%- if s.show_quotes -%}
+                <span class="gmc-tm__q color-{{ s.quote_scheme }}" aria-hidden="true">“</span>
+              {%- endif -%}
+              {%- if b.title != blank -%}<h3 class="gmc-tm__h">{{ b.title | escape }}</h3>{%- endif -%}
+              {%- if b.quote != blank -%}<blockquote class="gmc-tm__quote rte">{{ b.quote }}</blockquote>{%- endif -%}
+              {%- if b.avatar != blank or b.author != blank or b.verified -%}
+                <div class="gmc-tm__by">
+                  {%- if b.avatar != blank -%}
+                    {{ b.avatar | image_url: width: 120 | image_tag: width: 40, height: 40, loading: 'lazy', class: 'gmc-tm__av', alt: '' }}
+                  {%- endif -%}
+                  <span class="gmc-tm__who">{{ b.author }}{%- if b.verified -%} <small class="gmc-tm__ok">Verified buyer</small>{%- endif -%}</span>
+                </div>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="gmc-tm__bar">
+      <button type="button" class="gmc-tm__prev" aria-label="Previous testimonial">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="gmc-tm__dots"></div>
+      <button type="button" class="gmc-tm__next" aria-label="Next testimonial">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
 </div>
-<style>.gmc-tm{padding:36px 0}.gmc-tm__grid{display:grid;grid-template-columns:repeat(var(--tm-cols,3),1fr);gap:1.5rem;margin-top:1.5rem}@media(max-width:989px){.gmc-tm__grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}}.gmc-tm__card{margin:0;border:1px solid rgba(var(--color-foreground),.15);border-radius:var(--text-boxes-radius);overflow:hidden;display:flex;flex-direction:column}.gmc-tm__body{padding:1.6rem}.gmc-tm__media{aspect-ratio:var(--tm-ratio,4/3);overflow:hidden}.gmc-tm__media img,.gmc-tm__media video{width:100%;height:100%;object-fit:cover;display:block}.gmc-tm__stars{color:var(--tm-star,#f5a623);letter-spacing:2px}.gmc-tm__card blockquote{margin:.8rem 0 1rem}.gmc-tm__card figcaption{display:flex;align-items:center;gap:.8rem;font-weight:600}.gmc-tm__av{border-radius:50%;object-fit:cover}.gmc-tm__card small{display:block;font-weight:400;opacity:.65}.gmc-tm__qm{font-size:4rem;line-height:.6;display:block;opacity:.8;font-family:Georgia,serif;color:var(--tm-quote,currentColor)}.gmc-tm--minimal .gmc-tm__card{border:0;background:transparent!important;text-align:center}.gmc-tm--minimal .gmc-tm__card figcaption{justify-content:center}.gmc-tm--quote .gmc-tm__card{border:0;border-left:4px solid var(--tm-star,#f5a623);border-radius:0}</style>
+<style>
+  .gmc-tm{padding:27px 0}
+  @media(min-width:750px){.gmc-tm{padding:36px 0}}
+  .gmc-tm--full{max-width:none;padding-left:1.5rem;padding-right:1.5rem}
+  @media(min-width:750px){.gmc-tm--full{padding-left:5rem;padding-right:5rem}}
+  .gmc-tm__head{text-align:center;margin:0 auto 1.6rem;max-width:70rem}
+  .gmc-tm__title{margin:0}
+  .gmc-tm__intro{margin-top:.8rem}
+  .gmc-tm__sl{position:relative;outline:none}
+  .gmc-tm__vp{overflow:visible}
+  .gmc-tm__tr{display:grid;grid-template-columns:repeat(var(--tm-cols,3),minmax(0,1fr));gap:var(--tm-gap,40px)}
+  @media(max-width:749px){.gmc-tm__tr{grid-template-columns:1fr;gap:1.5rem}}
+  .gmc-tm__card{box-sizing:border-box;position:relative;margin:0;border:1px solid rgba(var(--color-foreground),.12);border-radius:var(--text-boxes-radius,8px);overflow:hidden;background:var(--gradient-background,rgb(var(--color-background)));color:rgba(var(--color-foreground),.78);min-width:0}
+  .gmc-tm__body{padding:1.6rem 1.6rem 1.8rem}
+  .gmc-tm__media{position:relative;overflow:hidden;margin:1.2rem auto 0}
+  .gmc-tm__media--full{width:100%;margin:0}
+  .gmc-tm__media--half{width:50%}
+  .gmc-tm__media--third{width:33%}
+  .gmc-tm__media--square,.gmc-tm__media--circle{aspect-ratio:1}
+  .gmc-tm__media--portrait{aspect-ratio:3/4}
+  .gmc-tm__media--adapt{aspect-ratio:var(--tm-ar,1)}
+  .gmc-tm__media--circle{border-radius:50%}
+  .gmc-tm__media img,.gmc-tm__media video{width:100%;height:100%;object-fit:cover;display:block}
+  .gmc-tm__play{position:absolute;inset:0;margin:auto;width:4.8rem;height:4.8rem;border:0;border-radius:50%;background:rgb(var(--color-button));color:rgb(var(--color-button-text));display:grid;place-items:center;cursor:pointer;z-index:2}
+  .gmc-tm__media .gmc-pm__vt{position:absolute;left:.8rem;right:.8rem;bottom:.8rem;height:4px;background:rgba(255,255,255,.35);border-radius:2px;overflow:hidden;z-index:2}
+  .gmc-tm__media .gmc-pm__vt b{display:block;height:100%;width:0;background:#fff}
+  .gmc-tm__stars{margin:0 0 .6rem;color:var(--tm-star,#ffd700);letter-spacing:.15em;line-height:1}
+  .gmc-tm__q{position:absolute;top:1rem;right:1rem;z-index:2;width:4.4rem;height:4.4rem;border-radius:50%;display:grid;place-items:center;font-family:Georgia,serif;font-size:2.8rem;line-height:1;background:var(--gradient-background);color:rgb(var(--color-foreground))}
+  .gmc-tm__h{margin:0 0 .6rem;font-size:1.8rem}
+  .gmc-tm__quote{margin:0}
+  .gmc-tm__quote p{margin:0}
+  .gmc-tm__by{display:flex;align-items:center;gap:.8rem;margin-top:1.2rem;font-weight:600}
+  .gmc-tm__av{border-radius:50%;object-fit:cover}
+  .gmc-tm__ok{display:block;font-weight:400;opacity:.7}
+  .gmc-tm--center{text-align:center}
+  .gmc-tm--center .gmc-tm__by{justify-content:center}
+  .gmc-tm--quotations .gmc-tm__card{border:0;background:transparent;overflow:visible}
+  .gmc-tm--quotations .gmc-tm__q{position:static;width:auto;height:auto;margin:0 0 .4rem;background:none;color:rgb(var(--color-background));font-size:4.8rem;line-height:.7}
+  .gmc-tm--quotations .gmc-tm__body{padding-top:.4rem}
+  .gmc-tm__sl.is-slider .gmc-tm__vp{overflow:hidden}
+  .gmc-tm__sl.is-slider .gmc-tm__tr{display:flex;transition:transform .45s ease}
+  .gmc-tm__sl.is-slider .gmc-tm__card{flex:0 0 auto}
+  .gmc-tm__bar{display:none}
+  .gmc-tm__sl.is-slider .gmc-tm__bar{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.4rem}
+  .gmc-tm__prev,.gmc-tm__next{display:grid;place-items:center;width:4.4rem;height:4.4rem;border:0;border-radius:50%;background:rgba(var(--color-foreground),.12);color:rgb(var(--color-foreground));cursor:pointer;z-index:3}
+  .gmc-tm__prev:disabled,.gmc-tm__next:disabled{opacity:.35;cursor:default}
+  .gmc-tm--arr-hidden .gmc-tm__prev,.gmc-tm--arr-hidden .gmc-tm__next{display:none}
+  .gmc-tm--clear .gmc-tm__prev,.gmc-tm--clear .gmc-tm__next{background:transparent;filter:drop-shadow(0 0 1px #fff) drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+  .gmc-tm--arr-sides .gmc-tm__prev,.gmc-tm--arr-sides .gmc-tm__next{position:absolute;top:42%}
+  .gmc-tm--arr-sides .gmc-tm__prev{left:.4rem}
+  .gmc-tm--arr-sides .gmc-tm__next{right:.4rem}
+  .gmc-tm__dots{display:flex;gap:.7rem;justify-content:center}
+  .gmc-tm--dots-hidden .gmc-tm__dots{display:none}
+  .gmc-tm--dots-hidden.gmc-tm--arr-sides .gmc-tm__sl.is-slider .gmc-tm__bar,
+  .gmc-tm--dots-hidden.gmc-tm--arr-hidden .gmc-tm__sl.is-slider .gmc-tm__bar{display:block;height:0;margin:0;overflow:visible}
+  .gmc-tm__dot{width:1rem;height:1rem;padding:0;border-radius:50%;border:1px solid currentColor;background:transparent;cursor:pointer}
+  .gmc-tm__dot.is-on{background:currentColor}
+  .gmc-tm__prev:focus-visible,.gmc-tm__next:focus-visible,.gmc-tm__dot:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+  @media(prefers-reduced-motion:reduce){.gmc-tm__sl.is-slider .gmc-tm__tr{transition:none}}
+</style>
+<script>
+(function(){
+  var id = 'gmc-tm-{{ section.id }}';
+  function boot(){
+    var el = document.getElementById(id);
+    if(!el || el.dataset.ready) return;
+    el.dataset.ready = '1';
+    var vp = el.querySelector('.gmc-tm__vp');
+    var tr = el.querySelector('.gmc-tm__tr');
+    var slides = Array.prototype.slice.call(tr.children);
+    var n = slides.length;
+    var prev = el.querySelector('.gmc-tm__prev');
+    var next = el.querySelector('.gmc-tm__next');
+    var dots = el.querySelector('.gmc-tm__dots');
+    var idx = 0;
+    var timer = null;
+    var paused = false;
+    if(2 > n) return;
+    function mobile(){ return matchMedia('(max-width: 749px)').matches; }
+    function sliding(){ return mobile() ? el.dataset.mob === 'true' : el.dataset.desk === 'true'; }
+    function per(){
+      var p = mobile() ? 1 : (+el.dataset.per || 1);
+      if(p > n) p = n;
+      if(1 > p) p = 1;
+      return p;
+    }
+    function peek(){
+      var v = mobile() ? +el.dataset.peekM : +el.dataset.peek;
+      if(!v || 0 > v) return 0;
+      return v;
+    }
+    function gap(){
+      var gs = getComputedStyle(tr);
+      var g = parseFloat(gs.columnGap || gs.gap);
+      if(g || g === 0) return g;
+      return 0;
+    }
+    function paintDots(pages){
+      if(!dots) return;
+      if(dots.childElementCount !== pages){
+        dots.innerHTML = '';
+        for(var i = 0; pages > i; i++){
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'gmc-tm__dot';
+          b.dataset.i = String(i);
+          b.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+          dots.appendChild(b);
+        }
+      }
+      Array.prototype.forEach.call(dots.children, function(d, k){
+        var on = k === idx;
+        d.classList.toggle('is-on', on);
+        if(on) d.setAttribute('aria-current', 'true');
+        else d.removeAttribute('aria-current');
+      });
+    }
+    function go(i, user){
+      if(!el.classList.contains('is-slider')) return;
+      var p = per();
+      var m = n - p;
+      if(0 > m) m = 0;
+      var loop = el.dataset.loop === 'true';
+      if(i > m) i = loop ? 0 : m;
+      if(0 > i) i = loop ? m : 0;
+      idx = i;
+      var sw = slides[0].getBoundingClientRect().width;
+      var g = gap();
+      var offset = idx * (sw + g);
+      if(!loop){
+        var end = n * sw + (n - 1) * g - vp.clientWidth;
+        if(0 > end) end = 0;
+        if(offset > end) offset = end;
+      }
+      tr.style.transform = 'translate3d(' + (-offset) + 'px,0,0)';
+      if(p === 1) vp.style.height = slides[idx].offsetHeight + 'px';
+      else vp.style.height = '';
+      if(prev) prev.disabled = !loop && idx === 0;
+      if(next) next.disabled = !loop && idx === m;
+      paintDots(m + 1);
+      if(user) restart();
+    }
+    function layout(){
+      var on = sliding() && n > per();
+      el.classList.toggle('is-slider', on);
+      if(!on){
+        tr.style.transform = '';
+        vp.style.height = '';
+        slides.forEach(function(sld){ sld.style.width = ''; sld.style.flexBasis = ''; });
+        return;
+      }
+      var p = per();
+      var pk = peek();
+      var g = gap();
+      var inner = vp.clientWidth - pk;
+      if(p > 1) inner = inner - g * (p - 1);
+      var sw = inner / p;
+      slides.forEach(function(sld){ sld.style.width = sw + 'px'; sld.style.flexBasis = sw + 'px'; });
+      if(idx > n - p) idx = n - p;
+      if(0 > idx) idx = 0;
+      go(idx, false);
+    }
+    function restart(){
+      clearInterval(timer);
+      var auto = +el.dataset.autoplay || 0;
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches) auto = 0;
+      if(auto && el.classList.contains('is-slider')){
+        timer = setInterval(function(){ if(paused || document.hidden) return; go(idx + 1, false); }, auto * 1000);
+      }
+    }
+    if(prev) prev.addEventListener('click', function(){ go(idx - 1, true); });
+    if(next) next.addEventListener('click', function(){ go(idx + 1, true); });
+    if(dots) dots.addEventListener('click', function(e){
+      var b = e.target.closest('button');
+      if(!b) return;
+      go(+b.dataset.i, true);
+    });
+    el.addEventListener('mouseenter', function(){ paused = true; });
+    el.addEventListener('mouseleave', function(){ paused = false; });
+    el.addEventListener('focusin', function(){ paused = true; });
+    el.addEventListener('focusout', function(){ paused = false; });
+    el.addEventListener('keydown', function(e){
+      if(e.key === 'ArrowLeft' || e.keyCode === 37){ go(idx - 1, true); }
+      else if(e.key === 'ArrowRight' || e.keyCode === 39){ go(idx + 1, true); }
+    });
+    var sx = 0;
+    var down = false;
+    vp.addEventListener('pointerdown', function(e){
+      if(e.target.closest('button,a,video,input,select')) return;
+      down = true;
+      sx = e.clientX;
+    });
+    window.addEventListener('pointerup', function(e){
+      if(!down) return;
+      down = false;
+      var dx = e.clientX - sx;
+      if(dx > 45) go(idx - 1, true);
+      else if(0 - dx > 45) go(idx + 1, true);
+    });
+    var rt;
+    window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(layout, 80); });
+    layout();
+    restart();
+  }
+  boot();
+  document.addEventListener('shopify:section:load', function(e){
+    if(e.target && e.target.querySelector && e.target.querySelector('#' + id)) boot();
+  });
+})();
+</script>
 {% schema %}
 {
   "name": "Testimonials",
   "tag": "section",
   "class": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Testimonials" },
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Loved by customers"
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ]
     },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "header", "content": "Cards" },
     {
       "type": "select",
       "id": "style",
       "label": "Style",
+      "default": "cards",
       "options": [
-        {
-          "value": "cards",
-          "label": "Cards"
-        },
-        {
-          "value": "minimal",
-          "label": "Minimal"
-        },
-        {
-          "value": "quote",
-          "label": "Quote bar"
-        },
-        {
-          "value": "slider",
-          "label": "Slider"
-        }
-      ],
-      "default": "cards"
+        { "value": "cards", "label": "Cards" },
+        { "value": "quotations", "label": "Quotations" }
+      ]
     },
     {
-      "type": "range",
-      "id": "cols",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "label": "Columns on desktop",
-      "default": 3
+      "type": "select",
+      "id": "image_width",
+      "label": "Media width",
+      "default": "full",
+      "info": "Photos and videos show in the Cards style.",
+      "options": [
+        { "value": "third", "label": "One-third of the card" },
+        { "value": "half", "label": "Half of the card" },
+        { "value": "full", "label": "Full card width" }
+      ]
     },
     {
-      "type": "color_scheme",
-      "id": "card_scheme",
-      "label": "Card colour scheme",
-      "default": "scheme-1"
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Media ratio",
+      "default": "square",
+      "options": [
+        { "value": "adapt", "label": "Adapt to media" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" },
+        { "value": "circle", "label": "Circle" }
+      ]
     },
     {
-      "type": "checkbox",
-      "id": "show_stars",
-      "label": "Show stars",
-      "default": true
+      "type": "select",
+      "id": "align",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
     },
+    { "type": "checkbox", "id": "show_stars", "label": "Show stars", "default": true },
+    { "type": "color", "id": "star_color", "label": "Stars colour", "default": "#ffd700" },
+    { "type": "checkbox", "id": "show_quotes", "label": "Show quote marks", "default": true },
     {
-      "type": "checkbox",
-      "id": "empty_stars",
-      "label": "Show faded empty stars",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "star_color",
-      "label": "Star colour",
-      "default": "#f5a623"
-    },
-    {
-      "type": "checkbox",
-      "id": "quote_marks",
-      "label": "Show quote mark",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "quote_color",
+      "type": "select",
+      "id": "quote_scheme",
       "label": "Quote mark colour",
-      "default": "#111111"
+      "default": "accent-2",
+      "options": [
+        { "value": "accent-1", "label": "Accent 1" },
+        { "value": "accent-2", "label": "Accent 2" },
+        { "value": "background-1", "label": "Background 1" },
+        { "value": "background-2", "label": "Background 2" },
+        { "value": "inverse", "label": "Inverse" }
+      ]
     },
-    {
-      "type": "range",
-      "id": "peek",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Peek of the next testimonial",
-      "default": 0
-    },
+    { "type": "color_scheme", "id": "card_scheme", "label": "Card colour scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Slider" },
     {
       "type": "select",
-      "id": "media_ratio",
-      "label": "Photo / video shape",
+      "id": "slider_type",
+      "label": "Type",
+      "default": "slide",
       "options": [
-        {
-          "value": "1/1",
-          "label": "Square"
-        },
-        {
-          "value": "4/3",
-          "label": "Landscape"
-        },
-        {
-          "value": "3/4",
-          "label": "Portrait"
-        },
-        {
-          "value": "9/16",
-          "label": "Tall (video)"
-        }
-      ],
-      "default": "4/3"
+        { "value": "slide", "label": "Classic" },
+        { "value": "loop", "label": "Infinite" }
+      ]
     },
+    { "type": "checkbox", "id": "autoplay", "label": "Enable autoplay", "default": false },
+    { "type": "range", "id": "speed", "min": 1, "max": 15, "step": 0.5, "unit": "sec", "label": "Autoplay speed", "default": 5 },
+    { "type": "range", "id": "columns", "min": 1, "max": 10, "step": 1, "label": "Slides per page on desktop", "default": 3 },
+    { "type": "range", "id": "spacing", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Spacing", "default": 40 },
+    { "type": "range", "id": "preview", "min": 0, "max": 150, "step": 5, "unit": "px", "label": "Preview of the next slide", "info": "On phones, a preview turns on at 24px when this is above 0.", "default": 0 },
+    { "type": "checkbox", "id": "slider_desktop", "label": "Enable desktop slider", "default": false },
+    { "type": "checkbox", "id": "slider_mobile", "label": "Enable mobile slider", "default": true },
     {
       "type": "select",
-      "id": "hide_on",
-      "label": "Hide on",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": "sides",
       "options": [
-        {
-          "value": "",
-          "label": "Show everywhere"
-        },
-        {
-          "value": "mobile",
-          "label": "Mobile"
-        },
-        {
-          "value": "desktop",
-          "label": "Desktop"
-        }
-      ],
-      "default": ""
+        { "value": "hidden", "label": "Hidden" },
+        { "value": "under", "label": "Under the slider" },
+        { "value": "sides", "label": "On the sides" }
+      ]
     },
+    { "type": "checkbox", "id": "transparent", "label": "Transparent arrows", "default": true },
     {
-      "type": "header",
-      "content": "Layout (GMC)"
+      "type": "select",
+      "id": "dots",
+      "label": "Dots",
+      "default": "under",
+      "options": [
+        { "value": "hidden", "label": "Hidden" },
+        { "value": "under", "label": "Under the slider" }
+      ]
     },
-    {
-      "type": "range",
-      "id": "gmc_pad_top",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "label": "Extra space above",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "gmc_pad_bottom",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "label": "Extra space below",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "gmc_max_width",
-      "min": 0,
-      "max": 1600,
-      "step": 50,
-      "unit": "px",
-      "label": "Max content width (0 = theme default)",
-      "default": 0
-    },
-    {
-      "type": "color",
-      "id": "gmc_bg_color",
-      "label": "Section background color"
-    },
-    {
-      "type": "text",
-      "id": "gmc_bg_gradient",
-      "label": "Section background gradient (CSS)",
-      "info": "For example: linear-gradient(135deg, #ff7a18, #af002d). Overrides the colour above."
-    },
-    {
-      "type": "image_picker",
-      "id": "gmc_bg_image",
-      "label": "Background image"
-    },
-    {
-      "type": "video",
-      "id": "gmc_bg_video",
-      "label": "Background video (MP4 upload)"
-    },
-    {
-      "type": "range",
-      "id": "gmc_bg_overlay",
-      "min": 0,
-      "max": 80,
-      "step": 5,
-      "unit": "%",
-      "label": "Background overlay",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Add to cart in this section"
-    },
-    {
-      "type": "product",
-      "id": "gmc_atc_product",
-      "label": "Add-to-cart product",
-      "info": "Adds a button (with variant dropdown if needed) at the end of this section."
-    },
-    {
-      "type": "text",
-      "id": "gmc_atc_label",
-      "label": "Button label",
-      "default": "Add to cart"
-    },
-    {
-      "type": "checkbox",
-      "id": "gmc_atc_skip",
-      "label": "Add to cart button: skip the cart and go to checkout",
-      "default": false
-    },
+    { "type": "checkbox", "id": "full_width", "label": "Full page width", "default": false },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gmc_pad_top", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "Extra space above", "default": 0 },
+    { "type": "range", "id": "gmc_pad_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "Extra space below", "default": 0 },
+    { "type": "color", "id": "gmc_bg_color", "label": "Section background colour" },
+    { "type": "text", "id": "gmc_bg_gradient", "label": "Section background gradient (CSS)", "info": "For example: linear-gradient(135deg, #ff7a18, #af002d). Overrides the colour above." },
+    { "type": "image_picker", "id": "gmc_bg_image", "label": "Background image" },
+    { "type": "video", "id": "gmc_bg_video", "label": "Background video (MP4 upload)" },
+    { "type": "range", "id": "gmc_bg_overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "label": "Background overlay", "default": 0 },
+    { "type": "header", "content": "Add to cart in this section" },
+    { "type": "product", "id": "gmc_atc_product", "label": "Add-to-cart product", "info": "Adds a button at the end of this section." },
+    { "type": "text", "id": "gmc_atc_label", "label": "Button label", "default": "Add to cart" },
+    { "type": "checkbox", "id": "gmc_atc_skip", "label": "Add to cart button: skip the cart and go to checkout", "default": false },
     {
       "type": "select",
       "id": "gmc_atc_align",
       "label": "Button alignment",
       "default": "center",
       "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
       ]
     },
-    {
-      "type": "header",
-      "content": "Slider options"
-    },
-    {
-      "type": "checkbox",
-      "id": "gmc_swipe_mobile",
-      "label": "Swipe row on mobile",
-      "info": "Turns this section's grid into a swipeable row on phones.",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "gmc_slider_autoplay",
-      "label": "Slider autoplay (seconds, 0 = off)",
-      "min": 0,
-      "max": 12,
-      "step": 1,
-      "default": 0,
-      "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
-    },
-    {
-      "type": "color_scheme",
-      "id": "gmc_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
-    },
+    { "type": "color_scheme", "id": "gmc_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
     {
       "type": "select",
       "id": "gmc_display_on",
       "label": "Display on",
+      "default": "all",
       "options": [
-        {
-          "value": "all",
-          "label": "All devices"
-        },
-        {
-          "value": "mobile",
-          "label": "Mobile only"
-        },
-        {
-          "value": "desktop",
-          "label": "Desktop only"
-        }
-      ],
-      "default": "all"
+        { "value": "all", "label": "All devices" },
+        { "value": "mobile", "label": "Mobile only" },
+        { "value": "desktop", "label": "Desktop only" }
+      ]
     },
-    {
-      "type": "range",
-      "id": "gmc_card_tint",
-      "min": 0,
-      "max": 40,
-      "step": 5,
-      "unit": "%",
-      "label": "Translucent card tint (0 = off)",
-      "info": "Tints the cards over any section background.",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Section ID and pairing"
-    },
-    {
-      "type": "text",
-      "id": "gmc_anchor",
-      "label": "Section ID (for links like #my-id)",
-      "info": "Letters, numbers and dashes. Use this ID in a link to scroll here."
-    },
-    {
-      "type": "text",
-      "id": "gmc_pair_with",
-      "label": "Place beside the section with this ID",
-      "info": "Enter another section's ID. The two sections sit side by side on desktop. [Guide](https://github.com/IamUmairAhmad/GMC-Theme-Shopify/blob/main/docs/sections.md)"
-    },
-    {
-      "type": "checkbox",
-      "id": "gmc_pair_rev",
-      "label": "Reverse the pair order on mobile",
-      "default": false
-    }
+    { "type": "header", "content": "Section ID and pairing" },
+    { "type": "text", "id": "gmc_anchor", "label": "Section ID (for links like #my-id)", "info": "Letters, numbers and dashes. Use this ID in a link to scroll here." },
+    { "type": "text", "id": "gmc_pair_with", "label": "Place beside the section with this ID", "info": "Enter another section's ID. The two sections sit side by side on desktop." },
+    { "type": "checkbox", "id": "gmc_pair_rev", "label": "Reverse the pair order on mobile", "default": false }
   ],
   "blocks": [
     {
       "type": "review",
-      "name": "Review",
+      "name": "Testimonial",
       "settings": [
-        {
-          "type": "range",
-          "id": "rating",
-          "min": 1,
-          "max": 5,
-          "label": "Stars",
-          "default": 5
-        },
-        {
-          "type": "textarea",
-          "id": "quote",
-          "label": "Quote",
-          "default": "Paste a real customer review"
-        },
-        {
-          "type": "text",
-          "id": "name",
-          "label": "Name",
-          "default": "Customer name"
-        },
-        {
-          "type": "image_picker",
-          "id": "avatar",
-          "label": "Photo"
-        },
-        {
-          "type": "checkbox",
-          "id": "verified",
-          "label": "Verified buyer",
-          "info": "Tick only for reviews you have confirmed.",
-          "default": false
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Photo (shown above the review)"
-        },
-        {
-          "type": "video",
-          "id": "video",
-          "label": "Video review (MP4 upload)"
-        }
+        { "type": "header", "content": "Media", "info": "Photos and videos show when Style is Cards." },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "image_picker", "id": "video_thumbnail", "label": "Video thumbnail", "info": "If empty, the first frame of the video is used." },
+        { "type": "header", "content": "Content" },
+        { "type": "text", "id": "title", "label": "Heading", "default": "Heading" },
+        { "type": "richtext", "id": "quote", "label": "Text", "default": "<p>Share positive thoughts and feedback from your customer.</p>" },
+        { "type": "range", "id": "rating", "min": 1, "max": 5, "step": 1, "label": "Stars", "default": 5 },
+        { "type": "image_picker", "id": "avatar", "label": "Author avatar" },
+        { "type": "inline_richtext", "id": "author", "label": "Author", "default": "Author" },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer", "info": "Tick only for reviews you have confirmed.", "default": false }
       ]
     }
   ],
-  "max_blocks": 12,
+  "max_blocks": 16,
   "presets": [
     {
       "name": "Testimonials",
       "blocks": [
-        {
-          "type": "review"
-        },
-        {
-          "type": "review",
-          "settings": {
-            "name": "James T."
-          }
-        },
-        {
-          "type": "review",
-          "settings": {
-            "name": "Aisha K."
-          }
-        }
+        { "type": "review", "settings": { "title": "Exactly what I needed", "author": "Maya R.", "verified": true } },
+        { "type": "review", "settings": { "title": "Worth every penny", "author": "James T." } },
+        { "type": "review", "settings": { "title": "I keep coming back", "author": "Aisha K." } }
       ]
     }
   ]
