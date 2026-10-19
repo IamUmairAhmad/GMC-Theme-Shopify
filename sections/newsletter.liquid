@@ -95,7 +95,7 @@
                   {%- endif -%}
                 </div>
                 {%- if section.settings.button_type == 'solid' -%}
-                  <button type="submit" class="button newsletter__solid{% if section.settings.button_secondary %} button--secondary{% endif %}" name="commit">{{ section.settings.solid_label | default: 'Subscribe' | escape }}</button>
+                  <button type="submit" class="button button--full-width newsletter__solid{% if section.settings.button_secondary %} button--secondary{% endif %}" name="commit">{{ section.settings.solid_label | default: 'Sign up' | escape }}</button>
                 {%- endif -%}
                 {%- if form.errors -%}
                   <small class="newsletter-form__message form__message" id="Newsletter-error--{{ section.id }}">
@@ -158,23 +158,29 @@
     {
       "type": "select",
       "id": "button_type",
-      "label": "Submit button",
+      "label": "Submit button type",
       "options": [
-        { "value": "arrow", "label": "Arrow inside the field" },
-        { "value": "solid", "label": "Labelled button" }
+        {
+          "value": "arrow",
+          "label": "Arrow button"
+        },
+        {
+          "value": "solid",
+          "label": "Solid button"
+        }
       ],
       "default": "arrow"
     },
     {
       "type": "text",
       "id": "solid_label",
-      "label": "Button label",
-      "default": "Subscribe"
+      "label": "Solid button label",
+      "default": "Sign up"
     },
     {
       "type": "checkbox",
       "id": "button_secondary",
-      "label": "Use the secondary button style",
+      "label": "Use outline button style",
       "default": false
     },
     {

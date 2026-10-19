@@ -2576,7 +2576,7 @@
       "name": "Email signup",
       "settings": {
         "full_width": {
-          "label": "Full width"
+          "label": "Make section full width"
         },
         "paragraph": {
           "content": "Signups add [customer profiles](https://help.shopify.com/manual/customers/manage-customers)"
@@ -2593,10 +2593,10 @@
           }
         },
         "paragraph": {
-          "name": "Text",
+          "name": "Subheading",
           "settings": {
             "paragraph": {
-              "label": "Text",
+              "label": "Description",
               "default": "<p>Be the first to know about new collections and exclusive offers.</p>"
             }
           }
