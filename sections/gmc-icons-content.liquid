@@ -1,24 +1,83 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add icon blocks.' -%}{%- endif -%}
+{%- liquid
+  assign has_icons = false
+  assign has_content = false
+  if section.settings.caption != blank or section.settings.heading != blank or section.settings.text != blank or section.settings.button != blank or section.settings.image != blank or section.settings.video != blank
+    assign has_content = true
+  endif
+  for block in section.blocks
+    if block.type == 'item'
+      assign has_icons = true
+    else
+      assign has_content = true
+    endif
+  endfor
+  assign pad_m = section.settings.pad | times: 0.75 | round: 0
+-%}
 {%- comment -%} GMC Theme: icons with content (original code) {%- endcomment -%}
 <div class="gmc-ic color-{{ section.settings.scheme }} gradient {% render 'gmc-vis', hide: section.settings.hide_on %}">
-  <div class="page-width gmc-ic__in gmc-ic__in--{{ section.settings.media_side }}" style="padding-top:{{ section.settings.pad }}px;padding-bottom:{{ section.settings.pad }}px">
-    <div class="gmc-ic__text">
-      {%- if section.settings.caption != blank -%}<p class="gmc-ic__cap">{{ section.settings.caption | escape }}</p>{%- endif -%}
-      {%- if section.settings.heading != blank -%}<h2 class="h1">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-      {%- if section.settings.text != blank -%}<div class="rte">{{ section.settings.text }}</div>{%- endif -%}
-      <div class="gmc-ic__flow gmc-ic__list--{{ section.settings.icon_pos }}" style="--ic:{{ section.settings.icon_color }};--icc:{{ section.settings.cols }};--iccm:{{ section.settings.cols_m }}">
+  <div class="page-width gmc-ic__grid{% if section.settings.place == 'content_first' %} gmc-ic__grid--content{% endif %}{% if section.settings.place_m == 'content_first' %} gmc-ic__grid--m-content{% endif %}{% unless has_icons and has_content %} gmc-ic__grid--solo{% endunless %}" style="--icc:{{ section.settings.cols }};--iccm:{{ section.settings.cols_m }};--ic:{{ section.settings.icon_color }};--pad:{{ section.settings.pad }}px;--pad-m:{{ pad_m }}px">
+    {%- if has_icons -%}
+      <div class="gmc-ic__icons">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'item' -%}
+            {%- liquid
+              assign show_icon = false
+              if block.settings.image != blank
+                assign show_icon = true
+              elsif block.settings.icon_name != blank and block.settings.icon_name != 'none'
+                assign show_icon = true
+              endif
+              assign row_align = section.settings.icon_align
+              if section.settings.icon_pos == 'above'
+                assign row_align = 'center'
+              endif
+            -%}
+            <div class="gmc-ic__row gmc-ic__row--{{ section.settings.icon_pos }} gmc-ic__row--{{ row_align }}" {{ block.shopify_attributes }}>
+              {%- if section.settings.icon_pos == 'title' -%}
+                <h3 class="gmc-ic__title {{ section.settings.icon_heading_size }}">
+                  {%- if show_icon -%}<span class="gmc-ic__i">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 160 | image_tag: width: section.settings.icon_size, height: section.settings.icon_size, alt: block.settings.image.alt, loading: 'lazy' }}{%- else -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: block.settings.filled -%}{%- endif -%}</span>{%- endif -%}
+                  <span>{{ block.settings.title | escape }}</span>
+                </h3>
+                {%- if block.settings.text != blank -%}<div class="rte gmc-ic__d">{{ block.settings.text }}</div>{%- endif -%}
+              {%- elsif section.settings.icon_pos == 'above' -%}
+                {%- if show_icon -%}<span class="gmc-ic__i">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 160 | image_tag: width: section.settings.icon_size, height: section.settings.icon_size, alt: block.settings.image.alt, loading: 'lazy' }}{%- else -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: block.settings.filled -%}{%- endif -%}</span>{%- endif -%}
+                <h3 class="gmc-ic__title {{ section.settings.icon_heading_size }}">{{ block.settings.title | escape }}</h3>
+                {%- if block.settings.text != blank -%}<div class="rte gmc-ic__d">{{ block.settings.text }}</div>{%- endif -%}
+              {%- else -%}
+                {%- if show_icon -%}<span class="gmc-ic__i">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 160 | image_tag: width: section.settings.icon_size, height: section.settings.icon_size, alt: block.settings.image.alt, loading: 'lazy' }}{%- else -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: block.settings.filled -%}{%- endif -%}</span>{%- endif -%}
+                <span class="gmc-ic__copy">
+                  <h3 class="gmc-ic__title {{ section.settings.icon_heading_size }}">{{ block.settings.title | escape }}</h3>
+                  {%- if block.settings.text != blank -%}<div class="rte gmc-ic__d">{{ block.settings.text }}</div>{%- endif -%}
+                </span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if has_content -%}
+      <div class="gmc-ic__content gmc-ic__content--{{ section.settings.content_align }}{% if section.settings.hide_content_mobile %} gmc-ic__content--hide-m{% endif %}">
+        {%- if section.settings.video != blank -%}
+          <div class="gmc-ic__media"><video playsinline autoplay muted loop preload="metadata" {% if section.settings.image != blank %}poster="{{ section.settings.image | image_url: width: 1200 }}"{% endif %}>{%- for vs in section.settings.video.sources -%}{%- if vs.format == 'mp4' or vs.mime_type contains 'mp4' -%}<source src="{{ vs.url }}" type="{{ vs.mime_type | default: 'video/mp4' }}">{%- endif -%}{%- endfor -%}</video></div>
+        {%- elsif section.settings.image != blank -%}
+          <div class="gmc-ic__media">{{ section.settings.image | image_url: width: 1500 | image_tag: loading: 'lazy', widths: '600, 900, 1400', alt: section.settings.image.alt }}</div>
+        {%- endif -%}
+        {%- if section.settings.caption != blank -%}<p class="gmc-ic__cap caption-with-letter-spacing caption-with-letter-spacing--medium">{{ section.settings.caption | escape }}</p>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2 class="gmc-ic__heading {{ section.settings.heading_size }}">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<div class="rte">{{ section.settings.text }}</div>{%- endif -%}
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
-              <h2 class="gmc-ic__wide" {{ block.shopify_attributes }}>{{ block.settings.heading | escape }}</h2>
+              <h2 class="gmc-ic__heading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>{{ block.settings.heading | escape }}</h2>
             {%- when 'caption' -%}
-              <p class="gmc-ic__cap gmc-ic__wide" {{ block.shopify_attributes }}>{{ block.settings.caption | escape }}</p>
+              <p class="gmc-ic__cap {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }}" {{ block.shopify_attributes }}>{{ block.settings.caption | escape }}</p>
             {%- when 'text' -%}
-              <div class="rte gmc-ic__wide" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+              <div class="rte{% if block.settings.text_style == 'subtitle' %} subtitle{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
             {%- when 'button' -%}
-              <div class="gmc-ic__wide" {{ block.shopify_attributes }}><a class="button{% if block.settings.secondary %} button--secondary{% endif %}" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | escape }}</a></div>
+              <div {{ block.shopify_attributes }}><a class="button{% if block.settings.secondary %} button--secondary{% endif %}" {% if block.settings.link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.link }}"{% endif %}>{{ block.settings.label | escape }}</a></div>
             {%- when 'atc_button' -%}
               {%- liquid
                 assign ic_product = block.settings.product
@@ -26,78 +85,139 @@
                   assign ic_product = product
                 endif
               -%}
-              <div class="gmc-ic__wide" {{ block.shopify_attributes }}>{%- render 'gmc-inline-atc', product: ic_product, label: block.settings.label, skip: block.settings.skip, align: 'left' -%}</div>
+              <div {{ block.shopify_attributes }}>{%- render 'gmc-inline-atc', product: ic_product, label: block.settings.label, skip: block.settings.skip, align: section.settings.content_align -%}</div>
             {%- when 'image' -%}
-              <div class="gmc-ic__wide" {{ block.shopify_attributes }}>
-                {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '500, 800, 1200', alt: block.settings.image.alt }}{%- endif -%}
-                {%- if block.settings.product != blank -%}{%- render 'gmc-inline-atc', product: block.settings.product, label: block.settings.label, skip: block.settings.skip, align: 'left' -%}{%- endif -%}
+              <div {{ block.shopify_attributes }}>
+                {%- if block.settings.image != blank -%}<div class="gmc-ic__media">{{ block.settings.image | image_url: width: 1500 | image_tag: loading: 'lazy', widths: '600, 900, 1400', alt: block.settings.image.alt }}</div>{%- endif -%}
+                {%- if block.settings.product != blank -%}{%- render 'gmc-inline-atc', product: block.settings.product, label: block.settings.label, skip: block.settings.skip, align: section.settings.content_align -%}{%- endif -%}
               </div>
             {%- when 'video' -%}
               {%- if block.settings.video != blank -%}
-                <div class="gmc-ic__wide gmc-ic__clip" {{ block.shopify_attributes }}><video playsinline autoplay muted loop preload="metadata">{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>
+                <div class="gmc-ic__media" {{ block.shopify_attributes }}><video playsinline autoplay muted loop preload="metadata">{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' or vs.mime_type contains 'mp4' -%}<source src="{{ vs.url }}" type="{{ vs.mime_type | default: 'video/mp4' }}">{%- endif -%}{%- endfor -%}</video></div>
               {%- endif -%}
-            {%- else -%}
-              <div class="gmc-ic__row" {{ block.shopify_attributes }}>
-                <span class="gmc-ic__i" style="width:{{ section.settings.icon_size | plus: 12 }}px;height:{{ section.settings.icon_size | plus: 12 }}px">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 | image_tag: width: section.settings.icon_size, height: section.settings.icon_size, alt: '', loading: 'lazy' }}{%- else -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: block.settings.filled -%}{%- endif -%}</span>
-                <span><strong>{{ block.settings.title | escape }}</strong>{%- if block.settings.text != blank -%}<br><span class="gmc-ic__d">{{ block.settings.text | escape }}</span>{%- endif -%}</span>
-              </div>
           {%- endcase -%}
         {%- endfor -%}
+        {%- if section.settings.button != blank -%}
+          <div><a class="button{% if section.settings.button_secondary %} button--secondary{% endif %}" {% if section.settings.link == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.link }}"{% endif %}>{{ section.settings.button | escape }}</a></div>
+        {%- endif -%}
       </div>
-      {%- if section.settings.button != blank -%}<a class="button" href="{{ section.settings.link | default: '#' }}">{{ section.settings.button | escape }}</a>{%- endif -%}
-    </div>
-    {%- if section.settings.video != blank or section.settings.image != blank -%}
-    <div class="gmc-ic__media">
-      {%- if section.settings.video != blank -%}<div class="gmc-pm__vid" data-gmc-vid><video playsinline preload="metadata" autoplay muted loop {% if section.settings.image != blank %}poster="{{ section.settings.image | image_url: width: 1200 }}"{% endif %}>{%- for vs in section.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>
-      {%- else -%}{{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '500,800,1200', alt: section.settings.image.alt }}{%- endif -%}
-    </div>
     {%- endif -%}
   </div>
 </div>
-<style>.gmc-ic__list{grid-template-columns:repeat(var(--icc,1),1fr)}.gmc-ic__list--above .gmc-ic__row{flex-direction:column;text-align:center}.gmc-ic__list--text .gmc-ic__row{align-items:flex-start}.gmc-ic__in{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}.gmc-ic__in--left .gmc-ic__media{order:-1}.gmc-ic__media img,.gmc-ic__media video{width:100%;height:auto;display:block;border-radius:var(--media-radius,8px)}.gmc-ic__cap{letter-spacing:.15em;text-transform:uppercase;font-size:1.2rem;opacity:.7;margin:0 0 .6rem}.gmc-ic__flow{margin:1.6rem 0;display:grid;grid-template-columns:repeat(var(--icc,1),minmax(0,1fr));gap:1.2rem}.gmc-ic__wide{grid-column:1 / -1}.gmc-ic__row{display:flex;gap:1.2rem;align-items:center}.gmc-ic__clip video,.gmc-ic__wide img{width:100%;height:auto;display:block;border-radius:var(--media-radius,8px)}@media(max-width:749px){.gmc-ic__flow{grid-template-columns:repeat(var(--iccm,1),minmax(0,1fr))}}.gmc-ic__i{display:grid;place-items:center;border-radius:50%;background:rgba(var(--color-foreground),.08);color:var(--ic,currentColor);flex:none}.gmc-ic__d{opacity:.75;font-size:1.4rem}@media(max-width:749px){.gmc-ic__in{grid-template-columns:1fr}.gmc-ic__in--left .gmc-ic__media{order:0}}</style>
+<style>
+  .gmc-ic__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4rem;align-items:center;padding-top:var(--pad-m);padding-bottom:var(--pad-m)}
+  .gmc-ic__grid--solo{grid-template-columns:minmax(0,1fr)}
+  .gmc-ic__grid--content .gmc-ic__content{order:-1}
+  .gmc-ic__icons{display:grid;grid-template-columns:repeat(var(--icc,1),minmax(0,1fr));gap:1.6rem 2rem}
+  .gmc-ic__content > * + *{margin-top:1.4rem}
+  .gmc-ic__heading,.gmc-ic__title{margin:0}
+  .gmc-ic__cap{margin:0}
+  .gmc-ic__title{display:flex;align-items:center;gap:.8rem}
+  .gmc-ic__row--center .gmc-ic__title{justify-content:center}
+  .gmc-ic__row--right .gmc-ic__title{justify-content:flex-end}
+  .gmc-ic__row--side,.gmc-ic__row--text{display:flex;gap:1.2rem}
+  .gmc-ic__row--side{align-items:center}
+  .gmc-ic__row--text{align-items:flex-start}
+  .gmc-ic__row--above{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.6rem}
+  .gmc-ic__row--above .gmc-ic__title{flex-direction:column}
+  .gmc-ic__row--left{text-align:left}
+  .gmc-ic__row--center{text-align:center}
+  .gmc-ic__row--right{text-align:right}
+  .gmc-ic__i{display:inline-flex;flex:none;color:var(--ic,currentColor);line-height:0}
+  .gmc-ic__i img{object-fit:contain}
+  .gmc-ic__copy{min-width:0}
+  .gmc-ic__d p{margin:0}
+  .gmc-ic__d{margin-top:.4rem}
+  .gmc-ic__row--side .gmc-ic__d,.gmc-ic__row--text .gmc-ic__d,.gmc-ic__row--above .gmc-ic__d{margin-top:.3rem}
+  .gmc-ic__media img,.gmc-ic__media video{width:100%;height:auto;display:block;border-radius:var(--media-radius,8px)}
+  .subtitle--large{font-size:2rem}
+  .gmc-ic__content--center{text-align:center}
+  .gmc-ic__content--right{text-align:right}
+  @media(min-width:750px){
+    .gmc-ic__grid{padding-top:var(--pad);padding-bottom:var(--pad)}
+  }
+  @media(max-width:749px){
+    .gmc-ic__grid{grid-template-columns:minmax(0,1fr)}
+    .gmc-ic__grid .gmc-ic__content{order:0}
+    .gmc-ic__grid--m-content .gmc-ic__content{order:-1}
+    .gmc-ic__icons{grid-template-columns:repeat(var(--iccm,1),minmax(0,1fr))}
+    .gmc-ic__content--hide-m{display:none}
+  }
+</style>
 {% schema %}
 {
   "name": "Icons with content",
   "tag": "section",
   "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
       "type": "text",
       "id": "caption",
-      "label": "Caption",
-      "default": "Why choose us"
+      "label": "Caption"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "default": "Built for you"
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h1"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text",
-      "default": "<p>Explain your promise in a sentence or two.</p>"
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Icons"
     },
     {
       "type": "select",
       "id": "icon_pos",
       "label": "Icon position",
       "options": [
-        {
-          "value": "side",
-          "label": "Next to title and text"
-        },
-        {
-          "value": "above",
-          "label": "Above title"
-        },
-        {
-          "value": "text",
-          "label": "Next to text, aligned to top"
-        }
+        { "value": "title", "label": "Next to title" },
+        { "value": "text", "label": "Next to title and text" },
+        { "value": "side", "label": "Next to title and text, centered" },
+        { "value": "above", "label": "Above title and text" }
       ],
-      "default": "side"
+      "default": "title"
+    },
+    {
+      "type": "select",
+      "id": "icon_heading_size",
+      "label": "Icon heading size",
+      "options": [
+        { "value": "h5", "label": "Extra small" },
+        { "value": "h4", "label": "Small" },
+        { "value": "h3", "label": "Medium" },
+        { "value": "h2", "label": "Large" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "icon_align",
+      "label": "Icon text alignment",
+      "info": "Centered when the icon sits above the title.",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
     {
       "type": "select",
@@ -105,14 +225,8 @@
       "label": "Icon columns (desktop)",
       "default": "1",
       "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
       ]
     },
     {
@@ -121,14 +235,8 @@
       "label": "Icon columns (mobile)",
       "default": "1",
       "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
       ]
     },
     {
@@ -139,13 +247,54 @@
       "step": 2,
       "unit": "px",
       "label": "Icon size",
-      "default": 24
+      "default": 28
     },
     {
       "type": "color",
       "id": "icon_color",
       "label": "Icon colour",
       "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Content column"
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "place",
+      "label": "Desktop placement",
+      "options": [
+        { "value": "icons_first", "label": "Icons first" },
+        { "value": "content_first", "label": "Content first" }
+      ],
+      "default": "icons_first"
+    },
+    {
+      "type": "select",
+      "id": "place_m",
+      "label": "Mobile placement",
+      "options": [
+        { "value": "content_first", "label": "Content first" },
+        { "value": "icons_first", "label": "Icons first" }
+      ],
+      "default": "content_first"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_content_mobile",
+      "label": "Hide content on mobile",
+      "default": false
     },
     {
       "type": "text",
@@ -156,6 +305,12 @@
       "type": "url",
       "id": "link",
       "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_secondary",
+      "label": "Outline button",
+      "default": false
     },
     {
       "type": "header",
@@ -172,22 +327,6 @@
       "label": "Video (MP4 upload)"
     },
     {
-      "type": "select",
-      "id": "media_side",
-      "label": "Media side",
-      "options": [
-        {
-          "value": "right",
-          "label": "Right"
-        },
-        {
-          "value": "left",
-          "label": "Left"
-        }
-      ],
-      "default": "right"
-    },
-    {
       "type": "color_scheme",
       "id": "scheme",
       "label": "Colour scheme",
@@ -201,6 +340,7 @@
       "step": 4,
       "unit": "px",
       "label": "Padding top and bottom",
+      "info": "Phones use three quarters of this amount.",
       "default": 36
     },
     {
@@ -208,18 +348,9 @@
       "id": "hide_on",
       "label": "Hide on",
       "options": [
-        {
-          "value": "",
-          "label": "Show everywhere"
-        },
-        {
-          "value": "mobile",
-          "label": "Mobile"
-        },
-        {
-          "value": "desktop",
-          "label": "Desktop"
-        }
+        { "value": "", "label": "Show everywhere" },
+        { "value": "mobile", "label": "Mobile" },
+        { "value": "desktop", "label": "Desktop" }
       ],
       "default": ""
     },
@@ -305,83 +436,131 @@
   "blocks": [
     {
       "type": "item",
-      "name": "Icon item",
+      "name": "Icon with text",
       "settings": [
         {
           "type": "text",
           "id": "icon_name",
           "label": "Icon name",
-          "default": "check"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Or icon image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Benefit"
-        },
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Description"
+          "info": "From the built-in icon library, for example check_circle. Use none to hide the icon. See assets/gmc-icon-list.txt",
+          "default": "check_circle"
         },
         {
           "type": "checkbox",
           "id": "filled",
           "label": "Filled icon",
           "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Icon with text"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Pair text with an icon to focus on your chosen product, collection, or blog post</p>"
         }
       ]
     },
     {
       "type": "heading",
       "name": "Heading",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "heading",
           "label": "Heading",
-          "default": "Why shoppers choose it"
+          "default": "Content heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            { "value": "h2", "label": "Small" },
+            { "value": "h1", "label": "Medium" },
+            { "value": "h0", "label": "Large" }
+          ],
+          "default": "h1"
         }
       ]
     },
     {
       "type": "caption",
       "name": "Caption",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "caption",
           "label": "Caption",
-          "default": "Details"
+          "default": "Add a tagline"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "label": "Caption style",
+          "options": [
+            { "value": "caption-with-letter-spacing", "label": "Uppercase" },
+            { "value": "subtitle", "label": "Subtitle" }
+          ],
+          "default": "caption-with-letter-spacing"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Caption size",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "medium"
         }
       ]
     },
     {
       "type": "text",
       "name": "Text",
+      "limit": 1,
       "settings": [
         {
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Tell the story beside the icons.</p>"
+          "default": "<p>Pair icons with content to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "label": "Text style",
+          "options": [
+            { "value": "body", "label": "Body" },
+            { "value": "subtitle", "label": "Subtitle" }
+          ],
+          "default": "body"
         }
       ]
     },
     {
       "type": "button",
       "name": "Button",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "label",
           "label": "Label",
-          "default": "Shop now"
+          "default": "Button label"
         },
         {
           "type": "url",
@@ -399,12 +578,13 @@
     {
       "type": "atc_button",
       "name": "Add to cart",
+      "limit": 1,
       "settings": [
         {
           "type": "product",
           "id": "product",
           "label": "Product",
-          "info": "On a product page, leave this empty to use that product."
+          "info": "On a product page, leave this empty to add that product."
         },
         {
           "type": "text",
@@ -423,6 +603,7 @@
     {
       "type": "image",
       "name": "Image",
+      "limit": 1,
       "settings": [
         {
           "type": "image_picker",
@@ -432,7 +613,8 @@
         {
           "type": "product",
           "id": "product",
-          "label": "Add this product"
+          "label": "Add this product",
+          "info": "Shows an add-to-cart button under the image."
         },
         {
           "type": "text",
@@ -450,7 +632,8 @@
     },
     {
       "type": "video",
-      "name": "Video",
+      "name": "Autoplay video",
+      "limit": 1,
       "settings": [
         {
           "type": "video",
@@ -464,15 +647,12 @@
     {
       "name": "Icons with content",
       "blocks": [
-        {
-          "type": "item"
-        },
-        {
-          "type": "item"
-        },
-        {
-          "type": "item"
-        }
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "button" }
       ]
     }
   ]
