@@ -1,6 +1,18 @@
 {%- render 'gmc-scheme' -%}
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  #shopify-section-{{ section.id }} .utility-bar {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .utility-bar {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 
 {%- liquid
   assign social_icons = true
@@ -31,9 +43,18 @@
     {%- liquid
       assign lay_d = section.settings.gmc_layout_d
       assign lay_m = section.settings.gmc_layout_m
+      assign visible_count = 0
+      for block in section.blocks
+        capture block_gate
+          render 'gmc-gate', only: block.settings.gmc_only, hide: block.settings.gmc_hide
+        endcapture
+        unless block_gate contains 'hide'
+          assign visible_count = visible_count | plus: 1
+        endunless
+      endfor
       assign need_slider = false
       assign need_cols = false
-      if section.blocks.size > 1
+      if visible_count > 1
         if lay_d == 'slider' or lay_m == 'slider'
           assign need_slider = true
         endif
@@ -56,25 +77,36 @@
       if section.settings.auto_rotate
         assign sl_auto = section.settings.change_slides_speed
       endif
+      assign per_d = section.settings.gmc_cols_d | at_least: 1
+      assign per_m = section.settings.gmc_cols_m | at_least: 1
     -%}
-    {%- if section.blocks.size == 1 -%}
+    {%- if visible_count == 1 -%}
       <div class="announcement-bar{% if section.settings.show_social %} announcement-bar--one-announcement{% endif %}" role="region" aria-label="{{ 'sections.header.announcement' | t }}">
-        {%- render 'gmc-an-block', block: section.blocks.first -%}
+        {%- for block in section.blocks -%}
+          {%- capture block_gate -%}{%- render 'gmc-gate', only: block.settings.gmc_only, hide: block.settings.gmc_hide -%}{%- endcapture -%}
+          {%- unless block_gate contains 'hide' -%}{%- render 'gmc-an-block', block: block -%}{%- endunless -%}
+        {%- endfor -%}
       </div>
-    {%- elsif section.blocks.size > 1 -%}
+    {%- elsif visible_count > 1 -%}
       <div class="announcement-bar gmc-an-wrap" role="region" aria-label="{{ 'sections.announcements.announcement_bar' | t }}">
         {%- if need_slider -%}
-          <div class="gmc-sl gmc-an-sl{% if lay_d != 'slider' %} gmc-an-m-only{% endif %}{% if lay_m != 'slider' %} gmc-an-d-only{% endif %}" data-gmc-slider data-mode="{{ sl_mode }}" data-autoplay="{{ sl_auto }}" data-loop="{{ sl_loop }}" data-dots="false" data-arrows="true" data-drag="true">
+          <div class="gmc-sl gmc-an-sl{% if lay_d != 'slider' %} gmc-an-m-only{% endif %}{% if lay_m != 'slider' %} gmc-an-d-only{% endif %}" data-gmc-slider data-mode="{{ sl_mode }}" data-autoplay="{{ sl_auto }}" data-loop="{{ sl_loop }}" data-dots="false" data-arrows="false" data-drag="true" data-perview="{{ per_d }}" data-perview-m="{{ per_m }}" style="--per:{{ per_d }};--per-m:{{ per_m }};--gap-d:{{ section.settings.gmc_gap }}px;--gap-m:{{ section.settings.gmc_gap_m }}px">
             <div class="gmc-sl__vp"><div class="gmc-sl__tr">
               {%- for block in section.blocks -%}
-                <div class="gmc-sl__s" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ forloop.length }}">{%- render 'gmc-an-block', block: block -%}</div>
+                {%- capture block_gate -%}{%- render 'gmc-gate', only: block.settings.gmc_only, hide: block.settings.gmc_hide -%}{%- endcapture -%}
+                {%- unless block_gate contains 'hide' -%}
+                  <div class="gmc-sl__s" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ visible_count }}">{%- render 'gmc-an-block', block: block -%}</div>
+                {%- endunless -%}
               {%- endfor -%}
             </div></div>
           </div>
         {%- endif -%}
         {%- if need_cols -%}
-          <div class="gmc-an-cols{% if section.settings.gmc_sep %} gmc-an-cols--sep{% endif %}{% if lay_d != 'columns' %} gmc-an-m-only{% endif %}{% if lay_m != 'columns' %} gmc-an-d-only{% endif %}" style="--cd:{{ section.settings.gmc_cols_d }};--cm:{{ section.settings.gmc_cols_m }};--gap:{{ section.settings.gmc_gap }}px">
-            {%- for block in section.blocks -%}{%- render 'gmc-an-block', block: block -%}{%- endfor -%}
+          <div class="gmc-an-cols{% if section.settings.gmc_sep %} gmc-an-cols--sep{% endif %}{% if lay_d != 'columns' %} gmc-an-m-only{% endif %}{% if lay_m != 'columns' %} gmc-an-d-only{% endif %}" style="--cd:{{ section.settings.gmc_cols_d }};--cm:{{ section.settings.gmc_cols_m }};--gap:{{ section.settings.gmc_gap }}px;--gap-m:{{ section.settings.gmc_gap_m }}px">
+            {%- for block in section.blocks -%}
+              {%- capture block_gate -%}{%- render 'gmc-gate', only: block.settings.gmc_only, hide: block.settings.gmc_hide -%}{%- endcapture -%}
+              {%- unless block_gate contains 'hide' -%}{%- render 'gmc-an-block', block: block -%}{%- endunless -%}
+            {%- endfor -%}
           </div>
         {%- endif -%}
       </div>
@@ -127,12 +159,12 @@
     {
       "type": "range",
       "id": "change_slides_speed",
-      "min": 3,
-      "max": 10,
-      "step": 1,
+      "min": 1,
+      "max": 15,
+      "step": 0.5,
       "unit": "s",
       "label": "t:sections.announcement-bar.settings.change_slides_speed.label",
-      "default": 5
+      "default": 3
     },
     {
       "type": "header",
@@ -152,7 +184,7 @@
           "label": "Columns"
         }
       ],
-      "default": "slider"
+      "default": "columns"
     },
     {
       "type": "select",
@@ -177,11 +209,11 @@
       "options": [
         {
           "value": "slide",
-          "label": "Slide"
+          "label": "Classic"
         },
         {
           "value": "loop",
-          "label": "Loop"
+          "label": "Infinite"
         },
         {
           "value": "fade",
@@ -194,35 +226,67 @@
       "type": "range",
       "id": "gmc_cols_d",
       "min": 0,
-      "max": 4,
+      "max": 6,
       "step": 1,
-      "label": "Columns on desktop (0 = auto)",
-      "default": 0
+      "label": "Columns on desktop",
+      "info": "0 fits every block in the centre. With a slider, 0 shows one block at a time.",
+      "default": 1
     },
     {
       "type": "range",
       "id": "gmc_cols_m",
       "min": 0,
-      "max": 2,
+      "max": 3,
       "step": 1,
-      "label": "Columns on mobile (0 = auto)",
-      "default": 0
+      "label": "Columns on mobile",
+      "info": "0 fits every block in the centre. With a slider, 0 shows one block at a time.",
+      "default": 1
     },
     {
       "type": "range",
       "id": "gmc_gap",
       "min": 0,
-      "max": 60,
+      "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Space between columns",
-      "default": 24
+      "label": "Desktop spacing",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "gmc_gap_m",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile spacing",
+      "default": 16
     },
     {
       "type": "checkbox",
       "id": "gmc_sep",
-      "label": "Separators between columns",
+      "label": "Show separator between blocks",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 16
     },
     {
       "type": "header",
@@ -368,27 +432,6 @@
       ]
     },
     {
-      "type": "header",
-      "content": "Slider options"
-    },
-    {
-      "type": "checkbox",
-      "id": "gmc_swipe_mobile",
-      "label": "Swipe row on mobile",
-      "info": "Turns this section's grid into a swipeable row on phones.",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "gmc_slider_autoplay",
-      "label": "Slider autoplay (seconds, 0 = off)",
-      "min": 0,
-      "max": 12,
-      "step": 1,
-      "default": 0,
-      "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
-    },
-    {
       "type": "select",
       "id": "gmc_display_on",
       "label": "Display on",
@@ -437,7 +480,11 @@
       "name": "t:sections.announcement-bar.blocks.announcement.name",
       "settings": [
         {
-          "type": "text",
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "inline_richtext",
           "id": "text",
           "default": "t:sections.announcement-bar.blocks.announcement.settings.text.default",
           "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
@@ -448,116 +495,265 @@
           "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
         },
         {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "text_size_mobile",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile text size",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "text_size_desktop",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop text size",
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Icon"
+        },
+        {
           "type": "text",
           "id": "icon_name",
-          "label": "Icon name"
+          "label": "Icon",
+          "info": "Type an icon name such as storefront, truck, or gift. A custom image replaces it."
+        },
+        {
+          "type": "checkbox",
+          "id": "filled_icon",
+          "label": "Filled icon",
+          "default": false
         },
         {
           "type": "image_picker",
           "id": "icon_image",
-          "label": "Or icon image"
+          "label": "Custom icon"
         },
         {
           "type": "range",
-          "id": "size",
-          "min": 0,
-          "max": 24,
+          "id": "icon_size_mobile",
+          "min": 10,
+          "max": 32,
           "step": 1,
           "unit": "px",
-          "label": "Text size (0 = default)",
-          "default": 0
+          "label": "Mobile icon size",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "icon_size_desktop",
+          "min": 12,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop icon size",
+          "default": 26
         },
         {
           "type": "select",
           "id": "layout",
-          "label": "Layout",
+          "label": "Desktop layout",
           "options": [
-            {
-              "value": "row",
-              "label": "Side by side"
-            },
-            {
-              "value": "stack",
-              "label": "Stacked"
-            }
+            { "value": "horizontal", "label": "Horizontal" },
+            { "value": "vertical", "label": "Vertical" }
           ],
-          "default": "row"
+          "default": "horizontal"
+        },
+        {
+          "type": "select",
+          "id": "layout_mobile",
+          "label": "Mobile layout",
+          "options": [
+            { "value": "horizontal", "label": "Horizontal" },
+            { "value": "vertical", "label": "Vertical" }
+          ],
+          "default": "horizontal"
+        },
+        {
+          "type": "header",
+          "content": "Visibility"
+        },
+        {
+          "type": "textarea",
+          "id": "gmc_only",
+          "label": "Show only on these product handles",
+          "info": "Comma separated. Leave empty to show on every page."
+        },
+        {
+          "type": "textarea",
+          "id": "gmc_hide",
+          "label": "Hide on these product handles",
+          "info": "Comma separated."
         }
       ]
     },
     {
       "type": "code",
       "name": "Discount code",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "Use code"
+          "id": "code",
+          "label": "Discount code",
+          "default": "EXAMPLE10"
         },
         {
-          "type": "text",
-          "id": "code",
-          "label": "Code",
-          "default": "SAVE10"
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Discount code text",
+          "default": "EXAMPLE10",
+          "info": "Shown in the bar. The code above is what gets copied."
         },
         {
           "type": "text",
           "id": "copy_label",
-          "label": "Copy button text",
-          "default": "Copy"
+          "label": "Copy button label",
+          "default": "Copy code"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_copy_icon",
+          "label": "Display button icon",
+          "default": true
         },
         {
           "type": "text",
           "id": "copied_text",
-          "label": "Copied text",
-          "default": "Copied"
-        },
-        {
-          "type": "text",
-          "id": "icon_name",
-          "label": "Icon name"
-        },
-        {
-          "type": "image_picker",
-          "id": "icon_image",
-          "label": "Or icon image"
+          "label": "Success message",
+          "default": "Code copied!"
         },
         {
           "type": "range",
-          "id": "size",
+          "id": "radius",
           "min": 0,
-          "max": 24,
-          "step": 1,
+          "max": 40,
+          "step": 2,
           "unit": "px",
-          "label": "Text size (0 = default)",
-          "default": 0
+          "label": "Corner radius",
+          "default": 40
         },
         {
           "type": "select",
-          "id": "layout",
-          "label": "Layout",
+          "id": "align",
+          "label": "Alignment",
           "options": [
-            {
-              "value": "row",
-              "label": "Side by side"
-            },
-            {
-              "value": "stack",
-              "label": "Stacked"
-            }
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
           ],
-          "default": "row"
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "text_size_mobile",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile text size",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "text_size_desktop",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop text size",
+          "default": 14
+        },
+        {
+          "type": "header",
+          "content": "Visibility"
+        },
+        {
+          "type": "textarea",
+          "id": "gmc_only",
+          "label": "Show only on these product handles",
+          "info": "Comma separated. Leave empty to show on every page."
+        },
+        {
+          "type": "textarea",
+          "id": "gmc_hide",
+          "label": "Hide on these product handles",
+          "info": "Comma separated."
         }
       ]
     },
     {
       "type": "social",
-      "name": "Social icons",
+      "name": "Social media",
+      "limit": 1,
       "settings": [
         {
           "type": "paragraph",
           "content": "Shows the social links from Theme settings."
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "icon_size_mobile",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile icon size",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "icon_size_desktop",
+          "min": 12,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop icon size",
+          "default": 26
+        },
+        {
+          "type": "header",
+          "content": "Visibility"
+        },
+        {
+          "type": "textarea",
+          "id": "gmc_only",
+          "label": "Show only on these product handles",
+          "info": "Comma separated. Leave empty to show on every page."
+        },
+        {
+          "type": "textarea",
+          "id": "gmc_hide",
+          "label": "Hide on these product handles",
+          "info": "Comma separated."
         }
       ]
     }
