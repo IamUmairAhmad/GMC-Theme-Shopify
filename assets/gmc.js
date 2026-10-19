@@ -459,7 +459,7 @@ document.querySelectorAll('.gmc-cdisc').forEach(function(c){try{if(sessionStorag
 
 /* product video blocks: play/pause, sound, timeline */
 (function(){
-  function init(root){(root||document).querySelectorAll('[data-gmc-vid]').forEach(function(w){if(w._g)return;w._g=1;var v=w.querySelector('video'),pb=w.querySelector('[data-gmc-vplay]'),sb=w.querySelector('[data-gmc-vsound]'),bar=w.querySelector('.gmc-pm__vt b');
+  function init(root){(root||document).querySelectorAll('[data-gmc-vid]').forEach(function(w){if(w._g)return;w._g=1;var v=w.querySelector('video'),pb=w.querySelector('[data-gmc-vplay]'),sb=w.querySelector('[data-gmc-vsound]'),bar=w.querySelector('.gmc-pm__vt b,.gmc-cb__vt b');
     if(pb)pb.addEventListener('click',function(){if(v.paused){v.play();}else{v.pause();}});
     if(v&&pb){v.addEventListener('play',function(){pb.textContent='❚❚';});v.addEventListener('pause',function(){pb.textContent='▶';});}
     if(sb)sb.addEventListener('click',function(){v.muted=!v.muted;sb.textContent=v.muted?'🔇':'🔊';});
