@@ -5,28 +5,48 @@
   <div class="gmc-cmp-copy">
     {%- if section.settings.heading != blank -%}<h2 class="gmc-cmp-title {{ section.settings.heading_size | default: 'h1' }}">{{ section.settings.heading | escape }}</h2>{%- endif -%}
     {%- if section.settings.text != blank -%}<div class="rte">{{ section.settings.text }}</div>{%- endif -%}
-    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>{%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      {%- liquid
+        assign cmp_btn = 'button button--primary'
+        if section.settings.button_outline
+          assign cmp_btn = 'button button--secondary'
+        endif
+      -%}
+      {%- if section.settings.button_link != blank -%}
+        <a class="{{ cmp_btn }}" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+      {%- else -%}
+        <button type="button" class="{{ cmp_btn }}" disabled aria-disabled="true">{{ section.settings.button_label | escape }}</button>
+      {%- endif -%}
+    {%- endif -%}
   </div>
-  {%- if section.settings.before != blank and section.settings.after != blank -%}
-  <div class="gmc-cmp gmc-cmp--{{ section.settings.handle_style }} gmc-cmp--tags-{{ section.settings.tag_pos }}" id="gmc-cmp-{{ section.id }}" style="--pos:50%;--cl:{{ section.settings.line_color }};--cw:{{ section.settings.line_w }}px;--tg:{{ section.settings.tag_bg }};--tf:{{ section.settings.tag_fg }}">
-    <div class="gmc-cmp__img">{{ section.settings.after | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', alt: section.settings.after_label }}</div>
-    <div class="gmc-cmp__img gmc-cmp__before">{{ section.settings.before | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', alt: section.settings.before_label }}</div>
-    <span class="gmc-cmp__tag gmc-cmp__tag--l">{{ section.settings.before_label | escape }}</span>
-    <span class="gmc-cmp__tag gmc-cmp__tag--r">{{ section.settings.after_label | escape }}</span>
+  <div class="gmc-cmp gmc-cmp--{{ section.settings.handle_style | default: 'circle' }} gmc-cmp--tags-{{ section.settings.tag_pos | default: 'top' }}" id="gmc-cmp-{{ section.id }}" style="--pos:50%;--cl:{{ section.settings.line_color }};--cw:{{ section.settings.line_w }}px;--tg:{{ section.settings.tag_bg }};--tf:{{ section.settings.tag_fg }}">
+    <div class="gmc-cmp__img">
+      {%- if section.settings.after != blank -%}
+        {{ section.settings.after | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', alt: section.settings.after_label }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+    <div class="gmc-cmp__img gmc-cmp__before">
+      {%- if section.settings.before != blank -%}
+        {{ section.settings.before | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', alt: section.settings.before_label }}
+      {%- else -%}
+        {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+    {%- if section.settings.before_label != blank -%}<span class="gmc-cmp__tag gmc-cmp__tag--l">{{ section.settings.before_label | escape }}</span>{%- endif -%}
+    {%- if section.settings.after_label != blank -%}<span class="gmc-cmp__tag gmc-cmp__tag--r">{{ section.settings.after_label | escape }}</span>{%- endif -%}
     <span class="gmc-cmp__handle" aria-hidden="true"></span>
     <input type="range" min="0" max="100" value="50" class="gmc-cmp__range" aria-label="Compare before and after">
   </div>
-  {%- else -%}
-    <p class="gmc-cmp-empty">Add a before and after image.</p>
-  {%- endif -%}
 </div>
 <style>
-  .gmc-cmp__handle{background:var(--cl,#fff)!important;width:var(--cw,3px)!important}.gmc-cmp__tag{background:var(--tg)!important;color:var(--tf)!important}.gmc-cmp--bar .gmc-cmp__handle:after{content:"";width:8px;height:44px;border-radius:4px}.gmc-cmp--arrows .gmc-cmp__handle:after{content:"‹ ›";width:auto;height:auto;padding:.3rem .9rem;border-radius:99px;letter-spacing:.3em}.gmc-cmp--line .gmc-cmp__handle:after{display:none}.gmc-cmp--tags-bottom .gmc-cmp__tag{top:auto!important;bottom:1rem}
-  .gmc-cmp-wrap{padding:36px 0;display:grid;gap:2rem;align-items:center}.gmc-cmp-title{margin:0 0 1rem}.gmc-cmp-copy{display:grid;gap:1rem;justify-items:start}.gmc-cmp-wrap--stacked{justify-items:center}.gmc-cmp-wrap--stacked .gmc-cmp-copy{justify-items:center;text-align:center}.gmc-cmp-wrap--stacked .gmc-cmp{width:100%}.gmc-cmp-wrap--stacked .gmc-cmp,.gmc-cmp-wrap--slider-left .gmc-cmp{order:-1}@media(min-width:750px){.gmc-cmp-wrap--slider-left,.gmc-cmp-wrap--slider-right{grid-template-columns:1.1fr .9fr}.gmc-cmp-wrap--slider-left .gmc-cmp,.gmc-cmp-wrap--slider-right .gmc-cmp{max-width:none}}
-  .gmc-cmp{position:relative;overflow:hidden;max-width:900px;margin:0 auto;border-radius:var(--text-boxes-radius);user-select:none}
-  .gmc-cmp__img img{display:block;width:100%;height:auto}
+  .gmc-cmp__handle{background:var(--cl,#fff)!important;width:var(--cw,3px)!important}.gmc-cmp__tag{background:var(--tg)!important;color:var(--tf)!important}.gmc-cmp--bar .gmc-cmp__handle:after{content:"";width:8px;height:44px;border-radius:4px}.gmc-cmp--classic .gmc-cmp__handle:after,.gmc-cmp--arrows .gmc-cmp__handle:after{content:"‹ ›";width:auto;height:auto;letter-spacing:.2em}.gmc-cmp--classic .gmc-cmp__handle:after{background:transparent;box-shadow:none;color:var(--cl,#fff)}.gmc-cmp--arrows .gmc-cmp__handle:after{padding:.3rem .9rem;border-radius:99px}.gmc-cmp--line .gmc-cmp__handle:after{display:none}.gmc-cmp--tags-bottom .gmc-cmp__tag{top:auto!important;bottom:1rem}
+  .gmc-cmp-wrap{padding:36px 0;display:grid;gap:2rem;align-items:center}.gmc-cmp-title{margin:0 0 1rem}.gmc-cmp-copy{display:grid;gap:1rem;justify-items:center;text-align:center}.gmc-cmp-wrap--stacked{justify-items:center}.gmc-cmp-wrap--stacked .gmc-cmp{width:100%}.gmc-cmp-wrap--stacked .gmc-cmp,.gmc-cmp-wrap--slider-left .gmc-cmp{order:-1}@media(min-width:750px){.gmc-cmp-wrap--slider-left,.gmc-cmp-wrap--slider-right{grid-template-columns:1fr 1fr}.gmc-cmp-wrap--slider-left .gmc-cmp,.gmc-cmp-wrap--slider-right .gmc-cmp{max-width:none}}
+  .gmc-cmp{position:relative;overflow:hidden;max-width:900px;width:100%;margin:0 auto;border-radius:var(--text-boxes-radius);user-select:none;min-height:12rem}
+  .gmc-cmp__img img,.gmc-cmp__img svg{display:block;width:100%;height:auto}
   .gmc-cmp__before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
-  .gmc-cmp__before img{height:100%;object-fit:cover}
+  .gmc-cmp__before img,.gmc-cmp__before svg{height:100%;object-fit:cover}
   .gmc-cmp__handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;background:#fff;transform:translateX(-50%);box-shadow:0 0 6px rgba(var(--color-shadow),.4);pointer-events:none}
   .gmc-cmp__handle:after{content:"↔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center}
   .gmc-cmp__range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
@@ -47,7 +67,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "See the difference"
+      "default": "Before & After slider"
     },
     {
       "type": "select",
@@ -63,7 +83,8 @@
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text"
+      "label": "Text",
+      "default": "<p>Drag the handle to compare the two photos.</p>"
     },
     {
       "type": "text",
@@ -76,15 +97,21 @@
       "label": "Button link"
     },
     {
+      "type": "checkbox",
+      "id": "button_outline",
+      "label": "Use outline button style",
+      "default": false
+    },
+    {
       "type": "select",
       "id": "layout",
-      "label": "Slider placement",
+      "label": "Desktop slider placement",
       "options": [
-        { "value": "stacked", "label": "Above the text" },
-        { "value": "slider-left", "label": "Left of the text" },
-        { "value": "slider-right", "label": "Right of the text" }
+        { "value": "slider-left", "label": "Slider first" },
+        { "value": "slider-right", "label": "Slider second" },
+        { "value": "stacked", "label": "Stacked" }
       ],
-      "default": "stacked"
+      "default": "slider-right"
     },
     {
       "type": "image_picker",
@@ -114,8 +141,12 @@
       "label": "Handle style",
       "options": [
         {
+          "value": "classic",
+          "label": "Classic"
+        },
+        {
           "value": "circle",
-          "label": "Circle with arrows"
+          "label": "Circle around"
         },
         {
           "value": "arrows",
