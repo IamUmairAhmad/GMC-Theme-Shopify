@@ -8,8 +8,11 @@
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
     {%- for link in section.settings.menu.links -%}
+      {%- capture pmm -%}{%- render 'gmc-pmm-match', title: link.title, list: section.settings.gmc_pmm_links -%}{%- endcapture -%}
       <li>
-        {%- if link.links != blank -%}
+        {%- if pmm contains 'yes' and link.links != blank -%}
+          {%- render 'gmc-products-menu', link: link, menu_index: forloop.index -%}
+        {%- elsif link.links != blank -%}
           <header-menu>
             <details id="Details-HeaderMenu-{{ forloop.index }}">
               <summary

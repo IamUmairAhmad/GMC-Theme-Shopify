@@ -1,0 +1,18 @@
+{% doc %}
+  Prints "yes" when a menu title is listed for the products menu.
+  @param {string} title - Menu item title
+  @param {string} [list] - Comma-separated titles from the header setting
+  @example
+  {% render 'gmc-pmm-match', title: link.title, list: section.settings.gmc_pmm_links %}
+{% enddoc %}
+{%- liquid
+  assign gmc_key = title | downcase | strip
+  assign gmc_parts = list | downcase | split: ','
+  for gmc_part in gmc_parts
+    assign gmc_part_s = gmc_part | strip
+    if gmc_part_s != blank and gmc_part_s == gmc_key
+      echo 'yes'
+      break
+    endif
+  endfor
+-%}

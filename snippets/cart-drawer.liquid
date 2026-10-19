@@ -22,7 +22,7 @@
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
     <div
       class="drawer__inner gradient color-{{ settings.cart_color_scheme }}"
-      {% if section.settings.width > 0 %}style="--gmc-drawer-w:{{ section.settings.width }}px"{% endif %}
+      style="{% if section.settings.width > 0 %}--gmc-drawer-w:{{ section.settings.width }}px;{% endif %}{% if section.settings.width_mobile > 0 %}--gmc-drawer-wm:{{ section.settings.width_mobile }}px;{% endif %}{% if section.settings.header_bg != blank %}--gmc-hbg:{{ section.settings.header_bg }};{% endif %}{% if section.settings.body_bg != blank %}--gmc-bbg:{{ section.settings.body_bg }};{% endif %}{% if section.settings.footer_bg != blank %}--gmc-fbg:{{ section.settings.footer_bg }};{% endif %}"
       role="dialog"
       aria-modal="true"
       aria-label="{{ 'sections.cart.title' | t }}"
@@ -43,8 +43,8 @@
                   {{- 'icon-close.svg' | inline_asset_content -}}
                 </span>
               </button>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
-                {{ 'general.continue_shopping' | t }}
+              <a href="{% if section.settings.continue_url != blank %}{{ section.settings.continue_url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}" class="button">
+                {{ section.settings.continue_label | default: 'Continue shopping' | escape }}
               </a>
 
               {%- if shop.customer_accounts_enabled and customer == null -%}
@@ -114,7 +114,7 @@
           {%- endif -%}
         {%- endfor -%}
         {%- if section.settings.continue_link and cart != empty -%}
-          <p class="gmc-cont" style="text-align:center;margin:.6rem 0 1rem"><a href="{{ routes.all_products_collection_url }}" class="link" onclick="var d=this.closest('cart-drawer');if(d&&d.close){d.close();}">{{ section.settings.continue_label | default: 'Continue shopping' | escape }}</a></p>
+          <p class="gmc-cont" style="text-align:center;margin:.6rem 0 1rem"><a href="{% if section.settings.continue_url != blank %}{{ section.settings.continue_url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}" class="link" onclick="var d=this.closest('cart-drawer');if(d&&d.close){d.close();}">{{ section.settings.continue_label | default: 'Continue shopping' | escape }}</a></p>
         {%- endif -%}
       </div>
     </div>

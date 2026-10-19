@@ -1,0 +1,26 @@
+{% doc %}
+  One frame inside a stories modal.
+  @param {string} user - Name shown on the frame
+  @param {image} [image] - Frame image
+  @param {video} [video] - Frame video, used instead of the image when set
+  @param {string} [time] - Relative time, for example "2h"
+  @param {string} [fit] - cover or contain
+  @param {string} [bg] - Frame background colour
+  @param {string} [cta] - Button label
+  @param {string} [link] - Button destination
+  @example
+  {% render 'gmc-story-slide', user: un, image: block.settings.image, video: block.settings.video %}
+{% enddoc %}
+<div class="gmc-is__s" hidden{% if fit != blank or bg != blank %} style="{% if bg != blank %}background:{{ bg }};{% endif %}{% if fit != blank %}--is-fit:{{ fit }};{% endif %}"{% endif %}>
+  <div class="gmc-is__hd"><strong>{{ user | escape }}</strong>{%- if time != blank -%}<small>{{ time | escape }}</small>{%- endif -%}</div>
+  {%- if video != blank -%}
+    <video playsinline muted{% if image != blank %} poster="{{ image | image_url: width: 900 }}"{% endif %}>
+      {%- for source in video.sources -%}
+        {%- if source.format == 'mp4' -%}<source src="{{ source.url }}" type="video/mp4">{%- endif -%}
+      {%- endfor -%}
+    </video>
+  {%- elsif image != blank -%}
+    {{ image | image_url: width: 900 | image_tag: loading: 'lazy', alt: user }}
+  {%- endif -%}
+  {%- if link != blank -%}<a class="button" href="{{ link }}">{{ cta | default: 'Shop now' | escape }}</a>{%- endif -%}
+</div>

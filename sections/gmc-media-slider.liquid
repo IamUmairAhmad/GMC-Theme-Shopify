@@ -2,21 +2,61 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add slide blocks with an image or MP4.' -%}{%- endif -%}
-<div class="gmc-ms {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-ms-{{ section.id }}" style="--ratio:{{ section.settings.ratio }}">
+{%- assign ms = section.settings -%}
+<div class="gmc-ms gmc-ms--{{ ms.transition | default: 'slide' }} gmc-ms--ctrl-{{ ms.controls | default: 'sides' }}{% if ms.center %} gmc-ms--center{% endif %}{% if ms.arrows_clear %} gmc-ms--clear{% endif %} {% render 'gmc-vis', hide: ms.hide_on %}" id="gmc-ms-{{ section.id }}" style="--ratio:{{ ms.ratio }};--peek:{{ ms.peek | default: 0 }}px;--radius:{{ ms.radius | default: 0 }}px;--per:{{ ms.per_view }}%;--perm:{{ ms.per_view_mobile }}%" data-move="{{ ms.move | default: 1 }}" data-fade="{% if ms.transition == 'fade' %}1{% else %}0{% endif %}" data-adapt="{% if ms.height == 'adapt' %}1{% else %}0{% endif %}" data-auto="{% if ms.autoplay %}{{ ms.interval | times: 1000 }}{% else %}0{% endif %}">
   <div class="gmc-ms__track">{%- for block in section.blocks -%}
-    <div class="gmc-ms__s" {{ block.shopify_attributes }}>
+    <div class="gmc-ms__s{% if ms.transition == 'fade' and forloop.first %} is-on{% endif %}" {{ block.shopify_attributes }}>
       {%- if block.settings.video != blank -%}<div class="gmc-pm__vid gmc-ms__vid" data-gmc-vid><video playsinline preload="metadata" {% if block.settings.autoplay %}autoplay muted{% endif %}{% if block.settings.loop %} loop{% endif %}{% unless block.settings.autoplay or block.settings.custom_ui %} controls{% endunless %}{% if block.settings.image != blank %} poster="{{ block.settings.image | image_url: width: 1200 }}"{% endif %}>{%- for s in block.settings.video.sources -%}{%- if s.format == 'mp4' -%}<source src="{{ s.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
         {%- if block.settings.custom_ui -%}<div class="gmc-pm__vc"><button type="button" data-gmc-vplay aria-label="Play or pause">❚❚</button>{%- if block.settings.sound_btn -%}<button type="button" data-gmc-vsound aria-label="Sound on or off">🔇</button>{%- endif -%}{%- if block.settings.timeline -%}<i class="gmc-pm__vt"><b></b></i>{%- endif -%}</div>{%- endif -%}</div>
       {%- elsif block.settings.image != blank -%}{%- assign gmc_fp = 'object-position:' | append: block.settings.image.presentation.focal_point -%}{{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600,1000,1600', style: gmc_fp }}{%- endif -%}
       {%- if block.settings.caption != blank -%}<span class="gmc-ms__cap">{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.caption | escape }}</a>{%- else -%}{{ block.settings.caption | escape }}{%- endif -%}</span>{%- endif -%}
       {%- if block.settings.desc != blank -%}<div class="gmc-ms__desc color-{{ block.settings.desc_scheme }} gradient" style="text-align:{{ block.settings.desc_align }}">{{ block.settings.desc | escape }}</div>{%- endif -%}
     </div>{%- endfor -%}</div>
-  <button type="button" class="gmc-ms__b gmc-ms__b--p" aria-label="Previous">‹</button><button type="button" class="gmc-ms__b gmc-ms__b--n" aria-label="Next">›</button>
+  <div class="gmc-ms__nav">
+    <button type="button" class="gmc-ms__b gmc-ms__b--p" aria-label="Previous">‹</button>
+    {%- if ms.dots -%}<div class="gmc-ms__dots">{%- for block in section.blocks -%}<button type="button" data-i="{{ forloop.index0 }}" aria-label="Slide {{ forloop.index }}"{% if forloop.first %} class="is-on" aria-current="true"{% endif %}></button>{%- endfor -%}</div>{%- endif -%}
+    <button type="button" class="gmc-ms__b gmc-ms__b--n" aria-label="Next">›</button>
+  </div>
 </div>
-<style>.gmc-ms__desc{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.4rem;z-index:2}.gmc-ms__vid{width:100%;height:100%}.gmc-ms__vid video{width:100%;height:100%;object-fit:cover}.gmc-ms{position:relative}.gmc-ms__track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.gmc-ms__track::-webkit-scrollbar{display:none}.gmc-ms__s{flex:0 0 {{ section.settings.per_view }}%;scroll-snap-align:start;position:relative;aspect-ratio:var(--ratio)}.gmc-ms__s img,.gmc-ms__s video{width:100%;height:100%;object-fit:cover;display:block}.gmc-ms__cap{position:absolute;left:1rem;bottom:1rem;background:rgba(0,0,0,.6);color:#fff;padding:.4rem 1rem;border-radius:var(--badge-corner-radius,99px)}.gmc-ms__cap a{color:#fff}.gmc-ms__b{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#111;font-size:26px;cursor:pointer}.gmc-ms__b--p{left:.8rem}.gmc-ms__b--n{right:.8rem}@media(max-width:749px){.gmc-ms__s{flex-basis:{{ section.settings.per_view_mobile }}%}}</style>
-<script>(function(){var w=document.getElementById('gmc-ms-{{ section.id }}'),t=w.querySelector('.gmc-ms__track');
-w.querySelector('.gmc-ms__b--n').onclick=function(){t.scrollBy({left:t.clientWidth*.9,behavior:'smooth'});};w.querySelector('.gmc-ms__b--p').onclick=function(){t.scrollBy({left:-t.clientWidth*.9,behavior:'smooth'});};
-{% if section.settings.autoplay %}if(!matchMedia('(prefers-reduced-motion:reduce)').matches){var iv=setInterval(function(){if(t.scrollLeft+t.clientWidth>=t.scrollWidth-4)t.scrollTo({left:0,behavior:'smooth'});else t.scrollBy({left:t.clientWidth*.9,behavior:'smooth'});},{{ section.settings.interval | times: 1000 }});w.addEventListener('mouseenter',function(){clearInterval(iv);});w.addEventListener('focusin',function(){clearInterval(iv);});}{% endif %}})();</script>
+<style>
+  .gmc-ms{position:relative}
+  .gmc-ms__desc{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.4rem;z-index:2}
+  .gmc-ms__vid{width:100%;height:100%}
+  .gmc-ms__vid video{width:100%;height:100%;object-fit:cover}
+  .gmc-ms__track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-inline:var(--peek,0)}
+  .gmc-ms__track::-webkit-scrollbar{display:none}
+  .gmc-ms__s{flex:0 0 var(--per,100%);scroll-snap-align:start;position:relative;aspect-ratio:var(--ratio,16/9);border-radius:var(--radius,0);overflow:hidden}
+  .gmc-ms--center .gmc-ms__s{scroll-snap-align:center}
+  .gmc-ms[data-fade="1"] .gmc-ms__track{display:grid;overflow:hidden;padding:0}
+  .gmc-ms[data-fade="1"] .gmc-ms__s{grid-area:1/1;width:100%;flex:none;opacity:0;pointer-events:none;transition:opacity .4s}
+  .gmc-ms[data-fade="1"] .gmc-ms__s.is-on{opacity:1;pointer-events:auto}
+  .gmc-ms__s img,.gmc-ms__s video{width:100%;height:100%;object-fit:cover;display:block}
+  .gmc-ms__cap{position:absolute;left:1rem;bottom:1rem;background:rgba(0,0,0,.6);color:#fff;padding:.4rem 1rem;border-radius:var(--badge-corner-radius,99px)}
+  .gmc-ms__cap a{color:#fff}
+  .gmc-ms__b{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#111;font-size:26px;cursor:pointer}
+  .gmc-ms__b--p{left:.8rem}.gmc-ms__b--n{right:.8rem}
+  .gmc-ms--clear .gmc-ms__b{background:transparent;color:inherit;box-shadow:inset 0 0 0 1px currentColor}
+  .gmc-ms--ctrl-below .gmc-ms__nav{display:flex;justify-content:center;align-items:center;gap:1rem;margin-top:1rem}
+  .gmc-ms--ctrl-below .gmc-ms__b{position:static;transform:none}
+  .gmc-ms__dots{display:flex;gap:.5rem;justify-content:center}
+  .gmc-ms:not(.gmc-ms--ctrl-below) .gmc-ms__dots{position:absolute;left:0;right:0;bottom:1rem;z-index:2}
+  .gmc-ms__dots button{width:1rem;height:1rem;padding:0;border-radius:50%;border:1px solid currentColor;background:transparent;cursor:pointer}
+  .gmc-ms__dots button.is-on{background:currentColor}
+  .gmc-ms[data-adapt="1"] .gmc-ms__s{aspect-ratio:auto;height:auto}
+  .gmc-ms[data-adapt="1"] .gmc-ms__s img{height:auto}
+  .gmc-ms[data-adapt="1"] .gmc-ms__vid{aspect-ratio:16/9}
+  @media(max-width:749px){.gmc-ms__s{flex-basis:var(--perm,100%)}}
+  @media(prefers-reduced-motion:reduce){.gmc-ms[data-fade="1"] .gmc-ms__s{transition:none}}
+</style>
+<script>(function(){var w=document.getElementById('gmc-ms-{{ section.id }}');if(!w)return;var t=w.querySelector('.gmc-ms__track'),slides=[].slice.call(t.children),dots=[].slice.call(w.querySelectorAll('.gmc-ms__dots button')),i=0,fade=w.dataset.fade==='1',center=w.classList.contains('gmc-ms--center');
+function paint(){dots.forEach(function(d,k){var on=k===i;d.classList.toggle('is-on',on);if(on)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});}
+function go(n){if(!slides.length)return;i=(n+slides.length)%slides.length;if(fade){slides.forEach(function(s,k){s.classList.toggle('is-on',k===i);});}else{var s=slides[i],left=s.offsetLeft;if(center)left=s.offsetLeft-(t.clientWidth-s.clientWidth)/2;t.scrollTo({left:Math.max(0,left),behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}paint();}
+function step(dir){go(i+dir*(+w.dataset.move||1));}
+w.querySelector('.gmc-ms__b--n').onclick=function(){step(1);};w.querySelector('.gmc-ms__b--p').onclick=function(){step(-1);};
+dots.forEach(function(d){d.onclick=function(){go(+d.dataset.i);};});
+if(fade)go(0);
+if(!fade){t.addEventListener('scroll',function(){var best=0,dist=1e9;slides.forEach(function(s,k){var d=Math.abs(s.offsetLeft-t.scrollLeft);if(d<dist){dist=d;best=k;}});if(best!==i){i=best;paint();}});}
+var auto=+w.dataset.auto;if(auto&&!matchMedia('(prefers-reduced-motion:reduce)').matches){var iv=setInterval(function(){step(1);},auto);w.addEventListener('mouseenter',function(){clearInterval(iv);});w.addEventListener('focusin',function(){clearInterval(iv);});}})();</script>
 {% schema %}
 {
   "name": "Image & video slider",
@@ -48,6 +88,83 @@ w.querySelector('.gmc-ms__b--n').onclick=function(){t.scrollBy({left:t.clientWid
       "id": "ratio",
       "label": "Aspect ratio",
       "default": "16/9"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Slide height",
+      "options": [
+        { "value": "ratio", "label": "Fixed ratio" },
+        { "value": "adapt", "label": "Adapt to the image" }
+      ],
+      "default": "ratio"
+    },
+    {
+      "type": "select",
+      "id": "transition",
+      "label": "Transition",
+      "options": [
+        { "value": "slide", "label": "Slide" },
+        { "value": "fade", "label": "Fade" }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "checkbox",
+      "id": "center",
+      "label": "Centre the active slide",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "peek",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Preview of the next slide",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "move",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Slides to move at once",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "controls",
+      "label": "Arrow position",
+      "options": [
+        { "value": "sides", "label": "On the sides" },
+        { "value": "below", "label": "Below the slides" }
+      ],
+      "default": "sides"
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows_clear",
+      "label": "Transparent arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Show dots",
+      "default": false
     },
     {
       "type": "checkbox",

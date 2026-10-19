@@ -1,0 +1,62 @@
+{% doc %}
+  Compact product rows for a products menu inside the mobile drawer.
+  @param {link} link - Top-level menu link whose children are collections
+  @example
+  {% render 'gmc-pmm-mobile', link: link %}
+{% enddoc %}
+{%- if section.settings.gmc_pmm_products -%}
+  <div class="gmc-pmm-m">
+    {%- assign pmm_groups = 0 -%}
+    {%- for childlink in link.links -%}
+      {%- if pmm_groups >= 3 -%}{% break %}{%- endif -%}
+      {%- if childlink.type == 'collection_link' and childlink.object != blank and childlink.object.products_count > 0 -%}
+        {%- assign pmm_groups = pmm_groups | plus: 1 -%}
+        <p class="gmc-pmm-m__h">{{ childlink.title | escape }}</p>
+        <div class="gmc-pmm-m__row">
+          {%- for product in childlink.object.products limit: 4 -%}
+            <a class="gmc-pmm-m__card" href="{{ product.url }}">
+              {%- if product.featured_image -%}
+                {%- assign pmm_alt = product.featured_image.alt | default: product.title -%}
+                {{ product.featured_image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', alt: pmm_alt }}
+              {%- endif -%}
+              <span>{{ product.title | escape }}</span>
+              <small>{{ product.price | money }}</small>
+            </a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+{% stylesheet %}
+  .gmc-pmm-m {
+    padding: 0.4rem 1.6rem 1.6rem;
+  }
+  .gmc-pmm-m__h {
+    margin: 1.2rem 0 0.6rem;
+    font-weight: 700;
+  }
+  .gmc-pmm-m__row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 42%;
+    gap: 0.8rem;
+    overflow-x: auto;
+  }
+  .gmc-pmm-m__card {
+    display: grid;
+    gap: 0.3rem;
+    text-decoration: none;
+    color: inherit;
+    font-size: 1.3rem;
+  }
+  .gmc-pmm-m__card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0.6rem;
+  }
+  .gmc-pmm-m__card small {
+    opacity: 0.7;
+  }
+{% endstylesheet %}

@@ -1,0 +1,188 @@
+{% doc %}
+  Desktop products menu: collection list on the left, product cards on the right.
+  @param {link} link - Top-level menu link
+  @param {number} menu_index - Position in the menu, used for unique ids
+  @example
+  {% render 'gmc-products-menu', link: link, menu_index: forloop.index %}
+{% enddoc %}
+{%- liquid
+  assign pmm_limit = section.settings.gmc_pmm_limit | default: 8
+  assign pmm_show = section.settings.gmc_pmm_products
+  assign pmm_images = section.settings.gmc_pmm_images
+-%}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+<header-menu>
+  <details id="Details-HeaderMenu-{{ menu_index }}" class="mega-menu gmc-pmm" data-gmc-pmm>
+    <summary id="HeaderMenu-{{ link.handle }}" class="header__menu-item list-menu__item link focus-inset">
+      <span{% if link.child_active %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </summary>
+    <div class="mega-menu__content gmc-pmm__body color-{{ section.settings.menu_color_scheme }} gradient motion-reduce" tabindex="-1">
+      <div class="page-width gmc-pmm__grid">
+        <ul class="gmc-pmm__nav" role="list">
+          {%- for childlink in link.links -%}
+            <li>
+              <a
+                id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                href="{{ childlink.url }}"
+                class="gmc-pmm__link{% if forloop.first %} is-active{% endif %}{% if childlink.current %} gmc-pmm__link--current{% endif %}"
+                data-gmc-pmm-item="{{ forloop.index }}"
+                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                {% if childlink.current %}aria-current="page"{% endif %}
+              >
+                {%- if pmm_images and childlink.type == 'collection_link' and childlink.object.featured_image != blank -%}
+                  {{ childlink.object.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '80, 120', alt: '', class: 'gmc-pmm__thumb' }}
+                {%- endif -%}
+                <span>{{ childlink.title | escape }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="gmc-pmm__stage">
+          {%- for childlink in link.links -%}
+            <div class="gmc-pmm__panel" data-gmc-pmm-panel="{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %}>
+              {%- liquid
+                assign pmm_shown = 0
+                assign pmm_collection = nil
+                if childlink.type == 'collection_link'
+                  assign pmm_collection = childlink.object
+                endif
+              -%}
+              <ul class="gmc-pmm__cards" role="list">
+                {%- if pmm_show and pmm_collection != blank -%}
+                  {%- for product in pmm_collection.products limit: pmm_limit -%}
+                    {%- assign pmm_sid = 'pmm-' | append: menu_index | append: '-' | append: forloop.parentloop.index | append: '-' | append: forloop.index -%}
+                    <li>
+                      {%- render 'card-product',
+                        card_product: product,
+                        media_aspect_ratio: 'square',
+                        show_secondary_image: true,
+                        lazy_load: true,
+                        skip_styles: true,
+                        section_id: pmm_sid,
+                        quick_add: 'none',
+                        product_view_context: 'collection'
+                      -%}
+                    </li>
+                    {%- assign pmm_shown = pmm_shown | plus: 1 -%}
+                  {%- endfor -%}
+                {%- endif -%}
+                {%- if pmm_shown == 0 -%}
+                  {%- for grandchildlink in childlink.links -%}
+                    {%- if pmm_shown >= pmm_limit -%}{% break %}{%- endif -%}
+                    {%- if grandchildlink.type == 'product_link' and grandchildlink.object != blank -%}
+                      {%- assign pmm_sid = 'pmm-' | append: menu_index | append: '-g-' | append: forloop.parentloop.index | append: '-' | append: forloop.index -%}
+                      <li>
+                        {%- render 'card-product',
+                          card_product: grandchildlink.object,
+                          media_aspect_ratio: 'square',
+                          show_secondary_image: true,
+                          lazy_load: true,
+                          skip_styles: true,
+                          section_id: pmm_sid,
+                          quick_add: 'none',
+                          product_view_context: 'collection'
+                        -%}
+                      </li>
+                      {%- assign pmm_shown = pmm_shown | plus: 1 -%}
+                    {%- elsif grandchildlink.type == 'collection_link' and grandchildlink.object != blank -%}
+                      <li>
+                        {%- render 'card-collection',
+                          card_collection: grandchildlink.object,
+                          media_aspect_ratio: 'square',
+                          columns: 1
+                        -%}
+                      </li>
+                      {%- assign pmm_shown = pmm_shown | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
+              </ul>
+              {%- if pmm_shown == 0 -%}
+                <p class="gmc-pmm__empty">{{ childlink.title | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </details>
+</header-menu>
+{% stylesheet %}
+  .gmc-pmm__grid {
+    display: grid;
+    grid-template-columns: minmax(18rem, 26rem) minmax(0, 1fr);
+    gap: 2.4rem;
+    align-items: start;
+  }
+  .gmc-pmm__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .gmc-pmm__link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0.8rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .gmc-pmm__link.is-active,
+  .gmc-pmm__link:hover {
+    background: rgba(var(--color-foreground), 0.06);
+  }
+  .gmc-pmm__thumb {
+    width: 4.4rem;
+    height: 4.4rem;
+    object-fit: cover;
+    border-radius: 0.6rem;
+    flex: none;
+  }
+  .gmc-pmm__cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+  .gmc-pmm__panel[hidden] {
+    display: none;
+  }
+  .gmc-pmm__empty {
+    margin: 0;
+    opacity: 0.7;
+  }
+  @media screen and (max-width: 989px) {
+    .gmc-pmm__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+{% endstylesheet %}
+{% javascript %}
+  document.addEventListener('pointerover', function (event) {
+    var item = event.target.closest('[data-gmc-pmm-item]');
+    if (!item) return;
+    var root = item.closest('[data-gmc-pmm]');
+    if (!root) return;
+    var id = item.getAttribute('data-gmc-pmm-item');
+    root.querySelectorAll('[data-gmc-pmm-item]').forEach(function (el) {
+      var on = el.getAttribute('data-gmc-pmm-item') === id;
+      el.classList.toggle('is-active', on);
+      el.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    root.querySelectorAll('[data-gmc-pmm-panel]').forEach(function (el) {
+      el.hidden = el.getAttribute('data-gmc-pmm-panel') !== id;
+    });
+  });
+  document.addEventListener('focusin', function (event) {
+    var item = event.target.closest('[data-gmc-pmm-item]');
+    if (!item) return;
+    item.dispatchEvent(new Event('pointerover', { bubbles: true }));
+  });
+{% endjavascript %}

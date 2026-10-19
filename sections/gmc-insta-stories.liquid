@@ -13,20 +13,33 @@
     {%- for un in user_list -%}
       {%- assign first_b = nil -%}{%- assign close_f = false -%}{%- assign ver = false -%}
       {%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}{%- if first_b == nil -%}{%- assign first_b = block -%}{%- endif -%}{%- if block.settings.close_friends -%}{%- assign close_f = true -%}{%- endif -%}{%- if block.settings.verified -%}{%- assign ver = true -%}{%- endif -%}{%- endif -%}{%- endfor -%}
-      <button type="button" class="gmc-is__b" data-u="{{ forloop.index0 }}" {{ first_b.shopify_attributes }}><span class="gmc-is__ring{% if close_f %} gmc-is__ring--cf{% endif %}">{%- if first_b.settings.image != blank -%}{{ first_b.settings.image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '' }}{%- else -%}<span class="gmc-is__ph"></span>{%- endif -%}</span><span class="gmc-is__n">{{ un | escape }}{%- if ver -%}<svg class="gmc-is__v" width="14" height="14" viewBox="0 0 24 24" aria-label="Verified"><circle cx="12" cy="12" r="11" fill="#2563eb"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4"/></svg>{%- endif -%}</span></button>
+      {%- liquid
+        assign av = first_b.settings.avatar
+        if av == blank
+          assign av = first_b.settings.image
+        endif
+      -%}
+      <button type="button" class="gmc-is__b" data-u="{{ forloop.index0 }}" {{ first_b.shopify_attributes }}><span class="gmc-is__ring{% if close_f %} gmc-is__ring--cf{% endif %}">{%- if av != blank -%}{{ av | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '' }}{%- else -%}<span class="gmc-is__ph"></span>{%- endif -%}</span><span class="gmc-is__n">{{ un | escape }}{%- if ver -%}<svg class="gmc-is__v" width="14" height="14" viewBox="0 0 24 24" aria-label="Verified"><circle cx="12" cy="12" r="11" fill="#2563eb"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4"/></svg>{%- endif -%}</span></button>
     {%- endfor -%}
   </div>
   <div class="gmc-is__modal" hidden role="dialog" aria-modal="true" aria-label="Stories"><button type="button" class="gmc-is__x" aria-label="Close">×</button>
     {%- for un in user_list -%}
       <div class="gmc-is__u" data-u="{{ forloop.index0 }}" hidden>
-        <div class="gmc-is__bars">{%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}<span><i></i></span>{%- endif -%}{%- endfor -%}</div>
+        <div class="gmc-is__bars">{%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}
+          {%- if block.settings.image != blank or block.settings.video != blank -%}<span><i></i></span>{%- endif -%}
+          {%- if block.settings.image_2 != blank or block.settings.video_2 != blank -%}<span><i></i></span>{%- endif -%}
+          {%- if block.settings.image_3 != blank or block.settings.video_3 != blank -%}<span><i></i></span>{%- endif -%}
+        {%- endif -%}{%- endfor -%}</div>
         {%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}
-          <div class="gmc-is__s" hidden>
-            <div class="gmc-is__hd"><strong>{{ un | escape }}</strong>{%- if block.settings.time != blank -%}<small>{{ block.settings.time | escape }}</small>{%- endif -%}</div>
-            {%- if block.settings.video != blank -%}<video src="{% for vs in block.settings.video.sources %}{% if vs.format == 'mp4' %}{{ vs.url }}{% endif %}{% endfor %}" playsinline muted></video>
-            {%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- endif -%}
-            {%- if block.settings.link != blank -%}<a class="button" href="{{ block.settings.link }}">{{ block.settings.cta | escape }}</a>{%- endif -%}
-          </div>
+          {%- if block.settings.image != blank or block.settings.video != blank -%}
+            {%- render 'gmc-story-slide', user: un, image: block.settings.image, video: block.settings.video, time: block.settings.time, fit: block.settings.fit, bg: block.settings.bg, cta: block.settings.cta, link: block.settings.link -%}
+          {%- endif -%}
+          {%- if block.settings.image_2 != blank or block.settings.video_2 != blank -%}
+            {%- render 'gmc-story-slide', user: un, image: block.settings.image_2, video: block.settings.video_2, time: block.settings.time_2, fit: block.settings.fit_2, bg: block.settings.bg_2, cta: block.settings.cta, link: block.settings.link -%}
+          {%- endif -%}
+          {%- if block.settings.image_3 != blank or block.settings.video_3 != blank -%}
+            {%- render 'gmc-story-slide', user: un, image: block.settings.image_3, video: block.settings.video_3, time: block.settings.time_3, fit: block.settings.fit_3, bg: block.settings.bg_3, cta: block.settings.cta, link: block.settings.link -%}
+          {%- endif -%}
         {%- endif -%}{%- endfor -%}
         <button type="button" class="gmc-is__prev" aria-label="Previous"></button><button type="button" class="gmc-is__next" aria-label="Next"></button>
       </div>
@@ -41,6 +54,7 @@
 function stop(){clearTimeout(tm);cancelAnimationFrame(raf);m.querySelectorAll('video').forEach(function(v){v.pause();});}
 function close(){stop();m.hidden=true;cu=null;}
 function show(u,i){stop();cu=u;ci=i;U.forEach(function(x,k){x.hidden=k!==u;});var us=U[u],S=us.querySelectorAll('.gmc-is__s'),B=us.querySelectorAll('.gmc-is__bars i');
+  if(!S.length)return;if(i>=S.length)i=S.length-1;ci=i;
   S.forEach(function(s,k){s.hidden=k!==i;});B.forEach(function(b,k){b.style.transition='none';b.style.width=k<i?'100%':'0';});
   var v=S[i].querySelector('video'),t0=performance.now(),dur=speed;
   function next(){if(i+1<S.length)show(u,i+1);else if(u+1<U.length)show(u+1,0);else close();}
@@ -309,13 +323,106 @@ document.addEventListener('keydown',function(e){if(m.hidden)return;if(e.key==='E
         },
         {
           "type": "image_picker",
+          "id": "avatar",
+          "label": "Profile picture",
+          "info": "Shown in the ring. The first frame image is used when this is empty."
+        },
+        {
+          "type": "header",
+          "content": "Frame 1"
+        },
+        {
+          "type": "image_picker",
           "id": "image",
-          "label": "Cover / image"
+          "label": "Image"
         },
         {
           "type": "video",
           "id": "video",
           "label": "MP4 video (optional)"
+        },
+        {
+          "type": "select",
+          "id": "fit",
+          "label": "Media fit",
+          "options": [
+            { "value": "cover", "label": "Cover" },
+            { "value": "contain", "label": "Contain" }
+          ],
+          "default": "cover"
+        },
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Background"
+        },
+        {
+          "type": "header",
+          "content": "Frame 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video_2",
+          "label": "MP4 video (optional)"
+        },
+        {
+          "type": "text",
+          "id": "time_2",
+          "label": "Time posted"
+        },
+        {
+          "type": "select",
+          "id": "fit_2",
+          "label": "Media fit",
+          "options": [
+            { "value": "cover", "label": "Cover" },
+            { "value": "contain", "label": "Contain" }
+          ],
+          "default": "cover"
+        },
+        {
+          "type": "color",
+          "id": "bg_2",
+          "label": "Background"
+        },
+        {
+          "type": "header",
+          "content": "Frame 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video_3",
+          "label": "MP4 video (optional)"
+        },
+        {
+          "type": "text",
+          "id": "time_3",
+          "label": "Time posted"
+        },
+        {
+          "type": "select",
+          "id": "fit_3",
+          "label": "Media fit",
+          "options": [
+            { "value": "cover", "label": "Cover" },
+            { "value": "contain", "label": "Contain" }
+          ],
+          "default": "cover"
+        },
+        {
+          "type": "color",
+          "id": "bg_3",
+          "label": "Background"
         },
         {
           "type": "text",

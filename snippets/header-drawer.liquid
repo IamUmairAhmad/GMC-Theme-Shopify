@@ -122,6 +122,10 @@
                               </li>
                             {%- endfor -%}
                           </ul>
+                          {%- capture pmm -%}{%- render 'gmc-pmm-match', title: link.title, list: section.settings.gmc_pmm_links -%}{%- endcapture -%}
+                          {%- if pmm contains 'yes' -%}
+                            {%- render 'gmc-pmm-mobile', link: link -%}
+                          {%- endif -%}
                         </div>
                       </div>
                     </details>
