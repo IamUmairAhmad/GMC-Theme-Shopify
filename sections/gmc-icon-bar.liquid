@@ -16,7 +16,7 @@
     {%- endfor -%}
   {%- endcapture -%}
   {%- if section.settings.as_slider -%}
-    <div class="gmc-sl gmc-iconbar__sl gmc-iconbar__list--{{ section.settings.item_layout }}" data-gmc-slider data-mode="slide" data-autoplay="{{ section.settings.gmc_slider_autoplay }}" data-loop="true" data-dots="{{ section.settings.slider_dots }}" data-arrows="{{ section.settings.slider_arrows }}" data-drag="true" data-perview="{{ section.settings.columns }}" data-perview-m="{{ section.settings.columns_m }}" style="--per:{{ section.settings.columns }};--per-m:{{ section.settings.columns_m }};--gmc-gap:1.6rem;--gmc-dot:rgb(var(--color-foreground))">
+    <div class="gmc-sl gmc-iconbar__sl gmc-iconbar__list--{{ section.settings.item_layout }}" data-gmc-slider data-mode="slide" data-autoplay="{{ section.settings.gmc_slider_autoplay }}" data-loop="true" data-dots="{{ section.settings.slider_dots }}" data-arrows="{{ section.settings.slider_arrows }}" data-drag="true" data-perview="{{ section.settings.columns }}" data-perview-m="{{ section.settings.columns_m }}" style="--per:{{ section.settings.columns }};--per-m:{{ section.settings.columns_m }};--gmc-gap:1.6rem;--gmc-peek:{{ section.settings.peek }}px;--gmc-dot:rgb(var(--color-foreground))">
       <div class="gmc-sl__vp"><ul class="gmc-sl__tr gmc-iconbar__list" role="list">{{ gmc_icon_items }}</ul></div>
     </div>
   {%- else -%}
@@ -119,6 +119,17 @@
       "label": "Slide the icons",
       "info": "Uses the column counts above. Arrows, dots and autoplay are in Slider options.",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "peek",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Peek of the next icon",
+      "info": "Used when icons slide. 0 shows only the full columns.",
+      "default": 0
     },
     {
       "type": "checkbox",

@@ -3,25 +3,37 @@
 {%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: advanced announcement bar – rotating messages, optional countdown, dismiss button (original code). Add it to the Header group. {%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
-<div class="gmc-ab-bar color-{{ section.settings.color_scheme }} gradient {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-abar-{{ section.id }}" role="region" aria-label="Announcements" style="{% if section.settings.bg != blank %}background:{{ section.settings.bg }};{% endif %}{% if section.settings.fg != blank %}color:{{ section.settings.fg }};{% endif %}" data-interval="{{ section.settings.interval | times: 1000 }}" data-end="{{ section.settings.countdown_end | escape }}">
+<div class="gmc-ab-bar gmc-ab-bar--{{ section.settings.layout }} color-{{ section.settings.color_scheme }} gradient {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-abar-{{ section.id }}" role="region" aria-label="Announcements" style="{% if section.settings.bg != blank %}background:{{ section.settings.bg }};{% endif %}{% if section.settings.fg != blank %}color:{{ section.settings.fg }};{% endif %}text-align:{{ section.settings.align }}" data-layout="{{ section.settings.layout }}" data-interval="{{ section.settings.interval | times: 1000 }}" data-end="{{ section.settings.countdown_end | escape }}">
   <div class="page-width gmc-ab-bar__in">
     <div class="gmc-ab-bar__msgs">
       {%- for block in section.blocks -%}
-        <p class="gmc-ab-bar__m" {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
-          {%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 18 -%} {% endif -%}
-          {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" style="color:inherit">{{ block.settings.text | escape }}</a>{%- else -%}{{ block.settings.text | escape }}{%- endif -%}
-        </p>
+        <div class="gmc-ab-bar__m" {% if section.settings.layout != 'row' %}{% unless forloop.first %}hidden{% endunless %}{% endif %} {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            {%- when 'code' -%}
+              <span class="gmc-ab-bar__code">
+                {{ block.settings.text | escape }}
+                <code>{{ block.settings.code | escape }}</code>
+                <button type="button" data-gmc-copy="{{ block.settings.code | escape }}" data-done="{{ block.settings.success | escape }}">{{ block.settings.button | escape }}</button>
+              </span>
+            {%- when 'social' -%}
+              {%- render 'social-icons', class: 'gmc-ab-bar__social' -%}
+            {%- else -%}
+              {%- if block.settings.icon_name != blank -%}{%- render 'gmc-icon', name: block.settings.icon_name, size: 18 -%} {% endif -%}
+              {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" style="color:inherit">{{ block.settings.text | escape }}</a>{%- else -%}{{ block.settings.text | escape }}{%- endif -%}
+          {%- endcase -%}
+        </div>
       {%- endfor -%}
     </div>
     {%- if section.settings.countdown_end != blank -%}<span class="gmc-ab-bar__cd" aria-live="off"></span>{%- endif -%}
     {%- if section.settings.dismissible -%}<button type="button" class="gmc-ab-bar__x" aria-label="Close announcement">×</button>{%- endif -%}
   </div>
 </div>
-<style>.gmc-ab-bar{position:relative;text-align:center;font-size:{{ section.settings.size }}px}.gmc-ab-bar__in{display:flex;align-items:center;justify-content:center;gap:1.2rem;min-height:3.8rem;padding-top:.6rem;padding-bottom:.6rem}.gmc-ab-bar__m{margin:0}.gmc-ab-bar__m[hidden]{display:none}.gmc-ab-bar__cd{font-variant-numeric:tabular-nums;font-weight:700}.gmc-ab-bar__x{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:0;color:inherit;font-size:2.2rem;cursor:pointer;line-height:1}.gmc-ab-bar__x:focus-visible,.gmc-ab-bar a:focus-visible{outline:2px solid currentColor;outline-offset:2px}</style>
+<style>.gmc-ab-bar{position:relative;font-size:{{ section.settings.size }}px}.gmc-ab-bar__in{display:flex;align-items:center;justify-content:center;gap:1.2rem;min-height:3.8rem;padding-top:.6rem;padding-bottom:.6rem}.gmc-ab-bar--row .gmc-ab-bar__msgs{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2rem 1.6rem;width:100%}.gmc-ab-bar__m{margin:0}.gmc-ab-bar__m[hidden]{display:none}{%- if section.settings.separator -%}.gmc-ab-bar--row .gmc-ab-bar__m+.gmc-ab-bar__m{border-left:1px solid currentColor;padding-left:1.6rem}{%- endif -%}.gmc-ab-bar__code{display:inline-flex;align-items:center;gap:.6rem;flex-wrap:wrap}.gmc-ab-bar__code code{padding:.15rem .7rem;border:1px dashed currentColor;border-radius:{{ section.settings.code_radius }}px}.gmc-ab-bar__code button{background:transparent;color:inherit;border:1px solid currentColor;border-radius:{{ section.settings.code_radius }}px;cursor:pointer;padding:.15rem .7rem}.gmc-ab-bar .list-social{display:flex;gap:.6rem;justify-content:center;margin:0}.gmc-ab-bar .list-social__link{color:inherit}.gmc-ab-bar__cd{font-variant-numeric:tabular-nums;font-weight:700}.gmc-ab-bar__x{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:0;color:inherit;font-size:2.2rem;cursor:pointer;line-height:1}.gmc-ab-bar__x:focus-visible,.gmc-ab-bar a:focus-visible,.gmc-ab-bar__code button:focus-visible{outline:2px solid currentColor;outline-offset:2px}</style>
 <script>(function(){var b=document.getElementById('gmc-abar-{{ section.id }}');if(!b)return;var K='gmc_abar_{{ section.id }}';
 try{if(sessionStorage.getItem(K)&&!(window.Shopify&&Shopify.designMode)){b.remove();return;}}catch(e){}
 var m=b.querySelectorAll('.gmc-ab-bar__m'),i=0;
-if(m.length>1&&!matchMedia('(prefers-reduced-motion:reduce)').matches){setInterval(function(){m[i].hidden=true;i=(i+1)%m.length;m[i].hidden=false;},+b.dataset.interval||5000);}
+if(b.dataset.layout!=='row'&&m.length>1&&!matchMedia('(prefers-reduced-motion:reduce)').matches){setInterval(function(){m[i].hidden=true;i=(i+1)%m.length;m[i].hidden=false;},+b.dataset.interval||5000);}
+b.addEventListener('click',function(e){var btn=e.target.closest('[data-gmc-copy]');if(!btn)return;var code=btn.getAttribute('data-gmc-copy')||'';if(navigator.clipboard)navigator.clipboard.writeText(code);btn.textContent=btn.getAttribute('data-done')||'Copied';});
 var x=b.querySelector('.gmc-ab-bar__x');if(x)x.addEventListener('click',function(){b.remove();try{sessionStorage.setItem(K,'1');}catch(e){}});
 var cd=b.querySelector('.gmc-ab-bar__cd');if(cd&&b.dataset.end){var end=new Date(b.dataset.end).getTime();function t(){var s=Math.max(0,Math.floor((end-Date.now())/1000));cd.textContent=Math.floor(s/86400)+'d '+String(Math.floor(s%86400/3600)).padStart(2,'0')+':'+String(Math.floor(s%3600/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}t();setInterval(t,1000);}})();</script>
 {%- elsif request.design_mode -%}
@@ -135,6 +147,43 @@ var cd=b.querySelector('.gmc-ab-bar__cd');if(cd&&b.dataset.end){var end=new Date
       "id": "gmc_hide",
       "label": "Hide on these product handles",
       "info": "Comma separated."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "rotate", "label": "Rotate one message at a time" },
+        { "value": "row", "label": "Show every block in a row" }
+      ],
+      "default": "rotate"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "separator",
+      "label": "Line between blocks in a row",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "code_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Discount code corner radius",
+      "default": 6
     }
   ],
   "blocks": [
@@ -158,6 +207,46 @@ var cd=b.querySelector('.gmc-ab-bar__cd');if(cd&&b.dataset.end){var end=new Date
           "id": "icon_name",
           "label": "Icon name (optional)",
           "info": "e.g. truck. See assets/gmc-icon-list.txt"
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "name": "Discount code",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Use code"
+        },
+        {
+          "type": "text",
+          "id": "code",
+          "label": "Discount code",
+          "default": "SAVE10"
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Copy button label",
+          "default": "Copy"
+        },
+        {
+          "type": "text",
+          "id": "success",
+          "label": "Copied message",
+          "default": "Copied"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social icons",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Uses the social links from Theme settings."
         }
       ]
     }
