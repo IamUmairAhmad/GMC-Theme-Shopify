@@ -10,7 +10,7 @@
     {%- endfor -%}
   </div>
   {%- for block in section.blocks -%}
-    <div class="gmc-tabs__panel rte" role="tabpanel" {% unless forloop.first %}hidden{% endunless %}>{%- if block.settings.video != blank -%}<div class="gmc-pm__vid gmc-tabs__m" data-gmc-vid><video playsinline preload="metadata" autoplay muted loop>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>{%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'gmc-tabs__m', alt: block.settings.image.alt }}{%- endif -%}{{ block.settings.content }}{%- if block.settings.product != blank -%}{%- render 'gmc-inline-atc', product: block.settings.product, label: block.settings.button, skip: false, align: 'center' -%}{%- endif -%}</div>
+    <div class="gmc-tabs__panel rte" role="tabpanel" {% unless forloop.first %}hidden{% endunless %}>{%- if block.settings.video != blank -%}<div class="gmc-pm__vid gmc-tabs__m" data-gmc-vid><video playsinline preload="metadata" autoplay muted{% if block.settings.loop %} loop{% endif %}>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>{%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'gmc-tabs__m', alt: block.settings.image.alt }}{%- endif -%}{{ block.settings.content }}{%- if block.settings.product != blank -%}{%- render 'gmc-inline-atc', product: block.settings.product, label: block.settings.button, skip: false, align: 'center' -%}{%- endif -%}</div>
   {%- endfor -%}
 </div>
 <style>
@@ -291,6 +291,12 @@
           "type": "video",
           "id": "video",
           "label": "Video (MP4)"
+        },
+        {
+          "type": "checkbox",
+          "id": "loop",
+          "label": "Loop the video",
+          "default": true
         },
         {
           "type": "product",

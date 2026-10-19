@@ -340,6 +340,9 @@
           >&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}
         </small>
         <small class="copyright__content">{{ powered_by_link }}</small>
+        {%- if section.settings.gmc_branding != blank -%}
+          <small class="copyright__content">{{ section.settings.gmc_branding | escape }}</small>
+        {%- endif -%}
         {%- if section.settings.show_policy -%}
           <ul class="policies list-unstyled">
             {%- for policy in shop.policies -%}
@@ -790,6 +793,12 @@
       "id": "gmc_payment_types",
       "label": "Custom payment icons",
       "info": "Comma-separated payment names, for example visa, master, american_express, apple_pay, google_pay, shopify_pay, paypal. Leave empty to use the store's enabled payment methods."
+    },
+    {
+      "type": "text",
+      "id": "gmc_branding",
+      "label": "Extra credit line",
+      "info": "Shown beside the copyright. Leave empty to hide it."
     },
     {
       "type": "checkbox",
