@@ -1,11 +1,76 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add a heading, text, icon, image, or another block.' -%}{%- endif -%}
-<div class="page-width gmc-cb color-{{ section.settings.color_scheme }} gradient" style="--cb-cols:{{ section.settings.columns }};--cb-gap:{{ section.settings.gap }}px">
-  <div class="gmc-cb__grid">
-    {%- for i in (1..4) -%}
-      {%- if i <= section.settings.columns -%}
-        <div class="gmc-cb__col">
+{%- liquid
+  assign cols = section.settings.columns
+  assign dcount = 0
+  if cols >= 1 and section.settings.col_1_show != 'mobile'
+    assign dcount = dcount | plus: 1
+  endif
+  if cols >= 2 and section.settings.col_2_show != 'mobile'
+    assign dcount = dcount | plus: 1
+  endif
+  if cols >= 3 and section.settings.col_3_show != 'mobile'
+    assign dcount = dcount | plus: 1
+  endif
+  if cols >= 4 and section.settings.col_4_show != 'mobile'
+    assign dcount = dcount | plus: 1
+  endif
+  if cols >= 5 and section.settings.col_5_show != 'mobile'
+    assign dcount = dcount | plus: 1
+  endif
+  if cols >= 6 and section.settings.col_6_show != 'mobile'
+    assign dcount = dcount | plus: 1
+  endif
+  if dcount == 0
+    assign dcount = cols
+  endif
+  assign row_gap = section.settings.row_gap
+  if row_gap == 0
+    assign row_gap = section.settings.gap
+  endif
+  assign gap_m = section.settings.gap_mobile
+  if gap_m == 0
+    assign gap_m = section.settings.gap
+  endif
+  assign row_m = section.settings.row_gap_mobile
+  if row_m == 0
+    assign row_m = row_gap
+  endif
+-%}
+<div class="page-width gmc-cb color-{{ section.settings.color_scheme }} gradient" style="--cb-cols:{{ cols }};--cb-d:{{ dcount }};--cb-gap:{{ section.settings.gap }}px;--cb-row:{{ row_gap }}px;--cb-gap-m:{{ gap_m }}px;--cb-row-m:{{ row_m }}px;--cb-align:{{ section.settings.valign }};--cb-align-m:{{ section.settings.valign_mobile }}">
+  <div class="gmc-cb__grid{% if section.settings.custom_widths %} gmc-cb__grid--parts{% endif %}">
+    {%- for i in (1..6) -%}
+      {%- if i <= cols -%}
+        {%- liquid
+          case i
+            when 1
+              assign span_d = section.settings.col_1_desktop
+              assign span_m = section.settings.col_1_mobile
+              assign cshow = section.settings.col_1_show
+            when 2
+              assign span_d = section.settings.col_2_desktop
+              assign span_m = section.settings.col_2_mobile
+              assign cshow = section.settings.col_2_show
+            when 3
+              assign span_d = section.settings.col_3_desktop
+              assign span_m = section.settings.col_3_mobile
+              assign cshow = section.settings.col_3_show
+            when 4
+              assign span_d = section.settings.col_4_desktop
+              assign span_m = section.settings.col_4_mobile
+              assign cshow = section.settings.col_4_show
+            when 5
+              assign span_d = section.settings.col_5_desktop
+              assign span_m = section.settings.col_5_mobile
+              assign cshow = section.settings.col_5_show
+            else
+              assign span_d = section.settings.col_6_desktop
+              assign span_m = section.settings.col_6_mobile
+              assign cshow = section.settings.col_6_show
+          endcase
+        -%}
+        <div class="gmc-cb__col{% if cshow == 'desktop' %} gmc-cb__col--desk{% elsif cshow == 'mobile' %} gmc-cb__col--mob{% endif %}"{% if section.settings.custom_widths %} style="--dspan:{{ span_d }};--mspan:{{ span_m }}"{% endif %}>
           {%- for block in section.blocks -%}
             {%- assign cb_col = block.settings.column | plus: 0 -%}
             {%- if cb_col == i -%}
@@ -21,7 +86,9 @@
 </div>
 <style>
   .gmc-cb{padding:36px 0}
-  .gmc-cb__grid{display:grid;grid-template-columns:repeat(var(--cb-cols),minmax(0,1fr));gap:var(--cb-gap);align-items:start}
+  .gmc-cb__grid{display:grid;grid-template-columns:repeat(var(--cb-d,var(--cb-cols)),minmax(0,1fr));column-gap:var(--cb-gap);row-gap:var(--cb-row,var(--cb-gap));align-items:var(--cb-align,start)}
+  .gmc-cb__grid--parts{grid-template-columns:repeat(12,minmax(0,1fr))}
+  .gmc-cb__grid--parts>.gmc-cb__col{grid-column:span var(--dspan,12)}
   .gmc-cb__h{margin:0}
   .gmc-cb__stars{margin:0}
   .gmc-cb__stars a{color:inherit;text-decoration:none}
@@ -36,7 +103,13 @@
   .gmc-cb__pay{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;margin:0;padding:0}
   .gmc-cb__mail{display:flex;gap:.6rem;flex-wrap:wrap}
   .gmc-cb__mail input{flex:1;min-width:16rem;padding:1rem;border:1px solid rgba(var(--color-foreground),.25);border-radius:var(--inputs-radius,6px);background:rgb(var(--color-background));color:inherit}
-  @media(max-width:749px){.gmc-cb__grid{grid-template-columns:1fr}}
+  @media(min-width:750px){.gmc-cb__col--mob{display:none}}
+  @media(max-width:749px){
+    .gmc-cb__grid{grid-template-columns:1fr;column-gap:var(--cb-gap-m,var(--cb-gap));row-gap:var(--cb-row-m,var(--cb-row,var(--cb-gap)));align-items:var(--cb-align-m,start)}
+    .gmc-cb__grid--parts{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .gmc-cb__grid--parts>.gmc-cb__col{grid-column:span var(--mspan,4)}
+    .gmc-cb__col--desk{display:none}
+  }
 </style>
 {% schema %}
 {
@@ -48,7 +121,7 @@
       "type": "range",
       "id": "columns",
       "min": 1,
-      "max": 4,
+      "max": 6,
       "step": 1,
       "label": "Columns",
       "default": 2
@@ -56,13 +129,99 @@
     {
       "type": "range",
       "id": "gap",
-      "min": 8,
-      "max": 60,
+      "min": 0,
+      "max": 80,
       "step": 4,
       "unit": "px",
-      "label": "Gap",
+      "label": "Column gap",
       "default": 28
     },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Row gap",
+      "default": 0,
+      "info": "0 uses the column gap."
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile column gap",
+      "default": 0,
+      "info": "0 uses the desktop column gap."
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile row gap",
+      "default": 0,
+      "info": "0 uses the row gap."
+    },
+    {
+      "type": "select",
+      "id": "valign",
+      "label": "Vertical alignment",
+      "default": "start",
+      "options": [
+        {"value": "start", "label": "Top"},
+        {"value": "center", "label": "Centre"},
+        {"value": "end", "label": "Bottom"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "valign_mobile",
+      "label": "Mobile vertical alignment",
+      "default": "start",
+      "options": [
+        {"value": "start", "label": "Top"},
+        {"value": "center", "label": "Centre"},
+        {"value": "end", "label": "Bottom"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_widths",
+      "label": "Custom column widths",
+      "default": false,
+      "info": "Desktop widths share 12 parts. Mobile widths share 4 parts. Leave this off for equal columns."
+    },
+    {"type": "header", "content": "Column 1"},
+    {"type": "range", "id": "col_1_desktop", "min": 1, "max": 12, "step": 1, "label": "Desktop width", "default": 6},
+    {"type": "range", "id": "col_1_mobile", "min": 1, "max": 4, "step": 1, "label": "Mobile width", "default": 4},
+    {"type": "select", "id": "col_1_show", "label": "Display on", "default": "all", "options": [{"value": "all", "label": "All devices"}, {"value": "desktop", "label": "Desktop only"}, {"value": "mobile", "label": "Mobile only"}]},
+    {"type": "header", "content": "Column 2"},
+    {"type": "range", "id": "col_2_desktop", "min": 1, "max": 12, "step": 1, "label": "Desktop width", "default": 6},
+    {"type": "range", "id": "col_2_mobile", "min": 1, "max": 4, "step": 1, "label": "Mobile width", "default": 4},
+    {"type": "select", "id": "col_2_show", "label": "Display on", "default": "all", "options": [{"value": "all", "label": "All devices"}, {"value": "desktop", "label": "Desktop only"}, {"value": "mobile", "label": "Mobile only"}]},
+    {"type": "header", "content": "Column 3"},
+    {"type": "range", "id": "col_3_desktop", "min": 1, "max": 12, "step": 1, "label": "Desktop width", "default": 4},
+    {"type": "range", "id": "col_3_mobile", "min": 1, "max": 4, "step": 1, "label": "Mobile width", "default": 4},
+    {"type": "select", "id": "col_3_show", "label": "Display on", "default": "all", "options": [{"value": "all", "label": "All devices"}, {"value": "desktop", "label": "Desktop only"}, {"value": "mobile", "label": "Mobile only"}]},
+    {"type": "header", "content": "Column 4"},
+    {"type": "range", "id": "col_4_desktop", "min": 1, "max": 12, "step": 1, "label": "Desktop width", "default": 4},
+    {"type": "range", "id": "col_4_mobile", "min": 1, "max": 4, "step": 1, "label": "Mobile width", "default": 4},
+    {"type": "select", "id": "col_4_show", "label": "Display on", "default": "all", "options": [{"value": "all", "label": "All devices"}, {"value": "desktop", "label": "Desktop only"}, {"value": "mobile", "label": "Mobile only"}]},
+    {"type": "header", "content": "Column 5"},
+    {"type": "range", "id": "col_5_desktop", "min": 1, "max": 12, "step": 1, "label": "Desktop width", "default": 4},
+    {"type": "range", "id": "col_5_mobile", "min": 1, "max": 4, "step": 1, "label": "Mobile width", "default": 4},
+    {"type": "select", "id": "col_5_show", "label": "Display on", "default": "all", "options": [{"value": "all", "label": "All devices"}, {"value": "desktop", "label": "Desktop only"}, {"value": "mobile", "label": "Mobile only"}]},
+    {"type": "header", "content": "Column 6"},
+    {"type": "range", "id": "col_6_desktop", "min": 1, "max": 12, "step": 1, "label": "Desktop width", "default": 4},
+    {"type": "range", "id": "col_6_mobile", "min": 1, "max": 4, "step": 1, "label": "Mobile width", "default": 4},
+    {"type": "select", "id": "col_6_show", "label": "Display on", "default": "all", "options": [{"value": "all", "label": "All devices"}, {"value": "desktop", "label": "Desktop only"}, {"value": "mobile", "label": "Mobile only"}]},
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -128,7 +287,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -194,7 +355,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -266,7 +429,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -332,7 +497,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -395,7 +562,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -461,7 +630,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -537,7 +708,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -600,7 +773,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -655,7 +830,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -706,7 +883,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -772,7 +951,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -824,7 +1005,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },
@@ -874,7 +1057,9 @@
             {"value": "1", "label": "1"},
             {"value": "2", "label": "2"},
             {"value": "3", "label": "3"},
-            {"value": "4", "label": "4"}
+            {"value": "4", "label": "4"},
+            {"value": "5", "label": "5"},
+            {"value": "6", "label": "6"}
           ],
           "default": "1"
         },

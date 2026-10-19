@@ -128,7 +128,7 @@
         </label>
       </div>
       <div class="contact__button">
-        <button type="submit" class="button">
+        <button type="submit" class="button{% if section.settings.button_full_width %} button--full-width{% endif %}">
           {{ 'templates.contact.form.send' | t }}
         </button>
       </div>
@@ -188,6 +188,12 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_full_width",
+      "label": "Full-width button",
+      "default": false
     },
     {
       "type": "header",
