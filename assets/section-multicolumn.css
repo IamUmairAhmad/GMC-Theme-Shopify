@@ -230,4 +230,98 @@
   .multicolumn-list__item--empty {
     display: list-item;
   }
+
+  .multicolumn .grid--7-col-desktop .grid__item {
+    width: calc(14.28% - var(--grid-desktop-horizontal-spacing) * 6 / 7);
+    max-width: calc(14.28% - var(--grid-desktop-horizontal-spacing) * 6 / 7);
+  }
+
+  .multicolumn .grid--8-col-desktop .grid__item {
+    width: calc(12.5% - var(--grid-desktop-horizontal-spacing) * 7 / 8);
+    max-width: calc(12.5% - var(--grid-desktop-horizontal-spacing) * 7 / 8);
+  }
+
+  .multicolumn .grid--9-col-desktop .grid__item {
+    width: calc(11.11% - var(--grid-desktop-horizontal-spacing) * 8 / 9);
+    max-width: calc(11.11% - var(--grid-desktop-horizontal-spacing) * 8 / 9);
+  }
+
+  .multicolumn .grid--10-col-desktop .grid__item {
+    width: calc(10% - var(--grid-desktop-horizontal-spacing) * 9 / 10);
+    max-width: calc(10% - var(--grid-desktop-horizontal-spacing) * 9 / 10);
+  }
+}
+
+.multicolumn .multicolumn-card.gradient {
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+}
+
+.multicolumn-card--overlay {
+  background: rgba(var(--color-foreground), 0.06);
+  border-radius: var(--text-boxes-radius);
+}
+
+.multicolumn-card__image-wrapper video.multicolumn-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.multicolumn__actions {
+  display: none;
+  align-items: center;
+  gap: 1.2rem;
+  margin-left: auto;
+}
+
+.multicolumn__actions .gmc-sec-atc,
+.multicolumn__below .gmc-sec-atc {
+  padding: 0;
+}
+
+.multicolumn__actions .button,
+.multicolumn__below .gmc-sec-atc .button {
+  margin-top: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .multicolumn--m-under .multicolumn__actions {
+    display: flex;
+  }
+
+  .multicolumn--m-under .multicolumn__below {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .multicolumn--d-under .multicolumn__actions {
+    display: flex;
+  }
+
+  .multicolumn--d-under .multicolumn__below {
+    display: none;
+  }
+
+  .multicolumn--full .page-width {
+    max-width: none;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+.multicolumn-list--engine {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.gmc-sl:not(.gmc-sl--as-grid) .multicolumn-list--engine > .multicolumn-list__item {
+  width: auto !important;
+  max-width: none !important;
+}
+
+.gmc-sl--as-grid .multicolumn-list--engine {
+  display: grid !important;
 }
