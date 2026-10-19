@@ -143,7 +143,9 @@
     },
     "contact": {
       "type": "contact-form",
-      "settings": {}
+      "settings": {
+        "button_full_width": true
+      }
     }
   },
   "order": [
