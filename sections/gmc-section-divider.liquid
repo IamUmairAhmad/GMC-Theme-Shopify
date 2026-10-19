@@ -1,86 +1,213 @@
+{%- comment -%} GMC section divider. Original shapes; colour schemes and flips follow the same jobs as a two-tone divider. {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
-{%- assign shp = section.settings.shape -%}
-{%- if shp == 'line' -%}
-<div class="page-width {% render 'gmc-vis', hide: section.settings.hide_on %}" style="padding:{{ section.settings.pad }}px 0"><hr style="border:0;border-top:{{ section.settings.w }}px {{ section.settings.style }} {{ section.settings.color }};margin:0"></div>
-{%- else -%}
-{%- case shp -%}{%- when 'diagonal_left' -%}{%- assign d = 'M0,0 L1200,120 L0,120 Z' -%}{%- when 'diagonal_right' -%}{%- assign d = 'M0,120 L1200,0 L1200,120 Z' -%}{%- when 'curve_down' -%}{%- assign d = 'M0,0 Q600,240 1200,0 L1200,120 L0,120 Z' -%}{%- when 'curve_up' -%}{%- assign d = 'M0,120 Q600,-120 1200,120 Z' -%}{%- when 'curve_left' -%}{%- assign d = 'M0,0 C400,0 800,120 1200,120 L0,120 Z' -%}{%- when 'curve_right' -%}{%- assign d = 'M1200,0 C800,0 400,120 0,120 L1200,120 Z' -%}{%- when 'triangle' -%}{%- assign d = 'M0,120 L600,0 L1200,120 Z' -%}{%- when 'triangle_down' -%}{%- assign d = 'M0,0 L600,120 L1200,0 L1200,120 L0,120 Z' -%}{%- when 'zigzag' -%}{%- assign d = 'M0,120 L0,60 L100,0 L200,60 L300,0 L400,60 L500,0 L600,60 L700,0 L800,60 L900,0 L1000,60 L1100,0 L1200,60 L1200,120 Z' -%}{%- when 'steps' -%}{%- assign d = 'M0,120 L0,90 L300,90 L300,60 L600,60 L600,30 L900,30 L900,0 L1200,0 L1200,120 Z' -%}{%- when 'wave' -%}{%- assign d = 'M0,60 C150,0 300,0 450,60 S750,120 900,60 S1100,0 1200,60 L1200,120 L0,120 Z' -%}{%- when 'wave_soft' -%}{%- assign d = 'M0,70 C200,30 400,30 600,70 S1000,110 1200,70 L1200,120 L0,120 Z' -%}{%- when 'wave_double' -%}{%- assign d = 'M0,40 C100,0 200,0 300,40 S500,80 600,40 S800,0 900,40 S1100,80 1200,40 L1200,120 L0,120 Z' -%}{%- when 'random' -%}{%- assign d = 'M0,90 L80,50 L150,80 L260,20 L340,70 L470,30 L560,90 L660,40 L760,75 L880,15 L980,65 L1090,35 L1200,80 L1200,120 L0,120 Z' -%}{%- endcase -%}
-{%- assign sx = 1 -%}{%- if section.settings.flip_h -%}{%- assign sx = -1 -%}{%- endif -%}
-{%- assign sy = 1 -%}{%- if section.settings.flip_v -%}{%- assign sy = -1 -%}{%- endif -%}
-<div class="gmc-shape {% render 'gmc-vis', hide: section.settings.hide_on %}" aria-hidden="true" style="background:{{ section.settings.bg | default: 'transparent' }};line-height:0">
-  <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="display:block;width:100%;height:{{ section.settings.height }}px;transform:scale({{ sx }},{{ sy }})"><path d="{{ d }}" fill="{{ section.settings.color }}"/></svg>
+{%- liquid
+  assign shp = section.settings.shape
+  assign sx = 1
+  assign sy = 1
+  if section.settings.flip_h
+    assign sx = -1
+  endif
+  if section.settings.flip_v
+    assign sy = -1
+  endif
+
+  assign shape_fill = section.settings.color
+  assign shape_bg = shape_fill
+  assign bg_paint = section.settings.bg
+  if bg_paint == blank
+    assign bg_paint = 'transparent'
+  endif
+
+  if section.settings.use_schemes
+    for scheme in settings.color_schemes
+      if scheme.id == section.settings.shape_scheme
+        assign shape_fill = scheme.settings.background
+        assign shape_bg = shape_fill
+        if scheme.settings.background_gradient != blank
+          assign shape_bg = scheme.settings.background_gradient
+        endif
+      endif
+      if scheme.id == section.settings.bg_scheme
+        assign bg_paint = scheme.settings.background
+        if scheme.settings.background_gradient != blank
+          assign bg_paint = scheme.settings.background_gradient
+        endif
+      endif
+    endfor
+  endif
+
+  if section.settings.flip_v
+    assign top_paint = shape_bg
+    assign bot_paint = bg_paint
+  else
+    assign top_paint = bg_paint
+    assign bot_paint = shape_bg
+  endif
+
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign ptm = pt | times: 0.75 | round: 0
+  assign pbm = pb | times: 0.75 | round: 0
+
+  assign d = ''
+  assign d2 = ''
+  assign animated = false
+  case shp
+    when 'diagonal_left'
+      assign d = 'M0,0 L1200,120 L0,120 Z'
+    when 'diagonal_right'
+      assign d = 'M0,120 L1200,0 L1200,120 Z'
+    when 'curve_down'
+      assign d = 'M0,0 Q600,240 1200,0 L1200,120 L0,120 Z'
+    when 'curve_up'
+      assign d = 'M0,120 Q600,-120 1200,120 Z'
+    when 'curve_left'
+      assign d = 'M0,0 C400,0 800,120 1200,120 L0,120 Z'
+    when 'curve_right'
+      assign d = 'M1200,0 C800,0 400,120 0,120 L1200,120 Z'
+    when 'triangle'
+      assign d = 'M0,120 L600,0 L1200,120 Z'
+    when 'triangle_down'
+      assign d = 'M0,0 L600,120 L1200,0 L1200,120 L0,120 Z'
+    when 'zigzag'
+      assign d = 'M0,120 L0,60 L100,0 L200,60 L300,0 L400,60 L500,0 L600,60 L700,0 L800,60 L900,0 L1000,60 L1100,0 L1200,60 L1200,120 Z'
+    when 'steps'
+      assign d = 'M0,120 L0,90 L300,90 L300,60 L600,60 L600,30 L900,30 L900,0 L1200,0 L1200,120 Z'
+    when 'wave'
+      assign d = 'M0,60 C150,0 300,0 450,60 S750,120 900,60 S1100,0 1200,60 L1200,120 L0,120 Z'
+    when 'wave_soft'
+      assign d = 'M0,70 C200,30 400,30 600,70 S1000,110 1200,70 L1200,120 L0,120 Z'
+    when 'wave_double'
+      assign d = 'M0,40 C100,0 200,0 300,40 S500,80 600,40 S800,0 900,40 S1100,80 1200,40 L1200,120 L0,120 Z'
+    when 'waves_1'
+      assign d = 'M0,64 C200,16 400,16 600,64 C800,112 1000,112 1200,64 L1200,120 L0,120 Z'
+      assign d2 = 'M0,84 C100,60 200,60 300,84 C400,108 500,108 600,84 C700,60 800,60 900,84 C1000,108 1100,108 1200,84 L1200,120 L0,120 Z'
+    when 'waves_2'
+      assign d = 'M0,40 C180,88 360,88 540,40 C720,8 900,8 1080,40 C1140,56 1170,56 1200,40 L1200,120 L0,120 Z'
+      assign d2 = 'M0,72 C160,40 320,40 480,72 C640,104 800,104 960,72 C1040,56 1120,56 1200,72 L1200,120 L0,120 Z'
+    when 'sharp_1'
+      assign d = 'M0,90 L160,28 L320,100 L520,18 L720,82 L900,8 L1080,70 L1200,36 L1200,120 L0,120 Z'
+    when 'sharp_2'
+      assign d = 'M0,36 L240,36 L420,108 L640,68 L860,102 L1080,28 L1200,58 L1200,120 L0,120 Z'
+    when 'sharp_3'
+      assign d = 'M0,16 L360,48 L720,104 L1080,36 L1200,88 L1200,120 L0,120 Z'
+    when 'sharp_4'
+      assign d = 'M0,68 L180,112 L360,36 L540,120 L720,24 L900,100 L1080,16 L1200,78 L1200,120 L0,120 Z'
+    when 'random'
+      assign d = 'M0,90 L80,50 L150,80 L260,20 L340,70 L470,30 L560,90 L660,40 L760,75 L880,15 L980,65 L1090,35 L1200,80 L1200,120 L0,120 Z'
+    when 'waves_3'
+      assign animated = true
+  endcase
+-%}
+<style>
+  #shopify-section-{{ section.id }} .gmc-div__top { height: {{ ptm }}px; background: {{ top_paint }}; }
+  #shopify-section-{{ section.id }} .gmc-div__bot { height: {{ pbm }}px; background: {{ bot_paint }}; }
+  #shopify-section-{{ section.id }} .gmc-div__shape { background: {{ bg_paint }}; line-height: 0; }
+  #shopify-section-{{ section.id }} .gmc-div__svg {
+    display: block;
+    width: 100%;
+    height: {{ section.settings.height }}px;
+    transform: scale({{ sx }}, {{ sy }});
+  }
+  #shopify-section-{{ section.id }} .gmc-div__anim {
+    position: relative;
+    height: {{ section.settings.height }}px;
+    overflow: hidden;
+    transform: scale({{ sx }}, {{ sy }});
+  }
+  #shopify-section-{{ section.id }} .gmc-div__slide {
+    display: block;
+    width: 200%;
+    height: 100%;
+    animation: gmc-div-move 10s linear infinite;
+  }
+  #shopify-section-{{ section.id }} .gmc-div__slide--b {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.45;
+    animation-duration: 16s;
+    animation-direction: reverse;
+    animation-delay: -6s;
+  }
+  @keyframes gmc-div-move {
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .gmc-div__slide { animation: none; }
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .gmc-div__top { height: {{ pt }}px; }
+    #shopify-section-{{ section.id }} .gmc-div__bot { height: {{ pb }}px; }
+  }
+</style>
+<div class="gmc-div {% render 'gmc-vis', hide: section.settings.hide_on %}" aria-hidden="true">
+  {%- if pt > 0 -%}
+    <div class="gmc-div__top">&nbsp;</div>
+  {%- endif -%}
+  {%- if shp == 'line' -%}
+    <div class="page-width" style="padding:{{ section.settings.pad }}px 0"><hr style="border:0;border-top:{{ section.settings.w }}px {{ section.settings.style }} {{ shape_fill }};margin:0"></div>
+  {%- elsif animated -%}
+    <div class="gmc-div__shape">
+      <div class="gmc-div__anim">
+        <svg class="gmc-div__slide" viewBox="0 0 2400 120" preserveAspectRatio="none">
+          <path fill="{{ shape_fill }}" d="M0,58 C200,12 400,12 600,58 C800,104 1000,104 1200,58 C1400,12 1600,12 1800,58 C2000,104 2200,104 2400,58 L2400,120 L0,120 Z"/>
+        </svg>
+        <svg class="gmc-div__slide gmc-div__slide--b" viewBox="0 0 2400 120" preserveAspectRatio="none">
+          <path fill="{{ shape_fill }}" d="M0,80 C100,40 200,40 300,80 C400,120 500,120 600,80 C700,40 800,40 900,80 C1000,120 1100,120 1200,80 C1300,40 1400,40 1500,80 C1600,120 1700,120 1800,80 C1900,40 2000,40 2100,80 C2200,120 2300,120 2400,80 L2400,120 L0,120 Z"/>
+        </svg>
+      </div>
+    </div>
+  {%- elsif d != blank -%}
+    <div class="gmc-div__shape">
+      <svg class="gmc-div__svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="{{ d }}" fill="{{ shape_fill }}"/>
+        {%- if d2 != blank -%}
+          <path d="{{ d2 }}" fill="{{ shape_fill }}" opacity="0.45"/>
+        {%- endif -%}
+      </svg>
+    </div>
+  {%- endif -%}
+  {%- if pb > 0 -%}
+    <div class="gmc-div__bot">&nbsp;</div>
+  {%- endif -%}
 </div>
-{%- endif -%}
 {% schema %}
 {
   "name": "Section divider",
   "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
       "type": "select",
       "id": "shape",
       "label": "Shape",
       "options": [
-        {
-          "value": "line",
-          "label": "Line"
-        },
-        {
-          "value": "diagonal_left",
-          "label": "Diagonal left"
-        },
-        {
-          "value": "diagonal_right",
-          "label": "Diagonal right"
-        },
-        {
-          "value": "curve_down",
-          "label": "Curve down"
-        },
-        {
-          "value": "curve_up",
-          "label": "Curve up"
-        },
-        {
-          "value": "curve_left",
-          "label": "Curve left"
-        },
-        {
-          "value": "curve_right",
-          "label": "Curve right"
-        },
-        {
-          "value": "triangle",
-          "label": "Triangle"
-        },
-        {
-          "value": "triangle_down",
-          "label": "Triangle notch"
-        },
-        {
-          "value": "zigzag",
-          "label": "Zigzag"
-        },
-        {
-          "value": "steps",
-          "label": "Steps"
-        },
-        {
-          "value": "wave",
-          "label": "Wave"
-        },
-        {
-          "value": "wave_soft",
-          "label": "Soft wave"
-        },
-        {
-          "value": "wave_double",
-          "label": "Double wave"
-        },
-        {
-          "value": "random",
-          "label": "Jagged"
-        }
+        { "value": "line", "label": "Line" },
+        { "value": "diagonal_left", "label": "Diagonal 1" },
+        { "value": "diagonal_right", "label": "Diagonal 2" },
+        { "value": "curve_down", "label": "Curved 1" },
+        { "value": "curve_up", "label": "Curved 2" },
+        { "value": "curve_left", "label": "Curved 3" },
+        { "value": "curve_right", "label": "Curved 4" },
+        { "value": "sharp_1", "label": "Sharp 1" },
+        { "value": "sharp_2", "label": "Sharp 2" },
+        { "value": "sharp_3", "label": "Sharp 3" },
+        { "value": "sharp_4", "label": "Sharp 4" },
+        { "value": "waves_1", "label": "Waves 1" },
+        { "value": "waves_2", "label": "Waves 2" },
+        { "value": "waves_3", "label": "Waves 3 (animated)" },
+        { "value": "wave", "label": "Wave" },
+        { "value": "wave_soft", "label": "Soft wave" },
+        { "value": "wave_double", "label": "Double wave" },
+        { "value": "triangle", "label": "Triangle" },
+        { "value": "triangle_down", "label": "Triangle notch" },
+        { "value": "zigzag", "label": "Zigzag" },
+        { "value": "steps", "label": "Steps" },
+        { "value": "random", "label": "Jagged" }
       ],
       "default": "line"
     },
@@ -102,13 +229,15 @@
     {
       "type": "checkbox",
       "id": "flip_h",
-      "label": "Flip horizontally",
+      "label": "Flip horizontal",
+      "info": "Mirrors the shape left to right.",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "flip_v",
-      "label": "Flip vertically",
+      "label": "Flip vertical",
+      "info": "Turns the shape upside down and swaps the colour above it with the colour below it.",
       "default": false
     },
     {
@@ -118,22 +247,62 @@
       "default": "#cccccc"
     },
     {
+      "type": "header",
+      "content": "Shape and background colours"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_schemes",
+      "label": "Use color schemes for the shape and background",
+      "info": "Off keeps the colour pickers, including a saved wave colour. On paints the shape and the space around it from the schemes below.",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "shape_scheme",
+      "label": "Shape color",
+      "default": "scheme-5"
+    },
+    {
+      "type": "color_scheme",
+      "id": "bg_scheme",
+      "label": "Background color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Space above and below the shape"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "info": "On screens under 750px this height is 75% of the value.",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "info": "On screens under 750px this height is 75% of the value.",
+      "default": 0
+    },
+    {
       "type": "select",
       "id": "style",
       "label": "Style",
       "options": [
-        {
-          "value": "solid",
-          "label": "Solid"
-        },
-        {
-          "value": "dashed",
-          "label": "Dashed"
-        },
-        {
-          "value": "dotted",
-          "label": "Dotted"
-        }
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" }
       ],
       "default": "solid"
     },
@@ -161,18 +330,9 @@
       "id": "hide_on",
       "label": "Hide on",
       "options": [
-        {
-          "value": "",
-          "label": "Show everywhere"
-        },
-        {
-          "value": "mobile",
-          "label": "Mobile"
-        },
-        {
-          "value": "desktop",
-          "label": "Desktop"
-        }
+        { "value": "", "label": "Show everywhere" },
+        { "value": "mobile", "label": "Mobile" },
+        { "value": "desktop", "label": "Desktop" }
       ],
       "default": ""
     },
@@ -269,18 +429,9 @@
       "label": "Button alignment",
       "default": "center",
       "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
       ]
     },
     {
@@ -315,18 +466,9 @@
       "id": "gmc_display_on",
       "label": "Display on",
       "options": [
-        {
-          "value": "all",
-          "label": "All devices"
-        },
-        {
-          "value": "mobile",
-          "label": "Mobile only"
-        },
-        {
-          "value": "desktop",
-          "label": "Desktop only"
-        }
+        { "value": "all", "label": "All devices" },
+        { "value": "mobile", "label": "Mobile only" },
+        { "value": "desktop", "label": "Desktop only" }
       ],
       "default": "all"
     },
@@ -355,9 +497,15 @@
   ],
   "presets": [
     {
-      "name": "Section divider"
+      "name": "Section divider",
+      "settings": {
+        "shape": "diagonal_left",
+        "use_schemes": true,
+        "shape_scheme": "scheme-5",
+        "bg_scheme": "scheme-1",
+        "height": 120
+      }
     }
   ]
 }
 {% endschema %}
-
