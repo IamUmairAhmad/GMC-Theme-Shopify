@@ -30,7 +30,7 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {{ block.settings.heading }}
+                {{ block.settings.heading | replace: 'p>', 'span>' }}
               </h2>
             {%- when 'caption' -%}
               <p
@@ -56,6 +56,19 @@
               </div>
             {%- when 'rating_stars' or 'text_icon' or 'image' -%}
             {%- render 'gmc-block-extra', block: block -%}
+          {%- when 'atc_button' -%}
+              <div class="rich-text__buttons" {{ block.shopify_attributes }}>
+                {%- if block.settings.atc_product == blank -%}
+                  <button type="button" class="button" disabled>{{ block.settings.button_label | default: 'Add to cart' | escape }}</button>
+                {%- else -%}
+                  {%- render 'gmc-inline-atc',
+                    product: block.settings.atc_product,
+                    label: block.settings.button_label,
+                    skip: block.settings.atc_skip_cart,
+                    align: section.settings.content_alignment
+                  -%}
+                {%- endif -%}
+              </div>
           {%- when 'button' -%}
               <div
                 class="rich-text__buttons{% if block.settings.button_label != blank and block.settings.button_label_2 != blank %} rich-text__buttons--multiple{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -343,9 +356,9 @@
       "limit": 3,
       "settings": [
         {
-          "type": "inline_richtext",
+          "type": "richtext",
           "id": "heading",
-          "default": "t:sections.rich-text.blocks.heading.settings.heading.default",
+          "default": "<p>Talk about your brand</p>",
           "label": "t:sections.rich-text.blocks.heading.settings.heading.label"
         },
         {
@@ -493,32 +506,89 @@
     {
       "type": "rating_stars",
       "name": "Rating stars",
+      "limit": 1,
       "settings": [
         {
           "type": "range",
           "id": "stars",
           "min": 1,
           "max": 5,
-          "step": 1,
-          "label": "Stars",
+          "step": 0.1,
+          "label": "Rating",
           "default": 5
-        },
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "Rated by real customers"
         },
         {
           "type": "color",
           "id": "color",
           "label": "Star colour",
-          "default": "#f5a623"
+          "default": "#ffcc00"
+        },
+        {
+          "type": "select",
+          "id": "bg_stars_style",
+          "label": "Background stars",
+          "default": "full",
+          "options": [
+            { "value": "full", "label": "Full" },
+            { "value": "outlined", "label": "Outlined" }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bg_star_color",
+          "label": "Background star colour",
+          "default": "#ececec"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "label",
+          "label": "Text",
+          "default": "Rated by real customers"
+        },
+        {
+          "type": "range",
+          "id": "size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Text size",
+          "default": 16
+        },
+        {
+          "type": "text",
+          "id": "scroll_id",
+          "label": "Section ID to scroll to"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Link",
+          "info": "Used when no section ID is set."
+        }
+      ]
+    },
+    {
+      "type": "atc_button",
+      "name": "Add to cart button",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Add to cart"
+        },
+        {
+          "type": "product",
+          "id": "atc_product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "atc_skip_cart",
+          "label": "Skip the cart and go straight to checkout",
+          "default": false
         }
       ]
     },

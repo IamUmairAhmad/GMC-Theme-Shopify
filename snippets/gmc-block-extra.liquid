@@ -2,7 +2,32 @@
 {%- assign b = block.settings -%}
 {%- case block.type -%}
   {%- when 'rating_stars' -%}
-    <p class="gmc-bx__rt" {{ block.shopify_attributes }} style="margin:0;text-align:inherit">{%- if b.link != blank -%}<a href="{{ b.link }}" style="color:inherit;text-decoration:none">{%- endif -%}<span style="color:{{ b.color }};letter-spacing:2px" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</span> {{ b.label | escape }}{%- if b.link != blank -%}</a>{%- endif -%}</p>
+    {%- if b.size != blank or b.bg_star_color != blank -%}
+      {%- liquid
+        assign gmc_rating = b.stars | default: 5
+        assign gmc_pct = gmc_rating | times: 20
+        if gmc_pct > 100
+          assign gmc_pct = 100
+        endif
+        assign gmc_href = b.link
+        if gmc_href == blank and b.scroll_id != blank
+          assign gmc_sid = b.scroll_id | remove: '#' | handleize
+          assign gmc_href = '#' | append: gmc_sid
+        endif
+      -%}
+      <p class="gmc-bx__rt" {{ block.shopify_attributes }} style="margin:0;text-align:inherit;font-size:{{ b.size | default: 16 }}px">
+        {%- if gmc_href != blank -%}<a href="{{ gmc_href }}" style="color:inherit;text-decoration:none">{%- endif -%}
+        <span class="gmc-stars{% if b.bg_stars_style == 'outlined' %} gmc-stars--line{% endif %}" style="--fg:{{ b.color | default: '#ffcc00' }};--bg:{{ b.bg_star_color | default: '#ececec' }}" aria-label="{{ gmc_rating }} out of 5">
+          <span class="gmc-stars__bg" aria-hidden="true">★★★★★</span>
+          <span class="gmc-stars__fg" style="width:{{ gmc_pct }}%" aria-hidden="true">★★★★★</span>
+        </span>
+        {{ b.label }}
+        {%- if gmc_href != blank -%}</a>{%- endif -%}
+      </p>
+      <style>.gmc-stars{position:relative;display:inline-block;line-height:1;letter-spacing:2px;margin-right:.4rem}.gmc-stars__bg{color:var(--bg,#ececec)}.gmc-stars--line .gmc-stars__bg{color:transparent;-webkit-text-stroke:1px var(--bg,#ececec)}.gmc-stars__fg{position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;color:var(--fg,#ffcc00)}</style>
+    {%- else -%}
+      <p class="gmc-bx__rt" {{ block.shopify_attributes }} style="margin:0;text-align:inherit">{%- if b.link != blank -%}<a href="{{ b.link }}" style="color:inherit;text-decoration:none">{%- endif -%}<span style="color:{{ b.color }};letter-spacing:2px" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</span> {{ b.label | escape }}{%- if b.link != blank -%}</a>{%- endif -%}</p>
+    {%- endif -%}
   {%- when 'text_icon' -%}
     <p class="gmc-bx__ti" {{ block.shopify_attributes }} style="margin:0;display:inline-flex;gap:.8rem;align-items:center">{%- render 'gmc-icon', name: b.icon_name, size: 24 -%}<span>{{ b.text | escape }}</span></p>
   {%- when 'image' -%}
