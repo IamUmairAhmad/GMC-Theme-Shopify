@@ -71,38 +71,51 @@
     .gmc-satc--clear-m .gmc-satc__img,.gmc-satc--clear-m .gmc-satc__txt,.gmc-satc--clear-m .gmc-satc__pick,.gmc-satc--clear-m .gmc-satc__price{display:none!important}
   }
 </style>
+{%- capture gmc_satc_json -%}
+{"label":{{ s.label | json }},"soldOut":{{ 'products.product.sold_out' | t | json }},"options":{{ product.options | json }},"currentId":{{ sv.id | json }},"variants":[
+{%- for v in product.variants -%}
+{"id":{{ v.id | json }},"o":{{ v.options | json }},"a":{{ v.available | json }},"p":{{ v.price | json }},"c":{{ v.compare_at_price | default: 0 | json }}
+{%- if v.featured_image -%}
+,"img":{{ v.featured_image | image_url: width: 120 | json }}
+{%- endif -%}
+}{%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}
+]}
+{%- endcapture -%}
 <script>
-  (function(){var bar=document.getElementById('gmc-satc'),btn=document.getElementById('gmc-satc-btn');
-  var form=document.querySelector('product-form form, form[action*="/cart/add"]');if(!bar||!form||!btn)return;
-  var LABEL={{ s.label | json }},action=bar.dataset.action,always=bar.dataset.mode==='always';
-  var VARS=[{%- for v in product.variants -%}{id:{{ v.id }},o:{{ v.options | json }},a:{{ v.available }},p:{{ v.price }},c:{{ v.compare_at_price | default: 0 }}{% if v.featured_image %},img:{{ v.featured_image | image_url: width: 120 | json }}{% endif %}}{% unless forloop.last %},{% endunless %}{%- endfor -%}];
-  var cur={{ sv.id }},inBtn={{ s.price_in_button | json }};
-  var target=form.querySelector('[type=submit]')||form;
-  function dock(){document.body.classList.toggle('gmc-sticky-on',!bar.hidden);document.documentElement.style.setProperty('--gmc-dock',bar.hidden?'0px':bar.offsetHeight+'px');}
-  if(always){bar.hidden=false;dock();}
-  else new IntersectionObserver(function(e){bar.hidden=e[0].isIntersecting||e[0].boundingClientRect.top>0;dock();}).observe(target);
-  function money(c){return window.gmcMoney?gmcMoney(c):(c/100).toFixed(2);}
-  function show(v){if(!v)return;cur=v.id;var pr=document.getElementById('gmc-satc-price'),bp=document.getElementById('gmc-satc-btnprice'),im=document.getElementById('gmc-satc-img');
-    if(pr)pr.textContent=money(v.p);if(bp)bp.textContent=money(v.p);if(im&&v.img){im.src=v.img;im.removeAttribute('srcset');}
-    btn.disabled=!v.a;var t=v.a?LABEL:{{ 'products.product.sold_out' | t | json }};btn.firstChild.nodeValue=t;
-    var sale=document.getElementById('gmc-satc-sale');if(sale){if(v.c>v.p){sale.hidden=false;sale.textContent='Save '+Math.round((v.c-v.p)*100/v.c)+'%';}else sale.hidden=true;}
-    var sel=document.getElementById('gmc-satc-sel');if(sel&&sel.value!=v.id)sel.value=v.id;
-    bar.querySelectorAll('select[data-opt]').forEach(function(s){var val=v.o[+s.dataset.opt];if(s.value!==val)s.value=val;});}
-  function find(id){for(var i=0;i<VARS.length;i++)if(VARS[i].id==id)return VARS[i];}
-  function setMain(v){var vs=form.closest('section, .product')||document;var els=(document.querySelector('variant-selects, variant-radios')||vs).querySelectorAll('input[type=radio],select');
-    var names={{ product.options | json }};
-    names.forEach(function(n,i){els.forEach(function(el){
-      if(el.tagName==='SELECT'&&(el.name==='options['+n+']'||el.name===n)){if(el.value!==v.o[i]){el.value=v.o[i];el.dispatchEvent(new Event('change',{bubbles:true}));}}
-      else if(el.type==='radio'&&el.name===n&&el.value===v.o[i]&&!el.checked){el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));}
-    });});}
-  var sel=document.getElementById('gmc-satc-sel');if(sel)sel.addEventListener('change',function(){var v=find(sel.value);if(v){show(v);setMain(v);}});
-  bar.querySelectorAll('select[data-opt]').forEach(function(s){s.addEventListener('change',function(){var o=[];bar.querySelectorAll('select[data-opt]').forEach(function(x){o[+x.dataset.opt]=x.value;});
-    var v=VARS.filter(function(x){return x.o.join('|')===o.join('|');})[0];if(v){show(v);setMain(v);}});});
-  gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;if(!v){btn.disabled=true;return;}var m=find(v.id);if(m)show(m);});});
-  var map={scroll_info:'.product__info-container, .product__info-wrapper',scroll_variants:'variant-selects, variant-radios, .product-form__input',scroll_breaks:'.gmc-qb',scroll_pricing:'.gmc-qb'};
-  btn.addEventListener('click',function(){
-    if(action==='add_to_cart'||!map[action]){var s=form.querySelector('[type=submit]');if(s&&!s.disabled)s.click();else form.scrollIntoView({behavior:'smooth'});return;}
-    var t=document.querySelector(map[action]);if(t)t.scrollIntoView({behavior:'smooth',block:'center'});else form.scrollIntoView({behavior:'smooth'});});})();
+  (function(){
+    var data={{ gmc_satc_json }};
+    var bar=document.getElementById('gmc-satc'),btn=document.getElementById('gmc-satc-btn');
+    var form=document.querySelector('product-form form, form[action*="/cart/add"]');
+    if(!bar||!form||!btn||!data)return;
+    var LABEL=data.label,action=bar.dataset.action,always=bar.dataset.mode==='always',VARS=data.variants,cur=data.currentId;
+    var target=form.querySelector('[type=submit]')||form;
+    function dock(){document.body.classList.toggle('gmc-sticky-on',!bar.hidden);document.documentElement.style.setProperty('--gmc-dock',bar.hidden?'0px':bar.offsetHeight+'px');}
+    if(always){bar.hidden=false;dock();}
+    else new IntersectionObserver(function(e){bar.hidden=e[0].isIntersecting||e[0].boundingClientRect.top>0;dock();}).observe(target);
+    function money(c){return window.gmcMoney?gmcMoney(c):(c/100).toFixed(2);}
+    function show(v){if(!v)return;cur=v.id;var pr=document.getElementById('gmc-satc-price'),bp=document.getElementById('gmc-satc-btnprice'),im=document.getElementById('gmc-satc-img');
+      if(pr)pr.textContent=money(v.p);if(bp)bp.textContent=money(v.p);if(im&&v.img){im.src=v.img;im.removeAttribute('srcset');}
+      btn.disabled=!v.a;var t=v.a?LABEL:data.soldOut;if(btn.firstChild)btn.firstChild.nodeValue=t;
+      var sale=document.getElementById('gmc-satc-sale');if(sale){if(v.c>v.p){sale.hidden=false;sale.textContent='Save '+Math.round((v.c-v.p)*100/v.c)+'%';}else sale.hidden=true;}
+      var sel=document.getElementById('gmc-satc-sel');if(sel&&sel.value!=v.id)sel.value=v.id;
+      bar.querySelectorAll('select[data-opt]').forEach(function(s){var val=v.o[+s.dataset.opt];if(s.value!==val)s.value=val;});}
+    function find(id){var i=0;while(i!==VARS.length){if(String(VARS[i].id)===String(id))return VARS[i];i++;}}
+    function setMain(v){var vs=form.closest('section, .product')||document;var els=(document.querySelector('variant-selects, variant-radios')||vs).querySelectorAll('input[type=radio],select');
+      data.options.forEach(function(n,i){els.forEach(function(el){
+        if(el.tagName==='SELECT'&&(el.name==='options['+n+']'||el.name===n)){if(el.value!==v.o[i]){el.value=v.o[i];el.dispatchEvent(new Event('change',{bubbles:true}));}}
+        else if(el.type==='radio'&&el.name===n&&el.value===v.o[i]&&!el.checked){el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}));}
+      });});}
+    var sel=document.getElementById('gmc-satc-sel');if(sel)sel.addEventListener('change',function(){var v=find(sel.value);if(v){show(v);setMain(v);}});
+    bar.querySelectorAll('select[data-opt]').forEach(function(s){s.addEventListener('change',function(){var o=[];bar.querySelectorAll('select[data-opt]').forEach(function(x){o[+x.dataset.opt]=x.value;});
+      var v=VARS.filter(function(x){return x.o.join('|')===o.join('|');})[0];if(v){show(v);setMain(v);}});});
+    gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;if(!v){btn.disabled=true;return;}var m=find(v.id);if(m)show(m);});});
+    var map={scroll_info:'.product__info-container, .product__info-wrapper',scroll_variants:'variant-selects, variant-radios, .product-form__input',scroll_breaks:'.gmc-qb',scroll_pricing:'.gmc-qb'};
+    btn.addEventListener('click',function(){
+      if(action==='add_to_cart'||!map[action]){var submit=form.querySelector('[type=submit]');if(submit&&!submit.disabled)submit.click();else form.scrollIntoView({behavior:'smooth'});return;}
+      var targetEl=document.querySelector(map[action]);if(targetEl)targetEl.scrollIntoView({behavior:'smooth',block:'center'});else form.scrollIntoView({behavior:'smooth'});
+    });
+  })();
 </script>
 {%- endif -%}
 {% schema %}
