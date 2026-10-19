@@ -3,13 +3,19 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 
-{%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
+{%- liquid
+  assign gmc_slide_ratio = section.blocks.first.settings.image.aspect_ratio
+  if section.blocks.first.settings.image_mobile != blank and section.blocks.first.settings.image_mobile.aspect_ratio != blank
+    assign gmc_slide_ratio = section.blocks.first.settings.image_mobile.aspect_ratio
+  endif
+-%}
+{%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank and section.blocks.first.settings.image.aspect_ratio != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
       #Slider-{{ section.id }}::before,
       #Slider-{{ section.id }} .media::before,
       #Slider-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
-        padding-bottom: {{ 1 | divided_by: section.blocks.first.settings.image.aspect_ratio | times: 100 }}%;
+        padding-bottom: {{ 1 | divided_by: gmc_slide_ratio | times: 100 }}%;
         content: '';
         display: block;
       }
@@ -27,7 +33,7 @@
 {%- endif -%}
 
 <slideshow-component
-  class="slider-mobile-gutter{% if section.settings.layout == 'grid' %} page-width{% endif %}{% if section.settings.show_text_below %} mobile-text-below{% endif %}"
+  class="slider-mobile-gutter{% if section.settings.layout == 'grid' %} page-width{% endif %}{% if section.settings.show_text_below %} mobile-text-below{% endif %}{% if section.settings.desktop_pagination_position == 'over' %} gmc-pag-desk-over{% endif %}{% if section.settings.mobile_pagination_position == 'over' %} gmc-pag-mob-over{% endif %}"
   role="region"
   aria-roledescription="{{ 'sections.slideshow.carousel' | t }}"
   aria-label="{{ section.settings.accessibility_info | escape }}"
@@ -163,7 +169,7 @@
           {%- endif -%}
         </div>
         <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll and forloop.index == 1 %} scroll-trigger animate--slide-in{% endif %}">
-          <div class="slideshow__text banner__box content-container content-container--full-width-mobile color-{{ block.settings.color_scheme }} gradient slideshow__text--{{ block.settings.text_alignment }} slideshow__text-mobile--{{ block.settings.text_alignment_mobile }}">
+          <div class="slideshow__text banner__box content-container content-container--full-width-mobile color-{{ block.settings.color_scheme }} gradient slideshow__text--{{ block.settings.text_alignment }} slideshow__text-mobile--{{ block.settings.text_alignment_mobile }}{% if block.settings.show_text_box == false %} gmc-slide-ink--{{ block.settings.gmc_clear_text | default: 'white' }}{% endif %}">
             {%- if block.settings.heading != blank -%}
               <h2 class="banner__heading inline-richtext {{ block.settings.heading_size }}">
                 {{ block.settings.heading }}
@@ -186,6 +192,20 @@
                 >
                   {{- block.settings.button_label | escape -}}
                 </a>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.atc_button_label != blank -%}
+              <div class="banner__buttons">
+                {%- if block.settings.atc_product == blank -%}
+                  <button type="button" class="button" disabled>{{ block.settings.atc_button_label | escape }}</button>
+                {%- else -%}
+                  {%- render 'gmc-inline-atc',
+                    product: block.settings.atc_product,
+                    label: block.settings.atc_button_label,
+                    skip: block.settings.atc_skip_cart,
+                    align: 'inherit'
+                  -%}
+                {%- endif -%}
               </div>
             {%- endif -%}
           </div>
@@ -339,6 +359,22 @@
       "label": "t:sections.slideshow.settings.slider_visual.label"
     },
     {
+      "type": "select",
+      "id": "desktop_pagination_position",
+      "label": "Desktop pagination position",
+      "default": "under",
+      "options": [
+        {
+          "value": "under",
+          "label": "Under the slideshow"
+        },
+        {
+          "value": "over",
+          "label": "Over the slideshow"
+        }
+      ]
+    },
+    {
       "type": "checkbox",
       "id": "auto_rotate",
       "label": "t:sections.slideshow.settings.auto_rotate.label",
@@ -379,6 +415,23 @@
       "id": "show_text_below",
       "label": "t:sections.slideshow.settings.show_text_below.label",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "mobile_pagination_position",
+      "label": "Mobile pagination position",
+      "info": "Over the slideshow applies while the content stays on the image.",
+      "default": "under",
+      "options": [
+        {
+          "value": "under",
+          "label": "Under the slideshow"
+        },
+        {
+          "value": "over",
+          "label": "Over the slideshow"
+        }
+      ]
     },
     {
       "type": "header",
@@ -635,6 +688,23 @@
           "default": false
         },
         {
+          "type": "text",
+          "id": "atc_button_label",
+          "label": "Add to cart button label",
+          "info": "Leave the label blank to hide the button."
+        },
+        {
+          "type": "product",
+          "id": "atc_product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "atc_skip_cart",
+          "label": "Skip the cart and go straight to checkout",
+          "default": false
+        },
+        {
           "type": "header",
           "content": "t:sections.slideshow.blocks.slide.settings.header_layout.content"
         },
@@ -643,6 +713,22 @@
           "id": "show_text_box",
           "label": "t:sections.slideshow.blocks.slide.settings.show_text_box.label",
           "default": true
+        },
+        {
+          "type": "select",
+          "id": "gmc_clear_text",
+          "label": "Text colour when the container is hidden",
+          "default": "white",
+          "options": [
+            {
+              "value": "white",
+              "label": "White"
+            },
+            {
+              "value": "black",
+              "label": "Black"
+            }
+          ]
         },
         {
           "type": "select",
