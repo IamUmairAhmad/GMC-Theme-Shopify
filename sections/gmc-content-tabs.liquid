@@ -2,15 +2,32 @@
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one tab block.' -%}{%- endif -%}
 {%- comment -%} GMC Theme: tabbed content (original code) {%- endcomment -%}
-<div class="page-width gmc-tabs gmc-tabs--{{ section.settings.nav_align }}{% if section.settings.full_btn %} gmc-tabs--full{% endif %} gmc-tabs--a-{{ section.settings.anim }}" id="gmc-tabs-{{ section.id }}">
-  {%- if section.settings.heading != blank -%}<h2 class="gmc-tabs__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+<div class="page-width gmc-tabs gmc-tabs--{{ section.settings.nav_align }} gmc-tabs--w-{{ section.settings.width | default: 'normal' }} gmc-tabs--lay-{{ section.settings.tab_layout | default: 'above' }} gmc-tabs--btn-{{ section.settings.btn_style | default: 'outline' }}{% if section.settings.full_btn %} gmc-tabs--full{% endif %}{% if section.settings.full_mobile %} gmc-tabs--fullm{% endif %} gmc-tabs--a-{{ section.settings.anim }}" id="gmc-tabs-{{ section.id }}" style="--gmc-tabs-r:{{ section.settings.btn_radius | default: 99 }}px">
+  {%- if section.settings.heading != blank -%}<h2 class="gmc-tabs__title {{ section.settings.heading_size | default: 'h1' }}">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div class="gmc-tabs__nav" role="tablist">
     {%- for block in section.blocks -%}
       <button type="button" role="tab" class="gmc-tabs__btn" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{%- if block.settings.icon != blank -%}<span class="gmc-tabs__ic">{%- render 'gmc-icon', name: block.settings.icon, size: 18 -%}</span>{%- endif -%}{{ block.settings.title | escape }}</button>
     {%- endfor -%}
   </div>
   {%- for block in section.blocks -%}
-    <div class="gmc-tabs__panel rte" role="tabpanel" {% unless forloop.first %}hidden{% endunless %}>{%- if block.settings.video != blank -%}<div class="gmc-pm__vid gmc-tabs__m" data-gmc-vid><video playsinline preload="metadata" autoplay muted{% if block.settings.loop %} loop{% endif %}>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>{%- elsif block.settings.image != blank -%}{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'gmc-tabs__m', alt: block.settings.image.alt }}{%- endif -%}{{ block.settings.content }}{%- if block.settings.product != blank -%}{%- render 'gmc-inline-atc', product: block.settings.product, label: block.settings.button, skip: false, align: 'center' -%}{%- endif -%}</div>
+    {%- assign tb = block.settings -%}
+    <div class="gmc-tabs__panel gmc-tabs__panel--{{ tb.media_pos | default: 'above' }}" role="tabpanel" style="text-align:{{ tb.align | default: 'left' }}" {% unless forloop.first %}hidden{% endunless %}>
+      {%- if tb.video != blank or tb.image != blank -%}
+        <div class="gmc-tabs__media">
+          {%- if tb.video != blank -%}
+            <div class="gmc-pm__vid gmc-tabs__m" data-gmc-vid><video playsinline preload="metadata" {% if tb.autoplay %}autoplay muted{% else %}controls{% endif %}{% if tb.loop %} loop{% endif %}>{%- for vs in tb.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>
+          {%- else -%}
+            {{ tb.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'gmc-tabs__m', alt: tb.image.alt }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      <div class="gmc-tabs__copy rte">
+        {%- if tb.panel_heading != blank -%}<h3 class="{{ tb.panel_size | default: 'h2' }}">{{ tb.panel_heading | escape }}</h3>{%- endif -%}
+        {{ tb.content }}
+        {%- if tb.link_label != blank and tb.link != blank -%}<a class="button{% if tb.link_secondary %} button--secondary{% endif %}" href="{{ tb.link }}">{{ tb.link_label | escape }}</a>{%- endif -%}
+        {%- if tb.product != blank -%}{%- render 'gmc-inline-atc', product: tb.product, label: tb.button, skip: tb.skip_cart, align: tb.align -%}{%- endif -%}
+      </div>
+    </div>
   {%- endfor -%}
 </div>
 <style>
@@ -18,7 +35,7 @@
   .gmc-tabs__nav{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
   .gmc-tabs__btn{cursor:pointer;padding:.6rem 1.2rem;border:1px solid currentColor;border-radius:var(--badge-corner-radius,99px);background:transparent;color:inherit;font:inherit;opacity:.65}
   .gmc-tabs__btn[aria-selected=true]{opacity:1;background:rgb(var(--color-foreground));color:rgb(var(--color-background))}
-.gmc-tabs--left .gmc-tabs__nav{justify-content:flex-start}.gmc-tabs--right .gmc-tabs__nav{justify-content:flex-end}.gmc-tabs--full .gmc-tabs__nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr))}.gmc-tabs__ic{display:inline-flex;margin-right:.5rem;vertical-align:middle}.gmc-tabs__m{width:100%;height:auto;border-radius:var(--media-radius,8px);margin-bottom:1.2rem;display:block}.gmc-tabs__panel{animation:gmc-tabs-fade .35s ease}.gmc-tabs--a-none .gmc-tabs__panel{animation:none}.gmc-tabs--a-slide .gmc-tabs__panel{animation:gmc-tabs-slide .35s ease}.gmc-tabs__btn{transition:background .25s,color .25s,opacity .25s}@keyframes gmc-tabs-fade{from{opacity:0}to{opacity:1}}@keyframes gmc-tabs-slide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+.gmc-tabs--left .gmc-tabs__nav{justify-content:flex-start}.gmc-tabs--right .gmc-tabs__nav{justify-content:flex-end}.gmc-tabs--full .gmc-tabs__nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr))}.gmc-tabs__btn{border-radius:var(--gmc-tabs-r,99px)}.gmc-tabs--btn-shadow .gmc-tabs__btn{border:0;box-shadow:0 4px 16px rgba(0,0,0,.12)}.gmc-tabs--w-narrow{max-width:80rem;margin-inline:auto}.gmc-tabs--w-wide{max-width:120rem;margin-inline:auto}.gmc-tabs__ic{display:inline-flex;margin-right:.5rem;vertical-align:middle}.gmc-tabs__m{width:100%;height:auto;border-radius:var(--media-radius,8px);display:block}.gmc-tabs__copy{display:grid;gap:1rem;justify-items:inherit}.gmc-tabs__panel{animation:gmc-tabs-fade .35s ease}.gmc-tabs__panel[hidden]{display:none}.gmc-tabs--a-none .gmc-tabs__panel{animation:none}.gmc-tabs--a-slide .gmc-tabs__panel{animation:gmc-tabs-slide .35s ease}.gmc-tabs__btn{transition:background .25s,color .25s,opacity .25s}@media(min-width:750px){.gmc-tabs--lay-side{display:grid;grid-template-columns:minmax(16rem,24rem) 1fr;column-gap:2.4rem;align-items:start}.gmc-tabs--lay-side .gmc-tabs__title{grid-column:1 / -1}.gmc-tabs--lay-side .gmc-tabs__nav{flex-direction:column;align-items:stretch}.gmc-tabs__panel--left:not([hidden]),.gmc-tabs__panel--right:not([hidden]){display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}.gmc-tabs__panel--right .gmc-tabs__media{order:2}}@media(max-width:749px){.gmc-tabs--fullm .gmc-tabs__nav{display:grid;grid-template-columns:1fr}.gmc-tabs__media{margin-bottom:1.2rem}}@keyframes gmc-tabs-fade{from{opacity:0}to{opacity:1}}@keyframes gmc-tabs-slide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
 <script>
   (function(){var w=document.getElementById('gmc-tabs-{{ section.id }}');if(!w)return;
   var b=w.querySelectorAll('.gmc-tabs__btn'),p=w.querySelectorAll('.gmc-tabs__panel');
@@ -35,6 +52,58 @@
       "type": "text",
       "id": "heading",
       "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "options": [
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "normal", "label": "Page width" },
+        { "value": "wide", "label": "Wide" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "tab_layout",
+      "label": "Tab placement on desktop",
+      "options": [
+        { "value": "above", "label": "Above the content" },
+        { "value": "side", "label": "Beside the content" }
+      ],
+      "default": "above"
+    },
+    {
+      "type": "select",
+      "id": "btn_style",
+      "label": "Tab button style",
+      "options": [
+        { "value": "outline", "label": "Outline" },
+        { "value": "shadow", "label": "Shadow" }
+      ],
+      "default": "outline"
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Tab corner radius",
+      "default": 40
     },
     {
       "type": "select",
@@ -60,6 +129,12 @@
       "type": "checkbox",
       "id": "full_btn",
       "label": "Full-width tab buttons",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "full_mobile",
+      "label": "Stack tab buttons full width on mobile",
       "default": false
     },
     {
@@ -297,6 +372,72 @@
           "id": "loop",
           "label": "Loop the video",
           "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Muted autoplay",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "media_pos",
+          "label": "Media placement",
+          "options": [
+            { "value": "above", "label": "Above the text" },
+            { "value": "left", "label": "Left of the text" },
+            { "value": "right", "label": "Right of the text" }
+          ],
+          "default": "above"
+        },
+        {
+          "type": "text",
+          "id": "panel_heading",
+          "label": "Content heading"
+        },
+        {
+          "type": "select",
+          "id": "panel_size",
+          "label": "Content heading size",
+          "options": [
+            { "value": "h3", "label": "Small" },
+            { "value": "h2", "label": "Medium" },
+            { "value": "h1", "label": "Large" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Text alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Centre" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link button label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_secondary",
+          "label": "Use the secondary button style",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "skip_cart",
+          "label": "Add to cart and go to checkout",
+          "default": false
         },
         {
           "type": "product",

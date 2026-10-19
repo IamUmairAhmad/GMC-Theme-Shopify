@@ -14,6 +14,7 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  .newsletter__solid{margin-top:1.2rem}
 {%- endstyle -%}
 
 <div class="newsletter center {% if section.settings.full_width == false %}newsletter--narrow page-width{% endif %}">
@@ -79,6 +80,7 @@
                   <label class="field__label" for="NewsletterForm--{{ section.id }}">
                     {{ 'newsletter.label' | t }}
                   </label>
+                  {%- if section.settings.button_type != 'solid' -%}
                   <button
                     type="submit"
                     class="newsletter-form__button field__button"
@@ -90,7 +92,11 @@
                       {{- 'icon-arrow.svg' | inline_asset_content -}}
                     </span>
                   </button>
+                  {%- endif -%}
                 </div>
+                {%- if section.settings.button_type == 'solid' -%}
+                  <button type="submit" class="button newsletter__solid{% if section.settings.button_secondary %} button--secondary{% endif %}" name="commit">{{ section.settings.solid_label | default: 'Subscribe' | escape }}</button>
+                {%- endif -%}
                 {%- if form.errors -%}
                   <small class="newsletter-form__message form__message" id="Newsletter-error--{{ section.id }}">
                     <span class="svg-wrapper">
@@ -148,6 +154,28 @@
       "id": "full_width",
       "default": true,
       "label": "t:sections.newsletter.settings.full_width.label"
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Submit button",
+      "options": [
+        { "value": "arrow", "label": "Arrow inside the field" },
+        { "value": "solid", "label": "Labelled button" }
+      ],
+      "default": "arrow"
+    },
+    {
+      "type": "text",
+      "id": "solid_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_secondary",
+      "label": "Use the secondary button style",
+      "default": false
     },
     {
       "type": "header",

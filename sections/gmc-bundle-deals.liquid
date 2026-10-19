@@ -20,7 +20,7 @@
   <p class="gmc-bd__err" role="alert" hidden style="color:#b91c1c"></p>
 </div>
 <style>.gmc-bd{padding:36px 0}.gmc-bd__g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.5rem 0}.gmc-bd__c{display:flex;flex-direction:column;gap:.4rem;text-align:center;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:1rem;cursor:pointer;position:relative}.gmc-bd__chk{position:absolute;top:.6rem;left:.6rem}.gmc-bd__c:has(.gmc-bd__chk input:not(:checked)){opacity:.5}.gmc-bd__var{width:100%}.gmc-bd__f{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}.gmc-bd__old,.gmc-bd__totold{opacity:.6}
-.gmc-bd--row .gmc-bd__g{display:flex;align-items:stretch;overflow-x:auto;gap:2.4rem}.gmc-bd--row .gmc-bd__c{flex:1 0 16rem}.gmc-bd--row .gmc-bd__c+.gmc-bd__c:before{content:"+";position:absolute;left:-1.8rem;top:50%;transform:translateY(-50%);font-size:2.2rem;font-weight:700}</style>
+.gmc-bd--row .gmc-bd__g{display:flex;align-items:stretch;overflow-x:auto;gap:2.4rem}.gmc-bd--row .gmc-bd__c{flex:1 0 16rem}.gmc-bd--row .gmc-bd__c+.gmc-bd__c:before{content:"+";position:absolute;left:-1.8rem;top:50%;transform:translateY(-50%);font-size:2.2rem;font-weight:700}@media(min-width:750px){.gmc-bd--images-left .gmc-bd__g,.gmc-bd--images-right .gmc-bd__g{display:flex;flex-direction:column}.gmc-bd--images-left .gmc-bd__c,.gmc-bd--images-right .gmc-bd__c{flex-direction:row;text-align:left;align-items:center}.gmc-bd--images-left .gmc-bd__c img,.gmc-bd--images-right .gmc-bd__c img{width:9rem;flex:none}.gmc-bd--images-right .gmc-bd__c{flex-direction:row-reverse;text-align:right}}</style>
 <script>(function(){var w=document.getElementById('gmc-bd-{{ section.id }}');if(!w)return;
 function items(){var a=[];w.querySelectorAll('.gmc-bd__c').forEach(function(c){var i=c.querySelector('input[type=checkbox]');a.push({c:c,i:i,on:i.checked,p:+i.dataset.price,pct:+c.dataset.pct||0});});return a;}
 function calc(){var it=items(),orig=0,sub=0,dis=false;
@@ -62,6 +62,14 @@ fetch({{ routes.cart_add_url | json }}+'.js',{method:'POST',headers:{'Content-Ty
         {
           "value": "row",
           "label": "Row with plus signs"
+        },
+        {
+          "value": "images-left",
+          "label": "Images on the left"
+        },
+        {
+          "value": "images-right",
+          "label": "Images on the right"
         }
       ],
       "default": "grid"
