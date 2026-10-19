@@ -10,6 +10,10 @@
     {%- for link in section.settings.menu.links -%}
       <li>
         {%- if link.links != blank -%}
+          {%- capture gmc_mega_hit -%}{%- render 'gmc-mega-hit', title: link.title -%}{%- endcapture -%}
+          {%- if gmc_mega_hit contains 'yes' -%}
+            {%- render 'header-products-mega', link: link, menu_index: forloop.index -%}
+          {%- else -%}
           <header-menu>
             <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
               <summary
@@ -71,6 +75,7 @@
               </div>
             </details>
           </header-menu>
+          {%- endif -%}
         {%- else -%}
           <a
             id="HeaderMenu-{{ link.handle }}"

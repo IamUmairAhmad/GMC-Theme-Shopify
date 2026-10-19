@@ -13,7 +13,7 @@
     {%- for un in user_list -%}
       {%- assign first_b = nil -%}{%- assign close_f = false -%}{%- assign ver = false -%}
       {%- for block in section.blocks -%}{%- assign bu = block.settings.user | default: block.settings.title | strip -%}{%- if bu == un -%}{%- if first_b == nil -%}{%- assign first_b = block -%}{%- endif -%}{%- if block.settings.close_friends -%}{%- assign close_f = true -%}{%- endif -%}{%- if block.settings.verified -%}{%- assign ver = true -%}{%- endif -%}{%- endif -%}{%- endfor -%}
-      <button type="button" class="gmc-is__b" data-u="{{ forloop.index0 }}" {{ first_b.shopify_attributes }}><span class="gmc-is__ring{% if close_f %} gmc-is__ring--cf{% endif %}">{%- if first_b.settings.image != blank -%}{{ first_b.settings.image | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '' }}{%- else -%}<span class="gmc-is__ph"></span>{%- endif -%}</span><span class="gmc-is__n">{{ un | escape }}{%- if ver -%}<svg class="gmc-is__v" width="14" height="14" viewBox="0 0 24 24" aria-label="Verified"><circle cx="12" cy="12" r="11" fill="#2563eb"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4"/></svg>{%- endif -%}</span></button>
+      <button type="button" class="gmc-is__b" data-u="{{ forloop.index0 }}" {{ first_b.shopify_attributes }}><span class="gmc-is__ring{% if close_f %} gmc-is__ring--cf{% endif %}">{%- assign ring = first_b.settings.avatar | default: first_b.settings.image -%}{%- if ring != blank -%}{{ ring | image_url: width: 160 | image_tag: width: 72, height: 72, loading: 'lazy', alt: '' }}{%- else -%}<span class="gmc-is__ph"></span>{%- endif -%}</span><span class="gmc-is__n">{{ un | escape }}{%- if ver -%}<svg class="gmc-is__v" width="14" height="14" viewBox="0 0 24 24" aria-label="Verified"><circle cx="12" cy="12" r="11" fill="#2563eb"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4"/></svg>{%- endif -%}</span></button>
     {%- endfor -%}
   </div>
   <div class="gmc-is__modal" hidden role="dialog" aria-modal="true" aria-label="Stories"><button type="button" class="gmc-is__x" aria-label="Close">×</button>
@@ -306,6 +306,12 @@ document.addEventListener('keydown',function(e){if(m.hidden)return;if(e.key==='E
           "id": "user",
           "label": "Story owner name",
           "info": "Items with the same name are grouped into one ring."
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Profile picture",
+          "info": "Shown in the ring. The cover image is used when this is empty."
         },
         {
           "type": "image_picker",

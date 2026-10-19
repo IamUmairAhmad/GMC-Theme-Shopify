@@ -2,23 +2,54 @@
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one plan block.' -%}{%- endif -%}
 <div class="page-width gmc-pt {% render 'gmc-vis', hide: section.settings.hide_on %}">
-  {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-  <div class="gmc-pt__grid gmc-pt__grid--{{ section.settings.card_style }}">{%- for block in section.blocks -%}
+  {%- if section.settings.heading != blank -%}<h2 class="{{ section.settings.heading_size | default: 'h1' }}" style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  {%- if section.settings.intro != blank -%}<div class="rte gmc-pt__intro">{{ section.settings.intro }}</div>{%- endif -%}
+  <div class="gmc-pt__grid gmc-pt__grid--{{ section.settings.card_style }}" style="gap:{{ section.settings.gap | default: 24 }}px;align-items:{{ section.settings.align | default: 'stretch' }}">{%- for block in section.blocks -%}
     {%- assign b = block.settings -%}
-    <div class="gmc-pt__card{% if b.featured %} gmc-pt__card--hl{% endif %}" {{ block.shopify_attributes }}>
+    {%- liquid
+      assign plan_variant = nil
+      if b.product != blank
+        assign plan_variant = b.product.selected_or_first_available_variant
+        if b.variant_index > 1
+          assign plan_i = b.variant_index | minus: 1
+          if b.product.variants[plan_i] != blank
+            assign plan_variant = b.product.variants[plan_i]
+          endif
+        endif
+      endif
+    -%}
+    {%- liquid
+      assign plan_img = nil
+      if b.image_source == 'variant' and plan_variant.featured_image != blank
+        assign plan_img = plan_variant.featured_image
+      elsif b.image_source != 'none' and b.plan_image != blank
+        assign plan_img = b.plan_image
+      endif
+      case section.settings.icon_size
+        when 'small'
+          assign plan_icon = 24
+        when 'large'
+          assign plan_icon = 52
+        else
+          assign plan_icon = 36
+      endcase
+    -%}
+    <div class="gmc-pt__card{% if b.featured %} gmc-pt__card--hl{% endif %}{% if b.button_full %} gmc-pt__card--full{% endif %}" {{ block.shopify_attributes }}>
       {%- if b.badge != blank -%}<span class="gmc-pt__badge">{{ b.badge | escape }}</span>{%- endif -%}
-      {%- if b.icon_name != blank -%}<span class="gmc-pt__ic">{%- render 'gmc-icon', name: b.icon_name, size: 36 -%}</span>{%- endif -%}
+      {%- if plan_img != blank -%}{{ plan_img | image_url: width: 600 | image_tag: loading: 'lazy', class: 'gmc-pt__img', widths: '300, 600', alt: plan_img.alt }}{%- endif -%}
+      {%- if b.icon_image != blank -%}{{ b.icon_image | image_url: width: 120 | image_tag: loading: 'lazy', class: 'gmc-pt__ic', widths: '60, 120', alt: '' }}
+      {%- elsif b.icon_name != blank -%}<span class="gmc-pt__ic">{%- render 'gmc-icon', name: b.icon_name, size: plan_icon -%}</span>{%- endif -%}
       <h3>{{ b.name | escape }}</h3>
-      {%- if b.product != blank -%}
-        <p class="gmc-pt__price">{{ b.product.price | money }}{%- if b.product.compare_at_price > b.product.price %} <s style="opacity:.6;font-size:.7em">{{ b.product.compare_at_price | money }}</s>{%- endif -%}{%- if b.price_suffix != blank %} <small>{{ b.price_suffix | escape }}</small>{%- endif -%}</p>
+      {%- if plan_variant != blank -%}
+        <p class="gmc-pt__price">{{ plan_variant.price | money }}{%- if plan_variant.compare_at_price > plan_variant.price %} <s style="opacity:.6;font-size:.7em">{{ plan_variant.compare_at_price | money }}</s>{%- endif -%}{%- if b.price_suffix != blank %} <small>{{ b.price_suffix | escape }}</small>{%- endif -%}</p>
       {%- else -%}<p class="gmc-pt__price">{{ b.price | escape }}{%- if b.price_suffix != blank %} <small>{{ b.price_suffix | escape }}</small>{%- endif -%}</p>{%- endif -%}
       {%- if b.benefits != blank -%}<ul class="gmc-pt__ben" role="list">{%- assign bl = b.benefits | newline_to_br | split: '<br />' -%}{%- for line in bl -%}{%- assign lt = line | strip -%}{%- if lt != blank -%}<li>{%- render 'gmc-icon', name: 'check', size: 16 -%} {{ lt | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- endif -%}
-      <div class="rte">{{ b.features }}</div>
-      {%- if b.action == 'cart' or b.action == 'checkout' -%}{%- if b.product != blank -%}{%- assign pt_skip = false -%}{%- if b.action == 'checkout' -%}{%- assign pt_skip = true -%}{%- endif -%}{%- render 'gmc-inline-atc', product: b.product, label: b.button, skip: pt_skip, align: 'center' -%}{%- endif -%}
+      <div class="rte" style="text-align:{{ b.features_align | default: 'center' }}">{{ b.features }}</div>
+      {%- if b.action == 'cart' or b.action == 'checkout' -%}{%- if b.product != blank -%}{%- assign pt_skip = false -%}{%- if b.action == 'checkout' -%}{%- assign pt_skip = true -%}{%- endif -%}{%- render 'gmc-inline-atc', product: b.product, variant: plan_variant, label: b.button, skip: pt_skip, align: 'center' -%}{%- endif -%}
       {%- elsif b.link != blank -%}<a class="button" href="{{ b.link }}">{{ b.button | escape }}</a>{%- endif -%}
     </div>{%- endfor -%}</div>
 </div>
-<style>.gmc-pt__grid--filled .gmc-pt__card{background:rgba(var(--color-foreground),.05);border-color:transparent}.gmc-pt__grid--shadow .gmc-pt__card{border:0;box-shadow:0 6px 24px rgba(0,0,0,.12)}.gmc-pt__ic{display:block;margin-bottom:.6rem}.gmc-pt__ben{list-style:none;padding:0;margin:1rem 0;text-align:left;display:grid;gap:.5rem}.gmc-pt__ben li{display:flex;gap:.6rem;align-items:center}.gmc-pt{padding:36px 0}.gmc-pt__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-pt__card{position:relative;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:2rem;text-align:center}.gmc-pt__card--hl{border:2px solid rgb(var(--color-foreground));transform:scale(1.03)}.gmc-pt__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:{{ settings.gmc_accent }};color:#fff;padding:2px 12px;border-radius:99px;font-size:12px}.gmc-pt__price{font-size:2.6rem;font-weight:700;margin:.5rem 0}</style>
+<style>.gmc-pt__grid--filled .gmc-pt__card{background:rgba(var(--color-foreground),.05);border-color:transparent}.gmc-pt__grid--shadow .gmc-pt__card{border:0;box-shadow:0 6px 24px rgba(0,0,0,.12)}.gmc-pt__intro{text-align:center;max-width:62rem;margin:1rem auto 0}.gmc-pt__card--full .button,.gmc-pt__card--full .product-form{width:100%}.gmc-pt__ic{display:block;margin:0 auto .6rem;max-width:6rem;height:auto}.gmc-pt__ben{list-style:none;padding:0;margin:1rem 0;text-align:left;display:grid;gap:.5rem}.gmc-pt__ben li{display:flex;gap:.6rem;align-items:center}.gmc-pt{padding:36px 0}.gmc-pt__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-pt__card{position:relative;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:2rem;text-align:center}.gmc-pt__card--hl{border:2px solid rgb(var(--color-foreground));transform:scale(1.03)}.gmc-pt__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:{{ settings.gmc_accent }};color:#fff;padding:2px 12px;border-radius:99px;font-size:12px}.gmc-pt__price{font-size:2.6rem;font-weight:700;margin:.5rem 0}.gmc-pt__img{width:100%;height:auto;border-radius:var(--media-radius,8px);margin-bottom:1rem}</style>
 {% schema %}
 {
   "name": "Pricing table",
@@ -30,6 +61,55 @@
       "id": "heading",
       "label": "Heading",
       "default": "Choose your plan"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro text"
+    },
+    {
+      "type": "select",
+      "id": "icon_size",
+      "label": "Icon size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between cards",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Vertical alignment",
+      "options": [
+        { "value": "stretch", "label": "Stretch" },
+        { "value": "start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "end", "label": "Bottom" }
+      ],
+      "default": "stretch"
     },
     {
       "type": "select",
@@ -308,6 +388,54 @@
           "type": "product",
           "id": "product",
           "label": "Linked product (price comes from it)"
+        },
+        {
+          "type": "range",
+          "id": "variant_index",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "label": "Variant number",
+          "info": "1 is the first variant. The card price and add-to-cart button use this variant.",
+          "default": 1
+        },
+        {
+          "type": "select",
+          "id": "image_source",
+          "label": "Card image",
+          "options": [
+            { "value": "custom", "label": "Custom image" },
+            { "value": "variant", "label": "Linked variant image" },
+            { "value": "none", "label": "Hidden" }
+          ],
+          "default": "custom"
+        },
+        {
+          "type": "image_picker",
+          "id": "plan_image",
+          "label": "Custom image"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Custom icon image"
+        },
+        {
+          "type": "select",
+          "id": "features_align",
+          "label": "Description alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Centre" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_full",
+          "label": "Full width button",
+          "default": false
         },
         {
           "type": "text",

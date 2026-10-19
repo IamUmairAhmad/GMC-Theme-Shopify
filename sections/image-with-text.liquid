@@ -7,6 +7,77 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  #shopify-section-{{ section.id }} .image-with-text__media video {
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .gmc-ti {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--gap, 12px);
+    width: var(--box, 100%);
+    max-width: 100%;
+    font-size: var(--size, 16px);
+    color: var(--fg, inherit);
+    justify-content: var(--align, flex-start);
+    text-align: var(--talign, left);
+    background: var(--bg, transparent);
+    border-radius: var(--radius, 0);
+    padding: var(--pad, 0);
+    border: var(--border, 0);
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .gmc-ti--vertical {
+    flex-direction: column;
+    align-items: var(--align, flex-start);
+    justify-content: flex-start;
+  }
+
+  #shopify-section-{{ section.id }} .gmc-ti__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  #shopify-section-{{ section.id }} .gmc-ti__icon {
+    color: var(--icon, currentColor);
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .image-with-text__grid--mobile-reverse {
+      flex-direction: column-reverse;
+      flex-wrap: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full {
+      width: calc(100% + 3rem);
+      max-width: none;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full .image-with-text__media,
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full img,
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full video {
+      border-radius: 0;
+    }
+
+    #shopify-section-{{ section.id }} .gmc-ti {
+      font-size: var(--size-m, var(--size, 14px));
+      justify-content: var(--align-m, var(--align, flex-start));
+      text-align: var(--talign-m, var(--talign, left));
+    }
+
+    #shopify-section-{{ section.id }} .gmc-ti--vertical {
+      align-items: var(--align-m, var(--align, flex-start));
+      justify-content: flex-start;
+    }
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
@@ -28,15 +99,19 @@
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}">
   <div class="page-width">
     <div class="image-with-text image-with-text--{{ section.settings.content_layout }} isolate{% if settings.text_boxes_border_thickness > 0 and settings.text_boxes_border_opacity > 0 and settings.media_border_thickness > 0 and settings.media_border_opacity > 0 %} collapse-borders{% endif %}{% unless section.settings.color_scheme == section.settings.section_color_scheme and settings.media_border_thickness > 0 and settings.text_boxes_shadow_opacity == 0 and settings.text_boxes_border_thickness == 0 or settings.text_boxes_border_opacity == 0 %} collapse-corners{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-      <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.layout == 'text_first' %} image-with-text__grid--reverse{% endif %}">
-        <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }} grid__item">
+      <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.layout == 'text_first' %} image-with-text__grid--reverse{% endif %}{% if section.settings.mobile_direction == 'reverse' %} image-with-text__grid--mobile-reverse{% endif %}">
+        <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }}{% if section.settings.mobile_full_media_width %} image-with-text__media--mobile-full{% endif %} grid__item">
           <div
-            class="image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if section.settings.image != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
-            {% if section.settings.height == 'adapt' and section.settings.image != blank %}
+            class="image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if section.settings.image != blank or section.settings.video != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.video == blank and section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
+            {% if section.settings.height == 'adapt' and section.settings.video != blank and section.settings.video.aspect_ratio != blank %}
+              style="padding-bottom: {{ 1 | divided_by: section.settings.video.aspect_ratio | times: 100 }}%;"
+            {% elsif section.settings.height == 'adapt' and section.settings.image != blank %}
               style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
             {% endif %}
           >
-            {%- if section.settings.image != blank -%}
+            {%- if section.settings.video != blank -%}
+              {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+            {%- elsif section.settings.image != blank -%}
               {%- if section.settings.image_behavior == 'ambient' or section.settings.image_behavior == 'zoom-in' -%}
                 {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
                 {%- capture sizes -%}
@@ -86,8 +161,71 @@
                     {{ block.settings.text }}
                   </div>
                 {%- when 'rating_stars' or 'text_icon' or 'image' -%}
-            {%- render 'gmc-block-extra', block: block -%}
-          {%- when 'button' -%}
+                  {%- render 'gmc-block-extra', block: block -%}
+                {%- when 'text_icons' -%}
+                  {%- liquid
+                    assign gmc_ti_align = block.settings.align | default: 'left'
+                    assign gmc_ti_align_m = block.settings.mobile_align | default: gmc_ti_align
+                    if gmc_ti_align == 'center'
+                      assign gmc_ti_j = 'center'
+                    elsif gmc_ti_align == 'right'
+                      assign gmc_ti_j = 'flex-end'
+                    else
+                      assign gmc_ti_j = 'flex-start'
+                    endif
+                    if gmc_ti_align_m == 'center'
+                      assign gmc_ti_jm = 'center'
+                    elsif gmc_ti_align_m == 'right'
+                      assign gmc_ti_jm = 'flex-end'
+                    else
+                      assign gmc_ti_jm = 'flex-start'
+                    endif
+                    if block.settings.width == 'fit'
+                      assign gmc_ti_box = 'fit-content'
+                    else
+                      assign gmc_ti_box = '100%'
+                    endif
+                  -%}
+                  <div
+                    class="gmc-ti gmc-ti--{{ block.settings.direction }}"
+                    style="--gap:{{ block.settings.gap }}px;--size:{{ block.settings.text_size }}px;--size-m:{{ block.settings.mobile_text_size }}px;--fg:{{ block.settings.text_color }};--icon:{{ block.settings.icon_color }};--align:{{ gmc_ti_j }};--talign:{{ gmc_ti_align }};--align-m:{{ gmc_ti_jm }};--talign-m:{{ gmc_ti_align_m }};--box:{{ gmc_ti_box }};{% if block.settings.show_bg %}--bg:{{ block.settings.bg_color }};--pad:{{ block.settings.pad }}px;--radius:{{ block.settings.radius }}px;{% endif %}{% if block.settings.border_size > 0 %}--border:{{ block.settings.border_size }}px solid {{ block.settings.border_color }};{% endif %}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {%- for gmc_i in (1..3) -%}
+                      {%- liquid
+                        assign gmc_line_key = 'line_' | append: gmc_i
+                        assign gmc_icon_key = 'icon_' | append: gmc_i
+                        assign gmc_fill_key = 'filled_' | append: gmc_i
+                        assign gmc_img_key = 'image_' | append: gmc_i
+                        assign gmc_line = block.settings[gmc_line_key]
+                        assign gmc_icon = block.settings[gmc_icon_key]
+                        assign gmc_filled = block.settings[gmc_fill_key]
+                        assign gmc_img = block.settings[gmc_img_key]
+                      -%}
+                      {%- if gmc_line != blank or gmc_icon != blank or gmc_img != blank -%}
+                        <span class="gmc-ti__item">
+                          <span class="gmc-ti__icon">
+                            {%- render 'gmc-icon', name: gmc_icon, size: block.settings.icon_size, image: gmc_img, filled: gmc_filled -%}
+                          </span>
+                          <span>{{ gmc_line }}</span>
+                        </span>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                {%- when 'atc_button' -%}
+                  <div class="image-with-text__atc" {{ block.shopify_attributes }}>
+                    {%- if block.settings.atc_product == blank -%}
+                      <button type="button" class="button" disabled>{{ block.settings.button_label | default: 'Add to cart' | escape }}</button>
+                    {%- else -%}
+                      {%- render 'gmc-inline-atc',
+                        product: block.settings.atc_product,
+                        label: block.settings.button_label,
+                        skip: block.settings.atc_skip_cart,
+                        align: 'inherit'
+                      -%}
+                    {%- endif -%}
+                  </div>
+                {%- when 'button' -%}
                   {%- if block.settings.button_label != blank -%}
                     <a
                       {% if block.settings.button_link == blank %}
@@ -126,6 +264,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "t:sections.image-with-text.settings.image.label"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Plays in place of the image. Muted, looping, and without controls."
     },
     {
       "type": "select",
@@ -266,6 +410,32 @@
       ],
       "default": "left",
       "label": "t:sections.image-with-text.settings.desktop_content_alignment.label"
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_media_width",
+      "label": "Full media width",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_direction",
+      "label": "Mobile media position",
+      "default": "normal",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Media first"
+        },
+        {
+          "value": "reverse",
+          "label": "Media second"
+        }
+      ]
     },
     {
       "type": "select",
@@ -625,32 +795,71 @@
     {
       "type": "rating_stars",
       "name": "Rating stars",
+      "limit": 1,
       "settings": [
         {
           "type": "range",
           "id": "stars",
           "min": 1,
           "max": 5,
-          "step": 1,
-          "label": "Stars",
+          "step": 0.1,
+          "label": "Rating",
           "default": 5
-        },
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "Rated by real customers"
         },
         {
           "type": "color",
           "id": "color",
           "label": "Star colour",
-          "default": "#f5a623"
+          "default": "#ffcc00"
+        },
+        {
+          "type": "select",
+          "id": "bg_stars_style",
+          "label": "Background stars",
+          "default": "full",
+          "options": [
+            {
+              "value": "full",
+              "label": "Full"
+            },
+            {
+              "value": "outlined",
+              "label": "Outlined"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bg_star_color",
+          "label": "Background star colour",
+          "default": "#ececec"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "label",
+          "label": "Text",
+          "default": "Rated by real customers"
+        },
+        {
+          "type": "range",
+          "id": "size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Text size",
+          "default": 16
+        },
+        {
+          "type": "text",
+          "id": "scroll_id",
+          "label": "Section ID to scroll to"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Link",
+          "info": "Used when no section ID is set."
         }
       ]
     },
@@ -695,11 +904,321 @@
           "type": "range",
           "id": "radius",
           "min": 0,
-          "max": 30,
+          "max": 40,
           "step": 2,
           "unit": "px",
           "label": "Corner radius",
           "default": 8
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "mobile_alignment",
+          "label": "Mobile alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text_icons",
+      "name": "Text with icons",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "line_1",
+          "label": "Text 1",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "icon_1",
+          "label": "Icon 1",
+          "default": "truck",
+          "info": "Icon name from the theme library."
+        },
+        {
+          "type": "checkbox",
+          "id": "filled_1",
+          "label": "Filled icon 1",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Custom icon 1"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "line_2",
+          "label": "Text 2",
+          "default": "Easy returns"
+        },
+        {
+          "type": "text",
+          "id": "icon_2",
+          "label": "Icon 2",
+          "default": "refresh"
+        },
+        {
+          "type": "checkbox",
+          "id": "filled_2",
+          "label": "Filled icon 2",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Custom icon 2"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "line_3",
+          "label": "Text 3"
+        },
+        {
+          "type": "text",
+          "id": "icon_3",
+          "label": "Icon 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "filled_3",
+          "label": "Filled icon 3",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Custom icon 3"
+        },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Direction",
+          "default": "vertical",
+          "options": [
+            {
+              "value": "horizontal",
+              "label": "Horizontal"
+            },
+            {
+              "value": "vertical",
+              "label": "Vertical"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "full",
+          "options": [
+            {
+              "value": "fit",
+              "label": "Fit text"
+            },
+            {
+              "value": "full",
+              "label": "Full"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "mobile_align",
+          "label": "Mobile alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "mobile_text_size",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile text size",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop text size",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 12,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 20
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text colour",
+          "default": "#121212"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon colour",
+          "default": "#121212"
+        },
+        {
+          "type": "range",
+          "id": "gap",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Gap",
+          "default": 12
+        },
+        {
+          "type": "checkbox",
+          "id": "show_bg",
+          "label": "Background",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background colour",
+          "default": "#f3f3f3"
+        },
+        {
+          "type": "range",
+          "id": "radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "pad",
+          "min": 0,
+          "max": 32,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "border_size",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "label": "Border thickness",
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border colour",
+          "default": "#b7b7b7"
+        }
+      ]
+    },
+    {
+      "type": "atc_button",
+      "name": "Add to cart button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Add to cart"
+        },
+        {
+          "type": "product",
+          "id": "atc_product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "atc_skip_cart",
+          "label": "Skip the cart and go straight to checkout",
+          "default": false
         }
       ]
     }

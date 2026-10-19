@@ -1,13 +1,23 @@
 {%- render 'gmc-scheme' -%}
 {%- if settings.gmc_scrolltop -%}
-<button type="button" id="gmc-top" aria-label="Scroll to top" hidden>↑</button>
+{%- liquid
+  assign gmc_top_place = section.settings.place | default: 'theme'
+  if gmc_top_place == 'theme'
+    assign gmc_top_place = settings.gmc_top_side | default: 'right'
+  endif
+-%}
+<button type="button" id="gmc-top" class="gmc-top--{{ gmc_top_place }} color-{{ section.settings.gmc_scheme }}" aria-label="Scroll to top" hidden data-after="{{ section.settings.after | default: 600 }}">↑</button>
 <style>
-  #gmc-top{position:fixed;{{ settings.gmc_top_side }}:1.5rem;bottom:calc(var(--gmc-dock,0px) + 1.5rem);z-index:40;width:44px;height:44px;border-radius:{% if settings.gmc_top_shape == 'square' %}10px{% else %}50%{% endif %};border:0;cursor:pointer;background:rgb(var(--color-foreground));color:rgb(var(--color-background));font-size:20px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  #gmc-top{position:fixed;bottom:calc(var(--gmc-dock,0px) + 1.5rem + {{ section.settings.offset_y | default: 0 }}px);z-index:40;width:44px;height:44px;border-radius:{% if settings.gmc_top_shape == 'square' %}10px{% else %}50%{% endif %};border:0;cursor:pointer;background:rgb(var(--color-button));color:rgb(var(--color-button-text));font-size:20px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  #gmc-top.gmc-top--left{left:calc(1.5rem + {{ section.settings.offset_x | default: 0 }}px)}
+  #gmc-top.gmc-top--right{right:calc(1.5rem + {{ section.settings.offset_x | default: 0 }}px)}
+  #gmc-top.gmc-top--center{left:50%;transform:translateX(-50%)}
   #gmc-top[hidden]{display:none}
 </style>
 <script>
   (function(){var b=document.getElementById('gmc-top');if(!b)return;
-  window.addEventListener('scroll',function(){b.hidden=window.scrollY<600;},{passive:true});
+  var after=+b.dataset.after||600;
+  window.addEventListener('scroll',function(){b.hidden=!(window.scrollY>=after);},{passive:true});
   b.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});})();
 </script>
 {%- endif -%}
@@ -17,7 +27,62 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Configure under Theme settings > GMC features."
+      "content": "Turn the button on under Theme settings > GMC: Effects & buttons. Colour, scroll distance and offsets are set here."
+    },
+    {
+      "type": "range",
+      "id": "after",
+      "min": 100,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "label": "Show after scrolling",
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "place",
+      "label": "Position",
+      "info": "Centre ignores the horizontal offset. Theme default uses Theme settings > Scroll-to-top button position.",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme setting"
+        },
+        {
+          "value": "left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "theme"
+    },
+    {
+      "type": "range",
+      "id": "offset_x",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "offset_y",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical offset",
+      "default": 0
     },
     {
       "type": "color_scheme",

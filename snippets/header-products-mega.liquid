@@ -1,0 +1,75 @@
+{% doc %}
+  Desktop mega menu that lists a menu item's child links and shows product or collection cards for the active child.
+
+  @param {link} link - Top-level menu link
+  @param {number} menu_index - Position of the link in the header menu
+{% enddoc %}
+<header-menu>
+  <details id="Details-HeaderMenu-{{ menu_index }}" class="mega-menu gmc-pmega">
+    <summary id="HeaderMenu-{{ link.handle }}" class="header__menu-item list-menu__item link focus-inset">
+      <span{% if link.child_active %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </summary>
+    <div id="MegaMenu-Content-{{ menu_index }}" class="mega-menu__content gmc-pmega__panel color-{{ section.settings.menu_color_scheme }} gradient" tabindex="-1">
+      <gmc-products-menu class="gmc-pmega__grid page-width">
+        <ul class="gmc-pmega__nav" role="list">
+          {%- for childlink in link.links -%}
+            <li>
+              <button
+                type="button"
+                class="gmc-pmega__tab{% if forloop.first %} is-active{% endif %}"
+                data-gmc-pmega
+                aria-controls="GmcPmega-{{ menu_index }}-{{ forloop.index }}"
+                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                {%- if section.settings.gmc_mega_col_images and childlink.type == 'collection_link' and childlink.object.featured_image != blank -%}
+                  {{ childlink.object.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '', class: 'gmc-pmega__thumb', widths: '60, 120' }}
+                {%- endif -%}
+                <span>{{ childlink.title | escape }}</span>
+              </button>
+              <a class="gmc-pmega__goto" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- for childlink in link.links -%}
+          <div id="GmcPmega-{{ menu_index }}-{{ forloop.index }}" class="gmc-pmega__cards" data-gmc-pmega-panel{% unless forloop.first %} hidden{% endunless %}>
+            {%- if section.settings.gmc_mega_from_collection and childlink.type == 'collection_link' -%}
+              {%- for product in childlink.object.products limit: 8 -%}
+                <div class="gmc-pmega__card">
+                  {%- render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: 'square',
+                    lazy_load: true,
+                    skip_styles: true,
+                    section_id: section.id
+                  -%}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+            {%- for grandchildlink in childlink.links -%}
+              <div class="gmc-pmega__card">
+                {%- if grandchildlink.type == 'product_link' -%}
+                  {%- render 'card-product',
+                    card_product: grandchildlink.object,
+                    media_aspect_ratio: 'square',
+                    lazy_load: true,
+                    skip_styles: true,
+                    section_id: section.id
+                  -%}
+                {%- elsif grandchildlink.type == 'collection_link' -%}
+                  {%- render 'card-collection',
+                    card_collection: grandchildlink.object,
+                    media_aspect_ratio: 'square',
+                    columns: 4
+                  -%}
+                {%- else -%}
+                  <a class="gmc-pmega__textlink" href="{{ grandchildlink.url }}">{{ grandchildlink.title | escape }}</a>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </gmc-products-menu>
+    </div>
+  </details>
+</header-menu>

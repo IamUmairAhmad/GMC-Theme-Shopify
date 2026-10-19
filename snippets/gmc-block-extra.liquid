@@ -2,9 +2,61 @@
 {%- assign b = block.settings -%}
 {%- case block.type -%}
   {%- when 'rating_stars' -%}
-    <p class="gmc-bx__rt" {{ block.shopify_attributes }} style="margin:0;text-align:inherit">{%- if b.link != blank -%}<a href="{{ b.link }}" style="color:inherit;text-decoration:none">{%- endif -%}<span style="color:{{ b.color }};letter-spacing:2px" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</span> {{ b.label | escape }}{%- if b.link != blank -%}</a>{%- endif -%}</p>
+    {%- if b.size != blank or b.bg_star_color != blank -%}
+      {%- liquid
+        assign gmc_rating = b.stars | default: 5
+        assign gmc_pct = gmc_rating | times: 20
+        if gmc_pct > 100
+          assign gmc_pct = 100
+        endif
+        assign gmc_href = b.link
+        if gmc_href == blank and b.scroll_id != blank
+          assign gmc_sid = b.scroll_id | remove: '#' | handleize
+          assign gmc_href = '#' | append: gmc_sid
+        endif
+      -%}
+      <p class="gmc-bx__rt" {{ block.shopify_attributes }} style="margin:0;text-align:inherit;font-size:{{ b.size | default: 16 }}px">
+        {%- if gmc_href != blank -%}<a href="{{ gmc_href }}" style="color:inherit;text-decoration:none">{%- endif -%}
+        <span class="gmc-stars{% if b.bg_stars_style == 'outlined' %} gmc-stars--line{% endif %}" style="--fg:{{ b.color | default: '#ffcc00' }};--bg:{{ b.bg_star_color | default: '#ececec' }}" aria-label="{{ gmc_rating }} out of 5">
+          <span class="gmc-stars__bg" aria-hidden="true">★★★★★</span>
+          <span class="gmc-stars__fg" style="width:{{ gmc_pct }}%" aria-hidden="true">★★★★★</span>
+        </span>
+        {{ b.label }}
+        {%- if gmc_href != blank -%}</a>{%- endif -%}
+      </p>
+      <style>.gmc-stars{position:relative;display:inline-block;line-height:1;letter-spacing:2px;margin-right:.4rem}.gmc-stars__bg{color:var(--bg,#ececec)}.gmc-stars--line .gmc-stars__bg{color:transparent;-webkit-text-stroke:1px var(--bg,#ececec)}.gmc-stars__fg{position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;color:var(--fg,#ffcc00)}</style>
+    {%- else -%}
+      <p class="gmc-bx__rt" {{ block.shopify_attributes }} style="margin:0;text-align:inherit">{%- if b.link != blank -%}<a href="{{ b.link }}" style="color:inherit;text-decoration:none">{%- endif -%}<span style="color:{{ b.color }};letter-spacing:2px" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</span> {{ b.label | escape }}{%- if b.link != blank -%}</a>{%- endif -%}</p>
+    {%- endif -%}
   {%- when 'text_icon' -%}
     <p class="gmc-bx__ti" {{ block.shopify_attributes }} style="margin:0;display:inline-flex;gap:.8rem;align-items:center">{%- render 'gmc-icon', name: b.icon_name, size: 24 -%}<span>{{ b.text | escape }}</span></p>
   {%- when 'image' -%}
-    {%- if b.image != blank -%}<div {{ block.shopify_attributes }} style="max-width:{{ b.width }}%;margin-inline:auto">{{ b.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: 'width:100%;height:auto;display:block;border-radius:' | append: b.radius | append: 'px', alt: b.image.alt }}</div>{%- endif -%}
+    {%- liquid
+      assign gmc_ia = b.alignment | default: 'center'
+      assign gmc_iam = b.mobile_alignment | default: gmc_ia
+      if gmc_ia == 'left'
+        assign gmc_ij = 'flex-start'
+      elsif gmc_ia == 'right'
+        assign gmc_ij = 'flex-end'
+      else
+        assign gmc_ij = 'center'
+      endif
+      if gmc_iam == 'left'
+        assign gmc_ijm = 'flex-start'
+      elsif gmc_iam == 'right'
+        assign gmc_ijm = 'flex-end'
+      else
+        assign gmc_ijm = 'center'
+      endif
+    -%}
+    {%- if b.image != blank or request.design_mode -%}
+      <div class="gmc-bx__img" {{ block.shopify_attributes }} style="--w:{{ b.width | default: 100 }}%;--j:{{ gmc_ij }};--jm:{{ gmc_ijm }}">
+        {%- if b.image != blank -%}
+          {{ b.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: 'width:100%;height:auto;display:block;border-radius:' | append: b.radius | append: 'px', alt: b.image.alt }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <style>.gmc-bx__img{display:flex;justify-content:var(--j,center);max-width:100%}.gmc-bx__img img,.gmc-bx__img svg{width:var(--w,100%);height:auto}@media(max-width:749px){.gmc-bx__img{justify-content:var(--jm,var(--j,center))}}</style>
+    {%- endif -%}
 {%- endcase -%}

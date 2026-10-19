@@ -27,7 +27,7 @@
           <input id="gmc-o-{{ sid }}" class="field__input" name="order" required autocomplete="off" placeholder="{{ s.order_placeholder | escape }}">
           <label class="field__label" for="gmc-c-{{ sid }}">{{ s.contact_label | escape }}</label>
           <input id="gmc-c-{{ sid }}" class="field__input" name="contact" required autocomplete="email" placeholder="{{ s.contact_placeholder | escape }}">
-          <button type="submit" class="button">{{ s.button_label | escape }}</button>
+          <button type="submit" class="button{% if s.button_full_width %} button--full-width{% endif %}">{{ s.button_label | escape }}</button>
         </form>
       {%- else -%}
         {%- form 'contact', id: 'gmc-tyo-form', class: 'gmc-tyo__form' -%}
@@ -43,7 +43,7 @@
             <label class="field__label" for="gmc-p-{{ sid }}">{{ s.phone_label | escape }}</label>
             <input id="gmc-p-{{ sid }}" class="field__input" type="tel" name="contact[phone]" autocomplete="tel" placeholder="{{ s.phone_placeholder | escape }}">
             <input type="hidden" name="contact[body]" value="Please send me the status of my order.">
-            <button type="submit" class="button">{{ s.button_label_form | escape }}</button>
+            <button type="submit" class="button{% if s.button_full_width %} button--full-width{% endif %}">{{ s.button_label_form | escape }}</button>
           {%- endif -%}
         {%- endform -%}
       {%- endif -%}
@@ -53,7 +53,7 @@
       <form class="gmc-tyo__form" data-gmc-tracking-form data-url="{{ s.tracking_url | escape }}">
         <label class="field__label" for="gmc-t-{{ sid }}">{{ s.tracking_label | escape }}</label>
         <input id="gmc-t-{{ sid }}" class="field__input" name="tracking" required autocomplete="off" placeholder="{{ s.tracking_placeholder | escape }}">
-        <button type="submit" class="button">{{ s.button_label_tracking | escape }}</button>
+        <button type="submit" class="button{% if s.button_full_width %} button--full-width{% endif %}">{{ s.button_label_tracking | escape }}</button>
       </form>
     </div>
 
@@ -195,6 +195,12 @@
       "id": "button_label",
       "label": "Button label",
       "default": "Track order"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_full_width",
+      "label": "Full-width button",
+      "default": false
     },
     {
       "type": "text",

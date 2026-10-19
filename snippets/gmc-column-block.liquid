@@ -1,0 +1,88 @@
+{% doc %}
+  Renders one column-builder block.
+  @param {object} block - Section block to render
+{% enddoc %}
+{%- assign b = block.settings -%}
+{%- case block.type -%}
+  {%- when 'heading' -%}
+    {%- case b.size -%}
+      {%- when 'h1' -%}<h1 class="gmc-cb__h" style="text-align:{{ b.align | default: 'left' }}">{{ b.heading | escape }}</h1>
+      {%- when 'h3' -%}<h3 class="gmc-cb__h" style="text-align:{{ b.align | default: 'left' }}">{{ b.heading | escape }}</h3>
+      {%- else -%}<h2 class="gmc-cb__h" style="text-align:{{ b.align | default: 'left' }}">{{ b.heading | escape }}</h2>
+    {%- endcase -%}
+  {%- when 'richtext' -%}
+    <div class="rte" style="text-align:{{ b.align | default: 'left' }}">{{ b.text }}</div>
+  {%- when 'rating_stars' -%}
+    <p class="gmc-cb__stars" style="text-align:{{ b.align | default: 'left' }}">
+      {%- if b.link != blank -%}<a href="{{ b.link }}">{%- endif -%}
+      <span style="color:{{ b.color | default: '#f5a623' }}" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.25">★</span>{%- endif -%}{%- endfor -%}</span>
+      {{ b.label | escape }}
+      {%- if b.link != blank -%}</a>{%- endif -%}
+    </p>
+  {%- when 'buttons' -%}
+    <div class="gmc-cb__btns" style="justify-content:{% if b.align == 'center' %}center{% elsif b.align == 'right' %}flex-end{% else %}flex-start{% endif %}">
+      {%- if b.label_1 != blank -%}<a class="button{% if b.secondary_1 %} button--secondary{% endif %}" {% if b.link_1 == blank %}role="link" aria-disabled="true"{% else %}href="{{ b.link_1 }}"{% endif %}>{{ b.label_1 | escape }}</a>{%- endif -%}
+      {%- if b.label_2 != blank -%}<a class="button{% if b.secondary_2 %} button--secondary{% endif %}" {% if b.link_2 == blank %}role="link" aria-disabled="true"{% else %}href="{{ b.link_2 }}"{% endif %}>{{ b.label_2 | escape }}</a>{%- endif -%}
+    </div>
+  {%- when 'atc_button' -%}
+    <div style="text-align:{{ b.align | default: 'left' }}">{%- render 'gmc-inline-atc', product: b.product, label: b.label, skip: b.skip, align: b.align -%}</div>
+  {%- when 'text_with_icon' -%}
+    <div class="gmc-cb__tis" style="text-align:{{ b.align | default: 'left' }}">
+      {%- if b.text_1 != blank or b.icon_1 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_1, size: 20 -%} {{ b.text_1 | escape }}</p>{%- endif -%}
+      {%- if b.text_2 != blank or b.icon_2 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_2, size: 20 -%} {{ b.text_2 | escape }}</p>{%- endif -%}
+      {%- if b.text_3 != blank or b.icon_3 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_3, size: 20 -%} {{ b.text_3 | escape }}</p>{%- endif -%}
+    </div>
+  {%- when 'icon_with_text' -%}
+    <div class="gmc-cb__iwt gmc-cb__iwt--{{ b.position }}" style="text-align:{{ b.align | default: 'left' }}">
+      <span class="gmc-cb__ic">{%- render 'gmc-icon', name: b.icon_name, image: b.image, size: b.icon_size, filled: b.filled -%}</span>
+      <span>
+        {%- if b.title != blank -%}<strong>{{ b.title | escape }}</strong>{%- endif -%}
+        {%- if b.text != blank -%}<span class="gmc-cb__sub">{{ b.text | escape }}</span>{%- endif -%}
+      </span>
+    </div>
+  {%- when 'image' -%}
+    {%- if b.image != blank -%}
+      <div style="width:{{ b.width }}%;{% if b.align == 'center' %}margin-inline:auto;{% elsif b.align == 'right' %}margin-left:auto;{% endif %}">
+        {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 800, 1200', alt: b.image.alt, style: 'width:100%;height:auto;border-radius:' | append: b.radius | append: 'px' }}
+      </div>
+    {%- endif -%}
+  {%- when 'video' -%}
+    {%- if b.video != blank -%}
+      <div class="gmc-cb__vid" style="width:{{ b.width }}%;border-radius:{{ b.radius }}px">
+        <video playsinline preload="metadata" {% if b.autoplay %}autoplay muted{% endif %}{% if b.loop %} loop{% endif %}{% if b.image != blank %} poster="{{ b.image | image_url: width: 1200 }}"{% endif %}{% unless b.autoplay %} controls{% endunless %}>
+          {%- for source in b.video.sources -%}{%- if source.format == 'mp4' -%}<source src="{{ source.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}
+        </video>
+      </div>
+    {%- endif -%}
+  {%- when 'accordion' -%}
+    <details class="gmc-cb__acc">
+      <summary>{{ b.heading | escape }}</summary>
+      <div class="rte">{{ b.content }}</div>
+    </details>
+  {%- when 'payment_badges' -%}
+    <ul class="gmc-cb__pay" role="list" style="justify-content:{% if b.align == 'center' %}center{% elsif b.align == 'right' %}flex-end{% else %}flex-start{% endif %}">
+      {%- if b.types != blank -%}
+        {%- assign pay_list = b.types | split: ',' -%}
+        {%- for type in pay_list -%}
+          <li>{{ type | strip | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  {%- when 'email_signup' -%}
+    {%- form 'customer', class: 'gmc-cb__mail' -%}
+      {%- if form.posted_successfully? -%}
+        <p role="status">{{ b.success | escape }}</p>
+      {%- else -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="gmc-cb-email-{{ block.id }}">{{ b.label | escape }}</label>
+        <input id="gmc-cb-email-{{ block.id }}" type="email" name="contact[email]" required placeholder="{{ b.label | escape }}" autocomplete="email">
+        <button class="button" type="submit">{{ b.button | escape }}</button>
+      {%- endif -%}
+    {%- endform -%}
+  {%- when 'custom_liquid' -%}
+    <div class="rte">{{ b.custom_liquid }}</div>
+{%- endcase -%}

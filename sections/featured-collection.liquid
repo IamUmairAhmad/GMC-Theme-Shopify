@@ -37,6 +37,22 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  {%- if section.settings.stretch_cards -%}
+    #Slider-{{ section.id }}.grid--stretch {
+      align-items: stretch;
+    }
+
+    #Slider-{{ section.id }}.grid--stretch > .grid__item {
+      display: flex;
+    }
+
+    #Slider-{{ section.id }}.grid--stretch .card-wrapper,
+    #Slider-{{ section.id }}.grid--stretch .card {
+      width: 100%;
+      height: 100%;
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 {%- liquid
@@ -97,7 +113,7 @@
       <ul
         id="Slider-{{ section.id }}"
         data-id="{{ section.id }}"
-        class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop{% if section.settings.collection == blank %} grid--2-col-tablet-down{% else %} grid--{{ section.settings.columns_mobile }}-col-tablet-down{% endif %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
+        class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop{% if section.settings.collection == blank %} grid--2-col-tablet-down{% else %} grid--{{ section.settings.columns_mobile }}-col-tablet-down{% endif %}{% if section.settings.stretch_cards %} grid--stretch{% endif %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
         role="list"
         aria-label="{{ 'general.slider.name' | t }}"
       >
@@ -126,6 +142,7 @@
                   show_secondary_image: section.settings.show_secondary_image,
                   show_vendor: section.settings.show_vendor,
                   show_rating: section.settings.show_rating,
+                  badges: section.settings.badges,
                   skip_styles: skip_card_product_styles,
                   section_id: section.id,
                   quick_add: section.settings.quick_add,
@@ -440,6 +457,37 @@
       "id": "show_secondary_image",
       "default": false,
       "label": "t:sections.featured-collection.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "stretch_cards",
+      "label": "Make all cards the same height",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "badges",
+      "label": "Badges",
+      "default": "all",
+      "info": "Regular shows sale and sold out badges. Custom shows tag badges. All shows both.",
+      "options": [
+        {
+          "value": "all",
+          "label": "All"
+        },
+        {
+          "value": "regular",
+          "label": "Regular sale"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        },
+        {
+          "value": "disabled",
+          "label": "Hidden"
+        }
+      ]
     },
     {
       "type": "checkbox",

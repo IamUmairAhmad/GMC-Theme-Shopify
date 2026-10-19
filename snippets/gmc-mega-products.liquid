@@ -1,0 +1,20 @@
+{% doc %}
+  Compact product links for the mobile menu when a collection is part of the products mega menu.
+
+  @param {link} link - Collection menu link
+{% enddoc %}
+{%- if section.settings.gmc_mega_from_collection and link.type == 'collection_link' -%}
+  <ul class="gmc-pmega-mini" role="list">
+    {%- for product in link.object.products limit: 4 -%}
+      <li>
+        <a href="{{ product.url }}">
+          {%- if product.featured_image != blank -%}
+            {{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '', widths: '60, 120' }}
+          {%- endif -%}
+          <span>{{ product.title | escape }}</span>
+          <small>{{ product.price | money }}</small>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

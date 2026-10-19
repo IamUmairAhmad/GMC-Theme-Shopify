@@ -2,16 +2,16 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add logo blocks.' -%}{%- endif -%}
-<div class="page-width gmc-fo{% if section.settings.gray %} gmc-fo--gray{% endif %} {% render 'gmc-vis', hide: section.settings.hide_on %}">
+<div class="page-width gmc-fo{% if section.settings.gray %} gmc-fo--gray{% endif %} {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--lh:{{ section.settings.h }}px;--lh-m:{{ section.settings.h_m }}px">
   {%- if section.settings.heading != blank -%}<p class="gmc-fo__t">{{ section.settings.heading | escape }}</p>{%- endif -%}
-  {%- capture logos -%}{%- for block in section.blocks -%}{%- if block.settings.logo != blank -%}<span class="gmc-fo__i{% if section.settings.layout == 'slider' %} gmc-sl__s{% endif %}" {{ block.shopify_attributes }}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}"{% if section.settings.new_tab %} target="_blank" rel="noopener"{% endif %} aria-label="{{ block.settings.logo.alt | escape }}">{%- endif -%}{{ block.settings.logo | image_url: width: 300 | image_tag: height: section.settings.h, loading: 'lazy', style: 'height:' | append: section.settings.h | append: 'px;width:auto;max-width:100%' }}{%- if block.settings.link != blank -%}</a>{%- endif -%}</span>{%- endif -%}{%- endfor -%}{%- endcapture -%}
+  {%- capture logos -%}{%- for block in section.blocks -%}{%- if block.settings.logo != blank -%}<span class="gmc-fo__i{% if section.settings.layout == 'slider' %} gmc-sl__s{% endif %}" {{ block.shopify_attributes }}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}"{% if section.settings.new_tab or block.settings.new_tab %} target="_blank" rel="noopener"{% endif %} aria-label="{{ block.settings.logo.alt | escape }}">{%- endif -%}{{ block.settings.logo | image_url: width: 400 | image_tag: loading: 'lazy', class: 'gmc-fo__img', alt: block.settings.logo.alt }}{%- if block.settings.link != blank -%}</a>{%- endif -%}</span>{%- endif -%}{%- endfor -%}{%- endcapture -%}
   {%- if section.settings.layout == 'slider' -%}
-    <div class="gmc-sl gmc-fo__sl{% if section.settings.slider_desktop == false %} gmc-fo__sl--m{% endif %}" data-gmc-slider data-mode="slide" data-autoplay="{% if section.settings.autoplay %}3{% else %}0{% endif %}" data-loop="true" data-dots="true" data-arrows="false" data-drag="true" data-perview="{{ section.settings.per_view }}" data-perview-m="{{ section.settings.per_view_m }}" style="--per:{{ section.settings.per_view }};--per-m:{{ section.settings.per_view_m }};--gmc-gap:24px;--gmc-dot:rgb(var(--color-foreground))"><div class="gmc-sl__vp"><div class="gmc-sl__tr">{{ logos }}</div></div></div>
+    <div class="gmc-sl gmc-fo__sl{% if section.settings.slider_desktop == false %} gmc-fo__sl--m{% endif %}" data-gmc-slider data-mode="slide" data-autoplay="{% if section.settings.autoplay %}{{ section.settings.speed }}{% else %}0{% endif %}" data-loop="true" data-dots="{{ section.settings.dots }}" data-arrows="false" data-drag="true" data-perview="{{ section.settings.per_view }}" data-perview-m="{{ section.settings.per_view_m }}" style="--per:{{ section.settings.per_view }};--per-m:{{ section.settings.per_view_m }};--gmc-gap:24px;--gmc-dot:rgb(var(--color-foreground))"><div class="gmc-sl__vp"><div class="gmc-sl__tr">{{ logos }}</div></div></div>
   {%- else -%}
     <div class="gmc-fo__row gmc-fo__row--{{ section.settings.layout }}"{% if section.settings.layout == 'grid' %} style="--cols:{{ section.settings.per_view }}"{% endif %}>{{ logos }}</div>
   {%- endif -%}
 </div>
-<style>.gmc-fo{padding:28px 0;text-align:center}.gmc-fo__t{opacity:.65;margin:0 0 1rem;text-transform:uppercase;letter-spacing:.1em;font-size:1.2rem}.gmc-fo__row{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;align-items:center;opacity:.8}.gmc-fo--gray .gmc-fo__row,.gmc-fo--gray .gmc-fo__sl{filter:grayscale(1)}.gmc-fo__row--grid{display:grid;grid-template-columns:repeat(var(--cols,4),1fr)}.gmc-fo__i{display:flex;justify-content:center;align-items:center}.gmc-fo__i a{display:block}</style>
+<style>.gmc-fo{padding:28px 0;text-align:center}.gmc-fo__t{opacity:.65;margin:0 0 1rem;text-transform:uppercase;letter-spacing:.1em;font-size:1.2rem}.gmc-fo__row{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;align-items:center;opacity:.8}.gmc-fo--gray .gmc-fo__row,.gmc-fo--gray .gmc-fo__sl{filter:grayscale(1)}.gmc-fo__row--grid{display:grid;grid-template-columns:repeat(var(--cols,4),1fr)}.gmc-fo__i{display:flex;justify-content:center;align-items:center}.gmc-fo__i a{display:block}.gmc-fo__img{height:var(--lh,32px);width:auto;max-width:100%}@media(max-width:749px){.gmc-fo__img{height:var(--lh-m,var(--lh,32px))}}</style>
 {% schema %}
 {
   "name": "Featured on",
@@ -29,9 +29,20 @@
       "id": "h",
       "min": 20,
       "max": 80,
+      "step": 1,
       "unit": "px",
-      "label": "Logo height",
+      "label": "Logo height on desktop",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "h_m",
+      "min": 16,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo height on mobile",
+      "default": 28
     },
     {
       "type": "checkbox",
@@ -82,6 +93,22 @@
       "id": "autoplay",
       "label": "Slider autoplay",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay speed",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Show dots",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -300,6 +327,12 @@
           "type": "url",
           "id": "link",
           "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open this logo in a new tab",
+          "default": false
         }
       ]
     }

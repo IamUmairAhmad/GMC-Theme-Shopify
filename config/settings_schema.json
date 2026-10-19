@@ -866,6 +866,18 @@
         "default": "Get 10% off your first order"
       },
       {
+        "type": "select",
+        "id": "gmc_popup_heading_size",
+        "label": "Heading size",
+        "options": [
+          { "value": "h3", "label": "Small" },
+          { "value": "h2", "label": "Medium" },
+          { "value": "h1", "label": "Large" },
+          { "value": "h0", "label": "Extra large" }
+        ],
+        "default": "h2"
+      },
+      {
         "type": "textarea",
         "id": "gmc_popup_text",
         "label": "Text",
@@ -890,6 +902,56 @@
         "type": "image_picker",
         "id": "gmc_popup_image",
         "label": "Image (optional)"
+      },
+      {
+        "type": "select",
+        "id": "gmc_popup_image_side",
+        "label": "Image side on desktop",
+        "options": [
+          { "value": "start", "label": "Left" },
+          { "value": "end", "label": "Right" }
+        ],
+        "default": "start"
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_dismiss",
+        "label": "Dismiss button label",
+        "default": "No thanks"
+      },
+      {
+        "type": "header",
+        "content": "After signup"
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_ok_heading",
+        "label": "Success heading",
+        "default": "You are in"
+      },
+      {
+        "type": "textarea",
+        "id": "gmc_popup_ok_text",
+        "label": "Success text",
+        "default": "Thanks for subscribing."
+      },
+      {
+        "type": "checkbox",
+        "id": "gmc_popup_ok_image",
+        "label": "Show the image on the success screen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_copy",
+        "label": "Copy button label",
+        "default": "Copy"
+      },
+      {
+        "type": "text",
+        "id": "gmc_popup_copied",
+        "label": "Copied message",
+        "default": "Copied"
       },
       {
         "type": "text",
@@ -1092,6 +1154,23 @@
       },
       {
         "type": "image_picker",
+        "id": "gmc_logo_secondary",
+        "label": "Secondary logo",
+        "info": "Shown while a header is transparent, unless that header already has its own secondary logo."
+      },
+      {
+        "type": "range",
+        "id": "gmc_logo_mobile",
+        "min": 0,
+        "max": 300,
+        "step": 10,
+        "default": 0,
+        "unit": "px",
+        "label": "Mobile logo width",
+        "info": "0 keeps the desktop width. A header section can set its own mobile width."
+      },
+      {
+        "type": "image_picker",
         "id": "favicon",
         "label": "t:settings_schema.logo.settings.favicon.label",
         "info": "t:settings_schema.logo.settings.favicon.info"
@@ -1163,6 +1242,118 @@
           "on_secondary_button": "secondary_button_label",
           "secondary_button_border": "secondary_button_label"
         }
+      }
+    ]
+  },
+  {
+    "name": "Accent colours",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Named accent, surface, and inverse colours. Each section still has its own colour scheme. These colours are used by accent classes, icon accents, variant pills, and variant dropdowns."
+      },
+      {
+        "type": "header",
+        "content": "Accents"
+      },
+      {
+        "type": "color",
+        "id": "gmc_accent_1",
+        "default": "#121212",
+        "label": "Accent 1"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_accent_1_gradient",
+        "label": "Accent 1 gradient"
+      },
+      {
+        "type": "color",
+        "id": "gmc_accent_2",
+        "default": "#334FB4",
+        "label": "Accent 2"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_accent_2_gradient",
+        "label": "Accent 2 gradient"
+      },
+      {
+        "type": "header",
+        "content": "Surfaces"
+      },
+      {
+        "type": "color",
+        "id": "gmc_surface_1",
+        "default": "#FFFFFF",
+        "label": "Surface 1"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_surface_1_gradient",
+        "label": "Surface 1 gradient"
+      },
+      {
+        "type": "color",
+        "id": "gmc_surface_2",
+        "default": "#F3F3F3",
+        "label": "Surface 2"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_surface_2_gradient",
+        "label": "Surface 2 gradient"
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "color",
+        "id": "gmc_ink",
+        "default": "#121212",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "gmc_outline",
+        "default": "#121212",
+        "label": "Outline buttons and links"
+      },
+      {
+        "type": "color",
+        "id": "gmc_on_accent",
+        "default": "#FFFFFF",
+        "label": "Text on accent"
+      },
+      {
+        "type": "header",
+        "content": "Icons"
+      },
+      {
+        "type": "select",
+        "id": "accent_icons",
+        "label": "Icon accent",
+        "info": "Colours rating stars and other icon accents.",
+        "default": "text",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "outline",
+            "label": "Outline"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
       }
     ]
   },
@@ -1391,6 +1582,35 @@
         "label": "Selected pill colour"
       },
       {
+        "type": "select",
+        "id": "gmc_pill_scheme",
+        "label": "Selected pill colour scheme",
+        "info": "Used when Selected pill colour is empty.",
+        "default": "foreground",
+        "options": [
+          {
+            "value": "foreground",
+            "label": "Theme default"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "outline",
+            "label": "Outline"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
+      },
+      {
         "type": "checkbox",
         "id": "gmc_pill_bold",
         "label": "Bold pill text",
@@ -1399,6 +1619,138 @@
       {
         "type": "header",
         "content": "Variant dropdown (GMC)"
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_scheme",
+        "label": "Dropdown colour scheme",
+        "info": "Used when Dropdown background is empty.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colours below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Inverse"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_border_scheme",
+        "label": "Dropdown border scheme",
+        "info": "Used when Dropdown border colour is empty.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colour below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_text_scheme",
+        "label": "Dropdown text scheme",
+        "info": "Used when Dropdown text and arrow is empty.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colour below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_tint_scheme",
+        "label": "Dropdown tint scheme",
+        "info": "Used when Dropdown tint colour is empty. Tint strength still controls how strong it is.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colour below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
       },
       {
         "type": "color",
@@ -1430,6 +1782,106 @@
         "id": "gmc_dd_shadow",
         "label": "Dropdown shadow",
         "default": false
+      },
+      {
+        "type": "color",
+        "id": "gmc_dd_text",
+        "label": "Dropdown text and arrow"
+      },
+      {
+        "type": "color",
+        "id": "gmc_dd_overlay",
+        "label": "Dropdown tint colour"
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_overlay_o",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "%",
+        "label": "Dropdown tint strength",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_thick",
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "unit": "px",
+        "label": "Dropdown border thickness",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_border_o",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Dropdown border strength",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_shadow_o",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Dropdown shadow strength",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_shadow_x",
+        "min": -12,
+        "max": 12,
+        "step": 2,
+        "unit": "px",
+        "label": "Dropdown shadow sideways",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_shadow_y",
+        "min": -12,
+        "max": 12,
+        "step": 2,
+        "unit": "px",
+        "label": "Dropdown shadow up/down",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_shadow_blur",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "unit": "px",
+        "label": "Dropdown shadow blur",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_hover_overlay",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "%",
+        "label": "Dropdown hover tint",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "gmc_dd_hover_border",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Dropdown hover border strength",
+        "default": 0
       }
     ]
   },
@@ -2482,6 +2934,13 @@
       },
       {
         "type": "checkbox",
+        "id": "gmc_badge_edge",
+        "label": "Pin card badges to the corner",
+        "default": false,
+        "info": "Removes the inset around sale and custom badges. Top centre stays centred."
+      },
+      {
+        "type": "checkbox",
         "id": "gmc_sale_icon",
         "label": "Show a discount icon in the sale badge",
         "default": false
@@ -2492,6 +2951,12 @@
         "label": "Custom badges from tags",
         "default": true,
         "info": "A product tag named custom-badge-Best seller shows a Best seller badge on its cards."
+      },
+      {
+        "type": "textarea",
+        "id": "gmc_badge_presets",
+        "label": "Preset badge labels",
+        "info": "Comma-separated. Tag custom-badge-1 uses the first label, custom-badge-2 the second. [percentage] and [amount] fill in from the compare-at price."
       },
       {
         "type": "color_scheme",
@@ -2618,6 +3083,14 @@
             "label": "Letter spread"
           },
           {
+            "value": "center",
+            "label": "Centre fill"
+          },
+          {
+            "value": "sweep",
+            "label": "Left-to-right fill"
+          },
+          {
             "value": "arrow",
             "label": "Arrow slide"
           }
@@ -2629,13 +3102,39 @@
         "content": "Scrollbar and cursor"
       },
       {
+        "type": "select",
+        "id": "gmc_scroll_style",
+        "label": "Scrollbar style",
+        "options": [
+          {
+            "value": "browser",
+            "label": "Browser default"
+          },
+          {
+            "value": "thin",
+            "label": "Thin"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "custom",
+            "label": "Custom colours"
+          }
+        ],
+        "default": "browser",
+        "info": "Custom colours use the width, thumb, and track below. A width above 0 also turns custom colours on."
+      },
+      {
         "type": "range",
         "id": "gmc_scroll_w",
         "min": 0,
         "max": 20,
         "step": 1,
         "unit": "px",
-        "label": "Scrollbar width (0 = browser default)",
+        "label": "Custom scrollbar width",
+        "info": "Used for custom colours. 0 uses 9px.",
         "default": 0
       },
       {

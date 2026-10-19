@@ -4,10 +4,26 @@
 {%- assign fg = section.settings.fg | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
 {%- assign ac = section.settings.accent | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
 {%- assign bt = section.settings.button_text | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
+{%- if section.settings.outline != blank -%}
+  {%- assign ol = section.settings.outline | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
+{%- endif -%}
 <style>
-  body,[class*="color-"]{--color-background:{{ bg }};--color-foreground:{{ fg }};--color-button:{{ ac }};--color-button-text:{{ bt }};--color-link:{{ ac }};--color-base-background-1:{{ bg }};--color-base-text:{{ fg }};--gradient-background:{{ section.settings.bg }}}
-  body{background:{{ section.settings.bg }}}
-  [class*="color-"].gradient{background:{{ section.settings.bg }}}
+  body,[class*="color-"]{--color-background:{{ bg }};--color-foreground:{{ fg }};--color-button:{{ ac }};--color-button-text:{{ bt }};--color-secondary-button:{{ bg }};--color-link:{% if ol != blank %}{{ ol }}{% else %}{{ ac }}{% endif %};--color-badge-foreground:{{ fg }};--color-badge-background:{{ bg }};--color-badge-border:{{ fg }};{% if ol != blank %}--color-secondary-button-text:{{ ol }};{% endif %}--gradient-background:{% if section.settings.gradient != blank %}{{ section.settings.gradient }}{% else %}{{ section.settings.bg }}{% endif %}}
+  body{background:{% if section.settings.gradient != blank %}{{ section.settings.gradient }}{% else %}{{ section.settings.bg }}{% endif %}}
+  [class*="color-"].gradient{background:{% if section.settings.gradient != blank %}{{ section.settings.gradient }}{% else %}{{ section.settings.bg }}{% endif %}}
+  :root{
+    --gmc-s1:{{ section.settings.bg.red }},{{ section.settings.bg.green }},{{ section.settings.bg.blue }};
+    --gmc-ink:{{ section.settings.fg.red }},{{ section.settings.fg.green }},{{ section.settings.fg.blue }};
+    --gmc-a1:{{ section.settings.accent.red }},{{ section.settings.accent.green }},{{ section.settings.accent.blue }};
+    --gmc-on:{{ section.settings.button_text.red }},{{ section.settings.button_text.green }},{{ section.settings.button_text.blue }};
+    --gmc-a1-bg:{% if section.settings.accent_gradient != blank %}{{ section.settings.accent_gradient }}{% else %}{{ section.settings.accent }}{% endif %};
+    --gmc-s1-bg:{% if section.settings.gradient != blank %}{{ section.settings.gradient }}{% else %}{{ section.settings.bg }}{% endif %};
+    {%- if section.settings.outline != blank -%}--gmc-outline:{{ section.settings.outline.red }},{{ section.settings.outline.green }},{{ section.settings.outline.blue }};{%- endif -%}
+    {%- if section.settings.accent_2 != blank -%}--gmc-a2:{{ section.settings.accent_2.red }},{{ section.settings.accent_2.green }},{{ section.settings.accent_2.blue }};{%- endif -%}
+    {%- if section.settings.accent_2_gradient != blank -%}--gmc-a2-bg:{{ section.settings.accent_2_gradient }};{%- elsif section.settings.accent_2 != blank -%}--gmc-a2-bg:{{ section.settings.accent_2 }};{%- endif -%}
+    {%- if section.settings.surface_2 != blank -%}--gmc-s2:{{ section.settings.surface_2.red }},{{ section.settings.surface_2.green }},{{ section.settings.surface_2.blue }};{%- endif -%}
+    {%- if section.settings.surface_2_gradient != blank -%}--gmc-s2-bg:{{ section.settings.surface_2_gradient }};{%- elsif section.settings.surface_2 != blank -%}--gmc-s2-bg:{{ section.settings.surface_2 }};{%- endif -%}
+  }
 </style>
 {% schema %}
 {
@@ -40,6 +56,51 @@
       "id": "button_text",
       "label": "Button text",
       "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "outline",
+      "label": "Outline buttons and links",
+      "info": "Leave empty to use the buttons colour for links."
+    },
+    {
+      "type": "color_background",
+      "id": "gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color_background",
+      "id": "accent_gradient",
+      "label": "Accent gradient",
+      "info": "Leave empty to use the solid buttons colour."
+    },
+    {
+      "type": "header",
+      "content": "Second colours"
+    },
+    {
+      "type": "paragraph",
+      "content": "Leave these empty to keep the theme accent 2 and surface 2."
+    },
+    {
+      "type": "color",
+      "id": "accent_2",
+      "label": "Accent 2"
+    },
+    {
+      "type": "color_background",
+      "id": "accent_2_gradient",
+      "label": "Accent 2 gradient"
+    },
+    {
+      "type": "color",
+      "id": "surface_2",
+      "label": "Surface 2"
+    },
+    {
+      "type": "color_background",
+      "id": "surface_2_gradient",
+      "label": "Surface 2 gradient"
     },
     {
       "type": "color_scheme",

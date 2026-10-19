@@ -1,0 +1,135 @@
+{%- render 'gmc-scheme' -%}
+{%- assign mp = section.settings -%}
+{%- if mp.enabled and mp.url != blank -%}
+<div class="gmc-pmus gmc-pmus--{{ mp.position }} color-{{ mp.gmc_scheme }}" id="gmc-pmus-{{ section.id }}" style="--pmx:{{ mp.off_x }}px;--pmy:{{ mp.off_y }}px">
+  <button type="button" aria-label="Play or pause music" aria-pressed="false">
+    <span class="gmc-pmus__play" aria-hidden="true">▶</span>
+    <span class="gmc-pmus__pause" aria-hidden="true">❚❚</span>
+  </button>
+  <audio src="{{ mp.url }}" loop preload="none" data-vol="{{ mp.volume }}"></audio>
+</div>
+<style>
+  .gmc-pmus{position:fixed;z-index:39}
+  .gmc-pmus--bottom-left{left:calc(1.2rem + var(--pmx));bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--pmy))}
+  .gmc-pmus--bottom-center{left:50%;bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--pmy));transform:translateX(-50%)}
+  .gmc-pmus--bottom-right{right:calc(1.2rem + var(--pmx));bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--pmy))}
+  .gmc-pmus button{position:relative;width:4.4rem;height:4.4rem;border:0;border-radius:50%;cursor:pointer;background:rgb(var(--color-button));color:rgb(var(--color-button-text));box-shadow:0 2px 10px rgba(var(--color-shadow),.25)}
+  .gmc-pmus__pause{display:none}
+  .gmc-pmus button.is-on .gmc-pmus__play{display:none}
+  .gmc-pmus button.is-on .gmc-pmus__pause{display:inline}
+  {%- if mp.ripple -%}
+  .gmc-pmus button.is-on:after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid currentColor;animation:gmc-pmus-r 1.6s ease-out infinite}
+  @keyframes gmc-pmus-r{to{transform:scale(1.8);opacity:0}}
+  @media(prefers-reduced-motion:reduce){.gmc-pmus button.is-on:after{animation:none}}
+  {%- endif -%}
+</style>
+<script>
+  (function(){
+    var root=document.getElementById('gmc-pmus-{{ section.id }}');
+    if(!root)return;
+    var b=root.querySelector('button'),a=root.querySelector('audio');
+    a.volume=Math.max(0,Math.min(1,(+a.dataset.vol||10)/100));
+    b.addEventListener('click',function(){
+      if(a.paused){a.play();b.classList.add('is-on');b.setAttribute('aria-pressed','true');}
+      else{a.pause();b.classList.remove('is-on');b.setAttribute('aria-pressed','false');}
+    });
+  })();
+</script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Page music player",
+  "tag": "section",
+  "class": "section",
+  "limit": 1,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Plays on this page only. For one song across the store, use the global music player."
+    },
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Show the player",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "url",
+      "label": "Audio file URL (.mp3)",
+      "info": "Upload the file under Content > Files and paste its URL. Sound starts after the visitor taps the button."
+    },
+    {
+      "type": "range",
+      "id": "volume",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Volume",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "options": [
+        { "value": "bottom-left", "label": "Bottom left" },
+        { "value": "bottom-center", "label": "Bottom center" },
+        { "value": "bottom-right", "label": "Bottom right" }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "range",
+      "id": "off_x",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal offset",
+      "info": "Not applied when the button is centred.",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "off_y",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical offset",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "ripple",
+      "label": "Ripple while playing",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "gmc_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "gmc_display_on",
+      "label": "Display on",
+      "options": [
+        { "value": "all", "label": "All devices" },
+        { "value": "mobile", "label": "Mobile only" },
+        { "value": "desktop", "label": "Desktop only" }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    { "name": "Page music player" }
+  ]
+}
+{% endschema %}

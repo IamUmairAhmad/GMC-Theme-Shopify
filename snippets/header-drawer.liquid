@@ -57,6 +57,7 @@
                           <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
                             {%- for childlink in link.links -%}
                               <li>
+                                {%- capture gmc_mega_hit -%}{%- render 'gmc-mega-hit', title: link.title -%}{%- endcapture -%}
                                 {%- if childlink.links == blank -%}
                                   <a
                                     id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}"
@@ -66,9 +67,16 @@
                                       aria-current="page"
                                     {% endif %}
                                   >
-                                    {%- render 'gmc-menu-img', link: childlink, ctx: 'mobile' -%}
+                                    {%- if gmc_mega_hit contains 'yes' and section.settings.gmc_mega_col_images_m and childlink.type == 'collection_link' and childlink.object.featured_image != blank -%}
+                                      <span class="gmc-mi gmc-mi--mobile">{{ childlink.object.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</span>
+                                    {%- else -%}
+                                      {%- render 'gmc-menu-img', link: childlink, ctx: 'mobile' -%}
+                                    {%- endif -%}
                                     {{ childlink.title | escape }}
                                   </a>
+                                  {%- if gmc_mega_hit contains 'yes' -%}
+                                    {%- render 'gmc-mega-products', link: childlink -%}
+                                  {%- endif -%}
                                 {%- else -%}
                                   <details id="Details-menu-drawer-{{ link.handle }}-{{ childlink.handle }}">
                                     <summary
@@ -118,6 +126,9 @@
                                       </ul>
                                     </div>
                                   </details>
+                                  {%- if gmc_mega_hit contains 'yes' -%}
+                                    {%- render 'gmc-mega-products', link: childlink -%}
+                                  {%- endif -%}
                                 {%- endif -%}
                               </li>
                             {%- endfor -%}

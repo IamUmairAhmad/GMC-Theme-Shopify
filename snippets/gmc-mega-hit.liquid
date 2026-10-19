@@ -1,0 +1,13 @@
+{% doc %}
+  Prints "yes" when a menu item title is listed in the header products mega menu setting.
+
+  @param {string} title - Menu item title to test
+{% enddoc %}
+{%- liquid
+  assign gmc_raw = section.settings.gmc_mega_products | downcase | replace: ', ', ',' | replace: ' ,', ',' | strip
+  assign gmc_titles = gmc_raw | split: ','
+  assign gmc_key = title | downcase | strip
+  if gmc_raw != blank and gmc_titles contains gmc_key
+    echo 'yes'
+  endif
+-%}

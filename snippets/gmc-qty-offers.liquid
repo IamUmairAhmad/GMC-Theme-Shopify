@@ -1,0 +1,65 @@
+{%- comment -%}
+  Quantity offer buttons for a featured product quantity block.
+  Accepts:
+  - block: {Object} quantity_selector block
+  - product: {Object}
+{%- endcomment -%}
+{%- if block.settings.offers -%}
+  <div class="gmc-qo{% if block.settings.offer_style == 'row' %} gmc-qo--row{% endif %}" id="gmc-qo-{{ block.id }}" data-qty-target="Quantity-{{ section.id }}">
+    {%- if block.settings.offer_heading != blank -%}
+      <p class="gmc-qo__h">{{ block.settings.offer_heading | escape }}</p>
+    {%- endif -%}
+    {%- assign gmc_unit = product.selected_or_first_available_variant.price | default: 0 -%}
+    {%- assign gmc_pick_num = block.settings.offer_pick | plus: 0 -%}
+    {%- for gmc_i in (1..4) -%}
+      {%- liquid
+        assign gmc_qk = 'offer_q' | append: gmc_i
+        assign gmc_lk = 'offer_l' | append: gmc_i
+        assign gmc_bk = 'offer_b' | append: gmc_i
+        assign gmc_ck = 'offer_c' | append: gmc_i
+        assign gmc_oq = block.settings[gmc_qk]
+      -%}
+      {%- if gmc_oq > 0 -%}
+        {%- assign gmc_total = gmc_unit | times: gmc_oq | money -%}
+        {%- assign gmc_each = gmc_unit | money -%}
+        <button
+          type="button"
+          class="gmc-qo__opt{% if gmc_pick_num == gmc_i %} is-on{% endif %}"
+          data-qty="{{ gmc_oq }}"
+        >
+          <span>
+            {{ block.settings[gmc_lk] | default: 'Buy' | replace: '[qty]', gmc_oq | replace: '[price]', gmc_total | replace: '[each]', gmc_each }}
+          </span>
+          <span>{{ gmc_total }}</span>
+          {%- if block.settings[gmc_bk] != blank -%}
+            <span class="gmc-qo__badge">{{ block.settings[gmc_bk] | escape }}</span>
+          {%- endif -%}
+          {%- if block.settings[gmc_ck] != blank -%}
+            <span class="gmc-qo__cap">{{ block.settings[gmc_ck] | replace: '[qty]', gmc_oq | replace: '[price]', gmc_total | replace: '[each]', gmc_each }}</span>
+          {%- endif -%}
+        </button>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <script>
+    (function () {
+      var root = document.getElementById('gmc-qo-{{ block.id }}');
+      if (!root) return;
+      root.addEventListener('click', function (event) {
+        var btn = event.target.closest('[data-qty]');
+        if (!btn) return;
+        var input = document.getElementById(root.getAttribute('data-qty-target'));
+        if (!input) return;
+        input.value = btn.getAttribute('data-qty');
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        var opts = root.querySelectorAll('[data-qty]');
+        var i = 0;
+        while (opts[i]) {
+          opts[i].classList.remove('is-on');
+          i = i + 1;
+        }
+        btn.classList.add('is-on');
+      });
+    })();
+  </script>
+{%- endif -%}

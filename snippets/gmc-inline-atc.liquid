@@ -1,13 +1,26 @@
-{%- comment -%} GMC Theme: inline add-to-cart (Ajax). Params: product, label, skip, align {%- endcomment -%}
-{%- if product != blank and product.available -%}
+{% doc %}
+  Adds one product to the cart from a section.
+  @param {product} product - Product to add
+  @param {string} [label] - Button label
+  @param {boolean} [skip] - Go to checkout after adding
+  @param {string} [align] - Text alignment
+  @param {object} [variant] - Variant to add. When set, the variant picker is hidden.
+{% enddoc %}
+{%- liquid
+  assign atc_variant = variant
+  if atc_variant == blank and product != blank
+    assign atc_variant = product.selected_or_first_available_variant
+  endif
+-%}
+{%- if product != blank and atc_variant.available -%}
 <div class="gmc-sec-atc gmc-sec-atc--inline" data-gmc-sec-atc data-skip="{{ skip }}" style="text-align:{{ align | default: 'center' }};padding:.8rem 0">
   <form class="gmc-sec-atc__f" action="{{ routes.cart_add_url }}" method="post">
-    {%- if product.variants.size > 1 -%}
-    <select class="select__select gmc-sec-atc__v" name="id" aria-label="{{ product.title | escape }} options" style="max-width:24rem;margin-bottom:.8rem">
+    {%- if variant == blank and product.variants.size > 1 -%}
+    <select class="select__select gmc-sec-atc__v{% if settings.gmc_dd_bg == blank and settings.gmc_dd_scheme != blank and settings.gmc_dd_scheme != 'custom' %} color-{{ settings.gmc_dd_scheme }}{% endif %}" name="id" aria-label="{{ product.title | escape }} options" style="max-width:24rem;margin-bottom:.8rem">
       {%- for v in product.variants -%}<option value="{{ v.id }}"{% unless v.available %} disabled{% endunless %}>{{ v.title | escape }} — {{ v.price | money }}</option>{%- endfor -%}
     </select><br>
-    {%- else -%}<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{%- endif -%}
-    <button type="submit" class="button button--primary">{{ label | default: 'Add to cart' | escape }}{%- if product.variants.size == 1 -%} · {{ product.price | money }}{%- endif -%}</button>
+    {%- else -%}<input type="hidden" name="id" value="{{ atc_variant.id }}">{%- endif -%}
+    <button type="submit" class="button button--primary">{{ label | default: 'Add to cart' | escape }}{%- if variant != blank or product.variants.size == 1 -%} · {{ atc_variant.price | money }}{%- endif -%}</button>
     <p class="gmc-sec-atc__m" role="status" style="margin:.6rem 0 0"></p>
   </form>
 </div>

@@ -1,13 +1,26 @@
 {%- render 'gmc-scheme' -%}
 {{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
 
-{%- if section.settings.image_height == 'adapt' and section.settings.image != blank -%}
+{%- liquid
+  assign gmc_adapt_desk = section.settings.image
+  if gmc_adapt_desk == blank
+    assign gmc_adapt_desk = section.settings.image_2
+  endif
+  assign gmc_adapt_mobile = gmc_adapt_desk
+  if section.settings.gmc_i1_on == 'desktop' and section.settings.image_2 != blank
+    assign gmc_adapt_mobile = section.settings.image_2
+  elsif section.settings.image_2 == blank and section.settings.gmc_image_mobile != blank
+    assign gmc_adapt_mobile = section.settings.gmc_image_mobile
+  endif
+  assign gmc_mobile_ratio = gmc_adapt_mobile.aspect_ratio | default: gmc_adapt_desk.aspect_ratio
+-%}
+{%- if section.settings.image_height == 'adapt' and gmc_adapt_desk != blank and gmc_adapt_desk.aspect_ratio != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
       #Banner-{{ section.id }}::before,
       #Banner-{{ section.id }} .banner__media::before,
       #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
-        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+        padding-bottom: {{ 1 | divided_by: gmc_mobile_ratio | times: 100 }}%;
         content: '';
         display: block;
       }
@@ -16,7 +29,7 @@
     @media screen and (min-width: 750px) {
       #Banner-{{ section.id }}::before,
       #Banner-{{ section.id }} .banner__media::before {
-        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+        padding-bottom: {{ 1 | divided_by: gmc_adapt_desk.aspect_ratio | times: 100 }}%;
         content: '';
         display: block;
       }
@@ -163,6 +176,19 @@
                 >
                   {{- block.settings.button_label_2 | escape -}}
                 </a>
+              {%- endif -%}
+            </div>
+          {%- when 'atc_button' -%}
+            <div class="banner__buttons" {{ block.shopify_attributes }}>
+              {%- if block.settings.atc_product == blank -%}
+                <button type="button" class="button" disabled>{{ block.settings.button_label | default: 'Add to cart' | escape }}</button>
+              {%- else -%}
+                {%- render 'gmc-inline-atc',
+                  product: block.settings.atc_product,
+                  label: block.settings.button_label,
+                  skip: block.settings.atc_skip_cart,
+                  align: 'inherit'
+                -%}
               {%- endif -%}
             </div>
         {%- endcase -%}
@@ -715,6 +741,30 @@
           "id": "button_style_secondary_2",
           "default": false,
           "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_2.label"
+        }
+      ]
+    },
+    {
+      "type": "atc_button",
+      "name": "Add to cart button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Add to cart"
+        },
+        {
+          "type": "product",
+          "id": "atc_product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "atc_skip_cart",
+          "label": "Skip the cart and go straight to checkout",
+          "default": false
         }
       ]
     }

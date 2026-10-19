@@ -40,6 +40,40 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
+
+    @media screen and (max-width: 749px) {
+      #shopify-section-{{ section.id }} .product__media-wrapper {
+        border-radius: {{ section.settings.mobile_radius }}px;
+        overflow: hidden;
+      }
+      {%- if section.settings.full_media_width -%}
+        #shopify-section-{{ section.id }} .product__media-wrapper {
+          width: 100vw;
+          max-width: 100vw;
+          margin-left: calc(50% - 50vw);
+          margin-right: calc(50% - 50vw);
+        }
+      {%- endif -%}
+    }
+
+    #shopify-section-{{ section.id }} .gmc-fp-title--upper { text-transform: uppercase; }
+    #shopify-section-{{ section.id }} .gmc-ti { display: flex; flex-wrap: wrap; gap: var(--gap, 12px); font-size: var(--size, 14px); }
+    #shopify-section-{{ section.id }} .gmc-ti--vertical { flex-direction: column; }
+    #shopify-section-{{ section.id }} .gmc-ti--center { justify-content: center; text-align: center; }
+    #shopify-section-{{ section.id }} .gmc-ti--right { justify-content: flex-end; text-align: right; }
+    #shopify-section-{{ section.id }} .gmc-ti__item { display: inline-flex; align-items: center; gap: .6rem; }
+    #shopify-section-{{ section.id }} .gmc-fp-icons--custom .icon-with-text__item { gap: var(--gap, 12px); }
+    #shopify-section-{{ section.id }} .gmc-fp-icons--custom .icon-with-text__item img,
+    #shopify-section-{{ section.id }} .gmc-fp-icons--custom .icon-with-text__item .svg-wrapper,
+    #shopify-section-{{ section.id }} .gmc-fp-icons--custom .icon-with-text__item svg { width: var(--isz, 24px); height: var(--isz, 24px); }
+    #shopify-section-{{ section.id }} .gmc-fp-icons--custom .h4 { font-size: var(--tsz, 16px); }
+    #shopify-section-{{ section.id }} .gmc-qo { display: grid; gap: .8rem; margin-top: 1.2rem; }
+    #shopify-section-{{ section.id }} .gmc-qo--row { grid-auto-flow: column; grid-auto-columns: 1fr; }
+    #shopify-section-{{ section.id }} .gmc-qo__h { margin: 0; font-weight: 600; }
+    #shopify-section-{{ section.id }} .gmc-qo__opt { display: grid; grid-template-columns: 1fr auto; gap: .2rem 1rem; width: 100%; text-align: left; color: inherit; background: transparent; border: 1px solid rgba(var(--color-foreground), .2); border-radius: 8px; padding: 1rem 1.2rem; cursor: pointer; }
+    #shopify-section-{{ section.id }} .gmc-qo__opt.is-on { border-color: rgb(var(--color-foreground)); box-shadow: inset 0 0 0 1px rgb(var(--color-foreground)); }
+    #shopify-section-{{ section.id }} .gmc-qo__badge { font-size: 1.1rem; }
+    #shopify-section-{{ section.id }} .gmc-qo__cap { grid-column: 1 / -1; opacity: .7; font-size: 1.2rem; }
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -111,7 +145,7 @@
                     {{- block.settings.text -}}
                   </p>
                 {%- when 'title' -%}
-                  <h2 class="product__title {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                  <h2 class="product__title {{ block.settings.heading_size }}{% if block.settings.uppercase %} gmc-fp-title--upper{% endif %}" style="text-align:{{ block.settings.align | default: 'left' }}" {{ block.shopify_attributes }}>
                     {%- unless placeholder -%}
                       {{ product.title | escape }}
                     {%- else -%}
@@ -165,6 +199,16 @@
                     {{- product.selected_or_first_available_variant.sku -}}
                   </p>
                 {%- when 'quantity_selector' -%}
+                  {%- liquid
+                    assign gmc_qty_value = product.selected_or_first_available_variant.quantity_rule.min
+                    if block.settings.offers and block.settings.offer_pick != '0'
+                      assign gmc_pick_key = 'offer_q' | append: block.settings.offer_pick
+                      assign gmc_picked = block.settings[gmc_pick_key]
+                      if gmc_picked > 0
+                        assign gmc_qty_value = gmc_picked
+                      endif
+                    endif
+                  -%}
                   <div
                     id="Quantity-Form-{{ section.id }}"
                     class="product-form__input product-form__quantity{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} product-form__quantity-top{% endif %}"
@@ -221,7 +265,7 @@
                             max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
                           {% endif %}
                           step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
-                          value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                          value="{{ gmc_qty_value }}"
                           form="{{ product_form_id }}"
                         >
                         <button class="quantity__button" name="plus" type="button">
@@ -391,6 +435,7 @@
                         {%- endif -%}
                       </volume-pricing>
                     {%- endif -%}
+                    {%- render 'gmc-qty-offers', block: block, product: product -%}
                   </div>
                 {%- when 'share' -%}
                   {% liquid
@@ -549,8 +594,44 @@
                       {{ block.settings.text | default: block.settings.page.title | escape }}
                     </button>
                   </modal-opener>
+                {%- when 'rating_stars' -%}
+                  <p class="gmc-fp-stars" style="text-align:{{ block.settings.align }};margin:0" {{ block.shopify_attributes }}>
+                    {%- if block.settings.scroll_id != blank -%}
+                      <a href="#{{ block.settings.scroll_id | handleize }}" style="color:inherit;text-decoration:none">
+                    {%- endif -%}
+                    <span style="color:{{ block.settings.color }};letter-spacing:2px" aria-label="{{ block.settings.stars }} out of 5">
+                      {%- for gmc_n in (1..5) -%}
+                        {%- if gmc_n <= block.settings.stars -%}★{%- else -%}<span style="opacity:.35">★</span>{%- endif -%}
+                      {%- endfor -%}
+                    </span>
+                    {{ block.settings.label | escape }}
+                    {%- if block.settings.scroll_id != blank -%}</a>{%- endif -%}
+                  </p>
+                {%- when 'text_icons' -%}
+                  <div
+                    class="gmc-ti gmc-ti--{{ block.settings.direction }} gmc-ti--{{ block.settings.align }}"
+                    style="--gap:{{ block.settings.gap }}px;--size:{{ block.settings.text_size }}px;{% if block.settings.show_bg %}background:{{ block.settings.bg_color }};padding:{{ block.settings.pad }}px;border-radius:{{ block.settings.radius }}px;{% endif %}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {%- for gmc_i in (1..3) -%}
+                      {%- liquid
+                        assign gmc_line_key = 'line_' | append: gmc_i
+                        assign gmc_icon_key = 'icon_' | append: gmc_i
+                        assign gmc_line = block.settings[gmc_line_key]
+                        assign gmc_icon = block.settings[gmc_icon_key]
+                      -%}
+                      {%- if gmc_line != blank -%}
+                        <span class="gmc-ti__item">
+                          {%- render 'gmc-icon', name: gmc_icon, size: block.settings.icon_size -%}
+                          <span>{{ gmc_line }}</span>
+                        </span>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
                 {%- when 'icon-with-text' -%}
-                  {% render 'icon-with-text', block: block %}
+                  <div class="gmc-fp-icons{% if block.settings.custom_size %} gmc-fp-icons--custom{% endif %}" style="--isz:{{ block.settings.icon_size }}px;--tsz:{{ block.settings.text_size }}px;--gap:{{ block.settings.gap }}px">
+                    {% render 'icon-with-text', block: block %}
+                  </div>
               {%- endcase -%}
               {%- if block.settings.gmc_mb > 0 -%}<div class="gmc-sp" style="height:{{ block.settings.gmc_mb }}px"></div>{%- endif -%}
             {%- endfor -%}
@@ -703,6 +784,22 @@
           "label": "t:sections.all.heading_size.label"
         },
         {
+          "type": "select",
+          "id": "align",
+          "label": "Title alignment",
+          "default": "left",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "Uppercase title",
+          "default": false
+        },
+        {
           "type": "range",
           "id": "gmc_mt",
           "min": 0,
@@ -836,6 +933,58 @@
       "limit": 1,
       "settings": [
         {
+          "type": "checkbox",
+          "id": "offers",
+          "label": "Show quantity offers",
+          "info": "Each offer sets the quantity. Use [qty], [price], and [each] in the label or caption. Pair the prices with an automatic discount in Shopify admin.",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "offer_heading",
+          "label": "Offers heading",
+          "default": "Bundle and save"
+        },
+        {
+          "type": "select",
+          "id": "offer_style",
+          "label": "Offers layout",
+          "default": "stack",
+          "options": [
+            { "value": "stack", "label": "Stacked" },
+            { "value": "row", "label": "Side by side" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "offer_pick",
+          "label": "Selected offer",
+          "default": "0",
+          "options": [
+            { "value": "0", "label": "None" },
+            { "value": "1", "label": "Offer 1" },
+            { "value": "2", "label": "Offer 2" },
+            { "value": "3", "label": "Offer 3" },
+            { "value": "4", "label": "Offer 4" }
+          ]
+        },
+        { "type": "range", "id": "offer_q1", "min": 0, "max": 12, "step": 1, "label": "Offer 1 quantity", "default": 1 },
+        { "type": "text", "id": "offer_l1", "label": "Offer 1 label", "default": "Buy [qty]" },
+        { "type": "text", "id": "offer_b1", "label": "Offer 1 badge" },
+        { "type": "text", "id": "offer_c1", "label": "Offer 1 caption" },
+        { "type": "range", "id": "offer_q2", "min": 0, "max": 12, "step": 1, "label": "Offer 2 quantity", "default": 2 },
+        { "type": "text", "id": "offer_l2", "label": "Offer 2 label", "default": "Buy [qty]" },
+        { "type": "text", "id": "offer_b2", "label": "Offer 2 badge", "default": "Popular" },
+        { "type": "text", "id": "offer_c2", "label": "Offer 2 caption" },
+        { "type": "range", "id": "offer_q3", "min": 0, "max": 12, "step": 1, "label": "Offer 3 quantity", "default": 3 },
+        { "type": "text", "id": "offer_l3", "label": "Offer 3 label", "default": "Buy [qty]" },
+        { "type": "text", "id": "offer_b3", "label": "Offer 3 badge" },
+        { "type": "text", "id": "offer_c3", "label": "Offer 3 caption" },
+        { "type": "range", "id": "offer_q4", "min": 0, "max": 12, "step": 1, "label": "Offer 4 quantity", "default": 0 },
+        { "type": "text", "id": "offer_l4", "label": "Offer 4 label" },
+        { "type": "text", "id": "offer_b4", "label": "Offer 4 badge" },
+        { "type": "text", "id": "offer_c4", "label": "Offer 4 caption" },
+        {
           "type": "range",
           "id": "gmc_mt",
           "min": 0,
@@ -900,6 +1049,65 @@
           "default": "circle"
         },
         {
+          "type": "select",
+          "id": "type_1",
+          "label": "Option 1: picker type",
+          "default": "auto",
+          "options": [
+            { "value": "auto", "label": "Automatic" },
+            { "value": "pills", "label": "Pills" },
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "swatch", "label": "Colour swatches" },
+            { "value": "image", "label": "Variant images" },
+            { "value": "cards", "label": "Cards with price" }
+          ]
+        },
+        { "type": "text", "id": "label_1", "label": "Option 1: custom label", "info": "Leave blank to use the option name." },
+        {
+          "type": "select",
+          "id": "type_2",
+          "label": "Option 2: picker type",
+          "default": "auto",
+          "options": [
+            { "value": "auto", "label": "Automatic" },
+            { "value": "pills", "label": "Pills" },
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "swatch", "label": "Colour swatches" },
+            { "value": "image", "label": "Variant images" },
+            { "value": "cards", "label": "Cards with price" }
+          ]
+        },
+        { "type": "text", "id": "label_2", "label": "Option 2: custom label", "info": "Leave blank to use the option name." },
+        {
+          "type": "select",
+          "id": "type_3",
+          "label": "Option 3: picker type",
+          "default": "auto",
+          "options": [
+            { "value": "auto", "label": "Automatic" },
+            { "value": "pills", "label": "Pills" },
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "swatch", "label": "Colour swatches" },
+            { "value": "image", "label": "Variant images" },
+            { "value": "cards", "label": "Cards with price" }
+          ]
+        },
+        { "type": "text", "id": "label_3", "label": "Option 3: custom label", "info": "Leave blank to use the option name." },
+        { "type": "range", "id": "swatch_size", "min": 24, "max": 64, "step": 4, "unit": "px", "label": "Swatch and image size", "default": 36 },
+        {
+          "type": "select",
+          "id": "swatch_radius",
+          "label": "Swatch corners",
+          "default": "circle",
+          "options": [
+            { "value": "circle", "label": "Circle" },
+            { "value": "rounded", "label": "Rounded" },
+            { "value": "square", "label": "Square" }
+          ]
+        },
+        { "type": "textarea", "id": "swatch_colors", "label": "Custom swatch colours", "info": "One per line, e.g. Sand: #d9c7a3." },
+        { "type": "checkbox", "id": "full_width_dropdown", "label": "Full-width dropdowns", "default": false },
+        {
           "type": "range",
           "id": "gmc_mt",
           "min": 0,
@@ -940,6 +1148,11 @@
           "label": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.label",
           "info": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.info"
         },
+        { "type": "checkbox", "id": "skip_cart", "label": "Skip the cart and go straight to checkout", "default": false },
+        { "type": "checkbox", "id": "price_in_button", "label": "Show price inside the button", "default": false },
+        { "type": "checkbox", "id": "uppercase", "label": "Uppercase button text", "default": false },
+        { "type": "color", "id": "button_color", "label": "Button colour" },
+        { "type": "color", "id": "button_text_color", "label": "Button text colour", "default": "#FFFFFF" },
         {
           "type": "range",
           "id": "gmc_mt",
@@ -1742,6 +1955,10 @@
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
         },
+        { "type": "checkbox", "id": "custom_size", "label": "Custom icon and text size", "default": false },
+        { "type": "range", "id": "icon_size", "min": 16, "max": 64, "step": 2, "unit": "px", "label": "Icon size", "default": 24 },
+        { "type": "range", "id": "text_size", "min": 12, "max": 28, "step": 1, "unit": "px", "label": "Text size", "default": 16 },
+        { "type": "range", "id": "gap", "min": 4, "max": 40, "step": 2, "unit": "px", "label": "Space between icon and text", "default": 12 },
         {
           "type": "range",
           "id": "gmc_mt",
@@ -2173,6 +2390,71 @@
           "default": 0
         }
       ]
+    },
+    {
+      "type": "rating_stars",
+      "name": "Rating stars",
+      "settings": [
+        { "type": "range", "id": "stars", "min": 1, "max": 5, "step": 1, "label": "Stars", "default": 5 },
+        { "type": "text", "id": "label", "label": "Label", "default": "Rated by real customers" },
+        { "type": "color", "id": "color", "label": "Star colour", "default": "#f5a623" },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ]
+        },
+        { "type": "text", "id": "scroll_id", "label": "Section ID to scroll to", "info": "The ID set on another section. The stars become a link to it." },
+        { "type": "range", "id": "gmc_mt", "min": 0, "max": 60, "step": 2, "unit": "px", "label": "Space above", "default": 0 },
+        { "type": "range", "id": "gmc_mb", "min": 0, "max": 60, "step": 2, "unit": "px", "label": "Space below", "default": 0 }
+      ]
+    },
+    {
+      "type": "text_icons",
+      "name": "Text with icons",
+      "settings": [
+        { "type": "text", "id": "line_1", "label": "Text 1", "default": "Free shipping" },
+        { "type": "text", "id": "icon_1", "label": "Icon 1", "default": "truck", "info": "Icon name from the theme library." },
+        { "type": "text", "id": "line_2", "label": "Text 2" },
+        { "type": "text", "id": "icon_2", "label": "Icon 2" },
+        { "type": "text", "id": "line_3", "label": "Text 3" },
+        { "type": "text", "id": "icon_3", "label": "Icon 3" },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Direction",
+          "default": "horizontal",
+          "options": [
+            { "value": "horizontal", "label": "Horizontal" },
+            { "value": "vertical", "label": "Vertical" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ]
+        },
+        { "type": "range", "id": "icon_size", "min": 14, "max": 48, "step": 2, "unit": "px", "label": "Icon size", "default": 20 },
+        { "type": "range", "id": "text_size", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Text size", "default": 14 },
+        { "type": "range", "id": "gap", "min": 4, "max": 40, "step": 2, "unit": "px", "label": "Gap", "default": 16 },
+        { "type": "checkbox", "id": "show_bg", "label": "Background", "default": false },
+        { "type": "color", "id": "bg_color", "label": "Background colour", "default": "#f4f4f4" },
+        { "type": "range", "id": "radius", "min": 0, "max": 24, "step": 2, "unit": "px", "label": "Corner radius", "default": 8 },
+        { "type": "range", "id": "pad", "min": 0, "max": 32, "step": 2, "unit": "px", "label": "Padding", "default": 12 },
+        { "type": "range", "id": "gmc_mt", "min": 0, "max": 60, "step": 2, "unit": "px", "label": "Space above", "default": 0 },
+        { "type": "range", "id": "gmc_mb", "min": 0, "max": 60, "step": 2, "unit": "px", "label": "Space below", "default": 0 }
+      ]
     }
   ],
   "settings": [
@@ -2286,6 +2568,26 @@
       "id": "enable_video_looping",
       "default": false,
       "label": "t:sections.featured-product.settings.enable_video_looping.label"
+    },
+    {
+      "type": "header",
+      "content": "Mobile media"
+    },
+    {
+      "type": "range",
+      "id": "mobile_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile image corner radius",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "full_media_width",
+      "label": "Full-width image on mobile",
+      "default": false
     },
     {
       "type": "header",

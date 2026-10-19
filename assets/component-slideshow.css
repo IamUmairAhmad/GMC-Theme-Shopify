@@ -109,6 +109,40 @@ slideshow-component .slideshow.banner {
   z-index: 1;
 }
 
+@media screen and (min-width: 750px) {
+  slideshow-component.gmc-pag-desk-over .slideshow__controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1.2rem;
+    z-index: 3;
+    background: transparent;
+    border: 0;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  slideshow-component.gmc-pag-mob-over:not(.mobile-text-below) .slideshow__controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.8rem;
+    z-index: 3;
+    background: transparent;
+    border: 0;
+  }
+}
+
+.gmc-slide-ink--white .banner__heading,
+.gmc-slide-ink--white .banner__text {
+  color: #fff;
+}
+
+.gmc-slide-ink--black .banner__heading,
+.gmc-slide-ink--black .banner__text {
+  color: #121212;
+}
+
 @media screen and (max-width: 749px) {
   .slideshow__controls--border-radius-mobile {
     border-bottom-right-radius: var(--text-boxes-radius);
