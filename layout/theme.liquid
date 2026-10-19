@@ -408,6 +408,7 @@
   <style>
     {%- if settings.gmc_pill_accent != blank -%}.product-form__input input[type='radio']:checked + label,.product-form__input input[type='radio']:checked + label.gmc-vcard{background:{{ settings.gmc_pill_accent }}!important;border-color:{{ settings.gmc_pill_accent }}!important;color:#fff!important}{%- endif -%}
     {%- if settings.gmc_pill_bold -%}.product-form__input input[type='radio'] + label{font-weight:700}{%- endif -%}
+    {%- render 'gmc-palette-css' -%}
     {%- render 'gmc-dropdown-css' -%}
   </style>
 </head>

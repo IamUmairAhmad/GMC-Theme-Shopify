@@ -1,0 +1,196 @@
+{% doc %}
+  Prints named accent, surface, and inverse colour classes from the Accent
+  colours theme settings, plus icon, pill, and dropdown colours.
+
+  Accent classes set the same colour variables sections already use. Pill and
+  dropdown scheme rules are skipped while a custom colour is set, and while
+  the scheme is left on its default.
+
+  @example
+  {% render 'gmc-palette-css' %}
+{% enddoc %}
+:root{
+  --gmc-a1:{{ settings.gmc_accent_1.red }},{{ settings.gmc_accent_1.green }},{{ settings.gmc_accent_1.blue }};
+  --gmc-a2:{{ settings.gmc_accent_2.red }},{{ settings.gmc_accent_2.green }},{{ settings.gmc_accent_2.blue }};
+  --gmc-s1:{{ settings.gmc_surface_1.red }},{{ settings.gmc_surface_1.green }},{{ settings.gmc_surface_1.blue }};
+  --gmc-s2:{{ settings.gmc_surface_2.red }},{{ settings.gmc_surface_2.green }},{{ settings.gmc_surface_2.blue }};
+  --gmc-ink:{{ settings.gmc_ink.red }},{{ settings.gmc_ink.green }},{{ settings.gmc_ink.blue }};
+  --gmc-on:{{ settings.gmc_on_accent.red }},{{ settings.gmc_on_accent.green }},{{ settings.gmc_on_accent.blue }};
+  --gmc-outline:{{ settings.gmc_outline.red }},{{ settings.gmc_outline.green }},{{ settings.gmc_outline.blue }};
+  --gmc-a1-bg:{% if settings.gmc_accent_1_gradient != blank %}{{ settings.gmc_accent_1_gradient }}{% else %}{{ settings.gmc_accent_1 }}{% endif %};
+  --gmc-a2-bg:{% if settings.gmc_accent_2_gradient != blank %}{{ settings.gmc_accent_2_gradient }}{% else %}{{ settings.gmc_accent_2 }}{% endif %};
+  --gmc-s1-bg:{% if settings.gmc_surface_1_gradient != blank %}{{ settings.gmc_surface_1_gradient }}{% else %}{{ settings.gmc_surface_1 }}{% endif %};
+  --gmc-s2-bg:{% if settings.gmc_surface_2_gradient != blank %}{{ settings.gmc_surface_2_gradient }}{% else %}{{ settings.gmc_surface_2 }}{% endif %};
+}
+.color-accent-1{
+  --color-background:var(--gmc-a1);
+  --gradient-background:var(--gmc-a1-bg);
+  --color-foreground:var(--gmc-on);
+  --color-background-contrast:var(--gmc-on);
+  --color-shadow:var(--gmc-on);
+  --color-button:var(--gmc-on);
+  --color-button-text:var(--gmc-a1);
+  --color-secondary-button:var(--gmc-a1);
+  --color-secondary-button-text:var(--gmc-on);
+  --color-link:var(--gmc-on);
+  --color-badge-foreground:var(--gmc-on);
+  --color-badge-background:var(--gmc-a1);
+  --color-badge-border:var(--gmc-on);
+}
+.color-accent-2{
+  --color-background:var(--gmc-a2);
+  --gradient-background:var(--gmc-a2-bg);
+  --color-foreground:var(--gmc-on);
+  --color-background-contrast:var(--gmc-on);
+  --color-shadow:var(--gmc-on);
+  --color-button:var(--gmc-on);
+  --color-button-text:var(--gmc-a2);
+  --color-secondary-button:var(--gmc-a2);
+  --color-secondary-button-text:var(--gmc-on);
+  --color-link:var(--gmc-on);
+  --color-badge-foreground:var(--gmc-on);
+  --color-badge-background:var(--gmc-a2);
+  --color-badge-border:var(--gmc-on);
+}
+.color-background-1{
+  --color-background:var(--gmc-s1);
+  --gradient-background:var(--gmc-s1-bg);
+  --color-foreground:var(--gmc-ink);
+  --color-background-contrast:var(--gmc-ink);
+  --color-shadow:var(--gmc-ink);
+  --color-button:var(--gmc-a1);
+  --color-button-text:var(--gmc-on);
+  --color-secondary-button:var(--gmc-s1);
+  --color-secondary-button-text:var(--gmc-outline);
+  --color-link:var(--gmc-outline);
+  --color-badge-foreground:var(--gmc-ink);
+  --color-badge-background:var(--gmc-s1);
+  --color-badge-border:var(--gmc-ink);
+}
+.color-background-2{
+  --color-background:var(--gmc-s2);
+  --gradient-background:var(--gmc-s2-bg);
+  --color-foreground:var(--gmc-ink);
+  --color-background-contrast:var(--gmc-ink);
+  --color-shadow:var(--gmc-ink);
+  --color-button:var(--gmc-a1);
+  --color-button-text:var(--gmc-on);
+  --color-secondary-button:var(--gmc-s2);
+  --color-secondary-button-text:var(--gmc-outline);
+  --color-link:var(--gmc-outline);
+  --color-badge-foreground:var(--gmc-ink);
+  --color-badge-background:var(--gmc-s2);
+  --color-badge-border:var(--gmc-ink);
+}
+.color-inverse{
+  --color-background:var(--gmc-ink);
+  --gradient-background:rgb(var(--gmc-ink));
+  --color-foreground:var(--gmc-s1);
+  --color-background-contrast:var(--gmc-s1);
+  --color-shadow:var(--gmc-s1);
+  --color-button:var(--gmc-s1);
+  --color-button-text:var(--gmc-ink);
+  --color-secondary-button:var(--gmc-ink);
+  --color-secondary-button-text:var(--gmc-s1);
+  --color-link:var(--gmc-s1);
+  --color-badge-foreground:var(--gmc-s1);
+  --color-badge-background:var(--gmc-ink);
+  --color-badge-border:var(--gmc-s1);
+}
+.rating-star.color-icon-accent-1{--color-rating-star:rgb(var(--gmc-a1))}
+.rating-star.color-icon-accent-2{--color-rating-star:rgb(var(--gmc-a2))}
+.rating-star.color-icon-outline{--color-rating-star:rgb(var(--gmc-outline))}
+.rating-star.color-icon-text{--color-rating-star:rgb(var(--color-foreground))}
+.product-form__input--dropdown .select.color-accent-1 .select__select,
+.product-form__input--dropdown .select.color-accent-2 .select__select,
+.product-form__input--dropdown .select.color-background-1 .select__select,
+.product-form__input--dropdown .select.color-background-2 .select__select,
+.product-form__input--dropdown .select.color-inverse .select__select,
+select.gmc-sec-atc__v.color-accent-1,
+select.gmc-sec-atc__v.color-accent-2,
+select.gmc-sec-atc__v.color-background-1,
+select.gmc-sec-atc__v.color-background-2,
+select.gmc-sec-atc__v.color-inverse{
+  background:var(--gradient-background);
+  color:rgba(var(--color-foreground),.85);
+}
+.product-form__input--dropdown .select.color-accent-1 .svg-wrapper,
+.product-form__input--dropdown .select.color-accent-2 .svg-wrapper,
+.product-form__input--dropdown .select.color-background-1 .svg-wrapper,
+.product-form__input--dropdown .select.color-background-2 .svg-wrapper,
+.product-form__input--dropdown .select.color-inverse .svg-wrapper{
+  color:rgb(var(--color-foreground));
+}
+{%- if settings.gmc_pill_accent == blank and settings.gmc_pill_scheme != blank and settings.gmc_pill_scheme != 'foreground' -%}
+  {%- liquid
+    case settings.gmc_pill_scheme
+      when 'accent-1'
+        assign gmc_pill = settings.gmc_accent_1
+      when 'accent-2'
+        assign gmc_pill = settings.gmc_accent_2
+      when 'outline'
+        assign gmc_pill = settings.gmc_outline
+      else
+        assign gmc_pill = settings.gmc_ink
+    endcase
+  -%}
+  .product-form__input input[type='radio']:checked + label,.product-form__input input[type='radio']:checked + label.gmc-vcard{background:{{ gmc_pill }}!important;border-color:{{ gmc_pill }}!important;color:{{ settings.gmc_on_accent }}!important}
+{%- endif -%}
+{%- if settings.gmc_dd_border == blank and settings.gmc_dd_border_scheme != blank and settings.gmc_dd_border_scheme != 'custom' -%}
+  {%- liquid
+    case settings.gmc_dd_border_scheme
+      when 'accent-1'
+        assign gmc_line = settings.gmc_accent_1
+      when 'accent-2'
+        assign gmc_line = settings.gmc_accent_2
+      when 'background-1'
+        assign gmc_line = settings.gmc_surface_1
+      when 'background-2'
+        assign gmc_line = settings.gmc_surface_2
+      else
+        assign gmc_line = settings.gmc_ink
+    endcase
+    if settings.gmc_dd_border_o < 100
+      assign gmc_line_a = settings.gmc_dd_border_o | divided_by: 100.0
+      assign gmc_line = gmc_line | color_modify: 'alpha', gmc_line_a
+    endif
+  -%}
+  .product-form__input--dropdown .select__select,select.gmc-sec-atc__v{border:{{ settings.gmc_dd_thick }}px solid {{ gmc_line }} !important}
+  .product-form__input--dropdown .select:after,.product-form__input--dropdown .select:before{display:none}
+{%- endif -%}
+{%- if settings.gmc_dd_text == blank and settings.gmc_dd_text_scheme != blank and settings.gmc_dd_text_scheme != 'custom' -%}
+  {%- liquid
+    case settings.gmc_dd_text_scheme
+      when 'accent-1'
+        assign gmc_dd_ink = settings.gmc_accent_1
+      when 'accent-2'
+        assign gmc_dd_ink = settings.gmc_accent_2
+      when 'background-1'
+        assign gmc_dd_ink = settings.gmc_surface_1
+      when 'background-2'
+        assign gmc_dd_ink = settings.gmc_surface_2
+      else
+        assign gmc_dd_ink = settings.gmc_ink
+    endcase
+  -%}
+  .product-form__input--dropdown .select__select,.product-form__input--dropdown .select .svg-wrapper,select.gmc-sec-atc__v{color:{{ gmc_dd_ink }} !important}
+{%- endif -%}
+{%- if settings.gmc_dd_overlay == blank and settings.gmc_dd_tint_scheme != blank and settings.gmc_dd_tint_scheme != 'custom' and settings.gmc_dd_overlay_o > 0 -%}
+  {%- liquid
+    case settings.gmc_dd_tint_scheme
+      when 'accent-1'
+        assign gmc_tint = settings.gmc_accent_1
+      when 'accent-2'
+        assign gmc_tint = settings.gmc_accent_2
+      when 'background-1'
+        assign gmc_tint = settings.gmc_surface_1
+      when 'background-2'
+        assign gmc_tint = settings.gmc_surface_2
+      else
+        assign gmc_tint = settings.gmc_ink
+    endcase
+    assign gmc_tint_a = settings.gmc_dd_overlay_o | divided_by: 100.0
+    assign gmc_tint = gmc_tint | color_modify: 'alpha', gmc_tint_a
+  -%}
+  .product-form__input--dropdown .select__select,select.gmc-sec-atc__v{background-image:linear-gradient({{ gmc_tint }}, {{ gmc_tint }})}
+{%- endif -%}

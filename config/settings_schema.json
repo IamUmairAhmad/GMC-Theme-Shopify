@@ -1184,6 +1184,118 @@
     ]
   },
   {
+    "name": "Accent colours",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Named accent, surface, and inverse colours. Each section still has its own colour scheme. These colours are used by accent classes, icon accents, variant pills, and variant dropdowns."
+      },
+      {
+        "type": "header",
+        "content": "Accents"
+      },
+      {
+        "type": "color",
+        "id": "gmc_accent_1",
+        "default": "#121212",
+        "label": "Accent 1"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_accent_1_gradient",
+        "label": "Accent 1 gradient"
+      },
+      {
+        "type": "color",
+        "id": "gmc_accent_2",
+        "default": "#334FB4",
+        "label": "Accent 2"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_accent_2_gradient",
+        "label": "Accent 2 gradient"
+      },
+      {
+        "type": "header",
+        "content": "Surfaces"
+      },
+      {
+        "type": "color",
+        "id": "gmc_surface_1",
+        "default": "#FFFFFF",
+        "label": "Surface 1"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_surface_1_gradient",
+        "label": "Surface 1 gradient"
+      },
+      {
+        "type": "color",
+        "id": "gmc_surface_2",
+        "default": "#F3F3F3",
+        "label": "Surface 2"
+      },
+      {
+        "type": "color_background",
+        "id": "gmc_surface_2_gradient",
+        "label": "Surface 2 gradient"
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "color",
+        "id": "gmc_ink",
+        "default": "#121212",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "gmc_outline",
+        "default": "#121212",
+        "label": "Outline buttons and links"
+      },
+      {
+        "type": "color",
+        "id": "gmc_on_accent",
+        "default": "#FFFFFF",
+        "label": "Text on accent"
+      },
+      {
+        "type": "header",
+        "content": "Icons"
+      },
+      {
+        "type": "select",
+        "id": "accent_icons",
+        "label": "Icon accent",
+        "info": "Colours rating stars and other icon accents.",
+        "default": "text",
+        "options": [
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "outline",
+            "label": "Outline"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.typography.name",
     "settings": [
       {
@@ -1408,6 +1520,35 @@
         "label": "Selected pill colour"
       },
       {
+        "type": "select",
+        "id": "gmc_pill_scheme",
+        "label": "Selected pill colour scheme",
+        "info": "Used when Selected pill colour is empty.",
+        "default": "foreground",
+        "options": [
+          {
+            "value": "foreground",
+            "label": "Theme default"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "outline",
+            "label": "Outline"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
+      },
+      {
         "type": "checkbox",
         "id": "gmc_pill_bold",
         "label": "Bold pill text",
@@ -1416,6 +1557,138 @@
       {
         "type": "header",
         "content": "Variant dropdown (GMC)"
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_scheme",
+        "label": "Dropdown colour scheme",
+        "info": "Used when Dropdown background is empty.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colours below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "inverse",
+            "label": "Inverse"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_border_scheme",
+        "label": "Dropdown border scheme",
+        "info": "Used when Dropdown border colour is empty.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colour below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_text_scheme",
+        "label": "Dropdown text scheme",
+        "info": "Used when Dropdown text and arrow is empty.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colour below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "gmc_dd_tint_scheme",
+        "label": "Dropdown tint scheme",
+        "info": "Used when Dropdown tint colour is empty. Tint strength still controls how strong it is.",
+        "default": "custom",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom colour below"
+          },
+          {
+            "value": "accent-1",
+            "label": "Accent 1"
+          },
+          {
+            "value": "accent-2",
+            "label": "Accent 2"
+          },
+          {
+            "value": "background-1",
+            "label": "Surface 1"
+          },
+          {
+            "value": "background-2",
+            "label": "Surface 2"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ]
       },
       {
         "type": "color",

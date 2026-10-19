@@ -53,7 +53,7 @@
 <div class="gmc-sec-atc page-width" data-gmc-sec-atc data-skip="{{ section.settings.gmc_atc_skip }}" style="text-align:{{ section.settings.gmc_atc_align | default: 'center' }};padding:1.5rem 0">
   <form class="gmc-sec-atc__f" action="{{ routes.cart_add_url }}" method="post">
     {%- if x_atc.variants.size > 1 -%}
-    <select class="select__select gmc-sec-atc__v" name="id" aria-label="{{ x_atc.title | escape }} options" style="max-width:26rem;margin-bottom:1rem">
+    <select class="select__select gmc-sec-atc__v{% if settings.gmc_dd_bg == blank and settings.gmc_dd_scheme != blank and settings.gmc_dd_scheme != 'custom' %} color-{{ settings.gmc_dd_scheme }}{% endif %}" name="id" aria-label="{{ x_atc.title | escape }} options" style="max-width:26rem;margin-bottom:1rem">
       {%- for v in x_atc.variants -%}<option value="{{ v.id }}"{% unless v.available %} disabled{% endunless %}>{{ v.title | escape }} — {{ v.price | money }}</option>{%- endfor -%}
     </select><br>
     {%- else -%}<input type="hidden" name="id" value="{{ x_atc.selected_or_first_available_variant.id }}">{%- endif -%}
