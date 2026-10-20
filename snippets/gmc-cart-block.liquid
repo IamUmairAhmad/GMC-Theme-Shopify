@@ -16,7 +16,7 @@
     {%- if cart.item_count > 0 -%}
       <div class="gmc-disc" style="padding:.6rem 2rem" {{ block.shopify_attributes }}>
         <div style="display:flex;gap:.6rem"><label class="visually-hidden" for="gmc-disc-in">{{ 'gmc.discount_code' | t }}</label>
-          <input id="gmc-disc-in" class="field__input" style="padding:.9rem;flex:1;border-radius:6px" placeholder="{{ 'gmc.discount_code' | t }}" autocomplete="off">
+          <input id="gmc-disc-in" class="field__input" style="padding:.9rem;flex:1;min-width:0" placeholder="{{ 'gmc.discount_code' | t }}" autocomplete="off">
           <button type="button" class="button button--secondary" id="gmc-disc-btn" style="min-height:4rem">{{ 'gmc.apply' | t }}</button></div>
         <p id="gmc-disc-msg" role="status" aria-live="polite" style="margin:.4rem 0 0;font-size:1.25rem"></p>
         {%- for dc in cart.cart_level_discount_applications -%}<p style="margin:.2rem 0 0;font-size:1.25rem;color:{{ settings.gmc_accent }}">✓ {{ dc.title | escape }} (−{{ dc.total_allocated_amount | money }})</p>{%- endfor -%}
