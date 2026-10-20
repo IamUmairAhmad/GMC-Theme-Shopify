@@ -296,18 +296,44 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 
-/* custom product field validation: blocks the add-to-cart (main button and sticky bar) until required fields are filled */
+/* custom product field validation: blocks Add to cart (main button, sticky bar) and "Buy it now" until required fields are filled */
 (function(){
   function val(w){var t=w.dataset.type;if(t==='pills'){var r=w.querySelector('input:checked');return r?r.value:'';}var el=w.querySelector('input,select,textarea');return el?String(el.value).trim():'';}
-  function check(w){var v=val(w),err=w.querySelector('.gmc-pe__cferr'),bad=false,msg=w.dataset.error;
+  function problem(w){var v=val(w),bad=false,msg=w.dataset.error;
     if(w.dataset.required==='true'&&v==='')bad=true;
-    if(!bad&&w.dataset.type==='number'&&v!==''){var el=w.querySelector('input'),n=+v;if((el.min!==''&&n<+el.min)||(el.max!==''&&n>+el.max)){bad=true;msg=(el.min!==''?'Min '+el.min:'')+(el.min!==''&&el.max!==''?' – ':'')+(el.max!==''?'Max '+el.max:'');}}
-    w.toggleAttribute('data-invalid',bad);err.hidden=!bad;err.textContent=bad?msg:'';return !bad;}
+    if(!bad&&w.dataset.type==='number'&&v!==''){var el=w.querySelector('input'),n=+v;if((el.min!==''&&n<+el.min)||(el.max!==''&&n>+el.max)){bad=true;msg=(el.min!==''?'Min '+el.min:'')+(el.min!==''&&el.max!==''?' \u2013 ':'')+(el.max!==''?'Max '+el.max:'');}}
+    return bad?msg:'';}
+  function check(w){var msg=problem(w),err=w.querySelector('.gmc-pe__cferr');
+    w.toggleAttribute('data-invalid',!!msg);if(err){err.hidden=!msg;err.textContent=msg;}return !msg;}
+  function checkAll(){var first=null;document.querySelectorAll('[data-gmc-cf]').forEach(function(w){if(!check(w)&&!first)first=w;});
+    if(first){first.scrollIntoView({behavior:'smooth',block:'center'});var i=first.querySelector('input,select,textarea');if(i&&i.type!=='radio')i.focus({preventScroll:true});}
+    return !first;}
+  function allOk(){var ok=true;document.querySelectorAll('[data-gmc-cf]').forEach(function(w){if(problem(w))ok=false;});return ok;}
   document.addEventListener('submit',function(e){var f=e.target;if(!f.matches||!f.matches('form[action*="/cart/add"]'))return;
-    var first=null;document.querySelectorAll('[data-gmc-cf]').forEach(function(w){if(!check(w)&&!first)first=w;});
-    if(first){e.preventDefault();e.stopImmediatePropagation();first.scrollIntoView({behavior:'smooth',block:'center'});var i=first.querySelector('input,select,textarea');if(i&&i.type!=='radio')i.focus({preventScroll:true});}
+    if(!checkAll()){e.preventDefault();e.stopImmediatePropagation();}
   },true);
   document.addEventListener('change',function(e){var w=e.target.closest&&e.target.closest('[data-gmc-cf]');if(w&&w.hasAttribute('data-invalid'))check(w);});
+  /* "Buy it now" (dynamic checkout): some of these buttons live inside iframes, so while a required field is empty the button area is made inert and covered by a guard that shows the messages when clicked */
+  function guards(){
+    if(!document.querySelector('[data-gmc-cf]'))return;
+    var ok=allOk();
+    document.querySelectorAll('.shopify-payment-button').forEach(function(pb){
+      var g=pb.querySelector(':scope > .gmc-pb-guard');
+      if(ok){if(g)g.remove();pb.querySelectorAll(':scope > [data-gmc-inert]').forEach(function(c){c.removeAttribute('inert');c.removeAttribute('data-gmc-inert');});return;}
+      if(!g){
+        pb.style.position='relative';
+        g=document.createElement('div');g.className='gmc-pb-guard';g.setAttribute('role','button');g.tabIndex=0;g.setAttribute('aria-label','Choose all required options first');
+        g.style.cssText='display:block!important;position:absolute;inset:0;z-index:5;cursor:pointer;background:transparent';
+        var go=function(ev){ev.preventDefault();ev.stopPropagation();checkAll();};
+        g.addEventListener('click',go);g.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' ')go(ev);});
+        pb.appendChild(g);}
+      [].slice.call(pb.children).forEach(function(c){if(c!==g&&!c.hasAttribute('data-gmc-inert')){c.setAttribute('inert','');c.setAttribute('data-gmc-inert','');}});
+    });}
+  document.addEventListener('change',guards);document.addEventListener('input',guards);
+  function boot(){guards();var host=document.querySelector('product-info')||document.querySelector('.product__info-container');
+    if(host&&window.MutationObserver){var t=null;new MutationObserver(function(){clearTimeout(t);t=setTimeout(guards,120);}).observe(host,{childList:true,subtree:true});}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  window.addEventListener('load',guards);
 })();
 
 /* per-option variant picker types: forced colour swatches and variant images */
