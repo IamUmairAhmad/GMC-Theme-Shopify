@@ -101,7 +101,7 @@
   (function(){
     var data={{ gmc_satc_json }};
     var bar=document.getElementById('gmc-satc'),btn=document.getElementById('gmc-satc-btn');
-    var form=document.querySelector('product-form form, form[action*="/cart/add"]');
+    var form=document.querySelector('product-form form[data-type="add-to-cart-form"]')||document.querySelector('product-form form:not(.installment)')||document.querySelector('form[action*="/cart/add"]:not(.installment)');
     if(!bar||!form||!btn||!data)return;
     var LABEL=data.label,action=bar.dataset.action,always=bar.dataset.mode==='always',VARS=data.variants,cur=data.currentId;
     var target=form.querySelector('[type=submit]')||form;
