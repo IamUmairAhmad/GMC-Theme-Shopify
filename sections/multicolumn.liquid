@@ -17,6 +17,9 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  {%- if section.settings.mc_slider_desktop or section.settings.mc_slider_mobile -%}
+    #shopify-section-{{ section.id }} > .gmc-sec-atc { display: none !important; }
+  {%- endif -%}
 {%- endstyle -%}
 
 {%- liquid
@@ -25,9 +28,53 @@
   if section.settings.swipe_on_mobile and section.blocks.size > columns_mobile_int
     assign show_mobile_slider = true
   endif
+  assign mc_engine = false
+  if section.settings.mc_slider_desktop or section.settings.mc_slider_mobile
+    assign mc_engine = true
+  endif
+  if mc_engine
+    assign show_mobile_slider = false
+  endif
+  assign under_d = false
+  assign under_m = false
+  if section.settings.mc_slider_desktop
+    if section.settings.mc_dots_d == 'under' or section.settings.mc_arrows_d == 'under'
+      assign under_d = true
+    endif
+  endif
+  if section.settings.mc_slider_mobile
+    if section.settings.mc_dots_m == 'under' or section.settings.mc_arrows_m == 'under'
+      assign under_m = true
+    endif
+  endif
+  assign mc_peek_m = 0
+  if section.settings.mc_peek_m
+    assign mc_peek_m = 24
+  endif
 -%}
 
-<div class="multicolumn color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
+{%- capture mc_atc -%}
+  {%- assign x_atc = section.settings.gmc_atc_product -%}
+  {%- if x_atc != blank and x_atc.available -%}
+    <div class="gmc-sec-atc multicolumn__atc" data-gmc-sec-atc data-skip="{{ section.settings.gmc_atc_skip }}">
+      <form class="gmc-sec-atc__f" action="{{ routes.cart_add_url }}" method="post">
+        {%- if x_atc.variants.size > 1 -%}
+          <select class="select__select gmc-sec-atc__v" name="id" aria-label="{{ x_atc.title | escape }} options">
+            {%- for v in x_atc.variants -%}
+              <option value="{{ v.id }}"{% unless v.available %} disabled{% endunless %}>{{ v.title | escape }} — {{ v.price | money }}</option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ x_atc.selected_or_first_available_variant.id }}">
+        {%- endif -%}
+        <button type="submit" class="button button--primary">{{ section.settings.gmc_atc_label | default: 'Add to cart' | escape }}</button>
+        <p class="gmc-sec-atc__m" role="status"></p>
+      </form>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+<div class="multicolumn color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}{% if section.settings.mc_full %} multicolumn--full{% endif %}{% if under_d %} multicolumn--d-under{% endif %}{% if under_m %} multicolumn--m-under{% endif %}">
   <div
     class="page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
     {% if settings.animations_reveal_on_scroll %}
@@ -44,18 +91,80 @@
             {{- section.settings.button_label | escape -}}
           </a>
         {%- endif -%}
+        {%- if mc_engine -%}
+          <div class="multicolumn__actions">
+            {%- if section.settings.button_label != blank -%}
+              <a
+                class="link underlined-link"
+                {% if section.settings.button_link == blank %}
+                  role="link" aria-disabled="true"
+                {% else %}
+                  href="{{ section.settings.button_link }}"
+                {% endif %}
+              >{{ section.settings.button_label | escape }}</a>
+            {%- endif -%}
+            {{ mc_atc }}
+          </div>
+        {%- endif -%}
       </div>
     {%- endunless -%}
-    <slider-component class="slider-mobile-gutter">
+    {%- if mc_engine and section.settings.title == blank -%}
+      <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin multicolumn__title">
+        <div class="multicolumn__actions">
+          {%- if section.settings.button_label != blank -%}
+            <a
+              class="link underlined-link"
+              {% if section.settings.button_link == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ section.settings.button_link }}"
+              {% endif %}
+            >{{ section.settings.button_label | escape }}</a>
+          {%- endif -%}
+          {{ mc_atc }}
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if mc_engine -%}
+      <div
+        class="gmc-sl multicolumn__engine"
+        data-gmc-slider
+        data-mode="slide"
+        data-loop="{% if section.settings.mc_type == 'loop' %}true{% else %}false{% endif %}"
+        data-autoplay="{{ section.settings.gmc_slider_autoplay }}"
+        data-perview="{{ section.settings.columns_desktop }}"
+        data-perview-m="{{ section.settings.columns_mobile }}"
+        data-step="{{ section.settings.mc_per_move }}"
+        data-dots-d="{{ section.settings.mc_dots_d }}"
+        data-dots-m="{{ section.settings.mc_dots_m }}"
+        data-arrows-d="{{ section.settings.mc_arrows_d }}"
+        data-arrows-m="{{ section.settings.mc_arrows_m }}"
+        data-arrows-clear="{{ section.settings.mc_arrows_clear }}"
+        data-arrows-scheme="{{ section.settings.mc_arrows_scheme }}"
+        data-dots-scheme="{{ section.settings.mc_dots_scheme }}"
+        data-edge-flush="{{ section.settings.mc_edge }}"
+        data-destroy-desktop="{% unless section.settings.mc_slider_desktop %}true{% endunless %}"
+        data-destroy-mobile="{% unless section.settings.mc_slider_mobile %}true{% endunless %}"
+        data-adapt-desktop="{% if section.settings.mc_adapt_d and section.settings.columns_desktop == 1 %}true{% else %}false{% endif %}"
+        data-adapt-mobile="{{ section.settings.mc_adapt_m }}"
+        data-drag="true"
+        style="--per:{{ section.settings.columns_desktop }};--per-m:{{ section.settings.columns_mobile }};--gmc-gap:{{ section.settings.mc_spacing }}px;--gmc-gap-m:15px;--gmc-peek:{{ section.settings.mc_peek }}px;--gmc-peek-m:{{ mc_peek_m }}px;"
+      >
+        <div class="gmc-sl__vp">
+    {%- else -%}
+      <slider-component class="slider-mobile-gutter">
+    {%- endif -%}
       <ul
-        class="multicolumn-list contains-content-container grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop{% if show_mobile_slider %} slider slider--tablet grid--peek{% endif %}"
+        class="multicolumn-list contains-content-container grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop{% if mc_engine %} gmc-sl__tr multicolumn-list--engine{% endif %}{% if show_mobile_slider %} slider slider--tablet grid--peek{% endif %}"
         id="Slider-{{ section.id }}"
         role="list"
       >
         {%- liquid
           assign highest_ratio = 0
           for block in section.blocks
-            if block.settings.image.aspect_ratio > highest_ratio
+            if block.settings.video.aspect_ratio > highest_ratio
+              assign highest_ratio = block.settings.video.aspect_ratio
+            elsif block.settings.image.aspect_ratio > highest_ratio
               assign highest_ratio = block.settings.image.aspect_ratio
             endif
           endfor
@@ -63,6 +172,7 @@
         {%- for block in section.blocks -%}
           {%- assign empty_column = '' -%}
           {%- if block.settings.image == blank
+            and block.settings.video == blank
             and block.settings.title == blank
             and block.settings.text == blank
             and block.settings.link_label == blank
@@ -72,15 +182,15 @@
 
           <li
             id="Slide-{{ section.id }}-{{ forloop.index }}"
-            class="multicolumn-list__item grid__item{% if section.settings.swipe_on_mobile %} slider__slide{% endif %}{% if section.settings.column_alignment == 'center' %} center{% endif %}{{ empty_column }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            class="multicolumn-list__item grid__item{% if mc_engine %} gmc-sl__s{% endif %}{% if section.settings.swipe_on_mobile %} slider__slide{% endif %}{% if section.settings.column_alignment == 'center' %} center{% endif %}{{ empty_column }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             {{ block.shopify_attributes }}
             {% if settings.animations_reveal_on_scroll %}
               data-cascade
               style="--animation-order: {{ forloop.index }};"
             {% endif %}
           >
-            <div class="multicolumn-card content-container">
-              {%- if block.settings.image != blank -%}
+            <div class="multicolumn-card content-container{% if section.settings.mc_cards == 'scheme' %} color-{{ section.settings.mc_cards_scheme }} gradient{% elsif section.settings.mc_cards == 'overlay' %} multicolumn-card--overlay{% endif %}">
+              {%- if block.settings.image != blank or block.settings.video != blank -%}
                 {% if section.settings.image_ratio == 'adapt' or section.settings.image_ratio == 'circle' %}
                   {% assign spaced_image = true %}
                 {% endif %}
@@ -111,14 +221,43 @@
                       (min-width: 750px) calc((100vw - {{ grid_space_tablet }}) * {{ image_width }} / {{ number_of_columns_mobile }}),
                       calc((100vw - {{ grid_space_mobile }}) * {{ image_width }} / {{ number_of_columns_mobile }})
                     {% endcapture %}
-                    {{
-                      block.settings.image
-                      | image_url: width: 3200
-                      | image_tag:
-                        widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200',
-                        sizes: sizes,
-                        class: 'multicolumn-card__image'
-                    }}
+                    {%- if block.settings.video != blank -%}
+                      {%- liquid
+                        if block.settings.video_thumbnail != blank
+                          assign mc_poster = block.settings.video_thumbnail
+                        else
+                          assign mc_poster = block.settings.video.preview_image
+                        endif
+                      -%}
+                      <video
+                        class="multicolumn-card__image"
+                        playsinline
+                        preload="metadata"
+                        {% if block.settings.muted_autoplay %}
+                          autoplay muted loop
+                        {% else %}
+                          controls
+                        {% endif %}
+                        {% if mc_poster != blank %}
+                          poster="{{ mc_poster | image_url: width: 1200 }}"
+                        {% endif %}
+                      >
+                        {%- for source in block.settings.video.sources -%}
+                          {%- if source.format == 'mp4' -%}
+                            <source src="{{ source.url }}" type="video/mp4">
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </video>
+                    {%- else -%}
+                      {{
+                        block.settings.image
+                        | image_url: width: 3200
+                        | image_tag:
+                          widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200',
+                          sizes: sizes,
+                          class: 'multicolumn-card__image'
+                      }}
+                    {%- endif -%}
                   </div>
                 </div>
               {%- endif -%}
@@ -150,6 +289,10 @@
         {%- endfor -%}
       </ul>
 
+    {%- if mc_engine -%}
+        </div>
+      </div>
+    {%- endif -%}
       {%- if show_mobile_slider -%}
         <div class="slider-buttons large-up-hide">
           <button
@@ -176,8 +319,10 @@
           </button>
         </div>
       {%- endif -%}
+    {%- unless mc_engine -%}
     </slider-component>
-    <div class="center{% if show_mobile_slider %} small-hide medium-hide{% endif %}">
+    {%- endunless -%}
+    <div class="center multicolumn__below{% if show_mobile_slider %} small-hide medium-hide{% endif %}">
       {%- if section.settings.button_label != blank -%}
         <a
           class="button button--primary"
@@ -190,6 +335,7 @@
           {{ section.settings.button_label | escape }}
         </a>
       {%- endif -%}
+      {%- if mc_engine -%}{{ mc_atc }}{%- endif -%}
     </div>
   </div>
 </div>
@@ -299,7 +445,7 @@
       "id": "button_label",
       "default": "t:sections.multicolumn.settings.button_label.default",
       "label": "t:sections.multicolumn.settings.button_label.label",
-      "info": "t:sections.multicolumn.settings.button_label.info"
+      "info": "Shown beside the heading when slider dots or arrows sit under the columns. Otherwise it stays under the columns."
     },
     {
       "type": "url",
@@ -314,7 +460,7 @@
       "type": "range",
       "id": "columns_desktop",
       "min": 1,
-      "max": 6,
+      "max": 10,
       "step": 1,
       "default": 3,
       "label": "t:sections.multicolumn.settings.columns_desktop.label"
@@ -350,6 +496,217 @@
       ],
       "default": "primary",
       "label": "t:sections.multicolumn.settings.background_style.label"
+    },
+    {
+      "type": "select",
+      "id": "mc_cards",
+      "label": "Cards color",
+      "default": "section",
+      "options": [
+        {
+          "value": "section",
+          "label": "Same as section"
+        },
+        {
+          "value": "overlay",
+          "label": "Light overlay"
+        },
+        {
+          "value": "scheme",
+          "label": "Color scheme"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "mc_cards_scheme",
+      "label": "Card color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Column slider"
+    },
+    {
+      "type": "select",
+      "id": "mc_type",
+      "label": "Slider type",
+      "default": "slide",
+      "options": [
+        {
+          "value": "slide",
+          "label": "Classic"
+        },
+        {
+          "value": "loop",
+          "label": "Infinite"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_full",
+      "label": "Full page width on desktop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_slider_desktop",
+      "label": "Enable desktop slider",
+      "default": false,
+      "info": "Desktop slider settings below apply when this is on."
+    },
+    {
+      "type": "range",
+      "id": "mc_per_move",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Slides to scroll on one move",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "mc_spacing",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mc_peek",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop preview of the next slide",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_edge",
+      "label": "Keep the first and last slides flush when a preview is set",
+      "default": true,
+      "info": "Applies to the classic slider."
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_adapt_d",
+      "label": "Adaptive height on desktop",
+      "default": false,
+      "info": "Used when desktop columns is 1."
+    },
+    {
+      "type": "select",
+      "id": "mc_dots_d",
+      "label": "Desktop dots",
+      "default": "under",
+      "options": [
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        },
+        {
+          "value": "under",
+          "label": "Under the slider"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mc_arrows_d",
+      "label": "Desktop arrows",
+      "default": "sides",
+      "options": [
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        },
+        {
+          "value": "under",
+          "label": "Under the slider"
+        },
+        {
+          "value": "sides",
+          "label": "On the sides"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_slider_mobile",
+      "label": "Enable mobile slider",
+      "default": false,
+      "info": "Mobile slider settings below apply when this is on."
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_peek_m",
+      "label": "Preview of the next slide on mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_adapt_m",
+      "label": "Adaptive height on mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mc_dots_m",
+      "label": "Mobile dots",
+      "default": "under",
+      "options": [
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        },
+        {
+          "value": "under",
+          "label": "Under the slider"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mc_arrows_m",
+      "label": "Mobile arrows",
+      "default": "under",
+      "options": [
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        },
+        {
+          "value": "under",
+          "label": "Under the slider"
+        },
+        {
+          "value": "sides",
+          "label": "On the sides"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "mc_arrows_scheme",
+      "label": "Arrows color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "mc_arrows_clear",
+      "label": "Transparent arrows",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "mc_dots_scheme",
+      "label": "Dots color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "color_scheme",
@@ -507,10 +864,11 @@
     {
       "type": "range",
       "id": "gmc_slider_autoplay",
-      "label": "Slider autoplay (seconds, 0 = off)",
+      "label": "Autoplay speed",
       "min": 0,
-      "max": 12,
-      "step": 1,
+      "max": 15,
+      "step": 0.5,
+      "unit": "sec",
       "default": 0,
       "info": "Works on sections that contain a slider. Loops back to the start, pauses on hover and respects reduced-motion."
     },
@@ -577,6 +935,24 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.multicolumn.blocks.column.settings.image.label"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_thumbnail",
+          "label": "Video thumbnail",
+          "info": "If empty, the first frame of the video is used."
+        },
+        {
+          "type": "checkbox",
+          "id": "muted_autoplay",
+          "label": "Muted autoplay",
+          "default": true,
+          "info": "Plays inline without sound. Turn off to show video controls."
         },
         {
           "type": "inline_richtext",
