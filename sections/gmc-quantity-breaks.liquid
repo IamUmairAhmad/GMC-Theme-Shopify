@@ -102,7 +102,7 @@
 </style>
 <script>
   (function(){var w=document.getElementById('gmc-qb-{{ section.id }}');if(!w)return;
-  if(w.dataset.move==='true'){try{var info=document.querySelector('section[id^="MainProduct-"] .product__info-container');
+  if(w.dataset.move==='true'){try{var info=document.querySelector('[id^="MainProduct-"] .product__info-container');
     if(info){var tgt=info.querySelector(':scope > .product-form__quantity');
       if(!tgt){var pf=info.querySelector('product-form');while(pf&&pf.parentElement!==info)pf=pf.parentElement;tgt=pf;}
       if(tgt){info.insertBefore(w,tgt);document.documentElement.classList.add('gmc-qb-moved');var sec=w.closest('.shopify-section');
