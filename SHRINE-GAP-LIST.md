@@ -189,7 +189,7 @@ Updated 20 Oct 2026.
 4. Subscription plans and Markets need a store with a selling-plan app and a second market.
 5. ~~Default home template points at `gmc-test-tee`~~ Fixed; it now uses `gmc-demo-cap`.
 6. Needs your input: footer email, phone and hours; guarantee line (real return or warranty policy); real hero banner image.
-7. Skipped by choice: splitting `gmc.js` (risk higher than the speed gain). A safe speed pass (defer scripts, trim `gmc-icons.svg`) is optional.
+7. Skipped by choice: splitting `gmc.js` (risk higher than the speed gain). Safe speed pass done 21 Oct 2026: scripts were already deferred; pages now load a 44 KB core icon sprite (`gmc-icons-core.svg`) and fetch the full 939 KB library only when a page uses an icon outside it. Collection and search grids now show 3 per row.
 
 ---
 ## 13. Fourth pass (file list was cut at 250; the last 35 files and store data now read)
