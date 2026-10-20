@@ -146,12 +146,12 @@
     },
     "gmc_size": {
       "type": "gmc-size-selector",
-      "disabled": true,
       "blocks": {
         "eur": {
           "type": "size_system",
           "settings": {
             "name": "EUR",
+            "size_label": "",
             "sizes": "Men: 39, 40, 40 1/2, 41, 42, 42 1/2, 43, 44, 44 1/2, 45, 45 1/2, 46, 47, 47 1/2\nWomen: 37, 37 1/2, 38, 38 1/2, 39, 40, 40 1/2, 41, 42, 42 1/2, 43, 44"
           }
         },
@@ -159,6 +159,7 @@
           "type": "size_system",
           "settings": {
             "name": "UK",
+            "size_label": "",
             "sizes": "Men: 5, 5 1/2, 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2, 12\nWomen: 4, 4 1/2, 5, 5 1/2, 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9"
           }
         },
@@ -166,6 +167,7 @@
           "type": "size_system",
           "settings": {
             "name": "US",
+            "size_label": "",
             "sizes": "Men: 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2, 12, 12 1/2, 13\nWomen: 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2"
           }
         },
@@ -200,7 +202,26 @@
         "g1",
         "g2"
       ],
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "move_into_info": true,
+        "fittings": "Men, Women",
+        "fitting_label": "Fitting",
+        "system_label": "Size System",
+        "size_label": "Size",
+        "default_system": "US",
+        "placeholder": "Select an option",
+        "fit_first_text": "Select fitting first",
+        "error_text": "Please select at least one option.",
+        "prop_fitting": "Fitting",
+        "prop_system": "Size System",
+        "prop_size": "Size",
+        "show_guide": true,
+        "guide_label": "Size Guide",
+        "popup_title": "Size Guide",
+        "popup_scheme": "",
+        "mb": 0
+      }
     },
     "gmc_extras": {
       "type": "gmc-product-extras",
@@ -356,6 +377,7 @@
         "t2",
         "t3"
       ],
+      "disabled": true,
       "settings": {
         "move_above_atc": true,
         "heading": "Buy more, save more",
@@ -427,6 +449,7 @@
     },
     "gmc_sub": {
       "type": "gmc-subscription",
+      "disabled": true,
       "settings": {
         "one_time": "One-time purchase",
         "subscribe": "Subscribe & save",
