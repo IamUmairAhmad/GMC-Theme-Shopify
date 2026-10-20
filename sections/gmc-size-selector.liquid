@@ -1,0 +1,429 @@
+{%- comment -%} GMC Theme: size selector (original code). Fitting + size-system pills + size dropdown + size-guide popup. The shopper's choices are saved on the order line (line item properties) and copied to cart attributes so they also appear in the "Note Attributes" column of the orders CSV export. Every size system is a block; its sizes are a plain text list. Ships hidden: turn it on with the eye icon in the theme editor. {%- endcomment -%}
+{%- if product != blank -%}
+{%- liquid
+  assign ss_fits = section.settings.fittings | split: ','
+  assign ss_guide = section.settings.show_guide
+  assign ss_has_fit = false
+  for f in ss_fits
+    assign fv = f | strip
+    if fv != blank
+      assign ss_has_fit = true
+    endif
+  endfor
+  assign ss_err = section.settings.error_text | default: 'Please select at least one option.'
+-%}
+<div class="gmc-ss" id="gmc-ss-{{ section.id }}" data-sid="{{ section.id }}" data-move="{{ section.settings.move_into_info }}" data-p-fit="{{ section.settings.prop_fitting | escape }}" data-p-sys="{{ section.settings.prop_system | escape }}" data-p-size="{{ section.settings.prop_size | escape }}" data-default="{{ section.settings.default_system | escape }}" data-size-label="{{ section.settings.size_label | escape }}" data-placeholder="{{ section.settings.placeholder | escape }}" data-fit-first="{{ section.settings.fit_first_text | escape }}" style="margin-bottom:{{ section.settings.mb }}px">
+
+  {%- if ss_has_fit -%}
+    <div class="gmc-ss__grp" data-gmc-cf data-required="true" data-type="pills" data-error="{{ ss_err | escape }}">
+      <span class="gmc-ss__lbl" id="gmc-ss-fl-{{ section.id }}">{{ section.settings.fitting_label | escape }} <abbr title="required">*</abbr></span>
+      <div class="gmc-ss__pills" role="radiogroup" aria-labelledby="gmc-ss-fl-{{ section.id }}">
+        {%- for f in ss_fits -%}{%- assign fv = f | strip -%}{%- if fv != blank -%}
+          <label class="gmc-ss__pill"><input type="radio" name="gmc-ss-fit-{{ section.id }}" value="{{ fv | escape }}" data-ss-fit><span>{{ fv | escape }}</span></label>
+        {%- endif -%}{%- endfor -%}
+      </div>
+      <p class="gmc-pe__cferr gmc-ss__err" role="alert" hidden></p>
+    </div>
+  {%- endif -%}
+
+  {%- if ss_guide -%}
+    <button type="button" class="gmc-ss__guide" data-ss-guide aria-haspopup="dialog">
+      {%- if section.settings.guide_icon != blank -%}
+        <img src="{{ section.settings.guide_icon | image_url: width: 80 }}" alt="" width="20" height="20" loading="lazy">
+      {%- else -%}
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h18"/><path d="M5 17V9l4 2 3-5 3 3 4 1v7"/><path d="M7 20v-3M11 20v-3M15 20v-3M19 20v-3"/></svg>
+      {%- endif -%}
+      <span>{{ section.settings.guide_label | escape }}</span>
+    </button>
+  {%- endif -%}
+
+  <div class="gmc-ss__row">
+    <div class="gmc-ss__grp" data-gmc-cf data-required="true" data-type="pills" data-error="{{ ss_err | escape }}">
+      <span class="gmc-ss__lbl" id="gmc-ss-sl-{{ section.id }}">{{ section.settings.system_label | escape }} <abbr title="required">*</abbr></span>
+      <div class="gmc-ss__pills" role="radiogroup" aria-labelledby="gmc-ss-sl-{{ section.id }}">
+        {%- for block in section.blocks -%}{%- if block.type == 'size_system' and block.settings.name != blank -%}
+          <label class="gmc-ss__pill" {{ block.shopify_attributes }}><input type="radio" name="gmc-ss-sys-{{ section.id }}" value="{{ block.settings.name | strip | escape }}" data-ss-sys data-label="{{ block.settings.size_label | escape }}" data-sizes="{{ block.settings.sizes | escape }}"><span>{{ block.settings.name | strip | escape }}</span></label>
+        {%- endif -%}{%- endfor -%}
+      </div>
+      <p class="gmc-pe__cferr gmc-ss__err" role="alert" hidden></p>
+    </div>
+    <div class="gmc-ss__grp" data-gmc-cf data-required="true" data-type="select" data-error="{{ ss_err | escape }}">
+      <label class="gmc-ss__lbl" for="gmc-ss-sz-{{ section.id }}"><span data-ss-size-label>{{ section.settings.size_label | escape }}</span> <abbr title="required">*</abbr></label>
+      <div class="gmc-ss__sel"><select id="gmc-ss-sz-{{ section.id }}" data-ss-size disabled><option value="">{{ section.settings.placeholder | escape }}</option></select></div>
+      <p class="gmc-pe__cferr gmc-ss__err" role="alert" hidden></p>
+    </div>
+  </div>
+
+  {%- if ss_guide -%}
+    <dialog class="gmc-ss__dlg" aria-labelledby="gmc-ss-dt-{{ section.id }}" data-ss-dlg>
+      <div class="gmc-ss__dlgin gradient color-{{ section.settings.popup_scheme }}">
+        <div class="gmc-ss__dlgh">
+          <h2 id="gmc-ss-dt-{{ section.id }}">{{ section.settings.popup_title | escape }}</h2>
+          <button type="button" class="gmc-ss__x" data-ss-close aria-label="Close">&times;</button>
+        </div>
+        <div class="gmc-ss__dlgb">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'guide_text' -%}
+              <div class="gmc-ss__gt" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading | escape }}</h3>{%- endif -%}
+                {{ block.settings.body }}
+              </div>
+            {%- elsif block.type == 'guide_image' and block.settings.image != blank -%}
+              <figure class="gmc-ss__gi" {{ block.shopify_attributes }}>
+                {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 700, 1000, 1200', sizes: '(min-width: 750px) 700px, 90vw', alt: block.settings.image.alt | default: block.settings.caption }}
+                {%- if block.settings.caption != blank -%}<figcaption>{{ block.settings.caption | escape }}</figcaption>{%- endif -%}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </dialog>
+  {%- endif -%}
+</div>
+
+<style>
+  .gmc-ss{margin:1.6rem 0}.gmc-ss__grp{min-width:0;margin-bottom:1.2rem}.gmc-ss__lbl{display:block;margin-bottom:.6rem;font-weight:600;font-size:1.4rem}.gmc-ss__lbl abbr{color:#c0392b;text-decoration:none}
+  .gmc-ss__pills{display:flex;flex-wrap:wrap;gap:.8rem}.gmc-ss__pill{position:relative;cursor:pointer}
+  .gmc-ss__pill input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .gmc-ss__pill span{display:inline-block;min-width:5.2rem;padding:1rem 1.4rem;text-align:center;font-size:1.4rem;line-height:1.2;border:1px solid rgba(var(--color-foreground),.55);border-radius:var(--variant-pills-radius,.4rem);background:transparent;color:rgb(var(--color-foreground));transition:background .15s,color .15s,border-color .15s}
+  .gmc-ss__pill:hover span{border-color:rgb(var(--color-foreground))}
+  .gmc-ss__pill input:checked+span{background:rgb(var(--color-foreground));color:rgb(var(--color-background));border-color:rgb(var(--color-foreground))}
+  .gmc-ss__pill input:focus-visible+span{outline:2px solid rgb(var(--color-foreground));outline-offset:3px}
+  .gmc-ss__row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:1.2rem 2rem;align-items:start}
+  @media(max-width:480px){.gmc-ss__row{grid-template-columns:1fr}}
+  .gmc-ss__sel{position:relative}.gmc-ss__sel select{appearance:none;-webkit-appearance:none;width:100%;box-sizing:border-box;padding:1rem 3.4rem 1rem 1.2rem;font:inherit;font-size:1.4rem;color:rgb(var(--color-foreground));background:transparent;border:1px solid rgba(var(--color-foreground),.55);border-radius:var(--inputs-radius,.4rem);cursor:pointer;min-height:4.4rem}
+  .gmc-ss__sel select:disabled{opacity:.55;cursor:not-allowed}.gmc-ss__sel select option{color:#111;background:#fff}
+  .gmc-ss__sel::after{content:"";position:absolute;right:1.4rem;top:50%;width:.7rem;height:.7rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+  .gmc-ss__sel select:focus-visible{outline:2px solid rgb(var(--color-foreground));outline-offset:2px}
+  .gmc-ss__err{margin:.6rem 0 0;font-size:1.3rem;color:#c0392b}.gmc-ss__grp[data-invalid] .gmc-ss__pill span,.gmc-ss__grp[data-invalid] .gmc-ss__sel select{border-color:#c0392b}
+  .gmc-ss__guide{display:inline-flex;align-items:center;gap:.8rem;margin:0 0 1.4rem;padding:.4rem 0;background:none;border:0;color:rgb(var(--color-foreground));font:inherit;font-size:1.5rem;font-weight:600;cursor:pointer}
+  .gmc-ss__guide:hover span{text-decoration:underline;text-underline-offset:.3rem}.gmc-ss__guide img{display:block;width:2rem;height:2rem;object-fit:contain}
+  .gmc-ss__dlg{padding:0;border:0;background:transparent;max-width:min(76rem,94vw);width:100%;max-height:90vh;margin:auto;overflow:visible}
+  .gmc-ss__dlg::backdrop{background:rgba(0,0,0,.6)}
+  .gmc-ss__dlgin{display:flex;flex-direction:column;max-height:90vh;border-radius:var(--popup-corner-radius,.8rem);overflow:hidden;color:rgb(var(--color-foreground));background:rgb(var(--color-background))}
+  .gmc-ss__dlgh{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.4rem 1.6rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}
+  .gmc-ss__dlgh h2{margin:0;font-size:1.7rem;font-weight:700}
+  .gmc-ss__x{width:3.6rem;height:3.6rem;border:0;background:none;color:inherit;font-size:2.8rem;line-height:1;cursor:pointer;border-radius:50%}.gmc-ss__x:hover{background:rgba(var(--color-foreground),.1)}.gmc-ss__x:focus-visible{outline:2px solid currentColor}
+  .gmc-ss__dlgb{padding:1.6rem;overflow:auto;overscroll-behavior:contain}
+  .gmc-ss__gt{margin-bottom:2.4rem;font-size:1.5rem;line-height:1.6}.gmc-ss__gt h3{margin:0 0 .8rem;font-size:1.5rem;font-weight:700}.gmc-ss__gt p{margin:0 0 1rem}
+  .gmc-ss__gi{margin:0 0 1.6rem}.gmc-ss__gi img{display:block;width:100%;height:auto;border-radius:.4rem}.gmc-ss__gi figcaption{margin-top:.6rem;font-size:1.3rem;opacity:.8}
+  .product__info-container>.gmc-ss{padding-left:0;padding-right:0;max-width:none}
+</style>
+
+<script>
+(function(){
+  var w=document.getElementById('gmc-ss-{{ section.id }}');if(!w)return;
+  var sid=w.dataset.sid;
+  if(w.dataset.move==='true'){try{var info=document.querySelector('[id^="MainProduct-"] .product__info-container');
+    if(info){info.querySelectorAll('.gmc-ss[data-sid="'+sid+'"]').forEach(function(o){if(o!==w)o.remove();});
+      var tgt=info.querySelector(':scope > .gmc-qb')||info.querySelector(':scope > .product-form__quantity');
+      if(!tgt){var pf=info.querySelector('product-form');while(pf&&pf.parentElement!==info)pf=pf.parentElement;tgt=pf;}
+      if(tgt){info.insertBefore(w,tgt);var host=document.getElementById('shopify-section-'+sid);if(host)host.style.display='none';}}}catch(e){}}
+  var P={fit:w.dataset.pFit||'Fitting',sys:w.dataset.pSys||'Size System',size:w.dataset.pSize||'Size'};
+  var fitEls=[].slice.call(w.querySelectorAll('input[data-ss-fit]')),sysEls=[].slice.call(w.querySelectorAll('input[data-ss-sys]'));
+  var sel=w.querySelector('select[data-ss-size]'),lab=w.querySelector('[data-ss-size-label]');
+  var fits=fitEls.map(function(i){return i.value.toLowerCase();});
+  function split(s){return String(s).split(',').map(function(x){return x.trim();}).filter(Boolean);}
+  function parse(sys){var gen=[],by={};
+    String(sys.dataset.sizes||'').split(/\n/).forEach(function(l){l=l.trim();if(!l)return;var i=l.indexOf(':'),k=i>0?l.slice(0,i).trim().toLowerCase():'';
+      if(k&&fits.indexOf(k)>-1)by[k]=split(l.slice(i+1));else gen=gen.concat(split(l));});
+    return {gen:gen,by:by,spec:Object.keys(by).length>0};}
+  function put(n,v){if(window.gmcField)window.gmcField(n,v);}
+  function checked(a){for(var i=0;i<a.length;i++)if(a[i].checked)return a[i];return null;}
+  function render(keep){
+    var f=checked(fitEls),s=checked(sysEls),fv=f?f.value:'',prev=keep?sel.value:'';
+    sel.innerHTML='';var ph=document.createElement('option');ph.value='';ph.textContent=w.dataset.placeholder||'Select an option';sel.appendChild(ph);
+    if(!s){sel.disabled=true;put(P.size,'');return;}
+    if(lab)lab.textContent=s.dataset.label||w.dataset.sizeLabel||'Size';
+    var d=parse(s),need=fits.length&&d.spec&&!fv,list=need?[]:(d.spec&&fv&&d.by[fv.toLowerCase()]?d.by[fv.toLowerCase()]:d.gen);
+    if(need)ph.textContent=w.dataset.fitFirst||'Select fitting first';
+    list.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o);});
+    sel.disabled=!list.length;if(prev&&list.indexOf(prev)>-1)sel.value=prev;else put(P.size,'');}
+  function init(){
+    var def=(w.dataset['default']||'').toLowerCase();
+    if(def)sysEls.forEach(function(i){if(i.value.toLowerCase()===def)i.checked=true;});
+    var s=checked(sysEls);if(s)put(P.sys,s.value);render(false);}
+  fitEls.forEach(function(i){i.addEventListener('change',function(){put(P.fit,i.value);render(false);});});
+  sysEls.forEach(function(i){i.addEventListener('change',function(){put(P.sys,i.value);render(false);});});
+  sel.addEventListener('change',function(){put(P.size,sel.value);});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  /* remember which properties to mirror into cart attributes (see gmc.js) */
+  document.addEventListener('submit',function(e){var f=e.target;if(!f.matches||!f.matches('form[action*="/cart/add"]'))return;
+    try{sessionStorage.setItem('gmc-size-props',JSON.stringify([P.fit,P.sys,P.size]));}catch(x){}},false);
+  /* size guide popup */
+  var b=w.querySelector('[data-ss-guide]'),dlg=w.querySelector('[data-ss-dlg]');
+  if(b&&dlg){
+    b.addEventListener('click',function(){if(typeof dlg.showModal==='function'){dlg.showModal();document.body.classList.add('overflow-hidden');}else dlg.setAttribute('open','');});
+    dlg.addEventListener('click',function(e){if(e.target===dlg||e.target.closest('[data-ss-close]'))dlg.close();});
+    dlg.addEventListener('close',function(){document.body.classList.remove('overflow-hidden');b.focus();});}
+})();
+</script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Size selector",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "max_blocks": 24,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Fitting, size system and size choices with a size guide popup. Each Size System below is a block: add, edit or delete them. The shopper's choices are saved on the order and in the orders export."
+    },
+    {
+      "type": "checkbox",
+      "id": "move_into_info",
+      "label": "Show in the product info, above the quantity",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Fitting"
+    },
+    {
+      "type": "text",
+      "id": "fittings",
+      "label": "Fitting options",
+      "info": "Comma separated, for example: Men, Women. Leave empty to hide the Fitting choice.",
+      "default": "Men, Women"
+    },
+    {
+      "type": "text",
+      "id": "fitting_label",
+      "label": "Fitting label",
+      "default": "Fitting"
+    },
+    {
+      "type": "header",
+      "content": "Size system and size"
+    },
+    {
+      "type": "text",
+      "id": "system_label",
+      "label": "Size system label",
+      "default": "Size System"
+    },
+    {
+      "type": "text",
+      "id": "size_label",
+      "label": "Size dropdown label",
+      "info": "Each Size System block can use its own label instead.",
+      "default": "Size"
+    },
+    {
+      "type": "text",
+      "id": "default_system",
+      "label": "Size system selected at first",
+      "info": "Must match a block name, for example US. Leave empty for none.",
+      "default": "US"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Dropdown placeholder",
+      "default": "Select an option"
+    },
+    {
+      "type": "text",
+      "id": "fit_first_text",
+      "label": "Placeholder when a fitting must be chosen first",
+      "default": "Select fitting first"
+    },
+    {
+      "type": "text",
+      "id": "error_text",
+      "label": "Message when something is not selected",
+      "default": "Please select at least one option."
+    },
+    {
+      "type": "header",
+      "content": "Order and export names"
+    },
+    {
+      "type": "paragraph",
+      "content": "These names appear on the order in the admin, in emails and in the export. Changing them only affects new orders."
+    },
+    {
+      "type": "text",
+      "id": "prop_fitting",
+      "label": "Fitting name on the order",
+      "default": "Fitting"
+    },
+    {
+      "type": "text",
+      "id": "prop_system",
+      "label": "Size system name on the order",
+      "default": "Size System"
+    },
+    {
+      "type": "text",
+      "id": "prop_size",
+      "label": "Size name on the order",
+      "default": "Size"
+    },
+    {
+      "type": "header",
+      "content": "Size guide popup"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_guide",
+      "label": "Show the size guide button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "guide_label",
+      "label": "Button text",
+      "default": "Size Guide"
+    },
+    {
+      "type": "image_picker",
+      "id": "guide_icon",
+      "label": "Button icon (optional)",
+      "info": "Small square image. Leave empty to use the built-in icon."
+    },
+    {
+      "type": "text",
+      "id": "popup_title",
+      "label": "Popup title",
+      "default": "Size Guide"
+    },
+    {
+      "type": "color_scheme",
+      "id": "popup_scheme",
+      "label": "Popup colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "mb",
+      "label": "Space below",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size_system",
+      "name": "Size system",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "info": "Shown as a button, for example EUR, UK, US or CM.",
+          "default": "US"
+        },
+        {
+          "type": "text",
+          "id": "size_label",
+          "label": "Dropdown label (optional)",
+          "info": "For example CM Size. Leave empty to use the general label."
+        },
+        {
+          "type": "textarea",
+          "id": "sizes",
+          "label": "Sizes",
+          "info": "Separate sizes with commas. To use different sizes per fitting, start a line with the fitting name and a colon, for example: Men: 6, 6 1/2, 7. A line without a name applies to every fitting.",
+          "default": "Men: 6, 6 1/2, 7, 7 1/2, 8\nWomen: 6 1/2, 7, 7 1/2, 8"
+        }
+      ]
+    },
+    {
+      "type": "guide_text",
+      "name": "Popup text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "How to choose your size"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Text",
+          "default": "<p>Add your size advice here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "guide_image",
+      "name": "Popup image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size selector",
+      "blocks": [
+        {
+          "type": "size_system",
+          "settings": {
+            "name": "EUR",
+            "sizes": "Men: 39, 40, 40 1/2, 41, 42, 42 1/2, 43, 44, 44 1/2, 45, 45 1/2, 46, 47, 47 1/2\nWomen: 37, 37 1/2, 38, 38 1/2, 39, 40, 40 1/2, 41, 42, 42 1/2, 43, 44"
+          }
+        },
+        {
+          "type": "size_system",
+          "settings": {
+            "name": "UK",
+            "sizes": "Men: 5, 5 1/2, 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2, 12\nWomen: 4, 4 1/2, 5, 5 1/2, 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9"
+          }
+        },
+        {
+          "type": "size_system",
+          "settings": {
+            "name": "US",
+            "sizes": "Men: 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2, 12, 12 1/2, 13\nWomen: 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2"
+          }
+        },
+        {
+          "type": "size_system",
+          "settings": {
+            "name": "CM",
+            "size_label": "CM Size",
+            "sizes": "23 1/2 cm, 24 cm, 24 1/2 cm, 25 cm, 26 cm, 26 1/2 cm, 27 cm, 27 1/2 cm, 28 cm, 28 1/2 cm, 29 cm, 29 1/2 cm, 30 cm, 30 1/2 cm, 31 cm"
+          }
+        },
+        {
+          "type": "guide_text",
+          "settings": {
+            "heading": "Check your current shoe size",
+            "body": "<p>Look at the size label inside your most comfortable pair of shoes. Note whether it is in US, UK or EUR sizes, then pick the same size system and size here.</p>"
+          }
+        },
+        {
+          "type": "guide_text",
+          "settings": {
+            "heading": "Measure your foot",
+            "body": "<p>Not sure of your size? Stand on a sheet of paper while wearing socks, trace your foot, and measure from your longest toe to your heel in centimetres. Choose CM as the size system and pick the size that matches your measurement, adding about half a centimetre for comfort.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

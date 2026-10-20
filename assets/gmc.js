@@ -589,3 +589,34 @@ document.querySelectorAll('[data-gmc-countdown]').forEach(function(el){var m=+el
       b.classList.add('gmc-added');l.textContent='\u2713 '+(window.gmcAddedText||'Added');
       setTimeout(function(){b.classList.remove('gmc-added');l.textContent=t;},1700);});});}
   if(window.gmcWhenPubsub)window.gmcWhenPubsub(init);else window.addEventListener('load',init);})();
+
+/* size selector: copy each line's size choices into cart attributes ("Size: <product>") so they reach the orders CSV export (Note Attributes column). The line item properties stay on the order line as well. */
+(function(){
+  var KEY='gmc-size-props',PFX='Size: ',busy=false,again=false;
+  function names(){try{return JSON.parse(sessionStorage.getItem(KEY)||'null');}catch(e){return null;}}
+  function root(){return (window.Shopify&&Shopify.routes&&Shopify.routes.root)||'/';}
+  function sync(){
+    var n=names();if(!n||!n.length)return;
+    if(busy){again=true;return;}busy=true;
+    fetch(root()+'cart.js',{headers:{Accept:'application/json'}}).then(function(r){return r.json();}).then(function(c){
+      var want={},seen={};
+      (c.items||[]).forEach(function(it){
+        var p=it.properties||{},parts=[];
+        n.forEach(function(k){if(p[k])parts.push(p[k]);});
+        if(!parts.length)return;
+        var key=PFX+String(it.product_title||'Product').slice(0,60);
+        seen[key]=(seen[key]||0)+1;if(seen[key]>1)key+=' #'+seen[key];
+        want[key]=parts.join(' / ');
+      });
+      var cur=c.attributes||{},upd={},dirty=false,has=false;
+      Object.keys(want).forEach(function(k){has=true;if(cur[k]!==want[k]){upd[k]=want[k];dirty=true;}});
+      Object.keys(cur).forEach(function(k){if(k.indexOf(PFX)===0&&!(k in want)){upd[k]='';dirty=true;}});
+      if(!has&&!dirty){try{sessionStorage.removeItem(KEY);}catch(e){}return;}
+      if(!dirty)return;
+      return fetch(root()+'cart/update.js',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({attributes:upd})});
+    }).catch(function(){}).then(function(){busy=false;if(again){again=false;sync();}});
+  }
+  window.gmcSizeSync=sync;
+  if(window.gmcWhenPubsub)window.gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.cartUpdate,function(){setTimeout(sync,700);});});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
+})();

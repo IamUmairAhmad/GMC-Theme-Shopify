@@ -144,6 +144,64 @@
         "gmc_pair_rev": false
       }
     },
+    "gmc_size": {
+      "type": "gmc-size-selector",
+      "disabled": true,
+      "blocks": {
+        "eur": {
+          "type": "size_system",
+          "settings": {
+            "name": "EUR",
+            "sizes": "Men: 39, 40, 40 1/2, 41, 42, 42 1/2, 43, 44, 44 1/2, 45, 45 1/2, 46, 47, 47 1/2\nWomen: 37, 37 1/2, 38, 38 1/2, 39, 40, 40 1/2, 41, 42, 42 1/2, 43, 44"
+          }
+        },
+        "uk": {
+          "type": "size_system",
+          "settings": {
+            "name": "UK",
+            "sizes": "Men: 5, 5 1/2, 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2, 12\nWomen: 4, 4 1/2, 5, 5 1/2, 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9"
+          }
+        },
+        "us": {
+          "type": "size_system",
+          "settings": {
+            "name": "US",
+            "sizes": "Men: 6, 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2, 12, 12 1/2, 13\nWomen: 6 1/2, 7, 7 1/2, 8, 8 1/2, 9, 9 1/2, 10, 10 1/2, 11, 11 1/2"
+          }
+        },
+        "cm": {
+          "type": "size_system",
+          "settings": {
+            "name": "CM",
+            "size_label": "CM Size",
+            "sizes": "23 1/2 cm, 24 cm, 24 1/2 cm, 25 cm, 26 cm, 26 1/2 cm, 27 cm, 27 1/2 cm, 28 cm, 28 1/2 cm, 29 cm, 29 1/2 cm, 30 cm, 30 1/2 cm, 31 cm"
+          }
+        },
+        "g1": {
+          "type": "guide_text",
+          "settings": {
+            "heading": "Check your current shoe size",
+            "body": "<p>Look at the size label inside your most comfortable pair of shoes. Note whether it is in US, UK or EUR sizes, then pick the same size system and size here.</p>"
+          }
+        },
+        "g2": {
+          "type": "guide_text",
+          "settings": {
+            "heading": "Measure your foot",
+            "body": "<p>Not sure of your size? Stand on a sheet of paper while wearing socks, trace your foot, and measure from your longest toe to your heel in centimetres. Choose CM as the size system and pick the size that matches your measurement, adding about half a centimetre for comfort.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eur",
+        "uk",
+        "us",
+        "cm",
+        "g1",
+        "g2"
+      ],
+      "settings": {}
+    },
     "gmc_extras": {
       "type": "gmc-product-extras",
       "blocks": {
@@ -660,6 +718,7 @@
   },
   "order": [
     "main",
+    "gmc_size",
     "gmc_extras",
     "gmc_qb",
     "gmc_bd",
