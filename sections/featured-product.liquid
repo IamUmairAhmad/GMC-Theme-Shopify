@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'product', title: 'Featured product' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- liquid
   assign product = section.settings.product
@@ -683,6 +686,7 @@
 
 {%- render 'gmc-section-extras' -%}
 {%- comment -%} GMC {%- endcomment -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.featured-product.name",

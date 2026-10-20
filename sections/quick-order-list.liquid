@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'orders', title: 'Quick order list' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
@@ -28,6 +31,7 @@
 %}
 
 {%- render 'gmc-section-extras' -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.quick-order-list.name",

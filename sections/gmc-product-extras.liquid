@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'product', title: 'Product info' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: product page info blocks. Add this section to the product template and stack the blocks you want. {%- endcomment -%}
 {%- assign v = product.selected_or_first_available_variant -%}
@@ -105,6 +108,7 @@
       else if(d.a&&el.dataset.fallback){el.textContent=el.dataset.fallback;el.hidden=false;}else{el.hidden=true;}});}
   gmcWhenPubsub(function(){subscribe(PUB_SUB_EVENTS.variantChange,function(ev){var v=ev&&ev.data&&ev.data.variant;upd(v?v.id:null);});});
 })();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Product info blocks",

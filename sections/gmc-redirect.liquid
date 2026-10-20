@@ -1,4 +1,8 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'redirect', title: 'Redirect' -%}
+{%- else -%}
 {%- if section.settings.url != blank and section.settings.enabled -%}<script>if(!(window.Shopify&&Shopify.designMode)){setTimeout(function(){location.replace({{ section.settings.url | json }});},{{ section.settings.delay | times: 1000 }});}</script>{%- endif -%}
+{%- endif -%}
 {% schema %}
 {"name":"Redirect to page","settings":[{"type":"checkbox","id":"enabled","label":"Enable redirect","default":true},{"type":"url","id":"url","label":"Redirect to"},{"type":"range","id":"delay","min":0,"max":30,"unit":"s","label":"Delay","default":0},{"type":"paragraph","content":"Redirect is disabled inside the theme editor."}],"presets":[{"name":"Redirect to page"}]}
 {% endschema %}

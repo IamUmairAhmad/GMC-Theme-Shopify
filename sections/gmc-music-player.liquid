@@ -1,9 +1,13 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'music', title: 'Music player' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- assign mp = section.settings -%}
 {%- if mp.url != blank -%}
 <div class="gmc-mp gmc-mp--{{ mp.position }} color-{{ mp.gmc_scheme }} {% render 'gmc-vis', hide: mp.hide_on %}" style="--mp-x:{{ mp.off_x }}px;--mp-y:{{ mp.off_y }}px;--mp-s:{{ mp.size }}px"><button type="button" id="gmc-mp-btn" aria-label="Toggle music" aria-pressed="false">{%- if mp.icon != blank -%}{%- render 'gmc-icon', name: mp.icon, size: 20 -%}{%- else -%}♪{%- endif -%}</button><audio id="gmc-mp-a" src="{{ mp.url }}" loop preload="none" data-vol="{{ mp.volume }}"></audio></div>
 <style>.gmc-mp{position:fixed;z-index:40}.gmc-mp--bottom-left{left:calc(1.2rem + var(--mp-x));bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--mp-y))}.gmc-mp--bottom-center{left:50%;bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--mp-y));transform:translateX(-50%)}.gmc-mp--bottom-right{right:calc(1.2rem + var(--mp-x));bottom:calc(var(--gmc-dock,0px) + 1.2rem + var(--mp-y))}.gmc-mp--top-left{left:calc(1.2rem + var(--mp-x));top:calc(8rem + var(--mp-y))}.gmc-mp--top-right{right:calc(1.2rem + var(--mp-x));top:calc(8rem + var(--mp-y))}#gmc-mp-btn{position:relative;width:var(--mp-s,44px);height:var(--mp-s,44px);border-radius:50%;border:0;cursor:pointer;background:rgb(var(--color-foreground));color:rgb(var(--color-background));font-size:20px;display:grid;place-items:center;box-shadow:0 2px 10px rgba(var(--color-shadow),.25)}#gmc-mp-btn.on{outline:3px solid {{ settings.gmc_accent }}}{%- if mp.ripple -%}#gmc-mp-btn.on:after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid {{ settings.gmc_accent }};animation:gmc-mp-r 1.6s ease-out infinite}@keyframes gmc-mp-r{to{transform:scale(1.9);opacity:0}}@media(prefers-reduced-motion:reduce){#gmc-mp-btn.on:after{animation:none}}{%- endif -%}</style>
 <script>(function(){var b=document.getElementById('gmc-mp-btn'),a=document.getElementById('gmc-mp-a');a.volume=Math.max(0,Math.min(1,(+a.dataset.vol||60)/100));b.addEventListener('click',function(){if(a.paused){a.play();b.classList.add('on');b.setAttribute('aria-pressed','true');}else{a.pause();b.classList.remove('on');b.setAttribute('aria-pressed','false');}});})();</script>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

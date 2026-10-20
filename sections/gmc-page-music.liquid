@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'music', title: 'Page music player' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- assign mp = section.settings -%}
 {%- if mp.enabled and mp.url != blank -%}
@@ -35,6 +38,7 @@
     });
   })();
 </script>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

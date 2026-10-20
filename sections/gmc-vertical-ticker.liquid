@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'vticker', title: 'Vertical ticker' -%}
+{%- else -%}
 {%- capture gmc_gate -%}{%- render 'gmc-gate', only: section.settings.gmc_only, hide: section.settings.gmc_hide -%}{%- endcapture -%}
 {%- unless gmc_gate contains 'hide' -%}
 {%- render 'gmc-scheme' -%}
@@ -21,6 +24,7 @@
 <style>@media(max-width:749px){.gmc-vtw--pd .gmc-vtw__panel{display:none}}.gmc-vtw--pn .gmc-vtw__panel{display:none}.gmc-vtw--pn.gmc-vtw--panel{display:block}.gmc-vtw{display:block;background:var(--bg);color:var(--fg)}.gmc-vtw--panel{display:grid;grid-template-columns:1fr 1.2fr;align-items:center;gap:2rem;padding:2rem}.gmc-vtw--right .gmc-vtw__panel{order:2}.gmc-vtw__panel h2{margin:0 0 1rem;color:var(--fg)}.gmc-vtw__panel p{color:var(--fg)}.gmc-vtw__panel p{margin:0 0 1.2rem}@media(max-width:749px){.gmc-vtw--panel{grid-template-columns:1fr}}
 .gmc-vt{height:calc(var(--h) * var(--rows,1));overflow:hidden;text-align:var(--al,center);font-size:var(--sz,16px);font-weight:var(--fw,600);font-style:var(--fs,normal);text-transform:var(--tt,none)}.gmc-vt__item{height:var(--h);line-height:var(--h);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 1rem}
 .gmc-vt--step .gmc-vt__track{animation:gmc-vt var(--speed) steps(var(--steps)) infinite}.gmc-vt--smooth .gmc-vt__track{animation:gmc-vt var(--speed) linear infinite}@keyframes gmc-vt{to{transform:translateY(-50%)}}@media(prefers-reduced-motion:reduce){.gmc-vt__track{animation:none!important}}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Vertical ticker",

@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'hero', title: 'Video hero' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <section class="gmc-vh {% render 'gmc-vis', hide: section.settings.hide_on %}" style="min-height:{{ section.settings.h }}vh">
@@ -7,6 +10,7 @@
   <div class="gmc-vh__c page-width"><h1>{{ section.settings.heading | escape }}</h1><p>{{ section.settings.text | escape }}</p>{%- if section.settings.link != blank -%}<a class="button" href="{{ section.settings.link }}">{{ section.settings.button | escape }}</a>{%- endif -%}</div>
 </section>
 <style>.gmc-vh{position:relative;display:grid;place-items:center;overflow:hidden;color:#fff;text-align:center}.gmc-vh video,.gmc-vh__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.gmc-vh__ov,.gmc-vh__c{grid-area:1/1;position:relative}.gmc-vh__ov{position:absolute;inset:0}.gmc-vh__c{z-index:1;padding:3rem 0}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Video hero",

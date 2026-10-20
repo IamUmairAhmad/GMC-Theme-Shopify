@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'hero', title: 'Parallax hero' -%}
+{%- else -%}
 {%- comment -%} gmc {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
@@ -30,6 +33,7 @@ function u(){var r=s.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)re
  l.style.transform='translate3d('+(c*x/100+px*m)+'px,'+(c*sp/100+py*m)+'px,0) scale('+(1+p*z/100*-1)+') rotate('+(p*ro)+'deg)';});}
 addEventListener('scroll',u,{passive:true});u();
 if(s.dataset.tilt==='true'&&matchMedia('(pointer:fine)').matches){s.addEventListener('pointermove',function(e){var r=s.getBoundingClientRect();px=((e.clientX-r.left)/r.width-.5)*2;py=((e.clientY-r.top)/r.height-.5)*2;u();});}})();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "3D parallax hero",

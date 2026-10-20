@@ -1,9 +1,13 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'wishlist', title: 'Wishlist' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <div class="page-width gmc-wl {% render 'gmc-vis', hide: section.settings.hide_on %}" style="padding:36px 0">
   {%- if section.settings.heading != blank -%}<h2 style="text-align:center;margin-bottom:2rem">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div data-gmc-wishlist data-empty="{{ section.settings.empty | escape }}" data-remove="{{ section.settings.remove | escape }}"><noscript>JavaScript is needed to show your saved products.</noscript></div>
 </div>
+{%- endif -%}
 {% schema %}
 {
   "name": "Wishlist",

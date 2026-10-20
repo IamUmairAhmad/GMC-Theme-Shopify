@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'table', title: 'Comparison table' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one row block.' -%}{%- endif -%}
@@ -15,6 +18,7 @@
 </div>
 <style>.gmc-ct{padding:36px 0}.gmc-ct__t{width:100%;max-width:760px;margin:1rem auto 0;border-collapse:collapse;text-align:center}.gmc-ct__t td,.gmc-ct__t th{padding:1rem;border-bottom:1px solid rgba(var(--color-foreground),.12)}.gmc-ct__t td:first-child{text-align:left}.gmc-ct__us{background:var(--ct-hl);font-weight:700}.gmc-ct__y{color:var(--ct-y,inherit)}.gmc-ct__n{color:var(--ct-n,inherit);opacity:.8}.gmc-ct__m{display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;color:#fff;font-size:1.4rem}.gmc-ct__m--y{background:var(--ct-y,#16a34a)}.gmc-ct__m--n{background:var(--ct-n,#9ca3af)}.gmc-ct__t img{display:block;margin:auto;width:auto}
 .gmc-ct--centered .gmc-ct__t td:first-child{text-align:center}.gmc-ct--minimal .gmc-ct__t td,.gmc-ct--minimal .gmc-ct__t th{border:0}.gmc-ct--minimal .gmc-ct__us{background:transparent;border-bottom:2px solid currentColor}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Comparison table",

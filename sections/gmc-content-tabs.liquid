@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'tabs', title: 'Content tabs' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one tab block.' -%}{%- endif -%}
@@ -42,6 +45,7 @@
   b.forEach(function(x){x.addEventListener('click',function(){var i=+x.dataset.i;
     b.forEach(function(y,j){y.setAttribute('aria-selected',j===i);});p.forEach(function(z,j){z.hidden=j!==i;});});});})();
 </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Content tabs",

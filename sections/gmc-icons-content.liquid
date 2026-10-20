@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'features', title: 'Icons with content' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add icon blocks.' -%}{%- endif -%}
@@ -55,6 +58,7 @@
   </div>
 </div>
 <style>.gmc-ic__list{grid-template-columns:repeat(var(--icc,1),1fr)}.gmc-ic__list--above .gmc-ic__row{flex-direction:column;text-align:center}.gmc-ic__list--text .gmc-ic__row{align-items:flex-start}.gmc-ic__in{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}.gmc-ic__in--left .gmc-ic__media{order:-1}.gmc-ic__media img,.gmc-ic__media video{width:100%;height:auto;display:block;border-radius:var(--media-radius,8px)}.gmc-ic__cap{letter-spacing:.15em;text-transform:uppercase;font-size:1.2rem;opacity:.7;margin:0 0 .6rem}.gmc-ic__flow{margin:1.6rem 0;display:grid;grid-template-columns:repeat(var(--icc,1),minmax(0,1fr));gap:1.2rem}.gmc-ic__wide{grid-column:1 / -1}.gmc-ic__row{display:flex;gap:1.2rem;align-items:center}.gmc-ic__clip video,.gmc-ic__wide img{width:100%;height:auto;display:block;border-radius:var(--media-radius,8px)}@media(max-width:749px){.gmc-ic__flow{grid-template-columns:repeat(var(--iccm,1),minmax(0,1fr))}}.gmc-ic__i{display:grid;place-items:center;border-radius:50%;background:rgba(var(--color-foreground),.08);color:var(--ic,currentColor);flex:none}.gmc-ic__d{opacity:.75;font-size:1.4rem}@media(max-width:749px){.gmc-ic__in{grid-template-columns:1fr}.gmc-ic__in--left .gmc-ic__media{order:0}}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Icons with content",

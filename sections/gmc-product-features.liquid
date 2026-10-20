@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'features', title: 'Product features' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add feature blocks.' -%}{%- endif -%}
@@ -67,6 +70,7 @@
   function shut(e){var t=e.relatedTarget;if(t&&(pin.contains(t)||d.contains(t)))return;if(d.open)d.close();}
   btn.addEventListener('mouseenter',function(){if(!d.open)d.showModal();});pin.addEventListener('mouseleave',shut);d.addEventListener('mouseleave',shut);});})();
 </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Product features",

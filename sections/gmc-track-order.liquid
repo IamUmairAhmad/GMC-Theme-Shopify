@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'track', title: 'Track order' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <div class="page-width gmc-to {% render 'gmc-vis', hide: section.settings.hide_on %}">
@@ -7,6 +10,7 @@
 </div>
 <style>.gmc-to{padding:36px 0;text-align:center;max-width:560px}.gmc-to__f{display:flex;gap:.6rem}.gmc-to__f input{flex:1}</style>
 <script>document.getElementById('gmc-to-{{ section.id }}').addEventListener('submit',function(e){e.preventDefault();var v=this.querySelector('input').value.trim();if(v)window.open({{ settings.gmc_track_url | json }}+encodeURIComponent(v),'_blank','noopener');});</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Track order",

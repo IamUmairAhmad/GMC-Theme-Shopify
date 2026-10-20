@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'before', title: 'Before and after' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- comment -%} GMC Theme: before/after image slider (original code) {%- endcomment -%}
@@ -37,6 +40,7 @@
   (function(){var r=document.querySelector('#gmc-cmp-{{ section.id }} .gmc-cmp__range');if(!r)return;
   r.addEventListener('input',function(){r.parentNode.style.setProperty('--pos',r.value+'%');});})();
 </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Before / after slider",

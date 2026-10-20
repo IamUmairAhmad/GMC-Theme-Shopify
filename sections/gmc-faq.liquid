@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'faq', title: 'FAQ' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- comment -%} GMC Theme: FAQ accordion, usable on any page (original code). Optional FAQPage structured data for search engines. {%- endcomment -%}
@@ -55,6 +58,7 @@
   #{{ faq_id }} .gmc-faq--boxed .gmc-faq__a{padding:0 2rem 1.8rem}
   @media(prefers-reduced-motion:reduce){#{{ faq_id }} .gmc-faq__icon:before,#{{ faq_id }} .gmc-faq__icon:after{transition:none}}
 </style>
+{%- endif -%}
 {% schema %}
 {
   "name": "FAQ",

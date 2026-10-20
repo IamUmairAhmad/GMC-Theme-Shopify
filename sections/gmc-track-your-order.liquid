@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'track', title: 'Track your order' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- comment -%}
@@ -88,6 +91,7 @@
   if(t)t.addEventListener('submit',function(e){e.preventDefault();go(t.getAttribute('data-url'),{tracking:t.tracking.value.trim()});});
 })();
 </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Track your order",

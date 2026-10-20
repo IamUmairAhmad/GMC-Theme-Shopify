@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'lottie', title: 'JSON animation' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.settings.json_url == blank -%}{%- render 'gmc-empty', msg: 'Paste an animation JSON URL.' -%}{%- endif -%}
@@ -8,6 +11,7 @@
 <script>(function(){var id='gmc-lt-{{ section.id }}';
 function go(){var el=document.getElementById(id);if(!el||!window.lottie)return;var a=lottie.loadAnimation({container:el,renderer:'svg',loop:{{ section.settings.loop | json }},autoplay:{{ section.settings.autoplay | json }},path:{{ section.settings.json_url | json }}});a.setSpeed({{ section.settings.speed | json }});}
 if(window.lottie){go();}else{var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js';s.onload=go;document.head.appendChild(s);}})();</script>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

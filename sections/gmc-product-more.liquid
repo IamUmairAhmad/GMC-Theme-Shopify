@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'features', title: 'Product extra blocks' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: product page info blocks. Add this section to the product template and stack the blocks you want. {%- endcomment -%}
 {%- assign v = product.selected_or_first_available_variant -%}
@@ -143,6 +146,7 @@
 .gmc-qg{display:flex;gap:1rem;align-items:center;border:2px dashed var(--qg-lock);border-radius:var(--text-boxes-radius);padding:.9rem 1.1rem;transition:.2s}.gmc-qg .gmc-ups__img img{filter:grayscale(1);opacity:.6;transition:.2s}.gmc-qg__ic{font-size:2rem}.gmc-qg[data-state=open]{border:2px solid var(--qg-open);background:color-mix(in srgb,var(--qg-open) 8%,transparent)}.gmc-qg[data-state=open] .gmc-ups__img img{filter:none;opacity:1}.gmc-qg[data-state=open] .gmc-qg__msg{color:var(--qg-open);font-weight:600;opacity:1}
 .gmc-pm__img{width:var(--w,100%);margin-inline:auto}@media(max-width:749px){.gmc-pm__img--mfull{width:100%}}.gmc-pm__vid{position:relative;overflow:hidden}.gmc-pm__vid video{width:100%;display:block}.gmc-pm__vc{position:absolute;left:0;right:0;bottom:0;display:flex;gap:.6rem;align-items:center;padding:.6rem;background:linear-gradient(transparent,rgba(0,0,0,.5))}.gmc-pm__vc button{background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:50%;width:3.2rem;height:3.2rem;cursor:pointer}.gmc-pm__vt{flex:1;height:4px;background:rgba(255,255,255,.35);border-radius:2px;overflow:hidden}.gmc-pm__vt b{display:block;height:100%;width:0;background:#fff}.gmc-pm__ripple{position:absolute;inset:auto auto 1rem 1rem;width:3rem;height:3rem;border-radius:50%;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:gmcrip 2s infinite;pointer-events:none}@keyframes gmcrip{to{box-shadow:0 0 0 18px rgba(255,255,255,0)}}@media(prefers-reduced-motion:reduce){.gmc-pm__ripple{animation:none}}</style>
 <script>(function(){document.querySelectorAll('.gmc-eta').forEach(function(e){function f(n){var d=new Date();d.setDate(d.getDate()+(+n));return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}e.textContent=f(e.dataset.min)+' and '+f(e.dataset.max);});})();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Product extra blocks",

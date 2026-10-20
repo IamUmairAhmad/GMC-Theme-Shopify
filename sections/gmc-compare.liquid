@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'compare', title: 'Compare products' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <div class="page-width gmc-cmpw {% render 'gmc-vis', hide: section.settings.hide_on %}" style="padding:36px 0">
@@ -5,6 +8,7 @@
   <div data-gmc-compare data-empty="{{ section.settings.empty | escape }}" data-remove="{{ section.settings.remove | escape }}" data-price="{{ section.settings.l_price | escape }}" data-vendor="{{ section.settings.l_vendor | escape }}" data-type="{{ section.settings.l_type | escape }}" data-avail="{{ section.settings.l_avail | escape }}" data-in="{{ section.settings.l_in | escape }}" data-out="{{ section.settings.l_out | escape }}" data-desc="{{ section.settings.l_desc | escape }}"><div class="gmc-cmpbody"></div></div>
   <p style="text-align:center"><button type="button" class="button button--secondary" data-gmc-cmp-clear>{{ section.settings.clear | escape }}</button></p>
 </div>
+{%- endif -%}
 {% schema %}
 {
   "name": "Compare products",

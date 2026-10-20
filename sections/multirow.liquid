@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'imagetext', title: 'Multirow' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
 
@@ -109,6 +112,7 @@
 </div>
 
 {%- render 'gmc-section-extras' -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.multirow.name",

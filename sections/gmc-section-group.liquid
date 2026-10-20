@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'group', title: 'Section group' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 <div class="page-width gmc-sg" style="padding-top:{{ section.settings.pt }}px;padding-bottom:{{ section.settings.pb }}px">
@@ -6,6 +9,7 @@
   </div>
 </div>
 <style>@media(max-width:749px){#shopify-section-{{ section.id }} .gmc-sg__in{grid-template-columns:repeat({{ section.settings.columns_mobile }},1fr)!important}}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Section",

@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'contact', title: 'Contact form' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 
@@ -137,6 +140,7 @@
 </div>
 
 {%- render 'gmc-section-extras' -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.contact-form.name",

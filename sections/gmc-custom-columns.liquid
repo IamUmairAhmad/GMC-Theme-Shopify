@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'columns', title: 'Custom columns' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add column blocks.' -%}{%- endif -%}
@@ -12,6 +15,7 @@
     </div>{%- endfor -%}</div>
 </div>
 <style>.gmc-cc{padding:36px 0}.gmc-cc__g{display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:var(--gap)}.gmc-cc__c img{width:100%;height:auto;aspect-ratio:var(--ratio);object-fit:cover;border-radius:var(--media-radius);margin-bottom:1rem}.gmc-cc__c h3{margin:.4rem 0}@media(max-width:749px){.gmc-cc__g{grid-template-columns:repeat(var(--mcols),1fr)}}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Custom columns",

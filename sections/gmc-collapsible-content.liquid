@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'faq', title: 'Collapsible content' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- assign s = section.settings -%}
@@ -52,6 +55,7 @@
 <script>(function(){var r=document.getElementById('gmc-cl-{{ section.id }}');if(!r)return;var l=r.querySelector('.gmc-cl__list'),rows=l.querySelectorAll('details');
 if(l.dataset.single==='true'){rows.forEach(function(d){d.addEventListener('toggle',function(){if(d.open)rows.forEach(function(o){if(o!==d)o.open=false;});});});}
 var b=r.querySelector('[data-all]');if(b)b.addEventListener('click',function(){var open=b.dataset.state!=='open';rows.forEach(function(d){d.open=open;});b.dataset.state=open?'open':'';b.textContent=open?b.dataset.collapse:b.dataset.expand;});})();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Collapsible (Advanced)",

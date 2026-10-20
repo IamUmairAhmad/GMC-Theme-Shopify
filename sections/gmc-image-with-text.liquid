@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'imagetext', title: 'Image with text' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 and section.settings.image == blank and section.settings.video == blank -%}{%- render 'gmc-empty', msg: 'Add an image or MP4 and some content blocks.' -%}{%- endif -%}
@@ -58,6 +61,7 @@
   @media(prefers-reduced-motion:reduce){#gmc-iwt-{{ section.id }}.gmc-iwt--reveal .gmc-iwt__media,#gmc-iwt-{{ section.id }}.gmc-iwt--reveal .gmc-iwt__text{opacity:1;transform:none;transition:none}}
 </style>
 {%- if s.reveal -%}<script>(function(){var e=document.getElementById('gmc-iwt-{{ section.id }}');if(!e)return;if(!('IntersectionObserver' in window)||(window.Shopify&&Shopify.designMode)){e.classList.add('is-in');return;}var o=new IntersectionObserver(function(x){if(x[0].isIntersecting){e.classList.add('is-in');o.disconnect();}},{threshold:.15});o.observe(e);})();</script>{%- endif -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "Image + text (Advanced)",
