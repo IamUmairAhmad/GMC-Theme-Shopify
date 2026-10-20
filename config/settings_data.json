@@ -106,7 +106,7 @@
     "sale_badge_color_scheme": "scheme-4",
     "sold_out_badge_color_scheme": "scheme-4",
     "brand_headline": "<strong>Business Information</strong>",
-    "brand_description": "<ul><li><strong>Business Name:</strong> GMC Theme</li><li><strong>Business Email:</strong> support@gmctheme.com</li><li><strong>Business Phone:</strong> +1 (123)-456-7891</li><li><strong>Business Hours:</strong> Monday – Friday, 09:00 AM – 5:00 PM Eastern Time (ET)</li><li><strong>Business Address:</strong> 1114 Central Ave, St. Petersburg, FL 33705, United States</li></ul>",
+    "brand_description": "<ul><li><strong>Business Name:</strong> <a href=\"#\" title=\"#\">GMC Theme</a></li><li><strong>Business Email:</strong> <a href=\"mailto:support@gmctheme.com\" title=\"mailto:support@gmctheme.com\">support@gmctheme.com</a></li><li><strong>Business Phone:</strong> +1 (123)-456-7891</li><li><strong>Business Hours:</strong> Monday – Friday, 09:00 AM – 5:00 PM Eastern Time (ET)</li><li><strong>Business Address:</strong> <a href=\"#\" title=\"#\">1114 Central Ave, St. Petersburg, FL 33705, United States</a></li></ul>",
     "brand_image_width": 100,
     "social_facebook_link": "",
     "social_instagram_link": "",
@@ -263,12 +263,12 @@
     "color_schemes": {
       "scheme-4": {
         "settings": {
-          "background": "#0A0A0A",
+          "background": "#0a0a0a",
           "background_gradient": "",
-          "text": "#F5F5F5",
-          "button": "#FFFFFF",
-          "button_label": "#0A0A0A",
-          "secondary_button_label": "#FFFFFF",
+          "text": "#f5f5f5",
+          "button": "#ffffff",
+          "button_label": "#0a0a0a",
+          "secondary_button_label": "#ffffff",
           "shadow": "#000000"
         }
       },
