@@ -16,6 +16,30 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  #shopify-section-{{ section.id }} .image-with-text__media video {
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .image-with-text__grid--mobile-reverse {
+      flex-direction: column-reverse;
+      flex-wrap: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full {
+      width: calc(100% + 3rem);
+      max-width: none;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full .image-with-text__media,
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full img,
+    #shopify-section-{{ section.id }} .image-with-text__media--mobile-full video {
+      border-radius: 0;
+    }
+  }
 {%- endstyle -%}
 
 {%- liquid
@@ -53,15 +77,19 @@
         class="image-with-text isolate{{ borders_class }}{{ corners_class }}{{ padding_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
         {{ block.shopify_attributes }}
       >
-        <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.image_layout contains 'alternate' %}{% cycle odd_class, even_class %}{% else %}{{ odd_class }}{% endif %}">
-          <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }} grid__item">
+        <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.image_layout contains 'alternate' %}{% cycle odd_class, even_class %}{% else %}{{ odd_class }}{% endif %}{% if section.settings.mobile_direction == 'reverse' %} image-with-text__grid--mobile-reverse{% endif %}">
+          <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }}{% if section.settings.mobile_full_media_width %} image-with-text__media--mobile-full{% endif %} grid__item">
             <div
-              class="image-with-text__media image-with-text__media--{{ section.settings.image_height }} gradient color-{{ section.settings.row_color_scheme }} global-media-settings{% if block.settings.image != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}"
-              {% if section.settings.image_height == 'adapt' and block.settings.image != blank %}
+              class="image-with-text__media image-with-text__media--{{ section.settings.image_height }} gradient color-{{ section.settings.row_color_scheme }} global-media-settings{% if block.settings.image != blank or block.settings.video != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}"
+              {% if section.settings.image_height == 'adapt' and block.settings.video != blank and block.settings.video.aspect_ratio != blank %}
+                style="padding-bottom: {{ 1 | divided_by: block.settings.video.aspect_ratio | times: 100 }}%;"
+              {% elsif section.settings.image_height == 'adapt' and block.settings.image != blank %}
                 style="padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;"
               {% endif %}
             >
-              {%- if block.settings.image != blank -%}
+              {%- if block.settings.video != blank -%}
+                {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+              {%- elsif block.settings.image != blank -%}
                 {%- capture sizes -%}
                   (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
                   (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
@@ -102,6 +130,14 @@
                 >
                   {{ block.settings.button_label | escape }}
                 </a>
+              {%- endif -%}
+              {%- if block.settings.atc_button_label != blank -%}
+                {%- render 'gmc-inline-atc',
+                  product: block.settings.atc_product,
+                  label: block.settings.atc_button_label,
+                  skip: block.settings.atc_skip_cart,
+                  align: section.settings.desktop_content_alignment
+                -%}
               {%- endif -%}
             </div>
           </div>
@@ -299,6 +335,32 @@
       ],
       "default": "left",
       "label": "t:sections.multirow.settings.desktop_content_alignment.label"
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_media_width",
+      "label": "Full media width",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_direction",
+      "label": "Mobile media position",
+      "default": "normal",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Media first"
+        },
+        {
+          "value": "reverse",
+          "label": "Media second"
+        }
+      ]
     },
     {
       "type": "select",
@@ -527,6 +589,12 @@
           "label": "t:sections.multirow.blocks.row.settings.image.label"
         },
         {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Plays inline, muted, and looped. Used instead of the image when a video is chosen."
+        },
+        {
           "type": "text",
           "id": "caption",
           "default": "t:sections.multirow.blocks.row.settings.caption.default",
@@ -555,6 +623,23 @@
           "type": "url",
           "id": "button_link",
           "label": "t:sections.multirow.blocks.row.settings.button_link.label"
+        },
+        {
+          "type": "text",
+          "id": "atc_button_label",
+          "label": "Add to cart button label",
+          "info": "Leave this blank to hide the button. Choose a product below or the button stays hidden."
+        },
+        {
+          "type": "product",
+          "id": "atc_product",
+          "label": "Add to cart product"
+        },
+        {
+          "type": "checkbox",
+          "id": "atc_skip_cart",
+          "label": "Go to checkout after adding",
+          "default": false
         }
       ]
     }
