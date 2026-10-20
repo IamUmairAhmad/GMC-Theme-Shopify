@@ -3200,15 +3200,15 @@
           "label": "Open first row"
         },
         "header": {
-          "content": "Image"
+          "content": "Media"
         },
         "image": {
           "label": "Image"
         },
         "image_ratio": {
-          "label": "Image ratio",
+          "label": "Media height",
           "options__1": {
-            "label": "Adapt to image"
+            "label": "Adapt to media"
           },
           "options__2": {
             "label": "Small"
@@ -3218,12 +3218,12 @@
           }
         },
         "desktop_layout": {
-          "label": "Placement",
+          "label": "Desktop layout",
           "options__1": {
-            "label": "Image first"
+            "label": "Media first"
           },
           "options__2": {
-            "label": "Image second"
+            "label": "Media second"
           }
         }
       },
