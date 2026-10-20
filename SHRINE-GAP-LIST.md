@@ -182,12 +182,14 @@ Customer pages (login, register, account, orders, addresses, reset and activate 
 All 61 sections, all 17 page templates and group files, all 140+ snippets by name (about 40 read in detail), the global settings (about 180), `settings_data` defaults, header, footer, theme layout, password layout, gift card, cart drawer snippet, variant picker snippets, product card, facets, the two main scripts (component list only, because both are minified), the translation set, and the asset list.
 
 ## Still pending on our side (not Shrine gaps)
-1. Rebuild `GMC-Theme.zip` (current one predates FAQ, reviews, track order, cart-drawer blocks and per-section colour schemes).
-2. Update `FEATURE-CHECKLIST.md` for features added after section H.
-3. Live browser tests not yet done: gift auto-add threshold, upsell add, bundle add, section add-to-cart, slider autoplay, Countdown / Progress / Checkpoints drawer blocks.
+Updated 20 Oct 2026.
+1. ~~Rebuild `GMC-Theme.zip`~~ Done, rebuilt from `main` on 20 Oct 2026.
+2. ~~Update `FEATURE-CHECKLIST.md`~~ Done, covers the later features.
+3. Live browser tests done (20 Oct 2026): quick-add and "Choose options" (home and collection), product gallery swipe and peek, keyboard focus rings, slow-4G load, 21-page sweep at 1280 / 390 / 320 px, and the cart drawer blocks on a temporary theme copy (countdown timer, free-shipping progress, checkpoints, gift auto-add above the goal and removal below it, upsell Add, order note). Not testable yet: slider autoplay (the demo hero has one slide), bundle deals and section add-to-cart (not placed on any live page).
 4. Subscription plans and Markets need a store with a selling-plan app and a second market.
-5. The default home template still points at the demo product handle `gmc-test-tee`.
-6. Master-prompt sections 9–11 were never received.
+5. ~~Default home template points at `gmc-test-tee`~~ Fixed; it now uses `gmc-demo-cap`.
+6. Needs your input: footer email, phone and hours; guarantee line (real return or warranty policy); real hero banner image.
+7. Skipped by choice: splitting `gmc.js` (risk higher than the speed gain). A safe speed pass (defer scripts, trim `gmc-icons.svg`) is optional.
 
 ---
 ## 13. Fourth pass (file list was cut at 250; the last 35 files and store data now read)
