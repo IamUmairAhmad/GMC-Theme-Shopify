@@ -119,13 +119,19 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.
     add.forEach(function(s){holder.appendChild(document.importNode(s,true));});
   }
   function queue(){if(queued)return;queued=true;requestAnimationFrame(ensure);}
+  function missing(){var m=false;document.querySelectorAll('use[href^="#gmc-i-"]').forEach(function(u){if(!syms[u.getAttribute('href').slice(1)])m=true;});return m;}
+  function load(url){return fetch(url).then(function(r){return r.text();}).then(function(txt){
+    var doc=new DOMParser().parseFromString(txt,'image/svg+xml');doc.querySelectorAll('symbol').forEach(function(s){syms[s.id]=s;});});}
+  var fullLoading=false;
+  function needFull(){if(fullLoading||!GMC.iconSprite)return;fullLoading=true;load(GMC.iconSprite).then(ensure).catch(function(){});}
+  function ensureAll(){ensure();if(missing())needFull();}
   function go(){
-    fetch(GMC.iconSprite).then(function(r){return r.text();}).then(function(txt){
-      var doc=new DOMParser().parseFromString(txt,'image/svg+xml');syms={};
-      doc.querySelectorAll('symbol').forEach(function(s){syms[s.id]=s;});
-      ensure();
-      new MutationObserver(queue).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['href']});
-    }).catch(function(){});
+    syms={};
+    /* small sprite of the icons the theme itself uses first; the full library loads only when a page needs an icon that is not in it */
+    load(GMC.iconSpriteCore||GMC.iconSprite).then(function(){
+      ensureAll();
+      new MutationObserver(function(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;ensureAll();});}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['href']});
+    }).catch(function(){if(GMC.iconSprite)needFull();});
   }
   go();
 })();
