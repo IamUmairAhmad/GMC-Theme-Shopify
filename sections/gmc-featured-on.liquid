@@ -4,17 +4,77 @@
 {%- comment -%} gmc {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
+{%- liquid
+  assign fo_layout = section.settings.layout
+  assign fo_slide_both = false
+  assign fo_slide_mobile = false
+  if fo_layout == 'slider'
+    assign fo_slide_both = true
+  elsif section.settings.mobile_slider
+    assign fo_slide_mobile = true
+  endif
+-%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add logo blocks.' -%}{%- endif -%}
-<div class="page-width gmc-fo{% if section.settings.gray %} gmc-fo--gray{% endif %} {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--lh:{{ section.settings.h }}px;--lh-m:{{ section.settings.h_m }}px">
-  {%- if section.settings.heading != blank -%}<p class="gmc-fo__t">{{ section.settings.heading | escape }}</p>{%- endif -%}
-  {%- capture logos -%}{%- for block in section.blocks -%}{%- if block.settings.logo != blank -%}<span class="gmc-fo__i{% if section.settings.layout == 'slider' %} gmc-sl__s{% endif %}" {{ block.shopify_attributes }}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}"{% if section.settings.new_tab or block.settings.new_tab %} target="_blank" rel="noopener"{% endif %} aria-label="{{ block.settings.logo.alt | escape }}">{%- endif -%}{{ block.settings.logo | image_url: width: 400 | image_tag: loading: 'lazy', class: 'gmc-fo__img', alt: block.settings.logo.alt }}{%- if block.settings.link != blank -%}</a>{%- endif -%}</span>{%- endif -%}{%- endfor -%}{%- endcapture -%}
-  {%- if section.settings.layout == 'slider' -%}
-    <div class="gmc-sl gmc-fo__sl{% if section.settings.slider_desktop == false %} gmc-fo__sl--m{% endif %}" data-gmc-slider data-mode="slide" data-autoplay="{% if section.settings.autoplay %}{{ section.settings.speed }}{% else %}0{% endif %}" data-loop="true" data-dots="{{ section.settings.dots }}" data-arrows="false" data-drag="true" data-perview="{{ section.settings.per_view }}" data-perview-m="{{ section.settings.per_view_m }}" style="--per:{{ section.settings.per_view }};--per-m:{{ section.settings.per_view_m }};--gmc-gap:24px;--gmc-dot:rgb(var(--color-foreground))"><div class="gmc-sl__vp"><div class="gmc-sl__tr">{{ logos }}</div></div></div>
-  {%- else -%}
-    <div class="gmc-fo__row gmc-fo__row--{{ section.settings.layout }}"{% if section.settings.layout == 'grid' %} style="--cols:{{ section.settings.per_view }}"{% endif %}>{{ logos }}</div>
-  {%- endif -%}
+<div class="page-width gmc-fo gmc-fo--{{ section.settings.place | default: 'beside' }}{% if section.settings.gray %} gmc-fo--gray{% endif %} {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--lh:{{ section.settings.h }}px;--lh-m:{{ section.settings.h_m }}px;--cols:{{ section.settings.per_view }};--mcols:{{ section.settings.per_view_m }}">
+  {%- if section.settings.heading != blank -%}<h2 class="gmc-fo__t title {{ section.settings.heading_size | default: 'h1' }}">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  <div class="gmc-fo__logos">
+    {%- capture fo_static -%}
+      {%- for block in section.blocks -%}
+        <span class="gmc-fo__i" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}"{% if section.settings.new_tab or block.settings.new_tab %} target="_blank" rel="noopener"{% endif %}>{%- endif -%}
+          {%- if block.settings.logo != blank -%}
+            {{ block.settings.logo | image_url: width: 400 | image_tag: loading: 'lazy', class: 'gmc-fo__img', alt: block.settings.logo.alt }}
+          {%- else -%}
+            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg gmc-fo__img gmc-fo__ph' }}
+          {%- endif -%}
+          {%- if block.settings.link != blank -%}</a>{%- endif -%}
+        </span>
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- capture fo_slides -%}
+      {%- for block in section.blocks -%}
+        <span class="gmc-fo__i gmc-sl__s"{% if fo_slide_both %} {{ block.shopify_attributes }}{% endif %}>
+          {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}"{% if section.settings.new_tab or block.settings.new_tab %} target="_blank" rel="noopener"{% endif %}>{%- endif -%}
+          {%- if block.settings.logo != blank -%}
+            {{ block.settings.logo | image_url: width: 400 | image_tag: loading: 'lazy', class: 'gmc-fo__img', alt: block.settings.logo.alt }}
+          {%- else -%}
+            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg gmc-fo__img gmc-fo__ph' }}
+          {%- endif -%}
+          {%- if block.settings.link != blank -%}</a>{%- endif -%}
+        </span>
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if fo_slide_both or fo_slide_mobile -%}
+      <div class="gmc-sl gmc-fo__sl{% if fo_slide_mobile %} gmc-fo__only-m{% endif %}" data-gmc-slider data-mode="slide" data-autoplay="{% if section.settings.autoplay %}{{ section.settings.speed }}{% else %}0{% endif %}" data-loop="true" data-dots="{{ section.settings.dots }}" data-pag-pos="under" data-arrows="false" data-drag="true" data-perview="{% if fo_slide_both %}{{ section.settings.per_view }}{% else %}{{ section.settings.per_view_m }}{% endif %}" data-perview-m="{{ section.settings.per_view_m }}" style="--per:{% if fo_slide_both %}{{ section.settings.per_view }}{% else %}{{ section.settings.per_view_m }}{% endif %};--per-m:{{ section.settings.per_view_m }};--gmc-gap:24px;--gmc-dot:rgb(var(--color-foreground))"><div class="gmc-sl__vp"><div class="gmc-sl__tr">{{ fo_slides }}</div></div></div>
+    {%- endif -%}
+    {%- unless fo_slide_both -%}
+      <div class="gmc-fo__row gmc-fo__row--{{ fo_layout }}{% if fo_slide_mobile %} gmc-fo__only-d{% elsif section.settings.mobile_slider == false %} gmc-fo__mgrid{% endif %}">{{ fo_static }}</div>
+    {%- endunless -%}
+  </div>
 </div>
-<style>.gmc-fo{padding:28px 0;text-align:center}.gmc-fo__t{opacity:.65;margin:0 0 1rem;text-transform:uppercase;letter-spacing:.1em;font-size:1.2rem}.gmc-fo__row{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;align-items:center;opacity:.8}.gmc-fo--gray .gmc-fo__row,.gmc-fo--gray .gmc-fo__sl{filter:grayscale(1)}.gmc-fo__row--grid{display:grid;grid-template-columns:repeat(var(--cols,4),1fr)}.gmc-fo__i{display:flex;justify-content:center;align-items:center}.gmc-fo__i a{display:block}.gmc-fo__img{height:var(--lh,32px);width:auto;max-width:100%}@media(max-width:749px){.gmc-fo__img{height:var(--lh-m,var(--lh,32px))}}</style>
+<style>
+  .gmc-fo{padding:36px 0;text-align:center}
+  .gmc-fo--beside{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2.4rem 3.2rem}
+  .gmc-fo--beside .gmc-fo__t{margin:0;flex:0 1 auto}
+  .gmc-fo--beside .gmc-fo__logos{flex:1 1 28rem;min-width:0}
+  .gmc-fo--above .gmc-fo__t{margin:0 0 1.6rem}
+  .gmc-fo__row{display:flex;gap:2.4rem;flex-wrap:wrap;justify-content:center;align-items:center}
+  .gmc-fo__row--grid{display:grid;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));align-items:center}
+  .gmc-fo--gray .gmc-fo__img{filter:grayscale(1);opacity:.85}
+  .gmc-fo__i{display:flex;justify-content:center;align-items:center}
+  .gmc-fo__i a{display:flex;justify-content:center;align-items:center;max-width:100%}
+  .gmc-fo__img{height:var(--lh,50px);width:auto;max-width:100%;object-fit:contain}
+  .gmc-fo__ph{background:#f3f3f3}
+  .gmc-fo__sl{position:relative}
+  .gmc-fo__sl .gmc-sl__pp{display:none}
+  @media(min-width:750px){.gmc-fo__only-m{display:none}}
+  @media(max-width:749px){
+    .gmc-fo--beside{flex-direction:column;gap:1.2rem}
+    .gmc-fo__img{height:var(--lh-m,var(--lh,50px))}
+    .gmc-fo__only-d{display:none}
+    .gmc-fo__mgrid{display:grid;grid-template-columns:repeat(var(--mcols,2),minmax(0,1fr));gap:1.6rem}
+  }
+</style>
 {%- endif -%}
 {% schema %}
 {
@@ -26,33 +86,54 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "As featured on"
+      "default": "Featured on"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "place",
+      "label": "Desktop arrangement",
+      "default": "beside",
+      "options": [
+        { "value": "beside", "label": "Heading beside logos" },
+        { "value": "above", "label": "Heading above logos" }
+      ]
     },
     {
       "type": "range",
       "id": "h",
-      "min": 20,
-      "max": 80,
-      "step": 1,
+      "min": 30,
+      "max": 150,
+      "step": 10,
       "unit": "px",
       "label": "Logo height on desktop",
-      "default": 32
+      "default": 50
     },
     {
       "type": "range",
       "id": "h_m",
-      "min": 16,
-      "max": 80,
-      "step": 1,
+      "min": 30,
+      "max": 150,
+      "step": 10,
       "unit": "px",
       "label": "Logo height on mobile",
-      "default": 28
+      "default": 50
     },
     {
       "type": "checkbox",
       "id": "gray",
-      "label": "Grayscale logos",
-      "default": true
+      "label": "Gray logos",
+      "default": false
     },
     {
       "type": "select",
@@ -89,24 +170,31 @@
       "min": 1,
       "max": 4,
       "step": 1,
-      "label": "Logos per view on mobile (slider)",
+      "label": "Logos per row on mobile",
       "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_slider",
+      "label": "Mobile slider",
+      "info": "On phones, the row or grid becomes a looping slider. A slider layout uses the slider on every screen.",
+      "default": true
     },
     {
       "type": "checkbox",
       "id": "autoplay",
       "label": "Slider autoplay",
-      "default": false
+      "default": true
     },
     {
       "type": "range",
       "id": "speed",
-      "min": 2,
-      "max": 12,
-      "step": 1,
+      "min": 1,
+      "max": 15,
+      "step": 0.5,
       "unit": "s",
       "label": "Autoplay speed",
-      "default": 4
+      "default": 5
     },
     {
       "type": "checkbox",
@@ -341,7 +429,7 @@
       ]
     }
   ],
-  "max_blocks": 8,
+  "max_blocks": 16,
   "presets": [
     {
       "name": "Featured on",
