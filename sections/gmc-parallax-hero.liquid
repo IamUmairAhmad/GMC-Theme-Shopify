@@ -12,7 +12,7 @@
   if section.settings.mobile_height == 'pixels'
     assign mob_min = section.settings.mobile_height_px | append: 'px'
   elsif section.settings.mobile_height == '100vh'
-    assign mob_min = '100vh'
+    assign mob_min = '100svh'
   endif
 
   assign lift = '0px'
