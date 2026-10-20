@@ -236,3 +236,4 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
   .gmc-sl__dot::after,.gmc-ms__dot::after{content:"";position:absolute;inset:-7px}
   .gmc-sl__pp::after{content:"";position:absolute;inset:-12px}
 }
+
