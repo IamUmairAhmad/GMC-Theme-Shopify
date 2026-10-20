@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'stories', title: 'Stories' -%}
+{%- else -%}
 {%- comment -%} gmc {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
@@ -50,6 +53,7 @@ function show(u,i){stop();cu=u;ci=i;U.forEach(function(x,k){x.hidden=k!==u;});va
 w.querySelectorAll('.gmc-is__b').forEach(function(b){b.addEventListener('click',function(){m.hidden=false;show(+b.dataset.u,0);});});
 m.addEventListener('click',function(e){var us=e.target.closest('.gmc-is__u');if(e.target.closest('.gmc-is__next')){var S=us.querySelectorAll('.gmc-is__s').length;if(ci+1<S)show(cu,ci+1);else if(cu+1<U.length)show(cu+1,0);else close();}else if(e.target.closest('.gmc-is__prev')){if(ci>0)show(cu,ci-1);else if(cu>0)show(cu-1,0);}else if(e.target===m||e.target.closest('.gmc-is__x'))close();});
 document.addEventListener('keydown',function(e){if(m.hidden)return;if(e.key==='Escape')close();if(e.key==='ArrowRight')m.querySelector('.gmc-is__u:not([hidden]) .gmc-is__next').click();if(e.key==='ArrowLeft')m.querySelector('.gmc-is__u:not([hidden]) .gmc-is__prev').click();});})();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Stories",

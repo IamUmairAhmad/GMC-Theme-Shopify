@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'sticky', title: 'Sticky add to cart' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: sticky add-to-cart bar (original code). Add it to the product template. {%- endcomment -%}
 {%- if product != blank and settings.gmc_sticky_atc -%}
@@ -117,6 +120,7 @@
     });
   })();
 </script>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

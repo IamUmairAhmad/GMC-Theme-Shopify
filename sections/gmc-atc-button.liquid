@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'atc', title: 'Add to cart' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.settings.product == blank -%}{%- render 'gmc-empty', msg: 'Choose a product.' -%}{%- endif -%}
@@ -9,6 +12,7 @@
     <button class="button button--full-width" style="max-width:{{ section.settings.width }}px" type="submit" {% unless p.available %}disabled{% endunless %}>{%- if p.available -%}{{ section.settings.label | escape }}{% if section.settings.show_price %} — {{ p.selected_or_first_available_variant.price | money }}{% endif %}{%- else -%}Sold out{%- endif -%}</button>
   {%- endform -%}
 </div>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

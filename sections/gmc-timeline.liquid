@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'timeline', title: 'Timeline' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one step block.' -%}{%- endif -%}
@@ -6,6 +9,7 @@
   <ol class="gmc-tl__list">{%- for block in section.blocks -%}<li {{ block.shopify_attributes }}><span class="gmc-tl__dot">{{ forloop.index }}</span><div><strong>{{ block.settings.title | escape }}</strong><p>{{ block.settings.text | escape }}</p></div></li>{%- endfor -%}</ol>
 </div>
 <style>.gmc-tl{padding:36px 0}.gmc-tl__list{list-style:none;max-width:640px;margin:1.5rem auto 0;padding:0;border-left:2px solid rgba(var(--color-foreground),.2)}.gmc-tl__list li{display:flex;gap:1.2rem;position:relative;left:-17px;margin-bottom:2rem}.gmc-tl__dot{flex:none;width:32px;height:32px;border-radius:50%;background:rgb(var(--color-foreground));color:rgb(var(--color-background));display:grid;place-items:center;font-weight:700}.gmc-tl__list p{margin:.2rem 0 0;opacity:.8}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Timeline",

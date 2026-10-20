@@ -1,6 +1,10 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'sticky', title: 'Sticky call to action' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- if section.settings.link != blank -%}<a class="button gmc-scta {% render 'gmc-vis', hide: section.settings.hide_on %}" href="{{ section.settings.link }}">{{ section.settings.label | escape }}</a>
 <style>.gmc-scta{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--gmc-dock,0px) + 1.2rem);z-index:45;box-shadow:0 6px 20px rgba(var(--color-shadow),.25)}</style>{%- endif -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "Sticky CTA",

@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'pricing', title: 'Pricing table' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one plan block.' -%}{%- endif -%}
@@ -50,6 +53,7 @@
     </div>{%- endfor -%}</div>
 </div>
 <style>.gmc-pt__grid--filled .gmc-pt__card{background:rgba(var(--color-foreground),.05);border-color:transparent}.gmc-pt__grid--shadow .gmc-pt__card{border:0;box-shadow:0 6px 24px rgba(0,0,0,.12)}.gmc-pt__intro{text-align:center;max-width:62rem;margin:1rem auto 0}.gmc-pt__card--full .button,.gmc-pt__card--full .product-form{width:100%}.gmc-pt__ic{display:block;margin:0 auto .6rem;max-width:6rem;height:auto}.gmc-pt__ben{list-style:none;padding:0;margin:1rem 0;text-align:left;display:grid;gap:.5rem}.gmc-pt__ben li{display:flex;gap:.6rem;align-items:center}.gmc-pt{padding:36px 0}.gmc-pt__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-pt__card{position:relative;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:2rem;text-align:center}.gmc-pt__card--hl{border:2px solid rgb(var(--color-foreground));transform:scale(1.03)}.gmc-pt__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:{{ settings.gmc_accent }};color:#fff;padding:2px 12px;border-radius:99px;font-size:12px}.gmc-pt__price{font-size:2.6rem;font-weight:700;margin:.5rem 0}.gmc-pt__img{width:100%;height:auto;border-radius:var(--media-radius,8px);margin-bottom:1rem}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Pricing table",

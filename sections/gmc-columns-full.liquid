@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'columns', title: 'Custom columns' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add blocks and choose a column for each.' -%}{%- endif -%}
@@ -39,6 +42,7 @@
 <style>.gmc-cc__g{display:flex;gap:var(--gap,24px)}.gmc-cc__c{display:flex;flex-direction:column;gap:var(--bgap,12px);min-width:0}.gmc-cc__ti{display:flex;gap:1rem;align-items:center}.gmc-cc__btns{display:flex;gap:1rem;flex-wrap:wrap}.gmc-cc__em{display:flex;gap:.6rem}.gmc-cc__acc{border-top:1px solid rgba(var(--color-foreground),.2);padding:.8rem 0}.gmc-cc__acc summary{cursor:pointer;font-weight:600}
 @media(min-width:750px){.gmc-cc__c--mobile{display:none}}
 @media(max-width:749px){.gmc-cc__c--desktop{display:none}.gmc-cc__g--stack{flex-direction:column}.gmc-cc__g:not(.gmc-cc__g--stack){display:grid;grid-template-columns:repeat(var(--cm,2),1fr)}.gmc-cc__g .gmc-cc__c{flex:1 1 auto!important}}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Custom columns (full)",

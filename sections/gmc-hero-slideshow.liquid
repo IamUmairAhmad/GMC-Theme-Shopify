@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'slideshow', title: 'Slideshow hero' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- liquid
@@ -97,6 +100,7 @@
 <script>
   document.querySelectorAll('#shopify-section-{{ section.id }} .gmc-hs__snd').forEach(function(b){b.addEventListener('click',function(){var v=b.closest('.gmc-hs__s').querySelector('video');if(!v)return;v.muted=!v.muted;b.textContent=v.muted?'🔇':'🔊';b.setAttribute('aria-pressed',String(!v.muted));b.setAttribute('aria-label',v.muted?'Turn sound on':'Turn sound off');});});
 </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Slideshow hero",

@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'ticker', title: 'Horizontal ticker' -%}
+{%- else -%}
 {%- capture gmc_gate -%}{%- render 'gmc-gate', only: section.settings.gmc_only, hide: section.settings.gmc_hide -%}{%- endcapture -%}
 {%- unless gmc_gate contains 'hide' -%}
 {%- render 'gmc-scheme' -%}
@@ -26,6 +29,7 @@
   @media (prefers-reduced-motion:reduce){.gmc-ticker__track{animation:none}}
 </style>
 {%- endunless -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "Horizontal Ticker",

@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'shoppable', title: 'Shoppable image' -%}
+{%- else -%}
 {%- comment -%} gmc {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
@@ -42,6 +45,7 @@
 function close(){w.querySelectorAll('.gmc-si__pin.is-open').forEach(function(p){p.classList.remove('is-open');p.querySelector('.gmc-si__dot').setAttribute('aria-expanded','false');});}
 w.addEventListener('click',function(e){var d=e.target.closest('.gmc-si__dot');if(d){var p=d.closest('.gmc-si__pin'),was=p.classList.contains('is-open');close();if(!was){p.classList.add('is-open');d.setAttribute('aria-expanded','true');}return;}if(e.target.closest('.gmc-si__x'))close();});
 document.addEventListener('click',function(e){if(!e.target.closest('.gmc-si__pin'))close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Shoppable image",

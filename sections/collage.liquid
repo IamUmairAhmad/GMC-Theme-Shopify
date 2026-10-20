@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'collage', title: 'Collage' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {{ 'collage.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
@@ -217,6 +220,7 @@
 </div>
 
 {%- render 'gmc-section-extras' -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.collage.name",

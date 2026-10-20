@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'columns', title: 'Column blocks' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add a heading, text, icon, image, or another block.' -%}{%- endif -%}
@@ -111,6 +114,7 @@
     .gmc-cb__col--desk{display:none}
   }
 </style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Column blocks",

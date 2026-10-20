@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'collection', title: 'Collection list' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
@@ -135,6 +138,7 @@
 </div>
 
 {%- render 'gmc-section-extras' -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.collection-list.name",

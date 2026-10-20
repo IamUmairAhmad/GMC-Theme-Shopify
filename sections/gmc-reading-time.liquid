@@ -1,8 +1,12 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'reading', title: 'Reading time' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- if article != blank -%}
   {%- assign words = article.content | strip_html | split: ' ' | size -%}
   {%- assign mins = words | divided_by: 200 | at_least: 1 -%}
   <p class="page-width" style="margin:1rem auto 0;text-align:center;opacity:.7;font-size:1.3rem">{{ mins }} min read{% if section.settings.show_updated and article.updated_at != article.published_at %} · Updated {{ article.updated_at | date: '%b %d, %Y' }}{% endif %}</p>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

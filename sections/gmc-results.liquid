@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'results', title: 'Results' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one stat block.' -%}{%- endif -%}
@@ -21,6 +24,7 @@
 <style>.gmc-rs{padding:36px 0}.gmc-rs__g{display:grid;grid-template-columns:repeat(auto-fit,minmax(max(150px,calc(100%/var(--rs-cols,4) - 1.5rem)),1fr));gap:1.5rem;text-align:center;margin-top:1rem}.gmc-rs__n{font-size:4rem;font-weight:800}.gmc-rs__g p{margin:0;opacity:.75}.gmc-rs__img,.gmc-rs__c video{width:100%;height:auto;border-radius:var(--media-radius,8px);margin-bottom:1rem}.gmc-rs__bar{height:.8rem;border-radius:9px;background:rgba(128,128,128,.25);overflow:hidden;margin:.8rem auto;max-width:24rem}.gmc-rs__bar span{display:block;height:100%;width:0;border-radius:9px;transition:width 1.4s ease}.gmc-rs.is-in .gmc-rs__bar span{width:var(--w)}.gmc-rs__cap{font-size:1.3rem;opacity:.65!important}</style>
 <script>(function(){var w=document.getElementById('gmc-rs-{{ section.id }}');function run(){w.classList.add('is-in');w.querySelectorAll('[data-to]').forEach(function(s){var to=+s.dataset.to,t0=null;function f(t){t0=t0||t;var p=Math.min(1,(t-t0)/1400);s.textContent=Math.round(to*p).toLocaleString();if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);});}
 if('IntersectionObserver' in window){var o=new IntersectionObserver(function(e){if(e[0].isIntersecting){run();o.disconnect();}});o.observe(w);}else{run();}})();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Results",

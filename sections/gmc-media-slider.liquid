@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'slideshow', title: 'Image and video slider' -%}
+{%- else -%}
 {%- comment -%} gmc {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
@@ -22,6 +25,7 @@ function gmcMsSync(){if(!dots.length)return;var slides=Array.prototype.slice.cal
 t.addEventListener('scroll',gmcMsSync,{passive:true});
 dots.forEach(function(dot){dot.addEventListener('click',function(){var s=t.children[+dot.dataset.i];if(s)t.scrollTo({left:s.offsetLeft-t.offsetLeft,behavior:'smooth'});});});
 {% if section.settings.autoplay %}if(!matchMedia('(prefers-reduced-motion:reduce)').matches){var iv=setInterval(function(){if(t.scrollLeft+t.clientWidth>=t.scrollWidth-4)t.scrollTo({left:0,behavior:'smooth'});else t.scrollBy({left:t.clientWidth*.9,behavior:'smooth'});},{{ section.settings.interval | times: 1000 }});w.addEventListener('mouseenter',function(){clearInterval(iv);});w.addEventListener('focusin',function(){clearInterval(iv);});}{% endif %}})();</script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Image & video slider",

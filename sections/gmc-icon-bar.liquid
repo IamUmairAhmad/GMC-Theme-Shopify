@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'icons', title: 'Icon bar' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one item block.' -%}{%- endif -%}
@@ -35,6 +38,7 @@
   .gmc-iconbar__item span{opacity:.75;font-size:.9em}
   @media(max-width:749px){.gmc-iconbar__list{grid-template-columns:repeat(2,1fr)}}
 </style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Icon bar",

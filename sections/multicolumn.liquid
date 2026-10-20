@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'columns', title: 'Multicolumn' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {{ 'section-multicolumn.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -192,6 +195,7 @@
 </div>
 
 {%- render 'gmc-section-extras' -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.multicolumn.name",

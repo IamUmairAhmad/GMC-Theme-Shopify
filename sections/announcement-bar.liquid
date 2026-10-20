@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'announce', title: 'Announcement bar' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -107,6 +110,7 @@
 
 {%- endunless -%}
 {%- render 'gmc-section-extras' -%}
+{%- endif -%}
 {% schema %}
 {
   "name": "t:sections.announcement-bar.name",

@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'colors', title: 'Page color changer' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- comment -%} Per-page color changer: add this section to any page/template to recolor that page only. {%- endcomment -%}
 {%- assign bg = section.settings.bg | color_to_rgb | remove: 'rgb(' | remove: ')' -%}
@@ -25,6 +28,7 @@
     {%- if section.settings.surface_2_gradient != blank -%}--gmc-s2-bg:{{ section.settings.surface_2_gradient }};{%- elsif section.settings.surface_2 != blank -%}--gmc-s2-bg:{{ section.settings.surface_2 }};{%- endif -%}
   }
 </style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Page color changer",

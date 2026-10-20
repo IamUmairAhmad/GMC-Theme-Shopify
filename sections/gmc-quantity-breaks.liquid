@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'bundle', title: 'Quantity breaks' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- comment -%} GMC Theme: quantity breaks (original code). Sets the main form quantity; optional per-unit variant pickers add the extra units to the cart. Texts accept [quantity] [price] [compare_price] [price_each] [compare_price_each] [amount_saved] [amount_saved_rounded]. For real checkout discounts, create matching automatic discounts in Shopify admin. {%- endcomment -%}
 {%- if section.blocks.size > 0 and product != blank -%}
@@ -122,6 +125,7 @@
     if(g&&window.gmcQueueAddon)gmcQueueAddon(g);
     if(w.dataset.multi==='true'&&c&&window.gmcQueueUnit){c.closest('.gmc-qb__opt').querySelectorAll('select[data-unit]').forEach(function(s){gmcQueueUnit(s.value);});}},true);});})();
 </script>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

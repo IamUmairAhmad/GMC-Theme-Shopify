@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'logos', title: 'Featured on' -%}
+{%- else -%}
 {%- comment -%} gmc {%- endcomment -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
@@ -12,6 +15,7 @@
   {%- endif -%}
 </div>
 <style>.gmc-fo{padding:28px 0;text-align:center}.gmc-fo__t{opacity:.65;margin:0 0 1rem;text-transform:uppercase;letter-spacing:.1em;font-size:1.2rem}.gmc-fo__row{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;align-items:center;opacity:.8}.gmc-fo--gray .gmc-fo__row,.gmc-fo--gray .gmc-fo__sl{filter:grayscale(1)}.gmc-fo__row--grid{display:grid;grid-template-columns:repeat(var(--cols,4),1fr)}.gmc-fo__i{display:flex;justify-content:center;align-items:center}.gmc-fo__i a{display:block}.gmc-fo__img{height:var(--lh,32px);width:auto;max-width:100%}@media(max-width:749px){.gmc-fo__img{height:var(--lh-m,var(--lh,32px))}}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Featured on",

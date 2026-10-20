@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'columns', title: 'Multicolumn' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- assign s = section.settings -%}
@@ -42,6 +45,7 @@
     #gmc-mc-{{ section.id }} .gmc-mc__g--swipe .gmc-mc__c{flex:0 0 {{ s.swipe_width }}%;scroll-snap-align:start}}
   @media(prefers-reduced-motion:reduce){#gmc-mc-{{ section.id }} *{transition:none!important}}
 </style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Multicolumn (Advanced)",

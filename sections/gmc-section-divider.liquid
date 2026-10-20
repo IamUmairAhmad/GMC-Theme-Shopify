@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'divider', title: 'Section divider' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- assign shp = section.settings.shape -%}
@@ -10,6 +13,7 @@
 <div class="gmc-shape {% render 'gmc-vis', hide: section.settings.hide_on %}" aria-hidden="true" style="background:{{ section.settings.bg | default: 'transparent' }};line-height:0">
   <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="display:block;width:100%;height:{{ section.settings.height }}px;transform:scale({{ sx }},{{ sy }})"><path d="{{ d }}" fill="{{ section.settings.color }}"/></svg>
 </div>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {

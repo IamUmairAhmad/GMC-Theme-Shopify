@@ -1,3 +1,6 @@
+{%- if request.visual_preview_mode -%}
+  {%- render 'gmc-visual-preview', look: 'quotes', title: 'Product reviews' -%}
+{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- comment -%}
@@ -56,6 +59,7 @@
   </div>
 </div>
 <style>.gmc-rv--narrow{max-width:96rem}.gmc-rv--medium{max-width:120rem}</style>
+{%- endif -%}
 {%- endif -%}
 {% schema %}
 {
