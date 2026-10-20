@@ -9,7 +9,7 @@
   <div class="gmc-vh__ov" style="background:rgba(0,0,0,{{ section.settings.ov | divided_by: 100.0 }})"></div>
   <div class="gmc-vh__c page-width"><h1>{{ section.settings.heading | escape }}</h1><p>{{ section.settings.text | escape }}</p>{%- if section.settings.link != blank -%}<a class="button" href="{{ section.settings.link }}">{{ section.settings.button | escape }}</a>{%- endif -%}</div>
 </section>
-<style>.gmc-vh{position:relative;display:grid;place-items:center;overflow:hidden;color:#fff;text-align:center}.gmc-vh video,.gmc-vh__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.gmc-vh__ov,.gmc-vh__c{grid-area:1/1;position:relative}.gmc-vh__ov{position:absolute;inset:0}.gmc-vh__c{z-index:1;padding:3rem 0}</style>
+<style>.gmc-vh{position:relative;display:grid;place-items:center;overflow:hidden;color:#fff;text-align:center}.gmc-vh video,.gmc-vh__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.gmc-vh__ov,.gmc-vh__c{grid-area:1/1;position:relative}.gmc-vh__ov{position:absolute;inset:0}.gmc-vh__c{z-index:1;padding-top:3rem;padding-bottom:3rem}</style>
 {%- endif -%}
 {% schema %}
 {
