@@ -4,64 +4,21 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one row block.' -%}{%- endif -%}
-{%- liquid
-  assign ts = section.settings.tick_style
-  assign solid = false
-  if ts == 'round' or section.settings.table_style == 'minimal'
-    assign solid = true
-  endif
-  assign us_label = section.settings.us | replace: '[shop_name]', shop.name
-  if us_label == blank
-    assign us_label = shop.name
-  endif
-  assign them_label = section.settings.them | replace: '[shop_name]', shop.name
--%}
-{%- capture yes_mark -%}{%- if ts == 'text' -%}Yes{%- elsif solid -%}<span class="gmc-ct__m gmc-ct__m--y" aria-label="Yes">✓</span>{%- else -%}<span class="gmc-ct__y" aria-label="Yes">✔</span>{%- endif -%}{%- endcapture -%}
-{%- capture no_mark -%}{%- if ts == 'text' -%}No{%- elsif solid -%}<span class="gmc-ct__m gmc-ct__m--n" aria-label="No">✕</span>{%- else -%}<span class="gmc-ct__n" aria-label="No">✘</span>{%- endif -%}{%- endcapture -%}
-<div class="page-width gmc-ct gmc-ct--{{ section.settings.table_style }} gmc-ct--{{ section.settings.place | default: 'stacked' }} {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--ct-hl:{{ section.settings.us_bg | default: 'rgba(128,128,128,.08)' }};--ct-y:{{ section.settings.tick_color }};--ct-n:{{ section.settings.cross_color }}">
-  <div class="gmc-ct__copy">
-    {%- if section.settings.heading != blank -%}<h2 class="gmc-ct__title {{ section.settings.heading_size | default: 'h2' }}">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-    {%- if section.settings.text != blank -%}<div class="rte">{{ section.settings.text }}</div>{%- endif -%}
-    {%- if section.settings.button_label != blank -%}
-      {%- liquid
-        assign ct_btn = 'button button--primary'
-        if section.settings.button_outline
-          assign ct_btn = 'button button--secondary'
-        endif
-      -%}
-      {%- if section.settings.button_link != blank -%}
-        <a class="{{ ct_btn }}" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
-      {%- else -%}
-        <button type="button" class="{{ ct_btn }}" disabled aria-disabled="true">{{ section.settings.button_label | escape }}</button>
-      {%- endif -%}
-    {%- endif -%}
-  </div>
-  <div class="gmc-ct__table" style="overflow-x:auto"><table class="gmc-ct__t">
+{%- assign ts = section.settings.tick_style -%}
+{%- capture yes_mark -%}{%- case ts -%}{%- when 'round' -%}<span class="gmc-ct__m gmc-ct__m--y" aria-label="Yes">✓</span>{%- when 'text' -%}Yes{%- else -%}<span class="gmc-ct__y" aria-label="Yes">✔</span>{%- endcase -%}{%- endcapture -%}
+{%- capture no_mark -%}{%- case ts -%}{%- when 'round' -%}<span class="gmc-ct__m gmc-ct__m--n" aria-label="No">✕</span>{%- when 'text' -%}No{%- else -%}<span class="gmc-ct__n" aria-label="No">✘</span>{%- endcase -%}{%- endcapture -%}
+<div class="page-width gmc-ct gmc-ct--{{ section.settings.table_style }} {% render 'gmc-vis', hide: section.settings.hide_on %}" style="--ct-hl:{{ section.settings.us_bg | default: 'rgba(128,128,128,.08)' }};--ct-y:{{ section.settings.tick_color }};--ct-n:{{ section.settings.cross_color }}">
+  {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  <div style="overflow-x:auto"><table class="gmc-ct__t">
     <thead><tr><th></th>
-      <th class="gmc-ct__us">{%- if section.settings.us_logo != blank -%}{{ section.settings.us_logo | image_url: width: 300 | image_tag: loading: 'lazy', class: 'gmc-ct__logo', alt: us_label }}{%- else -%}{{ us_label | escape }}{%- endif -%}</th>
-      <th>{%- if section.settings.them_logo != blank -%}{{ section.settings.them_logo | image_url: width: 300 | image_tag: loading: 'lazy', class: 'gmc-ct__logo', alt: them_label }}{%- else -%}{{ them_label | escape }}{%- endif -%}</th></tr></thead>
-    <tbody>{%- for block in section.blocks -%}<tr {{ block.shopify_attributes }}><td class="gmc-ct__feat">{{ block.settings.feature | escape }}</td><td class="gmc-ct__us">{%- if block.settings.us_text != blank -%}{{ block.settings.us_text | escape }}{%- elsif block.settings.us_yes -%}{{ yes_mark }}{%- else -%}{{ no_mark }}{%- endif -%}</td><td>{%- if block.settings.them_text != blank -%}{{ block.settings.them_text | escape }}{%- elsif block.settings.them_yes -%}{{ yes_mark }}{%- else -%}{{ no_mark }}{%- endif -%}</td></tr>{%- endfor -%}</tbody>
+      <th class="gmc-ct__us">{%- if section.settings.us_logo != blank -%}{{ section.settings.us_logo | image_url: width: 240 | image_tag: height: 32, loading: 'lazy', alt: section.settings.us }}{%- else -%}{{ section.settings.us | default: shop.name | escape }}{%- endif -%}</th>
+      <th>{%- if section.settings.them_logo != blank -%}{{ section.settings.them_logo | image_url: width: 240 | image_tag: height: 32, loading: 'lazy', alt: section.settings.them }}{%- else -%}{{ section.settings.them | escape }}{%- endif -%}</th></tr></thead>
+    <tbody>{%- for block in section.blocks -%}<tr {{ block.shopify_attributes }}><td>{{ block.settings.feature | escape }}</td><td class="gmc-ct__us">{%- if block.settings.us_text != blank -%}{{ block.settings.us_text | escape }}{%- elsif block.settings.us_yes -%}{{ yes_mark }}{%- else -%}{{ no_mark }}{%- endif -%}</td><td>{%- if block.settings.them_text != blank -%}{{ block.settings.them_text | escape }}{%- elsif block.settings.them_yes -%}{{ yes_mark }}{%- else -%}{{ no_mark }}{%- endif -%}</td></tr>{%- endfor -%}</tbody>
   </table></div>
 </div>
-<style>
-  .gmc-ct{padding:36px 0}.gmc-ct__copy{display:grid;gap:1rem;justify-items:center;text-align:center;margin-bottom:1rem}.gmc-ct__title{margin:0}
-  .gmc-ct__t{width:100%;max-width:760px;margin:0 auto;border-collapse:collapse;text-align:center}.gmc-ct__t th{font-size:18px}
-  .gmc-ct__t td,.gmc-ct__t th{padding:1rem;border-bottom:1px solid rgba(var(--color-foreground),.1)}
-  .gmc-ct__feat{text-align:left;font-weight:600}.gmc-ct__us{font-weight:700}
-  .gmc-ct--classic .gmc-ct__feat{background:var(--ct-hl)}
-  .gmc-ct--centered .gmc-ct__feat{text-align:center}.gmc-ct--centered .gmc-ct__us{background:var(--ct-hl)}
-  .gmc-ct--minimal .gmc-ct__t td,.gmc-ct--minimal .gmc-ct__t th{border-bottom:1px solid rgba(var(--color-foreground),.16);background:transparent}
-  .gmc-ct__y{color:var(--ct-y,#53af01)}.gmc-ct__n{color:var(--ct-n,#121212);opacity:.8}
-  .gmc-ct__m{display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;color:#fff;font-size:1.4rem}
-  .gmc-ct__m--y{background:var(--ct-y,#53af01)}.gmc-ct__m--n{background:var(--ct-n,#dbdbdb);color:#121212}
-  .gmc-ct__logo{display:block;margin:auto;width:60px;height:auto}
-  @media(min-width:750px){
-    .gmc-ct__logo{width:90px}
-    .gmc-ct--table-first,.gmc-ct--table-second{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
-    .gmc-ct--table-first .gmc-ct__table{order:-1}
-    .gmc-ct--table-first .gmc-ct__copy,.gmc-ct--table-second .gmc-ct__copy{margin:0}
-  }
-</style>
+<style>.gmc-ct{padding:36px 0}.gmc-ct__t{width:100%;max-width:760px;margin:1rem auto 0;border-collapse:collapse;text-align:center}.gmc-ct__t td,.gmc-ct__t th{padding:1rem;border-bottom:1px solid rgba(var(--color-foreground),.12)}.gmc-ct__t td:first-child{text-align:left}.gmc-ct__us{background:var(--ct-hl);font-weight:700}.gmc-ct__y{color:var(--ct-y,inherit)}.gmc-ct__n{color:var(--ct-n,inherit);opacity:.8}.gmc-ct__m{display:inline-grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;color:#fff;font-size:1.4rem}.gmc-ct__m--y{background:var(--ct-y,#16a34a)}.gmc-ct__m--n{background:var(--ct-n,#9ca3af)}.gmc-ct__t img{display:block;margin:auto;width:auto}
+.gmc-ct--centered .gmc-ct__t td:first-child{text-align:center}.gmc-ct--minimal .gmc-ct__t td,.gmc-ct--minimal .gmc-ct__t th{border:0}.gmc-ct--minimal .gmc-ct__us{background:transparent;border-bottom:2px solid currentColor}</style>
+{%- endif -%}
 {% schema %}
 {
   "name": "Comparison table",
@@ -72,62 +29,19 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Comparison table"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Heading size",
-      "options": [
-        { "value": "h2", "label": "Small" },
-        { "value": "h1", "label": "Medium" },
-        { "value": "h0", "label": "Large" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "richtext",
-      "id": "text",
-      "label": "Text"
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Button label"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "label": "Button link"
-    },
-    {
-      "type": "checkbox",
-      "id": "button_outline",
-      "label": "Use outline button style",
-      "default": false
+      "default": "Why choose us"
     },
     {
       "type": "text",
       "id": "us",
       "label": "Your column",
-      "info": "Leave empty to use your shop name. [shop_name] is replaced with the shop name."
+      "info": "Leave empty to use your shop name."
     },
     {
       "type": "text",
       "id": "them",
       "label": "Other column",
       "default": "Others"
-    },
-    {
-      "type": "select",
-      "id": "place",
-      "label": "Desktop table placement",
-      "options": [
-        { "value": "table-first", "label": "Table first" },
-        { "value": "table-second", "label": "Table second" },
-        { "value": "stacked", "label": "Stacked" }
-      ],
-      "default": "stacked"
     },
     {
       "type": "select",
@@ -144,7 +58,7 @@
         },
         {
           "value": "minimal",
-          "label": "Minimalistic"
+          "label": "Minimal"
         }
       ],
       "default": "classic"
