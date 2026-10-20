@@ -64,7 +64,7 @@
         "t": {
           "type": "text",
           "settings": {
-            "text": "<p>A short introduction to your store and what you offer.</p>"
+            "text": "<p>Browse the full range, from everyday essentials to gifts.</p>"
           }
         },
         "b": {
@@ -141,20 +141,20 @@
         "h": {
           "type": "heading",
           "settings": {
-            "heading": "Made with care",
+            "heading": "Shop with confidence",
             "heading_size": "h1"
           }
         },
         "t": {
           "type": "text",
           "settings": {
-            "text": "<p>Share your story, your values, or what sets your products apart.</p>"
+            "text": "<p>Secure checkout, clear policies and friendly support on every order.</p>"
           }
         },
         "b": {
           "type": "button",
           "settings": {
-            "button_label": "Our story",
+            "button_label": "Shop all",
             "button_link": "shopify://collections/all",
             "button_style_secondary": false,
             "button_label_2": "",
@@ -289,3 +289,4 @@
     "newsletter"
   ]
 }
+
