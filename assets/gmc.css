@@ -245,3 +245,25 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 
 .gmc-acct-link{display:inline-block;padding:.9rem 0}
 @media (max-width:400px){.header__heading .h2,.header__heading-link .h2{font-size:1.6rem;line-height:1.2}.header__heading-link{padding-left:.4rem;padding-right:.4rem}}
+
+/* ---- Design polish ---- */
+/* product cards: clearer title and price */
+.card-wrapper .card__heading,.card-wrapper .card__heading.h5{font-size:1.5rem;font-weight:600;line-height:1.35;letter-spacing:.01em}
+.card-information .price{font-size:1.5rem}
+@media (max-width:749px){.card-wrapper .card__heading,.card-wrapper .card__heading.h5{font-size:1.4rem}.card-information .price{font-size:1.4rem}}
+/* collection header: compact */
+.collection-hero__inner{padding-top:2rem;padding-bottom:.4rem}
+.collection-hero__title{margin-bottom:.4rem}
+.collection-hero__description{margin-top:.6rem;margin-bottom:0}
+/* header text logo: full-strength colour */
+.header__heading-link,.header__heading-link .h2{color:rgb(var(--color-foreground))}
+.header__heading-link .h2{font-weight:600;letter-spacing:.02em}
+/* buttons: hover lift, press, success state */
+@media (prefers-reduced-motion:no-preference){.button,.shopify-challenge__button,.customer button{transition:transform .15s ease,box-shadow .15s ease,background-color .2s ease}.button:not([disabled]):hover{transform:translateY(-1px)}.button:not([disabled]):active{transform:translateY(0) scale(.99)}}
+.product-form__submit.gmc-added{background:#15803d;border-color:#15803d;color:#fff}
+.product-form__submit.gmc-added::after{display:none}
+/* Add to cart = main action (filled); Buy it now = outlined secondary */
+.shopify-payment-button__button--unbranded{background:transparent!important;color:rgb(var(--color-button))!important}
+.shopify-payment-button__button--unbranded:hover:not([disabled]){background:rgba(var(--color-button),.08)!important}
+/* keyboard focus on custom-element links and media buttons */
+shopify-account a:focus-visible,shopify-account button:focus-visible,.product__media-toggle:focus-visible,.header__icon:focus-visible{outline:2px solid rgb(var(--color-foreground));outline-offset:3px}

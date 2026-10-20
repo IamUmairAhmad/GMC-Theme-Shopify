@@ -581,3 +581,11 @@ document.querySelectorAll('[data-gmc-countdown]').forEach(function(el){var m=+el
         if(on&&!line)return post('/cart/add.js',{items:[{id:vid,quantity:1,properties:{_gmc_wrap:'true'}}]}).then(refresh);
         if(!on&&line)return post('/cart/change.js',{id:line.key,quantity:0}).then(refresh);});}
     if(t.matches('.gmc-gw__msg'))post('/cart/update.js',{attributes:{'Gift message':t.value}});});})();
+
+/* ---- "Added" confirmation on the Add to cart button ---- */
+(function(){function init(){if(typeof subscribe!=='function'||typeof PUB_SUB_EVENTS==='undefined')return;
+  subscribe(PUB_SUB_EVENTS.cartUpdate,function(ev){if(!ev||ev.source!=='product-form')return;
+    document.querySelectorAll('.product-form__submit').forEach(function(b){var l=b.querySelector('span');if(!l||b.classList.contains('gmc-added'))return;var t=l.textContent;
+      b.classList.add('gmc-added');l.textContent='\u2713 '+(window.gmcAddedText||'Added');
+      setTimeout(function(){b.classList.remove('gmc-added');l.textContent=t;},1700);});});}
+  if(window.gmcWhenPubsub)window.gmcWhenPubsub(init);else window.addEventListener('load',init);})();

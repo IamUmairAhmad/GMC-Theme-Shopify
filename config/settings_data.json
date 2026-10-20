@@ -10,7 +10,7 @@
 {
   "current": {
     "logo_width": 90,
-    "type_header_font": "assistant_n4",
+    "type_header_font": "playfair_display_n4",
     "heading_scale": 100,
     "type_body_font": "assistant_n4",
     "body_scale": 100,
@@ -256,8 +256,8 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#ffffff",
-          "background_gradient": "linear-gradient(180deg, #F4F1EB 0%, #FFFFFF 100%)",
+          "background": "#FAF8F4",
+          "background_gradient": "",
           "text": "#121212",
           "button": "#121212",
           "button_label": "#ffffff",
@@ -309,7 +309,10 @@
           "shadow": "#121212"
         }
       }
-    }
+    },
+    "gmc_wish_on": true,
+    "gmc_cmp_on": true,
+    "gmc_cmp_page": "/pages/compare"
   },
   "presets": {
     "GMC Theme": {
