@@ -196,7 +196,7 @@
                     {%- endif -%}
                   </p>
                 {%- when 'description' -%}
-                  {%- if product.description != blank -%}
+                  {%- if product.description != blank and block.settings.gmc_desc_pos != 'full' -%}
                     <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
                       {{ product.description }}
                     </div>
@@ -756,6 +756,17 @@
     </div>
   </product-component>
 </product-info>
+
+{%- comment -%} GMC Theme: product description shown full width under the product information (original code). {%- endcomment -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'description' and block.settings.gmc_desc_pos == 'full' and product.description != blank -%}
+    <div class="gmc-desc-full section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}" style="padding-top:0;{% if block.settings.gmc_mt > 0 %}margin-top:{{ block.settings.gmc_mt }}px;{% endif %}{% if block.settings.gmc_mb > 0 %}margin-bottom:{{ block.settings.gmc_mb }}px;{% endif %}" {{ block.shopify_attributes }}>
+      <div class="page-width">
+        <div class="product__description rte">{{ product.description }}</div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endfor -%}
 
 {%- render 'gmc-section-extras' -%}
 {% schema %}
@@ -1342,6 +1353,16 @@
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1,
       "settings": [
+        {
+          "type": "select",
+          "id": "gmc_desc_pos",
+          "label": "Description position",
+          "options": [
+            { "value": "info", "label": "In the product information column (default)" },
+            { "value": "full", "label": "Full width under the product information" }
+          ],
+          "default": "info"
+        },
         {
           "type": "range",
           "id": "gmc_mt",
