@@ -5,13 +5,17 @@
    "blocks": {
     "b0": {
      "type": "_gmc-group",
-     "blocks": [
-      {
+     "blocks": {
+      "c0": {
        "type": "_gmc-text"
       },
-      {
+      "c1": {
        "type": "_gmc-button"
       }
+     },
+     "block_order": [
+      "c0",
+      "c1"
      ]
     },
     "b1": {
