@@ -421,7 +421,7 @@
       "settings": {
         "height": "adapt",
         "desktop_image_width": "medium",
-        "layout": "image_first",
+        "layout": "text_first",
         "image_behavior": "none",
         "content_layout": "no-overlap",
         "desktop_content_position": "top",
@@ -482,7 +482,7 @@
       "settings": {
         "height": "adapt",
         "desktop_image_width": "medium",
-        "layout": "text_first",
+        "layout": "image_first",
         "image_behavior": "none",
         "content_layout": "no-overlap",
         "desktop_content_position": "top",
@@ -543,7 +543,7 @@
       "settings": {
         "height": "adapt",
         "desktop_image_width": "medium",
-        "layout": "image_first",
+        "layout": "text_first",
         "image_behavior": "none",
         "content_layout": "no-overlap",
         "desktop_content_position": "top",
