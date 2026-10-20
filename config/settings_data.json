@@ -106,7 +106,7 @@
     "sale_badge_color_scheme": "scheme-4",
     "sold_out_badge_color_scheme": "scheme-3",
     "brand_headline": "<strong>Business Information</strong>",
-    "brand_description": "<p><strong>Business Name:</strong> GMC Theme<br/><strong>Business Address:</strong> Airport Road, Lahore 54000, Pakistan</p>",
+    "brand_description": "<ul><li><strong>Business Name:</strong> GMC Theme</li><li><strong>Business Email:</strong> support@gmctheme.com</li><li><strong>Business Phone:</strong> +1 (123)-456-7891</li><li><strong>Business Hours:</strong> Monday – Friday, 09:00 AM – 5:00 PM Eastern Time (ET)</li><li><strong>Business Address:</strong> 1114 Central Ave, St. Petersburg, FL 33705, United States</li></ul>",
     "brand_image_width": 100,
     "social_facebook_link": "",
     "social_instagram_link": "",
