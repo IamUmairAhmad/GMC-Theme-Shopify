@@ -109,7 +109,35 @@ if (!customElements.get('localization-form')) {
         if (form) form.submit();
       }
 
+      loadCountries() {
+        const lists = this.querySelectorAll('ul[data-gmc-lazy-countries]');
+        if (!lists.length) return;
+        if (!window.gmcCountryHtml) {
+          const root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+          window.gmcCountryHtml = fetch(root + '?sections=gmc-country-list')
+            .then((r) => r.json())
+            .then((j) => {
+              const tpl = document.createElement('template');
+              tpl.innerHTML = j['gmc-country-list'] || '';
+              return Array.from(tpl.content.querySelectorAll('li')).map((li) => li.outerHTML).join('');
+            })
+            .catch(() => {
+              window.gmcCountryHtml = null;
+              return '';
+            });
+        }
+        window.gmcCountryHtml.then((html) => {
+          lists.forEach((ul) => {
+            if (!html) return;
+            ul.innerHTML = html;
+            ul.removeAttribute('data-gmc-lazy-countries');
+            ul.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
+          });
+        });
+      }
+
       openSelector() {
+        this.loadCountries();
         this.elements.button.focus();
         this.elements.panel.toggleAttribute('hidden');
         this.elements.button.setAttribute(

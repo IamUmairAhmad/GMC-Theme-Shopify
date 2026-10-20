@@ -121,34 +121,8 @@
           {%- endfor -%}
         </ul>
       {% endif %}
-      <ul role="list" class="list-unstyled countries">
-        {%- for country in localization.available_countries -%}
-          <li class="disclosure__item" tabindex="-1">
-            <a
-              class="link link--text disclosure__link caption-large focus-inset"
-              href="#"
-              {% if country.iso_code == localization.country.iso_code %}
-                aria-current="true"
-              {% endif %}
-              data-value="{{ country.iso_code }}"
-              id="{{ country.name }}"
-            >
-              <span
-                {% if country.iso_code != localization.country.iso_code %}
-                  class="visibility-hidden"
-                {% endif %}
-              >
-                {{- 'icon-checkmark.svg' | inline_asset_content -}}
-              </span>
-              <span class="country">{{- country.name }}</span>
-              <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">
-                {{ country.currency.iso_code }}
-                {{ country.currency.symbol -}}
-              </span>
-            </a>
-          </li>
-        {%- endfor -%}
-      </ul>
+      {%- comment -%} Full country list is fetched on first open (see localization-form.js + sections/gmc-country-list.liquid) to keep the page HTML small. {%- endcomment -%}
+      <ul role="list" class="list-unstyled countries" data-gmc-lazy-countries></ul>
     </div>
   </div>
   <div class="country-selector__overlay"></div>

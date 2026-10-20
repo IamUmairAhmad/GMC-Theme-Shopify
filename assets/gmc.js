@@ -106,12 +106,28 @@ window.gmcField=function(name,value){
 };
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.matches&&t.matches('[data-gmc-prop]')){gmcField(t.dataset.gmcProp,t.value);}});
 
-/* ---- icon sprite (Tabler Icons, MIT): fetched once, cached by the browser ---- */
+/* ---- icon sprite (Tabler Icons, MIT): fetched once (cached by the browser); only the symbols a page actually uses are added to the DOM ---- */
 (function(){
   if(!window.GMC||!GMC.iconSprite||!document.querySelector('.gmc-icon'))return;
-  fetch(GMC.iconSprite).then(function(r){return r.text();}).then(function(t){
-    var d=document.createElement('div');d.style.display='none';d.setAttribute('aria-hidden','true');d.innerHTML=t;document.body.insertBefore(d,document.body.firstChild);
-  }).catch(function(){});
+  var syms=null,have={},holder=null,queued=false;
+  function ensure(){
+    queued=false;if(!syms)return;
+    var add=[];
+    document.querySelectorAll('use[href^="#gmc-i-"]').forEach(function(u){var id=u.getAttribute('href').slice(1);if(!have[id]&&syms[id]){have[id]=1;add.push(syms[id]);}});
+    if(!add.length)return;
+    if(!holder){holder=document.createElementNS('http://www.w3.org/2000/svg','svg');holder.setAttribute('aria-hidden','true');holder.style.display='none';document.body.insertBefore(holder,document.body.firstChild);}
+    add.forEach(function(s){holder.appendChild(document.importNode(s,true));});
+  }
+  function queue(){if(queued)return;queued=true;requestAnimationFrame(ensure);}
+  function go(){
+    fetch(GMC.iconSprite).then(function(r){return r.text();}).then(function(txt){
+      var doc=new DOMParser().parseFromString(txt,'image/svg+xml');syms={};
+      doc.querySelectorAll('symbol').forEach(function(s){syms[s.id]=s;});
+      ensure();
+      new MutationObserver(queue).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['href']});
+    }).catch(function(){});
+  }
+  go();
 })();
 
 /* ---- highlighted text: ==word== inside headings becomes a highlight ---- */

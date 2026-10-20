@@ -1,0 +1,37 @@
+{%- comment -%}
+  Not placed on pages. Fetched on demand by localization-form.js through the
+  Section Rendering API so the full country list is not repeated in every page's HTML.
+{%- endcomment -%}
+{%- liquid
+  assign currencies = localization.available_countries | map: 'currency' | map: 'iso_code' | uniq
+  assign show_currencies = false
+  if currencies.size > 1
+    assign show_currencies = true
+  endif
+-%}
+{%- for country in localization.available_countries -%}
+  <li class="disclosure__item" tabindex="-1">
+    <a
+      class="link link--text disclosure__link caption-large focus-inset"
+      href="#"
+      {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}
+      data-value="{{ country.iso_code }}"
+      id="{{ country.name }}"
+    >
+      <span{% if country.iso_code != localization.country.iso_code %} class="visibility-hidden"{% endif %}>
+        {{- 'icon-checkmark.svg' | inline_asset_content -}}
+      </span>
+      <span class="country">{{- country.name }}</span>
+      <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">
+        {{ country.currency.iso_code }}
+        {{ country.currency.symbol -}}
+      </span>
+    </a>
+  </li>
+{%- endfor -%}
+{% schema %}
+{
+  "name": "Country list (internal)",
+  "settings": []
+}
+{% endschema %}
