@@ -3,7 +3,7 @@
 {%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
-<div class="page-width gmc-wl {% render 'gmc-vis', hide: section.settings.hide_on %}" style="padding:36px 0">
+<div class="page-width gmc-wl {% render 'gmc-vis', hide: section.settings.hide_on %}" style="padding-top:36px;padding-bottom:36px">
   {%- if section.settings.heading != blank -%}<h2 style="text-align:center;margin-bottom:2rem">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div data-gmc-wishlist data-empty="{{ section.settings.empty | escape }}" data-remove="{{ section.settings.remove | escape }}"><noscript>JavaScript is needed to show your saved products.</noscript></div>
 </div>
