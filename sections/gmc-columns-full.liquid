@@ -5,30 +5,30 @@
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add blocks and choose a column for each.' -%}{%- endif -%}
 {%- comment -%} GMC Theme: custom columns, blocks assigned to columns (original code) {%- endcomment -%}
-<div class="gmc-cc color-{{ section.settings.scheme }} gradient">
+<div class="gmc-cfl color-{{ section.settings.scheme }} gradient">
   <div class="page-width" style="padding-top:{{ section.settings.pad }}px;padding-bottom:{{ section.settings.pad }}px">
-    <div class="gmc-cc__g{% if section.settings.stack_mobile %} gmc-cc__g--stack{% endif %}" style="--gap:{{ section.settings.gap }}px;--bgap:{{ section.settings.block_gap }}px;--cm:{{ section.settings.cols_m }}">
+    <div class="gmc-cfl__g{% if section.settings.stack_mobile %} gmc-cfl__g--stack{% endif %}" style="--gap:{{ section.settings.gap }}px;--bgap:{{ section.settings.block_gap }}px;--cm:{{ section.settings.cols_m }}">
       {%- for i in (1..section.settings.cols) -%}
         {%- assign wk = 'w' | append: i -%}{%- assign vk = 'v' | append: i -%}{%- assign sk = 'show' | append: i -%}
         {%- assign cw = section.settings[wk] -%}
-        <div class="gmc-cc__c gmc-cc__c--{{ section.settings[sk] }}" style="justify-content:{{ section.settings[vk] }};{% if cw > 0 %}flex:0 0 calc({{ cw }}% - var(--gap));{% else %}flex:1 1 0;{% endif %}">
+        <div class="gmc-cfl__c gmc-cfl__c--{{ section.settings[sk] }}" style="justify-content:{{ section.settings[vk] }};{% if cw > 0 %}flex:0 0 calc({{ cw }}% - var(--gap));{% else %}flex:1 1 0;{% endif %}">
           {%- for block in section.blocks -%}
             {%- if block.settings.column == i -%}
               {%- assign b = block.settings -%}
-              <div class="gmc-cc__b" {{ block.shopify_attributes }}>
+              <div class="gmc-cfl__b" {{ block.shopify_attributes }}>
               {%- case block.type -%}
                 {%- when 'heading' -%}<div class="{{ b.size }}" role="heading" aria-level="2" style="text-align:{{ b.align }};margin:0">{{ b.text | escape }}</div>
                 {%- when 'richtext' -%}<div class="rte" style="text-align:{{ b.align }}">{{ b.text }}</div>
-                {%- when 'rating' -%}{%- if b.link != blank -%}<a href="{{ b.link }}" style="color:inherit;text-decoration:none">{%- endif -%}<p class="gmc-cc__rt" style="margin:0"><span style="color:{{ b.color }};letter-spacing:2px" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</span> {{ b.label | escape }}</p>{%- if b.link != blank -%}</a>{%- endif -%}
-                {%- when 'buttons' -%}<div class="gmc-cc__btns">{%- if b.label1 != blank -%}<a class="button{% if b.full %} button--full-width{% endif %}" href="{{ b.link1 | default: '#' }}">{{ b.label1 | escape }}</a>{%- endif -%}{%- if b.label2 != blank -%}<a class="button button--secondary{% if b.full %} button--full-width{% endif %}" href="{{ b.link2 | default: '#' }}">{{ b.label2 | escape }}</a>{%- endif -%}</div>
+                {%- when 'rating' -%}{%- if b.link != blank -%}<a href="{{ b.link }}" style="color:inherit;text-decoration:none">{%- endif -%}<p class="gmc-cfl__rt" style="margin:0"><span style="color:{{ b.color }};letter-spacing:2px" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.3">★</span>{%- endif -%}{%- endfor -%}</span> {{ b.label | escape }}</p>{%- if b.link != blank -%}</a>{%- endif -%}
+                {%- when 'buttons' -%}<div class="gmc-cfl__btns">{%- if b.label1 != blank -%}<a class="button{% if b.full %} button--full-width{% endif %}" href="{{ b.link1 | default: '#' }}">{{ b.label1 | escape }}</a>{%- endif -%}{%- if b.label2 != blank -%}<a class="button button--secondary{% if b.full %} button--full-width{% endif %}" href="{{ b.link2 | default: '#' }}">{{ b.label2 | escape }}</a>{%- endif -%}</div>
                 {%- when 'atc' -%}{%- render 'gmc-inline-atc', product: b.product, label: b.label, skip: b.skip, align: 'left' -%}
-                {%- when 'text_icon' -%}<p class="gmc-cc__ti" style="margin:0">{%- render 'gmc-icon', name: b.icon_name, size: 24 -%}<span><strong>{{ b.text | escape }}</strong>{%- if b.text2 != blank -%}<br>{{ b.text2 | escape }}{%- endif -%}</span></p>
-                {%- when 'icon_content' -%}<div class="gmc-cc__ti">{%- if b.icon_image != blank -%}{{ b.icon_image | image_url: width: 100 | image_tag: width: 32, height: 32, alt: '', loading: 'lazy' }}{%- else -%}{%- render 'gmc-icon', name: b.icon_name, size: 28 -%}{%- endif -%}<span><strong>{{ b.title | escape }}</strong>{%- if b.text != blank -%}<br>{{ b.text | escape }}{%- endif -%}</span></div>
-                {%- when 'image' -%}{%- if b.image != blank -%}{%- if b.link != blank -%}<a href="{{ b.link }}">{%- endif -%}{{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,700,1200', style: 'width:100%;height:auto;display:block;border-radius:' | append: b.radius | append: 'px', alt: b.image.alt }}{%- if b.link != blank -%}</a>{%- endif -%}{%- endif -%}
+                {%- when 'text_icon' -%}<p class="gmc-cfl__ti" style="margin:0">{%- render 'gmc-icon', name: b.icon_name, size: 24 -%}<span><strong>{{ b.text | escape }}</strong>{%- if b.text2 != blank -%}<br>{{ b.text2 | escape }}{%- endif -%}</span></p>
+                {%- when 'icon_content' -%}<div class="gmc-cfl__ti">{%- if b.icon_image != blank -%}{{ b.icon_image | image_url: width: 100 | image_tag: width: 32, height: 32, alt: '', loading: 'lazy' }}{%- else -%}{%- render 'gmc-icon', name: b.icon_name, size: 28 -%}{%- endif -%}<span><strong>{{ b.title | escape }}</strong>{%- if b.text != blank -%}<br>{{ b.text | escape }}{%- endif -%}</span></div>
+                {%- when 'image' -%}{%- if b.image != blank -%}{%- if b.link != blank -%}<a href="{{ b.link }}">{%- endif -%}{%- capture gmc_istyle -%}width:100%;height:auto;display:block;border-radius:{{ b.radius | default: 0 }}px{%- endcapture -%}{{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,700,1200', style: gmc_istyle, alt: b.image.alt }}{%- if b.link != blank -%}</a>{%- endif -%}{%- endif -%}
                 {%- when 'video' -%}{%- if b.video != blank -%}<div class="gmc-pm__vid" data-gmc-vid style="border-radius:{{ b.radius }}px"><video playsinline preload="metadata" {% if b.autoplay %}autoplay muted loop{% else %}controls{% endif %}{% if b.poster != blank %} poster="{{ b.poster | image_url: width: 1000 }}"{% endif %}>{%- for vs in b.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video></div>{%- endif -%}
-                {%- when 'accordion' -%}<details class="gmc-cc__acc"{% if b.open %} open{% endif %}><summary>{{ b.title | escape }}</summary><div class="rte">{{ b.text }}</div></details>
+                {%- when 'accordion' -%}<details class="gmc-cfl__acc"{% if b.open %} open{% endif %}><summary>{{ b.title | escape }}</summary><div class="rte">{{ b.text }}</div></details>
                 {%- when 'payment' -%}{%- if b.types != blank -%}{%- assign pt_list = b.types | remove: ' ' | split: ',' -%}{%- else -%}{%- assign pt_list = shop.enabled_payment_types -%}{%- endif -%}<ul class="list-payment" role="list" style="display:flex;gap:.5rem;flex-wrap:wrap;padding:0;margin:0;list-style:none">{%- for type in pt_list -%}<li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>{%- endfor -%}</ul>
-                {%- when 'email' -%}{%- form 'customer', id: block.id -%}<input type="hidden" name="contact[tags]" value="newsletter">{%- if form.posted_successfully? -%}<p>{{ b.success | escape }}</p>{%- else -%}<div class="gmc-cc__em"><input type="email" name="contact[email]" required autocomplete="email" placeholder="{{ b.placeholder | escape }}" aria-label="{{ b.placeholder | escape }}" class="field__input" style="flex:1"><button class="button" type="submit">{{ b.label | escape }}</button></div>{%- endif -%}{%- endform -%}
+                {%- when 'email' -%}{%- form 'customer', id: block.id -%}<input type="hidden" name="contact[tags]" value="newsletter">{%- if form.posted_successfully? -%}<p>{{ b.success | escape }}</p>{%- else -%}<div class="gmc-cfl__em"><input type="email" name="contact[email]" required autocomplete="email" placeholder="{{ b.placeholder | escape }}" aria-label="{{ b.placeholder | escape }}" class="field__input" style="flex:1"><button class="button" type="submit">{{ b.label | escape }}</button></div>{%- endif -%}{%- endform -%}
                 {%- when 'liquid' -%}{{ b.code }}
               {%- endcase -%}
               </div>
@@ -39,9 +39,9 @@
     </div>
   </div>
 </div>
-<style>.gmc-cc__g{display:flex;gap:var(--gap,24px)}.gmc-cc__c{display:flex;flex-direction:column;gap:var(--bgap,12px);min-width:0}.gmc-cc__ti{display:flex;gap:1rem;align-items:center}.gmc-cc__btns{display:flex;gap:1rem;flex-wrap:wrap}.gmc-cc__em{display:flex;gap:.6rem}.gmc-cc__acc{border-top:1px solid rgba(var(--color-foreground),.2);padding:.8rem 0}.gmc-cc__acc summary{cursor:pointer;font-weight:600}
-@media(min-width:750px){.gmc-cc__c--mobile{display:none}}
-@media(max-width:749px){.gmc-cc__c--desktop{display:none}.gmc-cc__g--stack{flex-direction:column}.gmc-cc__g:not(.gmc-cc__g--stack){display:grid;grid-template-columns:repeat(var(--cm,2),1fr)}.gmc-cc__g .gmc-cc__c{flex:1 1 auto!important}}</style>
+<style>.gmc-cfl__g{display:flex;gap:var(--gap,24px)}.gmc-cfl__c{display:flex;flex-direction:column;gap:var(--bgap,12px);min-width:0}.gmc-cfl__ti{display:flex;gap:1rem;align-items:center}.gmc-cfl__btns{display:flex;gap:1rem;flex-wrap:wrap}.gmc-cfl__em{display:flex;gap:.6rem}.gmc-cfl__acc{border-top:1px solid rgba(var(--color-foreground),.2);padding:.8rem 0}.gmc-cfl__acc summary{cursor:pointer;font-weight:600}
+@media(min-width:750px){.gmc-cfl__c--mobile{display:none}}
+@media(max-width:749px){.gmc-cfl__c--desktop{display:none}.gmc-cfl__g--stack{flex-direction:column}.gmc-cfl__g:not(.gmc-cfl__g--stack){display:grid;grid-template-columns:repeat(var(--cm,2),1fr)}.gmc-cfl__g .gmc-cfl__c{flex:1 1 auto!important}}</style>
 {%- endif -%}
 {% schema %}
 {
@@ -472,7 +472,8 @@
     {
       "type": "image_picker",
       "id": "gmc_bg_image",
-      "label": "Background image"
+      "label": "Background image",
+      "info": "Recommended: 2000 × 1200 px. Tested: fills the section edge to edge and is cropped to fit, never stretched; the theme loads at most 2000 px wide, so larger files add no sharpness. At full desktop width (1920 px) a 2000 × 1200 image covers sections up to about 1150 px tall without enlarging; section height follows its content."
     },
     {
       "type": "range",
@@ -779,7 +780,8 @@
         {
           "type": "image_picker",
           "id": "icon_image",
-          "label": "Or icon image"
+          "label": "Or icon image",
+          "info": "Recommended: square 64 × 64 px, PNG with transparent background. Tested: shown at 32 × 32 px."
         },
         {
           "type": "text",
@@ -810,7 +812,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image",
+          "info": "Recommended: 700 px wide for a 3-column row, 1200 px wide when the image sits alone (the theme loads up to 1200 px). Tested: about 350 px wide with 3 columns and 1100 px alone; the height follows your image, so nothing is cropped."
         },
         {
           "type": "url",
@@ -850,7 +853,8 @@
         {
           "type": "image_picker",
           "id": "poster",
-          "label": "Poster"
+          "label": "Poster",
+  "info": "Recommended: the same shape as your video (16:9 landscape or 9:16 vertical). Tested: for Shopify-hosted video the poster fills the video frame and is cropped to fit; it is not used for YouTube or Vimeo links."
         },
         {
           "type": "checkbox",

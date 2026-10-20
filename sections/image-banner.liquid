@@ -224,18 +224,20 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Desktop image"
+      "label": "Desktop image",
+      "info": "Recommended: 3840 × 1440 px for sharp results on large and retina screens (1920 × 720 is the minimum for a full-width banner). Tested: full width, 1920 px on desktop, by 420 / 560 / 720 px high for Small / Medium / Large; on phones 390 px wide by 280 / 340 / 390 px. \"Adapt to image\" follows your picture. The image is cropped to fill, so keep the subject in the centre. If you add a second image, each picture is 960 px wide on desktop and they stack on phones."
     },
     {
       "type": "image_picker",
       "id": "gmc_image_mobile",
       "label": "Mobile image",
-      "info": "Shown on phones instead of the desktop image (when no second image is used)."
+      "info": "Shown on phones instead of the desktop image (when no second image is used). Recommended: 780 × 780 px. Tested: 390 px wide by 280 / 340 / 390 px high for Small / Medium / Large (260 px for \"Adapt to image\"); cropped to fill, so keep the subject in the centre."
     },
     {
       "type": "image_picker",
       "id": "image_2",
-      "label": "t:sections.image-banner.settings.image_2.label"
+      "label": "t:sections.image-banner.settings.image_2.label",
+      "info": "Recommended: same size as the first image. Tested: with two images each is 960 px wide on desktop and both stack at full width on phones."
     },
     {
       "type": "select",
@@ -499,7 +501,8 @@
     {
       "type": "image_picker",
       "id": "gmc_bg_image",
-      "label": "Background image"
+      "label": "Background image",
+      "info": "Recommended: 2000 × 1200 px. Tested: fills the section edge to edge and is cropped to fit, never stretched; the theme loads at most 2000 px wide, so larger files add no sharpness. At full desktop width (1920 px) a 2000 × 1200 image covers sections up to about 1150 px tall without enlarging; section height follows its content."
     },
     {
       "type": "video",

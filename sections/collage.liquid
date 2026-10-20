@@ -378,7 +378,8 @@
     {
       "type": "image_picker",
       "id": "gmc_bg_image",
-      "label": "Background image"
+      "label": "Background image",
+      "info": "Recommended: 2000 × 1200 px. Tested: fills the section edge to edge and is cropped to fit, never stretched; the theme loads at most 2000 px wide, so larger files add no sharpness. At full desktop width (1920 px) a 2000 × 1200 image covers sections up to about 1150 px tall without enlarging; section height follows its content."
     },
     {
       "type": "video",
@@ -509,7 +510,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "t:sections.collage.blocks.image.settings.image.label"
+          "label": "t:sections.collage.blocks.image.settings.image.label",
+                 "info": "Recommended: 1500 × 1000 px for the large tile and 750 × 500 px for the small tiles (3:2). Tested with 3 blocks: the large tile is 731 × 490 px and the small tiles 361 × 241 px on desktop, 360 × 240 px on phones; images are cropped to fill, so keep the subject in the centre. With 2 blocks the height follows your image."
         }
       ]
     },
@@ -548,7 +550,8 @@
         {
           "type": "image_picker",
           "id": "cover_image",
-          "label": "t:sections.collage.blocks.video.settings.cover_image.label"
+          "label": "t:sections.collage.blocks.video.settings.cover_image.label",
+      "info": "Recommended: 1500 × 1000 px for the large tile and 750 × 500 px for the small tiles (3:2). Tested with 3 blocks: the large tile is 731 × 490 px and the small tiles 361 × 241 px on desktop, 360 × 240 px on phones; the image is cropped to fill."
         },
         {
           "type": "video_url",

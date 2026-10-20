@@ -534,7 +534,8 @@
     {
       "type": "image_picker",
       "id": "gmc_bg_image",
-      "label": "Background image"
+      "label": "Background image",
+      "info": "Recommended: 2000 × 1200 px. Tested: fills the section edge to edge and is cropped to fit, never stretched; the theme loads at most 2000 px wide, so larger files add no sharpness. At full desktop width (1920 px) a 2000 × 1200 image covers sections up to about 1150 px tall without enlarging; section height follows its content."
     },
     {
       "type": "video",
@@ -666,7 +667,7 @@
           "type": "image_picker",
           "id": "avatar",
           "label": "Profile picture",
-          "info": "Shown in the ring. The frame image is used when this is empty."
+          "info": "Shown in the ring. The frame image is used when this is empty. Recommended: square 144 × 144 px photo (shown in a round ring). Tested: shown at 72 × 72 px."
         },
         {
           "type": "checkbox",
@@ -681,7 +682,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image",
+          "info": "Recommended: 840 × 1560 px (twice the frame; the theme loads up to 1200 px wide). Tested: the story frame is 420 × 780 px on desktop and fills the screen on phones. With the default Fit \"contain\" the whole image is shown; \"cover\" fills the frame and crops it."
         },
         {
           "type": "video",

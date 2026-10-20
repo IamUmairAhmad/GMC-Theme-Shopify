@@ -437,7 +437,7 @@
     { "type": "range", "id": "gmc_pad_bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "Extra space below", "default": 0 },
     { "type": "color", "id": "gmc_bg_color", "label": "Section background colour" },
     { "type": "text", "id": "gmc_bg_gradient", "label": "Section background gradient (CSS)", "info": "For example: linear-gradient(135deg, #ff7a18, #af002d). Overrides the colour above." },
-    { "type": "image_picker", "id": "gmc_bg_image", "label": "Background image" },
+    { "type": "image_picker", "id": "gmc_bg_image", "label": "Background image", "info": "Recommended: 2000 × 1200 px. Tested: fills the section edge to edge and is cropped to fit, never stretched; the theme loads at most 2000 px wide, so larger files add no sharpness. At full desktop width (1920 px) a 2000 × 1200 image covers sections up to about 1150 px tall without enlarging; section height follows its content." },
     { "type": "video", "id": "gmc_bg_video", "label": "Background video (MP4 upload)" },
     { "type": "range", "id": "gmc_bg_overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "label": "Background overlay", "default": 0 },
     { "type": "header", "content": "Add to cart in this section" },
@@ -478,14 +478,14 @@
       "name": "Testimonial",
       "settings": [
         { "type": "header", "content": "Media", "info": "Photos and videos show when Style is Cards." },
-        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Recommended: 700 × 700 px at the default Square image ratio (the theme loads up to 1200 px). Tested: 338 × 338 px on desktop with 3 columns and 358 × 358 px on phones. Square crops your image to fit; Adapt keeps its own shape." },
         { "type": "video", "id": "video", "label": "Video" },
-        { "type": "image_picker", "id": "video_thumbnail", "label": "Video thumbnail", "info": "If empty, the first frame of the video is used." },
+        { "type": "image_picker", "id": "video_thumbnail", "label": "Video thumbnail", "info": "If empty, the first frame of the video is used. Recommended: the same shape as your video (16:9 landscape or 9:16 vertical). Tested: for Shopify-hosted video the poster fills the video frame and is cropped to fit; it is not used for YouTube or Vimeo links." },
         { "type": "header", "content": "Content" },
         { "type": "text", "id": "title", "label": "Heading", "default": "Heading" },
         { "type": "richtext", "id": "quote", "label": "Text", "default": "<p>Share positive thoughts and feedback from your customer.</p>" },
         { "type": "range", "id": "rating", "min": 1, "max": 5, "step": 1, "label": "Stars", "default": 5 },
-        { "type": "image_picker", "id": "avatar", "label": "Author avatar" },
+        { "type": "image_picker", "id": "avatar", "label": "Author avatar", "info": "Recommended: square 80 × 80 px photo. Tested: shown at 40 × 40 px." },
         { "type": "inline_richtext", "id": "author", "label": "Author", "default": "Author" },
         { "type": "checkbox", "id": "verified", "label": "Verified buyer", "info": "Tick only for reviews you have confirmed.", "default": false }
       ]

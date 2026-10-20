@@ -54,7 +54,7 @@
   {%- when 'image' -%}
     <div class="gmc-cb__media" style="width:{{ b.width | default: 100 }}%">
       {%- if b.image != blank -%}
-        {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 800, 1200', alt: b.image.alt, style: 'width:100%;height:auto;border-radius:' | append: b.radius | append: 'px' }}
+        {%- capture gmc_istyle -%}width:100%;height:auto;border-radius:{{ b.radius | default: 0 }}px{%- endcapture -%}{{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 800, 1200', alt: b.image.alt, style: gmc_istyle }}
       {%- else -%}
         {{ 'image' | placeholder_svg_tag: 'placeholder-svg gmc-cb__ph' }}
       {%- endif -%}

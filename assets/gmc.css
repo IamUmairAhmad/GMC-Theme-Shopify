@@ -131,11 +131,11 @@ label.gmc-imgsw{font-size:0!important;background:var(--gmc-img) center/cover no-
 .card__badge .gmc-badge-extra{margin-left:.4rem}.card__badge.top .gmc-badge-extra,.card__badge .gmc-badge-extra{align-self:flex-start}
 
 /* GMC slider engine */
-.gmc-sl{position:relative;--gmc-gap:0px;--gmc-peek:0px;--per:1;--per-m:1;--gmc-dot:#fff}
+.gmc-sl{position:relative;--gmc-gap:0px;--gmc-peek:0px;--per:1;--per-m:1;--gmc-dot:#fff;--e-gap:var(--gmc-gap);--e-peek:var(--gmc-peek)}
 .gmc-sl__vp{overflow:hidden;touch-action:pan-y}
-.gmc-sl__tr{display:flex;gap:var(--gmc-gap);transition:transform .5s ease;will-change:transform}
-.gmc-sl__s{flex:0 0 calc((100% - var(--gmc-gap) * (var(--per) - 1) - var(--gmc-peek)) / var(--per));min-width:0}
-@media(max-width:749px){.gmc-sl{--gmc-peek:var(--gmc-peek-m, var(--gmc-peek));--gmc-gap:var(--gmc-gap-m, var(--gmc-gap))}.gmc-sl__s{flex-basis:calc((100% - var(--gmc-gap) * (var(--per-m) - 1) - var(--gmc-peek)) / var(--per-m))}}
+.gmc-sl__tr{display:flex;gap:var(--e-gap);transition:transform .5s ease;will-change:transform}
+.gmc-sl__s{flex:0 0 calc((100% - var(--e-gap) * (var(--per) - 1) - var(--e-peek)) / var(--per));min-width:0}
+@media(max-width:749px){.gmc-sl{--e-peek:var(--gmc-peek-m, var(--gmc-peek));--e-gap:var(--gmc-gap-m, var(--gmc-gap))}.gmc-sl__s{flex-basis:calc((100% - var(--e-gap) * (var(--per-m) - 1) - var(--e-peek)) / var(--per-m))}}
 .gmc-sl--as-grid .gmc-sl__vp{overflow:visible;height:auto!important}
 .gmc-sl--as-grid .gmc-sl__tr{display:grid!important;transform:none!important;grid-template-columns:repeat(var(--per),minmax(0,1fr))}
 .gmc-sl--as-grid .gmc-sl__s{flex:none;width:auto;max-width:none}

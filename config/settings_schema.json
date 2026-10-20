@@ -366,7 +366,8 @@
       {
         "type": "image_picker",
         "id": "gmc_cart_image",
-        "label": "Cart image (banner under items)"
+        "label": "Cart image (banner under items)",
+        "info": "Recommended: 700 px wide, any height. Tested: shown 329 px wide on desktop and 319 px on phones; height follows your image, so nothing is cropped."
       },
       {
         "type": "header",
@@ -468,7 +469,8 @@
       {
         "type": "image_picker",
         "id": "gmc_mega_image",
-        "label": "Mega menu promo image"
+        "label": "Mega menu promo image",
+        "info": "Recommended: 560 px wide (the theme loads up to 600 px). Tested: 280 px wide and at least 160 px high; the height grows with the number of links in the menu. The image is cropped to fill, so keep the subject in the centre."
       },
       {
         "type": "text",
@@ -901,7 +903,8 @@
       {
         "type": "image_picker",
         "id": "gmc_popup_image",
-        "label": "Image (optional)"
+        "label": "Image (optional)",
+        "info": "Recommended: 700 px wide (the theme loads up to 700 px). Tested: 380 × 263 px on desktop (the height follows the popup text) and 360 × 180 px on phones; the image is cropped to fill, so keep the subject in the centre."
       },
       {
         "type": "select",
@@ -1140,7 +1143,8 @@
       {
         "type": "image_picker",
         "id": "logo",
-        "label": "t:settings_schema.logo.settings.logo_image.label"
+        "label": "t:settings_schema.logo.settings.logo_image.label",
+        "info": "Recommended: twice your Logo width setting, 180 px wide at the default 90 px; any height, PNG with transparent background. Tested: shown at the Logo width setting, and the height follows your logo."
       },
       {
         "type": "range",
@@ -1156,7 +1160,7 @@
         "type": "image_picker",
         "id": "gmc_logo_secondary",
         "label": "Secondary logo",
-        "info": "Shown while a header is transparent, unless that header already has its own secondary logo."
+        "info": "Shown while a header is transparent, unless that header already has its own secondary logo. Recommended: twice your Logo width setting, 180 px wide at the default 90 px; any height, PNG with transparent background. Tested: shown at the Logo width setting, and the height follows your logo."
       },
       {
         "type": "range",
@@ -3153,7 +3157,7 @@
         "type": "image_picker",
         "id": "gmc_cursor",
         "label": "Custom cursor image",
-        "info": "Small PNG, 32x32 recommended."
+        "info": "Small PNG, 32x32 recommended. The theme serves it at no more than 64 px wide, so do not go above 64 × 64 px."
       },
       {
         "type": "header",
@@ -3239,7 +3243,8 @@
       {
         "type": "image_picker",
         "id": "brand_image",
-        "label": "t:settings_schema.brand_information.settings.brand_image.label"
+        "label": "t:settings_schema.brand_information.settings.brand_image.label",
+        "info": "Recommended: twice your image width setting, 200 px wide at the default 100 px; any height. Tested: shown at the Image width setting, and the height follows your image."
       },
       {
         "type": "range",

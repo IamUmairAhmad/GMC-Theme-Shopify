@@ -186,7 +186,7 @@
     { "type": "range", "id": "gmc_max_width", "min": 0, "max": 1600, "step": 50, "unit": "px", "label": "Max content width (0 = theme default)", "default": 0 },
     { "type": "color", "id": "gmc_bg_color", "label": "Section background colour" },
     { "type": "text", "id": "gmc_bg_gradient", "label": "Section background gradient (CSS)", "info": "For example: linear-gradient(135deg, #ff7a18, #af002d). Overrides the colour above." },
-    { "type": "image_picker", "id": "gmc_bg_image", "label": "Background image" },
+    { "type": "image_picker", "id": "gmc_bg_image", "label": "Background image", "info": "Recommended: 2000 × 1200 px. Tested: fills the section edge to edge and is cropped to fit, never stretched; the theme loads at most 2000 px wide, so larger files add no sharpness. At full desktop width (1920 px) a 2000 × 1200 image covers sections up to about 1150 px tall without enlarging; section height follows its content." },
     { "type": "video", "id": "gmc_bg_video", "label": "Background video (MP4 upload)" },
     { "type": "range", "id": "gmc_bg_overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "label": "Background overlay", "default": 0 },
     { "type": "header", "content": "Add to cart in this section" },

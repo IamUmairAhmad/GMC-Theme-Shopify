@@ -30,7 +30,7 @@
   #gmc-mc-{{ section.id }} .gmc-mc__c{position:relative;text-align:var(--ta);display:flex;flex-direction:column;gap:.8rem;align-items:{% if s.text_align == 'center' %}center{% elsif s.text_align == 'right' %}flex-end{% else %}flex-start{% endif %}}
   #gmc-mc-{{ section.id }} .gmc-mc__style--card .gmc-mc__c{padding:2rem;border-radius:var(--rad);background:rgba(var(--color-foreground),.05)}
   #gmc-mc-{{ section.id }} .gmc-mc__style--bordered .gmc-mc__c{padding:2rem;border-radius:var(--rad);border:1px solid rgba(var(--color-foreground),.2)}
-  #gmc-mc-{{ section.id }} .gmc-mc__img{width:100%;overflow:hidden;border-radius:var(--rad)}#gmc-mc-{{ section.id }} .gmc-mc__img img{display:block;width:100%;aspect-ratio:var(--ratio);object-fit:cover;transition:transform .4s}
+  #gmc-mc-{{ section.id }} .gmc-mc__img{width:100%;overflow:hidden;border-radius:var(--rad)}#gmc-mc-{{ section.id }} .gmc-mc__img img{display:block;width:100%;height:auto;aspect-ratio:var(--ratio);object-fit:cover;transition:transform .4s}
   #gmc-mc-{{ section.id }} .gmc-mc__img--circle{width:min(100%,{{ s.circle_size }}px);aspect-ratio:1;border-radius:50%}#gmc-mc-{{ section.id }} .gmc-mc__img--circle img{height:100%;aspect-ratio:1}
   #gmc-mc-{{ section.id }} .gmc-mc__t,#gmc-mc-{{ section.id }} .gmc-mc__x>:first-child{margin:0}#gmc-mc-{{ section.id }} .gmc-mc__x{opacity:.85}#gmc-mc-{{ section.id }} .gmc-mc__a{color:inherit;text-decoration:none}
   #gmc-mc-{{ section.id }} .gmc-mc__a::after{content:"";position:absolute;inset:0}
@@ -342,7 +342,8 @@
     {
       "type": "image_picker",
       "id": "gmc_bg_image",
-      "label": "Background image"
+      "label": "Background image",
+      "info": "Recommended: 2000 × 1200 px. Tested: fills the section edge to edge and is cropped to fit, never stretched; the theme loads at most 2000 px wide, so larger files add no sharpness. At full desktop width (1920 px) a 2000 × 1200 image covers sections up to about 1150 px tall without enlarging; section height follows its content."
     },
     {
       "type": "video",
@@ -479,7 +480,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image",
+          "info": "Recommended: 750 × 500 px (3:2, the default Image ratio). Tested: the picture is 351 × 234 px on desktop and 360 × 240 px on phones; it is cropped to the Image ratio you choose, so keep the subject in the centre."
         },
         {
           "type": "text",

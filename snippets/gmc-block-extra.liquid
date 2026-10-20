@@ -52,11 +52,12 @@
     {%- if b.image != blank or request.design_mode -%}
       <div class="gmc-bx__img" {{ block.shopify_attributes }} style="--w:{{ b.width | default: 100 }}%;--j:{{ gmc_ij }};--jm:{{ gmc_ijm }}">
         {%- if b.image != blank -%}
-          {{ b.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: 'width:100%;height:auto;display:block;border-radius:' | append: b.radius | append: 'px', alt: b.image.alt }}
+          {%- capture gmc_istyle -%}height:auto;display:block;border-radius:{{ b.radius | default: 0 }}px{%- endcapture -%}
+          {{ b.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,700,1000', style: gmc_istyle, alt: b.image.alt }}
         {%- else -%}
           {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
       </div>
-      <style>.gmc-bx__img{display:flex;justify-content:var(--j,center);max-width:100%}.gmc-bx__img img,.gmc-bx__img svg{width:var(--w,100%);height:auto}@media(max-width:749px){.gmc-bx__img{justify-content:var(--jm,var(--j,center))}}</style>
+      <style>.gmc-bx__img{display:flex;justify-content:var(--j,center);width:100%;max-width:100%}.gmc-bx__img img,.gmc-bx__img svg{width:var(--w,100%);height:auto}@media(max-width:749px){.gmc-bx__img{justify-content:var(--jm,var(--j,center))}}</style>
     {%- endif -%}
 {%- endcase -%}

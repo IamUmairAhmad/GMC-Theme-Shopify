@@ -111,12 +111,12 @@
       <dialog id="gmc-pop-{{ block.id }}" class="gmc-pe__dlg"><form method="dialog"><button class="gmc-pe__dx" aria-label="Close">×</button></form><h3>{{ block.settings.page.title | escape }}</h3><div class="rte">{{ block.settings.page.content }}</div></dialog>{%- endif -%}{%- when 'scroll_to' -%}
       <button type="button" class="button button--secondary button--full-width" data-gmc-scroll="{{ block.settings.target | escape }}">{{ block.settings.label | escape }}</button>{%- when 'link_button' -%}
       <a class="button{% if block.settings.secondary %} button--secondary{% endif %} button--full-width" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | escape }}</a>{%- when 'image' -%}
-      {%- if block.settings.image != blank -%}<div class="gmc-pm__img{% if block.settings.mobile_full %} gmc-pm__img--mfull{% endif %}" style="--w:{{ block.settings.width }}%;text-align:{{ block.settings.align }}">{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '300,600,900,1200', style: 'width:100%;height:auto;border-radius:' | append: block.settings.radius | append: 'px' }}</div>{%- endif -%}{%- when 'video' -%}
+      {%- if block.settings.image != blank -%}<div class="gmc-pm__img{% if block.settings.mobile_full %} gmc-pm__img--mfull{% endif %}" style="--w:{{ block.settings.width }}%;text-align:{{ block.settings.align }}">{%- capture gmc_istyle -%}width:100%;height:auto;border-radius:{{ block.settings.radius | default: 0 }}px{%- endcapture -%}{{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '300,600,900,1200', style: gmc_istyle }}</div>{%- endif -%}{%- when 'video' -%}
       {%- if block.settings.video != blank -%}<div class="gmc-pm__vid" data-gmc-vid style="border-radius:{{ block.settings.radius }}px"><video playsinline preload="metadata" {% if block.settings.autoplay %}autoplay muted{% endif %} {% if block.settings.loop %}loop{% endif %} {% unless block.settings.autoplay or block.settings.custom_ui %}controls{% endunless %} {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 900 }}"{% endif %}>{%- for vs in block.settings.video.sources -%}{%- if vs.format == 'mp4' -%}<source src="{{ vs.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}</video>
         {%- if block.settings.custom_ui -%}<div class="gmc-pm__vc"><button type="button" data-gmc-vplay aria-label="Play or pause">❚❚</button>{%- if block.settings.sound_btn -%}<button type="button" data-gmc-vsound aria-label="Sound on or off">🔇</button>{%- endif -%}{%- if block.settings.timeline -%}<i class="gmc-pm__vt"><b></b></i>{%- endif -%}</div>{%- endif -%}
         {%- if block.settings.ripple -%}<span class="gmc-pm__ripple" aria-hidden="true"></span>{%- endif -%}</div>{%- endif -%}{%- when 'countdown' -%}
       <div class="gmc-pe__cd color-{{ block.settings.scheme }} gradient" data-minutes="{{ block.settings.minutes }}" data-seconds="{{ block.settings.show_seconds }}" data-key="{{ block.id }}" style="font-size:{{ block.settings.text_size }}px;text-align:{{ block.settings.align }};padding:1rem 1.4rem;border-radius:var(--text-boxes-radius,8px)">⏰ {{ block.settings.text | escape }} <b class="gmc-pe__cdt">--:--</b></div>{%- when 'slider' -%}
-      <div class="gmc-pe__sl">{%- for i in (1..5) -%}{%- assign k = 'i' | append: i -%}{%- if block.settings[k] != blank -%}<div>{{ block.settings[k] | image_url: width: 700 | image_tag: loading: 'lazy' }}</div>{%- endif -%}{%- endfor -%}</div>{%- when 'container_start' -%}
+      <div class="gmc-pe__sl">{%- for i in (1..5) -%}{%- assign k = 'i' | append: i -%}{%- if block.settings[k] != blank -%}<div>{{ block.settings[k] | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,700,1000,1400', sizes: '(min-width: 1200px) 935px, 85vw' }}</div>{%- endif -%}{%- endfor -%}</div>{%- when 'container_start' -%}
       <div class="gmc-pe__ctr" style="background:{{ block.settings.bg }};color:{{ block.settings.fg }};padding:{{ block.settings.pad }}px;border-radius:{{ block.settings.radius }}px;border:{{ block.settings.border }}px solid currentColor">{%- when 'container_end' -%}
       </div>{%- when 'tabs' -%}
       <div class="gmc-pe__tabs"><div class="gmc-pe__tn">{%- for i in (1..3) -%}{%- assign tk = 't' | append: i -%}{%- if block.settings[tk] != blank -%}<button type="button" aria-selected="{% if i == 1 %}true{% else %}false{% endif %}" data-t="{{ i }}">{{ block.settings[tk] | escape }}</button>{%- endif -%}{%- endfor -%}</div>
@@ -133,7 +133,7 @@
 .gmc-pe__comp{display:flex;gap:1rem;align-items:center;padding:.9rem 1.1rem;border:1px dashed rgba(var(--color-foreground),.35);border-radius:var(--text-boxes-radius);cursor:pointer}.gmc-pe__comp img{border-radius:var(--media-radius);object-fit:cover}
 .gmc-pe__code{display:flex;gap:1rem;align-items:center;width:100%;padding:.9rem 1.2rem;border:2px dashed {{ settings.gmc_accent }};border-radius:10px;background:transparent;color:inherit;font:inherit;cursor:pointer;text-align:left}.gmc-pe__code b{background:{{ settings.gmc_accent }};color:#fff;padding:2px 10px;border-radius:6px}.gmc-pe__code small{margin-left:auto;opacity:.65}
 .gmc-pe__link{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;color:inherit;font:inherit}.gmc-pe__dlg{max-width:560px;width:92vw;border:0;border-radius:var(--text-boxes-radius);padding:2rem;position:relative}.gmc-pe__dlg::backdrop{background:rgba(0,0,0,.55)}.gmc-pe__dx{position:absolute;top:.5rem;right:1rem;background:none;border:0;font-size:2.6rem;cursor:pointer}
-.gmc-pe__sl{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem}.gmc-pe__sl>div{flex:0 0 85%;scroll-snap-align:start}.gmc-pe__sl img{width:100%;border-radius:var(--media-radius)}
+.gmc-pe__sl{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.6rem}.gmc-pe__sl>div{flex:0 0 85%;scroll-snap-align:start}.gmc-pe__sl img{width:100%;height:auto;border-radius:var(--media-radius)}
 .gmc-pe__tn{display:flex;gap:.4rem;border-bottom:1px solid rgba(var(--color-foreground),.15)}.gmc-pe__tn button{background:none;border:0;padding:.7rem 1rem;cursor:pointer;color:inherit;font:inherit;opacity:.6}.gmc-pe__tn button[aria-selected=true]{opacity:1;border-bottom:2px solid currentColor}.gmc-pe__tp{padding-top:1rem}
 .gmc-pe__rv{display:grid;gap:.8rem}.gmc-pe__rv blockquote{margin:0;padding:1rem 1.2rem;border-radius:var(--text-boxes-radius);background:rgba(var(--color-foreground),.05)}.gmc-pe__rv p{margin:.3rem 0}.gmc-pe__sv{color:{{ settings.gmc_accent }};font-weight:700;margin:0}.gmc-pe__cd{font-weight:600}
 .gmc-ups{display:grid;gap:.8rem}.gmc-ups__h{margin:0;font-weight:700}.gmc-ups__list{display:grid;gap:.7rem}.gmc-ups--row .gmc-ups__list{grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))}.gmc-ups--slider .gmc-ups__list{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}.gmc-ups--slider .gmc-ups__item{flex:0 0 85%;scroll-snap-align:start}
@@ -850,7 +850,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image",
+          "info": "Recommended: 1200 px wide (the theme loads up to 1200 px). Tested: the image is as wide as the Width % setting of a 1100 px container on desktop (360 px on phones at 100%); the height follows your image, so nothing is cropped."
         },
         {
           "type": "range",
@@ -918,7 +919,8 @@
         {
           "type": "image_picker",
           "id": "poster",
-          "label": "Poster"
+          "label": "Poster",
+          "info": "Recommended: the same shape as your video (16:9 landscape or 9:16 vertical). Tested: for Shopify-hosted video the poster fills the video frame and is cropped to fit; it is not used for YouTube or Vimeo links."
         },
         {
           "type": "checkbox",
@@ -1063,27 +1065,32 @@
         {
           "type": "image_picker",
           "id": "i1",
-          "label": "Image 1"
+          "label": "Image 1",
+          "info": "Recommended: 1400 px wide, any height (the theme loads up to 1400 px). Tested: each slide is 935 px wide on desktop and 306 px on phones; the height follows your image, so nothing is cropped. Use the same shape for every slide."
         },
         {
           "type": "image_picker",
           "id": "i2",
-          "label": "Image 2"
+          "label": "Image 2",
+          "info": "Recommended: 1400 px wide, any height (the theme loads up to 1400 px). Tested: each slide is 935 px wide on desktop and 306 px on phones; the height follows your image, so nothing is cropped. Use the same shape for every slide."
         },
         {
           "type": "image_picker",
           "id": "i3",
-          "label": "Image 3"
+          "label": "Image 3",
+          "info": "Recommended: 1400 px wide, any height (the theme loads up to 1400 px). Tested: each slide is 935 px wide on desktop and 306 px on phones; the height follows your image, so nothing is cropped. Use the same shape for every slide."
         },
         {
           "type": "image_picker",
           "id": "i4",
-          "label": "Image 4"
+          "label": "Image 4",
+          "info": "Recommended: 1400 px wide, any height (the theme loads up to 1400 px). Tested: each slide is 935 px wide on desktop and 306 px on phones; the height follows your image, so nothing is cropped. Use the same shape for every slide."
         },
         {
           "type": "image_picker",
           "id": "i5",
-          "label": "Image 5"
+          "label": "Image 5",
+          "info": "Recommended: 1400 px wide, any height (the theme loads up to 1400 px). Tested: each slide is 935 px wide on desktop and 306 px on phones; the height follows your image, so nothing is cropped. Use the same shape for every slide."
         },
         {
           "type": "range",
