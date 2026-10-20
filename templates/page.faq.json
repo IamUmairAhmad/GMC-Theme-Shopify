@@ -15,6 +15,7 @@
     },
     "faq": {
       "type": "gmc-faq",
+      "name": "FAQs",
       "blocks": {
         "q1": {
           "type": "question",
@@ -44,7 +45,7 @@
         "q3"
       ],
       "settings": {
-        "heading": "Frequently asked questions",
+        "heading": "Frequently Asked Questions (FAQs)",
         "open_first": true
       }
     }
