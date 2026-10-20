@@ -5,6 +5,8 @@
   @param {boolean} [skip] - Go to checkout after adding
   @param {string} [align] - Text alignment
   @param {object} [variant] - Variant to add. When set, the variant picker is hidden.
+  @param {boolean} [secondary] - Outline button
+  @param {boolean} [plain] - Leave the price off the button label
 {% enddoc %}
 {%- liquid
   assign atc_variant = variant
@@ -20,7 +22,7 @@
       {%- for v in product.variants -%}<option value="{{ v.id }}"{% unless v.available %} disabled{% endunless %}>{{ v.title | escape }} — {{ v.price | money }}</option>{%- endfor -%}
     </select><br>
     {%- else -%}<input type="hidden" name="id" value="{{ atc_variant.id }}">{%- endif -%}
-    <button type="submit" class="button button--primary">{{ label | default: 'Add to cart' | escape }}{%- if variant != blank or product.variants.size == 1 -%} · {{ atc_variant.price | money }}{%- endif -%}</button>
+    <button type="submit" class="button {% if secondary %}button--secondary{% else %}button--primary{% endif %}">{{ label | default: 'Add to cart' | escape }}{%- unless plain -%}{%- if variant != blank or product.variants.size == 1 -%} · {{ atc_variant.price | money }}{%- endif -%}{%- endunless -%}</button>
     <p class="gmc-sec-atc__m" role="status" style="margin:.6rem 0 0"></p>
   </form>
 </div>

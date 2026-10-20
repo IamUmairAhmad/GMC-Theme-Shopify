@@ -4,67 +4,203 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one plan block.' -%}{%- endif -%}
-<div class="page-width gmc-pt {% render 'gmc-vis', hide: section.settings.hide_on %}">
-  {%- if section.settings.heading != blank -%}<h2 class="{{ section.settings.heading_size | default: 'h1' }}" style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-  {%- if section.settings.intro != blank -%}<div class="rte gmc-pt__intro">{{ section.settings.intro }}</div>{%- endif -%}
-  <div class="gmc-pt__grid gmc-pt__grid--{{ section.settings.card_style }}" style="gap:{{ section.settings.gap | default: 24 }}px;align-items:{{ section.settings.align | default: 'stretch' }}">{%- for block in section.blocks -%}
+{%- assign ss = section.settings -%}
+<div class="page-width gmc-pt {% render 'gmc-vis', hide: ss.hide_on %}">
+  {%- if ss.heading != blank or ss.intro != blank -%}
+    <div class="gmc-pt__head">
+      {%- if ss.heading != blank -%}<h2 class="gmc-pt__title {{ ss.heading_size }}">{{ ss.heading | escape }}</h2>{%- endif -%}
+      {%- if ss.intro != blank -%}<div class="rte gmc-pt__intro">{{ ss.intro }}</div>{%- endif -%}
+    </div>
+  {%- endif -%}
+  <div class="gmc-pt__grid gmc-pt__grid--{{ ss.card_style }}{% if ss.gmc_swipe_mobile %} gmc-pt__grid--swipe{% endif %}{% if ss.heading != blank or ss.intro != blank %} gmc-pt__grid--after{% endif %}" style="--pt-gap:{{ ss.gap }}px;align-items:{{ ss.align }}">{%- for block in section.blocks -%}
     {%- assign b = block.settings -%}
     {%- liquid
+      assign plan_style = b.card_style | default: 'style-1'
       assign plan_variant = nil
       if b.product != blank
-        assign plan_variant = b.product.selected_or_first_available_variant
-        if b.variant_index > 1
-          assign plan_i = b.variant_index | minus: 1
-          if b.product.variants[plan_i] != blank
-            assign plan_variant = b.product.variants[plan_i]
-          endif
+        assign plan_i = b.variant_index | minus: 1
+        if plan_i < 0
+          assign plan_i = 0
+        endif
+        assign plan_variant = b.product.variants[plan_i]
+        if plan_variant == blank
+          assign plan_variant = b.product.selected_or_first_available_variant
         endif
       endif
-    -%}
-    {%- liquid
       assign plan_img = nil
       if b.image_source == 'variant' and plan_variant.featured_image != blank
         assign plan_img = plan_variant.featured_image
-      elsif b.image_source != 'none' and b.plan_image != blank
+      elsif b.image_source == 'custom' and b.plan_image != blank
         assign plan_img = b.plan_image
       endif
-      case section.settings.icon_size
+      case ss.icon_size
         when 'small'
-          assign plan_icon = 24
+          assign plan_icon = 30
         when 'large'
-          assign plan_icon = 52
+          assign plan_icon = 60
         else
-          assign plan_icon = 36
+          assign plan_icon = 45
       endcase
+      assign show_icon = false
+      if b.icon_image != blank
+        assign show_icon = true
+      elsif b.icon_name != blank and b.icon_name != 'none'
+        assign show_icon = true
+      endif
     -%}
-    <div class="gmc-pt__card{% if b.featured %} gmc-pt__card--hl{% endif %}{% if b.button_full %} gmc-pt__card--full{% endif %}" {{ block.shopify_attributes }}>
-      {%- if b.badge != blank -%}<span class="gmc-pt__badge">{{ b.badge | escape }}</span>{%- endif -%}
-      {%- if plan_img != blank -%}{{ plan_img | image_url: width: 600 | image_tag: loading: 'lazy', class: 'gmc-pt__img', widths: '300, 600', alt: plan_img.alt }}{%- endif -%}
-      {%- if b.icon_image != blank -%}{{ b.icon_image | image_url: width: 120 | image_tag: loading: 'lazy', class: 'gmc-pt__ic', widths: '60, 120', alt: '' }}
-      {%- elsif b.icon_name != blank -%}<span class="gmc-pt__ic">{%- render 'gmc-icon', name: b.icon_name, size: plan_icon -%}</span>{%- endif -%}
-      <h3>{{ b.name | escape }}</h3>
-      {%- if plan_variant != blank -%}
-        <p class="gmc-pt__price">{{ plan_variant.price | money }}{%- if plan_variant.compare_at_price > plan_variant.price %} <s style="opacity:.6;font-size:.7em">{{ plan_variant.compare_at_price | money }}</s>{%- endif -%}{%- if b.price_suffix != blank %} <small>{{ b.price_suffix | escape }}</small>{%- endif -%}</p>
-      {%- else -%}<p class="gmc-pt__price">{{ b.price | escape }}{%- if b.price_suffix != blank %} <small>{{ b.price_suffix | escape }}</small>{%- endif -%}</p>{%- endif -%}
-      {%- if b.benefits != blank -%}<ul class="gmc-pt__ben" role="list">{%- assign bl = b.benefits | newline_to_br | split: '<br />' -%}{%- for line in bl -%}{%- assign lt = line | strip -%}{%- if lt != blank -%}<li>{%- render 'gmc-icon', name: 'check', size: 16 -%} {{ lt | escape }}</li>{%- endif -%}{%- endfor -%}</ul>{%- endif -%}
-      <div class="rte" style="text-align:{{ b.features_align | default: 'center' }}">{{ b.features }}</div>
-      {%- if b.action == 'cart' or b.action == 'checkout' -%}{%- if b.product != blank -%}{%- assign pt_skip = false -%}{%- if b.action == 'checkout' -%}{%- assign pt_skip = true -%}{%- endif -%}{%- render 'gmc-inline-atc', product: b.product, variant: plan_variant, label: b.button, skip: pt_skip, align: 'center' -%}{%- endif -%}
-      {%- elsif b.link != blank -%}<a class="button" href="{{ b.link }}">{{ b.button | escape }}</a>{%- endif -%}
+    <div class="gmc-pt__card gmc-pt__card--{{ plan_style }} color-{{ b.scheme }}{% if plan_img != blank %} gmc-pt__card--img{% endif %}{% if b.featured %} gmc-pt__card--hl{% endif %}{% if b.button_full %} gmc-pt__card--full{% endif %}" {{ block.shopify_attributes }}>
+      {%- if b.badge != blank -%}<span class="gmc-pt__badge color-{{ b.badge_scheme }}">{{ b.badge | escape }}</span>{%- endif -%}
+      <div class="gmc-pt__top{% unless plan_style == 'style-1' %} color-{{ b.accent }}{% endunless %}">
+        {%- if plan_img != blank -%}<div class="gmc-pt__media">{{ plan_img | image_url: width: 800 | image_tag: loading: 'lazy', class: 'gmc-pt__img', widths: '320, 480, 800', alt: plan_img.alt }}</div>{%- endif -%}
+        {%- if show_icon -%}
+          <div class="gmc-pt__ic gmc-pt__ic--{{ ss.icon_size }}{% if plan_style == 'style-3' %} color-{{ b.scheme }}{% endif %}">
+            {%- if b.icon_image != blank -%}
+              {{ b.icon_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '60, 120, 160', alt: '' }}
+            {%- else -%}
+              {%- render 'gmc-icon', name: b.icon_name, size: plan_icon, filled: b.filled -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if b.name != blank -%}<h3 class="gmc-pt__name">{{ b.name | escape }}</h3>{%- endif -%}
+        {%- if b.price != blank -%}
+          <div class="gmc-pt__pricebox{% if plan_style == 'style-1' %} color-{{ b.accent }}{% elsif plan_style == 'style-2' %} color-{{ b.scheme }}{% endif %}">
+            <span class="gmc-pt__price">
+              {%- if plan_variant != blank -%}
+                {%- capture plan_money -%}{{ plan_variant.price | money }}{%- endcapture -%}
+                {{ b.price | replace: '[price]', plan_money | escape }}
+                {%- if plan_variant.compare_at_price > plan_variant.price -%} <s>{{ plan_variant.compare_at_price | money }}</s>{%- endif -%}
+              {%- else -%}
+                {{ b.price | escape }}
+              {%- endif -%}
+            </span>
+            {%- if b.price_suffix != blank -%}<span class="gmc-pt__caption">{{ b.price_suffix | escape }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="gmc-pt__bot{% if show_icon %} gmc-pt__bot--{{ ss.icon_size }}{% endif %}">
+        {%- if b.features != blank -%}<div class="rte gmc-pt__desc gmc-pt__desc--{{ b.features_align }}">{{ b.features }}</div>{%- endif -%}
+        {%- if b.benefits != blank -%}
+          {%- assign benefit_raw = b.benefits | strip -%}
+          {%- if benefit_raw contains ',' -%}
+            {%- assign benefit_bits = benefit_raw | newline_to_br | replace: '<br />', ' ' | split: ',' -%}
+            <ul class="gmc-pt__ben" role="list">
+              {%- for line in benefit_bits -%}
+                {%- assign lt = line | strip -%}
+                {%- if lt != blank -%}<li><span class="gmc-pt__tick color-{{ b.accent }}">{%- render 'gmc-icon', name: 'check', size: 16 -%}</span><span>{{ lt | escape }}</span></li>{%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            <div class="gmc-pt__desc gmc-pt__desc--{{ b.features_align }}">{{ benefit_raw | newline_to_br }}</div>
+          {%- endif -%}
+        {%- endif -%}
+        {%- if b.button != blank -%}
+          <div class="gmc-pt__btn color-{{ b.accent }}">
+            {%- if b.action == 'cart' or b.action == 'checkout' -%}
+              {%- if b.product != blank -%}
+                {%- if plan_variant.available -%}
+                  {%- assign pt_skip = false -%}
+                  {%- if b.action == 'checkout' -%}{%- assign pt_skip = true -%}{%- endif -%}
+                  {%- render 'gmc-inline-atc', product: b.product, variant: plan_variant, label: b.button, skip: pt_skip, align: 'center', secondary: b.secondary, plain: true -%}
+                {%- else -%}
+                  <button type="button" class="button{% if b.secondary %} button--secondary{% else %} button--primary{% endif %}" disabled>{{ b.button | escape }}</button>
+                {%- endif -%}
+              {%- else -%}
+                <p class="gmc-pt__need">Assign a product in the plan settings.</p>
+              {%- endif -%}
+            {%- else -%}
+              <a class="button{% if b.secondary %} button--secondary{% else %} button--primary{% endif %}" {% if b.link == blank %}role="link" aria-disabled="true"{% else %}href="{{ b.link }}"{% endif %}>{{ b.button | escape }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
     </div>{%- endfor -%}</div>
 </div>
-<style>.gmc-pt__grid--filled .gmc-pt__card{background:rgba(var(--color-foreground),.05);border-color:transparent}.gmc-pt__grid--shadow .gmc-pt__card{border:0;box-shadow:0 6px 24px rgba(0,0,0,.12)}.gmc-pt__intro{text-align:center;max-width:62rem;margin:1rem auto 0}.gmc-pt__card--full .button,.gmc-pt__card--full .product-form{width:100%}.gmc-pt__ic{display:block;margin:0 auto .6rem;max-width:6rem;height:auto}.gmc-pt__ben{list-style:none;padding:0;margin:1rem 0;text-align:left;display:grid;gap:.5rem}.gmc-pt__ben li{display:flex;gap:.6rem;align-items:center}.gmc-pt{padding:36px 0}.gmc-pt__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1.5rem}.gmc-pt__card{position:relative;border:1px solid rgba(var(--color-foreground),.2);border-radius:var(--text-boxes-radius);padding:2rem;text-align:center}.gmc-pt__card--hl{border:2px solid rgb(var(--color-foreground));transform:scale(1.03)}.gmc-pt__badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:{{ settings.gmc_accent }};color:#fff;padding:2px 12px;border-radius:99px;font-size:12px}.gmc-pt__price{font-size:2.6rem;font-weight:700;margin:.5rem 0}.gmc-pt__img{width:100%;height:auto;border-radius:var(--media-radius,8px);margin-bottom:1rem}</style>
+{%- if ss.gmc_pad_top > 0 or ss.gmc_pad_bottom > 0 -%}
+<style>
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} {
+      {%- if ss.gmc_pad_top > 0 -%}padding-top: {{ ss.gmc_pad_top | times: 0.75 | round: 0 }}px;{%- endif -%}
+      {%- if ss.gmc_pad_bottom > 0 -%}padding-bottom: {{ ss.gmc_pad_bottom | times: 0.75 | round: 0 }}px;{%- endif -%}
+    }
+  }
+</style>
 {%- endif -%}
+{%- if ss.gmc_swipe_mobile -%}
+<style>@media(max-width:749px){#shopify-section-{{ section.id }} .gmc-pt__grid--swipe{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}#shopify-section-{{ section.id }} .gmc-pt__grid--swipe .gmc-pt__card{flex:0 0 78%;max-width:none;scroll-snap-align:start}}</style>
+{%- endif -%}
+<style>
+  .gmc-pt__head{text-align:center}
+  .gmc-pt__title{margin:0}
+  .gmc-pt__intro{max-width:62rem;margin:1rem auto 0}
+  .gmc-pt__grid{display:flex;flex-wrap:wrap;justify-content:center;column-gap:var(--pt-gap,40px);row-gap:5rem}
+  .gmc-pt__grid--after{margin-top:3rem}
+  .gmc-pt__card{position:relative;width:100%;max-width:32rem;background:rgb(var(--color-background));color:rgb(var(--color-foreground));box-shadow:.3rem .3rem 1rem rgba(var(--color-foreground),.2);border-radius:1rem}
+  .gmc-pt__card--hl{outline:2px solid rgb(var(--color-foreground));transform:translateY(-.6rem)}
+  .gmc-pt__badge{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);z-index:2;margin:0;padding:0 .5em;border-radius:.2em;font-weight:700;font-size:1.8rem;line-height:1.6;background:rgb(var(--color-background));color:rgb(var(--color-foreground))}
+  .gmc-pt__top{position:relative}
+  .gmc-pt__media{margin-bottom:1.5rem}
+  .gmc-pt__img{width:100%;height:auto;display:block;border-radius:1rem 1rem 0 0}
+  .gmc-pt__ic{display:flex;justify-content:center;margin-bottom:1.2rem}
+  .gmc-pt__ic img{width:var(--pt-icon,4.5rem);height:var(--pt-icon,4.5rem);object-fit:contain}
+  .gmc-pt__ic--small{--pt-icon:3rem}
+  .gmc-pt__ic--medium{--pt-icon:4.5rem}
+  .gmc-pt__ic--large{--pt-icon:6rem}
+  .gmc-pt__name{margin:0 0 1.2rem;padding:0 2rem;text-align:center;font-size:2rem}
+  .gmc-pt__pricebox{text-align:center}
+  .gmc-pt__price{display:block;font-size:2.5rem;font-weight:700;line-height:1}
+  .gmc-pt__price s{opacity:.65;font-size:.62em;font-weight:500;margin-left:.4rem}
+  .gmc-pt__caption{display:block;font-size:1.2rem;line-height:1}
+  .gmc-pt__desc{padding:0 2rem;margin:0 0 2rem}
+  .gmc-pt__desc--left{text-align:left}
+  .gmc-pt__desc--center{text-align:center}
+  .gmc-pt__desc--right{text-align:right}
+  .gmc-pt__ben{list-style:none;margin:0 0 2rem;padding:0 2rem 0 2.25rem;display:grid;gap:1rem}
+  .gmc-pt__ben li{display:flex;gap:.5rem;align-items:flex-start;text-align:left;font-size:1.5rem;line-height:2.1rem}
+  .gmc-pt .gmc-pt__tick{display:flex;flex:none;align-items:center;height:2.1rem;background:none;color:rgb(var(--color-background))}
+  .gmc-pt .gmc-pt__btn{display:flex;justify-content:center;padding:0 2rem;background:none}
+  .gmc-pt__btn .button{--color-button:var(--color-background);--color-button-text:var(--color-foreground)}
+  .gmc-pt__btn .button--secondary{--color-button:var(--color-foreground);--color-button-text:var(--color-background)}
+  .gmc-pt__card--full .gmc-pt__btn,.gmc-pt__card--full .gmc-pt__btn .button,.gmc-pt__card--full .gmc-pt__btn .gmc-sec-atc,.gmc-pt__card--full .gmc-pt__btn .gmc-sec-atc__f{width:100%}
+  .gmc-pt__need{margin:0;text-align:center;font-size:1.4rem}
+  .gmc-pt__card--style-1{padding:3rem 0 2rem}
+  .gmc-pt__card--style-1 .gmc-pt__pricebox{margin:0 -.5rem 2.5rem;padding:1rem 2rem;border-radius:.5rem;box-shadow:inset 0 1.1rem 1rem -1rem rgba(255,255,255,.75),inset 0 -1.1rem 1rem -1rem rgba(0,0,0,.25),0 1.2rem 1rem -1rem rgba(0,0,0,.25)}
+  .gmc-pt__card--style-2{padding-bottom:2rem}
+  .gmc-pt__card--style-2 .gmc-pt__top{overflow:hidden;padding-top:3rem;z-index:0;margin:0 -.3rem;border-radius:1rem 1rem 0 0;background:none}
+  .gmc-pt__card--style-2 .gmc-pt__name{position:relative;padding-bottom:2rem;margin-bottom:1.4rem}
+  .gmc-pt__card--style-2 .gmc-pt__name:before{content:"";position:absolute;z-index:-1;left:50%;bottom:0;width:80rem;height:80rem;border-radius:50%;transform:translateX(-50%);background:rgb(var(--color-background));box-shadow:0 1.1rem 1rem -.75rem rgba(var(--color-foreground),.2)}
+  .gmc-pt__card--style-2 .gmc-pt__price,.gmc-pt__card--style-2 .gmc-pt__caption{display:inline}
+  .gmc-pt__card--style-2 .gmc-pt__pricebox{padding:0 2rem;margin-bottom:1.4rem;background:transparent}
+  .gmc-pt__card--style-3{background:transparent;box-shadow:none;border-radius:0}
+  .gmc-pt__card--style-3 .gmc-pt__top{padding:2.5rem 2rem 4.5rem;margin-bottom:-2.5rem;border-radius:1rem;text-align:center}
+  .gmc-pt__card--style-3 .gmc-pt__name{font-size:2.5rem}
+  .gmc-pt__card--style-3 .gmc-pt__price{font-size:2rem}
+  .gmc-pt__card--style-3 .gmc-pt__price,.gmc-pt__card--style-3 .gmc-pt__caption{display:inline}
+  .gmc-pt__card--style-3 .gmc-pt__bot{background:rgb(var(--color-background));color:rgb(var(--color-foreground));margin:0 1rem;border-radius:1rem;box-shadow:.5rem .5rem 1.5rem rgba(var(--color-foreground),.3);padding-top:3rem;padding-bottom:2rem;position:relative}
+  .gmc-pt__card--style-3 .gmc-pt__bot--small{padding-top:4rem}
+  .gmc-pt__card--style-3 .gmc-pt__bot--medium{padding-top:5rem}
+  .gmc-pt__card--style-3 .gmc-pt__bot--large{padding-top:7rem}
+  .gmc-pt__card--style-3 .gmc-pt__ic{position:absolute;left:2.5rem;top:calc(100% - 3.5rem);z-index:1;margin:0;padding:calc(var(--pt-icon,4.5rem) * .1);border-radius:.5rem;overflow:hidden;box-shadow:.1rem .1rem .75rem rgba(var(--color-foreground),.3);background:rgb(var(--color-background))}
+  .gmc-pt__card--style-3 .gmc-pt__ic svg,.gmc-pt__card--style-3 .gmc-pt__ic img{width:calc(var(--pt-icon,4.5rem) * .8);height:calc(var(--pt-icon,4.5rem) * .8)}
+  .gmc-pt__card--img,.gmc-pt__card--img .gmc-pt__top{padding-top:0}
+  .gmc-pt__card--style-3 .gmc-pt__media{margin-left:-2rem;margin-right:-2rem}
+  .gmc-pt__grid--filled .gmc-pt__card{background:rgba(var(--color-foreground),.05)}
+  .gmc-pt__grid--shadow .gmc-pt__card{box-shadow:0 .6rem 2.4rem rgba(var(--color-foreground),.16)}
+  @media(max-width:749px){.gmc-pt__card--hl{transform:none}}
+</style>
 {% schema %}
 {
   "name": "Pricing table",
   "tag": "section",
   "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Choose your plan"
+      "default": "Pricing table"
     },
     {
       "type": "select",
@@ -100,8 +236,9 @@
       "max": 80,
       "step": 4,
       "unit": "px",
-      "label": "Space between cards",
-      "default": 24
+      "label": "Desktop spacing",
+      "info": "Space between the cards.",
+      "default": 40
     },
     {
       "type": "select",
@@ -113,12 +250,12 @@
         { "value": "center", "label": "Middle" },
         { "value": "end", "label": "Bottom" }
       ],
-      "default": "stretch"
+      "default": "start"
     },
     {
       "type": "select",
       "id": "card_style",
-      "label": "Card style",
+      "label": "Card treatment",
       "options": [
         {
           "value": "outline",
@@ -167,7 +304,7 @@
       "step": 4,
       "unit": "px",
       "label": "Extra space above",
-      "default": 0
+      "default": 36
     },
     {
       "type": "range",
@@ -177,7 +314,7 @@
       "step": 4,
       "unit": "px",
       "label": "Extra space below",
-      "default": 0
+      "default": 36
     },
     {
       "type": "range",
@@ -346,30 +483,64 @@
   "blocks": [
     {
       "type": "plan",
-      "name": "Plan",
+      "name": "Pricing plan",
       "settings": [
         {
-          "type": "text",
-          "id": "name",
-          "label": "Name",
-          "default": "Starter"
+          "type": "header",
+          "content": "Product and variant"
         },
         {
-          "type": "text",
-          "id": "price",
-          "label": "Price",
-          "default": "$19"
+          "type": "product",
+          "id": "product",
+          "label": "Product"
         },
         {
-          "type": "richtext",
-          "id": "features",
-          "label": "Features",
-          "default": "<ul><li>Feature one</li><li>Feature two</li></ul>"
+          "type": "range",
+          "id": "variant_index",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "label": "Displayed variant index",
+          "info": "1 is the first variant. The card price and add-to-cart button use this variant.",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Card and content"
+        },
+        {
+          "type": "select",
+          "id": "card_style",
+          "label": "Card style",
+          "options": [
+            { "value": "style-1", "label": "Style 1" },
+            { "value": "style-2", "label": "Style 2" },
+            { "value": "style-3", "label": "Style 3" }
+          ],
+          "default": "style-1"
+        },
+        {
+          "type": "color_scheme",
+          "id": "scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "color_scheme",
+          "id": "accent",
+          "label": "Accent color",
+          "default": "scheme-5"
         },
         {
           "type": "text",
           "id": "badge",
-          "label": "Badge"
+          "label": "Badge text"
+        },
+        {
+          "type": "color_scheme",
+          "id": "badge_scheme",
+          "label": "Badge color scheme",
+          "default": "scheme-4"
         },
         {
           "type": "checkbox",
@@ -378,41 +549,15 @@
           "default": false
         },
         {
-          "type": "text",
-          "id": "button",
-          "label": "Button label",
-          "default": "Choose"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Button link"
-        },
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Linked product (price comes from it)"
-        },
-        {
-          "type": "range",
-          "id": "variant_index",
-          "min": 1,
-          "max": 30,
-          "step": 1,
-          "label": "Variant number",
-          "info": "1 is the first variant. The card price and add-to-cart button use this variant.",
-          "default": 1
-        },
-        {
           "type": "select",
           "id": "image_source",
-          "label": "Card image",
+          "label": "Displayed image",
           "options": [
-            { "value": "custom", "label": "Custom image" },
-            { "value": "variant", "label": "Linked variant image" },
-            { "value": "none", "label": "Hidden" }
+            { "value": "none", "label": "Hidden" },
+            { "value": "custom", "label": "Custom" },
+            { "value": "variant", "label": "Variant image" }
           ],
-          "default": "custom"
+          "default": "none"
         },
         {
           "type": "image_picker",
@@ -420,9 +565,46 @@
           "label": "Custom image"
         },
         {
+          "type": "text",
+          "id": "name",
+          "label": "Title",
+          "default": "Plan"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price text",
+          "info": "Use [price] to insert the linked variant price.",
+          "default": "[price]"
+        },
+        {
+          "type": "text",
+          "id": "price_suffix",
+          "label": "Price caption",
+          "default": "a month"
+        },
+        {
+          "type": "text",
+          "id": "icon_name",
+          "label": "Icon",
+          "info": "Icon name, such as sell. Use none to hide it. A custom icon replaces this.",
+          "default": "sell"
+        },
+        {
+          "type": "checkbox",
+          "id": "filled",
+          "label": "Filled icon",
+          "default": false
+        },
+        {
           "type": "image_picker",
           "id": "icon_image",
-          "label": "Custom icon image"
+          "label": "Custom icon"
+        },
+        {
+          "type": "richtext",
+          "id": "features",
+          "label": "Description"
         },
         {
           "type": "select",
@@ -430,57 +612,56 @@
           "label": "Description alignment",
           "options": [
             { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Centre" },
+            { "value": "center", "label": "Center" },
             { "value": "right", "label": "Right" }
           ],
           "default": "center"
         },
         {
-          "type": "checkbox",
-          "id": "button_full",
-          "label": "Full width button",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "price_suffix",
-          "label": "Text after price",
-          "info": "For example /month"
-        },
-        {
-          "type": "text",
-          "id": "icon_name",
-          "label": "Icon name"
-        },
-        {
           "type": "textarea",
           "id": "benefits",
-          "label": "Benefits (one per line, shown with ticks)"
+          "label": "Benefits",
+          "info": "Separate items with commas to show a tick list. Without a comma, the text is shown as written.",
+          "default": "Plan benefit,Plan benefit,Plan benefit,Plan benefit"
         },
         {
           "type": "select",
           "id": "action",
-          "label": "Button action",
+          "label": "Button function",
           "options": [
-            {
-              "value": "link",
-              "label": "Go to link"
-            },
-            {
-              "value": "cart",
-              "label": "Add linked product to cart"
-            },
-            {
-              "value": "checkout",
-              "label": "Add linked product and go to checkout"
-            }
+            { "value": "link", "label": "Link" },
+            { "value": "cart", "label": "Add to cart" },
+            { "value": "checkout", "label": "Add to cart and go to checkout" }
           ],
           "default": "link"
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button label",
+          "default": "Get started"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "secondary",
+          "label": "Use outline button style",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "button_full",
+          "label": "Button full width",
+          "default": false
         }
       ]
     }
   ],
-  "max_blocks": 4,
+  "max_blocks": 12,
   "presets": [
     {
       "name": "Pricing table",
@@ -491,10 +672,19 @@
         {
           "type": "plan",
           "settings": {
-            "name": "Pro",
-            "price": "$39",
-            "featured": true,
-            "badge": "Popular"
+            "card_style": "style-2",
+            "name": "Plus",
+            "badge": "Popular",
+            "featured": true
+          }
+        },
+        {
+          "type": "plan",
+          "settings": {
+            "card_style": "style-3",
+            "name": "Studio",
+            "price": "$79",
+            "secondary": true
           }
         }
       ]
