@@ -1,0 +1,126 @@
+{
+ "sections": {
+  "gmc-color-changer": {
+   "type": "gmc-color-changer"
+  },
+  "gmc-column-blocks": {
+   "type": "gmc-column-blocks",
+   "blocks": {
+    "b0": {
+     "type": "heading",
+     "settings": {
+      "column": "1",
+      "align": "center",
+      "heading": "Custom columns"
+     }
+    },
+    "b1": {
+     "type": "richtext",
+     "settings": {
+      "column": "1",
+      "align": "center"
+     }
+    },
+    "b2": {
+     "type": "icon_with_text",
+     "settings": {
+      "column": "2"
+     }
+    },
+    "b3": {
+     "type": "icon_with_text",
+     "settings": {
+      "column": "2"
+     }
+    },
+    "b4": {
+     "type": "image",
+     "settings": {
+      "column": "3"
+     }
+    },
+    "b5": {
+     "type": "icon_with_text",
+     "settings": {
+      "column": "4"
+     }
+    },
+    "b6": {
+     "type": "icon_with_text",
+     "settings": {
+      "column": "4"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6"
+   ]
+  },
+  "gmc-columns-full": {
+   "type": "gmc-columns-full",
+   "blocks": {
+    "b0": {
+     "type": "heading",
+     "settings": {
+      "column": 1
+     }
+    },
+    "b1": {
+     "type": "richtext",
+     "settings": {
+      "column": 2
+     }
+    },
+    "b2": {
+     "type": "buttons",
+     "settings": {
+      "column": 3
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "gmc-compare": {
+   "type": "gmc-compare"
+  },
+  "gmc-comparison-slider": {
+   "type": "gmc-comparison-slider"
+  },
+  "gmc-comparison-table": {
+   "type": "gmc-comparison-table",
+   "blocks": {
+    "b0": {
+     "type": "row"
+    },
+    "b1": {
+     "type": "row",
+     "settings": {
+      "feature": "Fast shipping"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1"
+   ]
+  }
+ },
+ "order": [
+  "gmc-color-changer",
+  "gmc-column-blocks",
+  "gmc-columns-full",
+  "gmc-compare",
+  "gmc-comparison-slider",
+  "gmc-comparison-table"
+ ]
+}

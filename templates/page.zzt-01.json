@@ -1,0 +1,90 @@
+{
+ "sections": {
+  "announcement-bar": {
+   "type": "announcement-bar",
+   "blocks": {
+    "b0": {
+     "type": "announcement"
+    }
+   },
+   "block_order": [
+    "b0"
+   ]
+  },
+  "apps": {
+   "type": "apps"
+  },
+  "collage": {
+   "type": "collage",
+   "blocks": {
+    "b0": {
+     "type": "image"
+    },
+    "b1": {
+     "type": "product"
+    },
+    "b2": {
+     "type": "collection"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "collapsible-content": {
+   "type": "collapsible-content",
+   "blocks": {
+    "b0": {
+     "type": "collapsible_row"
+    },
+    "b1": {
+     "type": "collapsible_row"
+    },
+    "b2": {
+     "type": "collapsible_row"
+    },
+    "b3": {
+     "type": "collapsible_row"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3"
+   ]
+  },
+  "collection-list": {
+   "type": "collection-list",
+   "blocks": {
+    "b0": {
+     "type": "featured_collection"
+    },
+    "b1": {
+     "type": "featured_collection"
+    },
+    "b2": {
+     "type": "featured_collection"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "contact-form": {
+   "type": "contact-form"
+  }
+ },
+ "order": [
+  "announcement-bar",
+  "apps",
+  "collage",
+  "collapsible-content",
+  "collection-list",
+  "contact-form"
+ ]
+}

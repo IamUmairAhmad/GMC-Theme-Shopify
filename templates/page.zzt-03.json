@@ -1,0 +1,100 @@
+{
+ "sections": {
+  "gmc-advertorial": {
+   "type": "gmc-advertorial",
+   "blocks": {
+    "b0": {
+     "type": "text"
+    },
+    "b1": {
+     "type": "list_item"
+    },
+    "b2": {
+     "type": "list_item",
+     "settings": {
+      "number": "2",
+      "heading": "Second point"
+     }
+    },
+    "b3": {
+     "type": "cta"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3"
+   ]
+  },
+  "gmc-announcement-bar": {
+   "type": "gmc-announcement-bar",
+   "blocks": {
+    "b0": {
+     "type": "message"
+    }
+   },
+   "block_order": [
+    "b0"
+   ]
+  },
+  "gmc-atc-button": {
+   "type": "gmc-atc-button"
+  },
+  "gmc-blog-grid": {
+   "type": "gmc-blog-grid"
+  },
+  "gmc-bundle-deals": {
+   "type": "gmc-bundle-deals",
+   "blocks": {
+    "b0": {
+     "type": "product"
+    },
+    "b1": {
+     "type": "product"
+    },
+    "b2": {
+     "type": "product"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "gmc-collapsible-content": {
+   "type": "gmc-collapsible-content",
+   "blocks": {
+    "b0": {
+     "type": "row"
+    },
+    "b1": {
+     "type": "row",
+     "settings": {
+      "title": "Second question"
+     }
+    },
+    "b2": {
+     "type": "row",
+     "settings": {
+      "title": "Third question"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  }
+ },
+ "order": [
+  "gmc-advertorial",
+  "gmc-announcement-bar",
+  "gmc-atc-button",
+  "gmc-blog-grid",
+  "gmc-bundle-deals",
+  "gmc-collapsible-content"
+ ]
+}

@@ -1,0 +1,135 @@
+{
+ "sections": {
+  "gmc-content-tabs": {
+   "type": "gmc-content-tabs",
+   "blocks": {
+    "b0": {
+     "type": "tab",
+     "settings": {
+      "title": "Details"
+     }
+    },
+    "b1": {
+     "type": "tab",
+     "settings": {
+      "title": "Shipping"
+     }
+    },
+    "b2": {
+     "type": "tab",
+     "settings": {
+      "title": "Returns"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "gmc-countdown": {
+   "type": "gmc-countdown"
+  },
+  "gmc-custom-columns-v2": {
+   "type": "gmc-custom-columns-v2",
+   "blocks": {
+    "b0": {
+     "type": "column",
+     "settings": {
+      "span": "8"
+     }
+    },
+    "b1": {
+     "type": "column",
+     "settings": {
+      "span": "4"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1"
+   ]
+  },
+  "gmc-custom-columns": {
+   "type": "gmc-custom-columns",
+   "blocks": {
+    "b0": {
+     "type": "column"
+    },
+    "b1": {
+     "type": "column"
+    },
+    "b2": {
+     "type": "column"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "gmc-faq": {
+   "type": "gmc-faq",
+   "blocks": {
+    "b0": {
+     "type": "question",
+     "settings": {
+      "question": "What is your return policy?",
+      "answer": "<p>Replace this with your own answer.</p>"
+     }
+    },
+    "b1": {
+     "type": "question",
+     "settings": {
+      "question": "How long does shipping take?",
+      "answer": "<p>Replace this with your own answer.</p>"
+     }
+    },
+    "b2": {
+     "type": "question",
+     "settings": {
+      "question": "How can I contact you?",
+      "answer": "<p>Replace this with your own answer.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "gmc-fb-testimonials": {
+   "type": "gmc-fb-testimonials",
+   "blocks": {
+    "b0": {
+     "type": "comment"
+    },
+    "b1": {
+     "type": "comment",
+     "settings": {
+      "name": "Michael B.",
+      "comment": "Fast delivery and great quality.",
+      "likes": 5,
+      "time": "4d"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1"
+   ]
+  }
+ },
+ "order": [
+  "gmc-content-tabs",
+  "gmc-countdown",
+  "gmc-custom-columns-v2",
+  "gmc-custom-columns",
+  "gmc-faq",
+  "gmc-fb-testimonials"
+ ]
+}

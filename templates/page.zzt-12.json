@@ -1,0 +1,78 @@
+{
+ "sections": {
+  "gmc-track-order": {
+   "type": "gmc-track-order"
+  },
+  "gmc-track-your-order": {
+   "type": "gmc-track-your-order"
+  },
+  "gmc-trustpilot": {
+   "type": "gmc-trustpilot",
+   "blocks": {
+    "b0": {
+     "type": "review"
+    },
+    "b1": {
+     "type": "review"
+    },
+    "b2": {
+     "type": "review"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "gmc-vertical-ticker": {
+   "type": "gmc-vertical-ticker",
+   "blocks": {
+    "b0": {
+     "type": "item",
+     "settings": {
+      "text": "Free shipping"
+     }
+    },
+    "b1": {
+     "type": "item",
+     "settings": {
+      "text": "Easy returns"
+     }
+    },
+    "b2": {
+     "type": "item",
+     "settings": {
+      "text": "Secure checkout"
+     }
+    },
+    "b3": {
+     "type": "item",
+     "settings": {
+      "text": "Ships today"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3"
+   ]
+  },
+  "gmc-video-hero": {
+   "type": "gmc-video-hero"
+  },
+  "gmc-video-player": {
+   "type": "gmc-video-player"
+  }
+ },
+ "order": [
+  "gmc-track-order",
+  "gmc-track-your-order",
+  "gmc-trustpilot",
+  "gmc-vertical-ticker",
+  "gmc-video-hero",
+  "gmc-video-player"
+ ]
+}

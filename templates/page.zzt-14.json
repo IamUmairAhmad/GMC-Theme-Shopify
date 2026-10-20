@@ -1,0 +1,54 @@
+{
+ "sections": {
+  "page": {
+   "type": "page"
+  },
+  "quick-order-list": {
+   "type": "quick-order-list"
+  },
+  "rich-text": {
+   "type": "rich-text",
+   "blocks": {
+    "b0": {
+     "type": "heading"
+    },
+    "b1": {
+     "type": "text"
+    },
+    "b2": {
+     "type": "button"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "slideshow": {
+   "type": "slideshow",
+   "blocks": {
+    "b0": {
+     "type": "slide"
+    },
+    "b1": {
+     "type": "slide"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1"
+   ]
+  },
+  "video": {
+   "type": "video"
+  }
+ },
+ "order": [
+  "page",
+  "quick-order-list",
+  "rich-text",
+  "slideshow",
+  "video"
+ ]
+}

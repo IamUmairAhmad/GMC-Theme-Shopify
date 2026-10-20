@@ -1,0 +1,110 @@
+{
+ "sections": {
+  "gmc-wishlist": {
+   "type": "gmc-wishlist"
+  },
+  "image-banner": {
+   "type": "image-banner",
+   "blocks": {
+    "b0": {
+     "type": "heading"
+    },
+    "b1": {
+     "type": "text"
+    },
+    "b2": {
+     "type": "buttons"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "image-with-text": {
+   "type": "image-with-text",
+   "blocks": {
+    "b0": {
+     "type": "heading"
+    },
+    "b1": {
+     "type": "text"
+    },
+    "b2": {
+     "type": "button"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "multicolumn": {
+   "type": "multicolumn",
+   "blocks": {
+    "b0": {
+     "type": "column"
+    },
+    "b1": {
+     "type": "column"
+    },
+    "b2": {
+     "type": "column"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "multirow": {
+   "type": "multirow",
+   "blocks": {
+    "b0": {
+     "type": "row"
+    },
+    "b1": {
+     "type": "row"
+    },
+    "b2": {
+     "type": "row"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "newsletter": {
+   "type": "newsletter",
+   "blocks": {
+    "b0": {
+     "type": "heading"
+    },
+    "b1": {
+     "type": "paragraph"
+    },
+    "b2": {
+     "type": "email_form"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  }
+ },
+ "order": [
+  "gmc-wishlist",
+  "image-banner",
+  "image-with-text",
+  "multicolumn",
+  "multirow",
+  "newsletter"
+ ]
+}

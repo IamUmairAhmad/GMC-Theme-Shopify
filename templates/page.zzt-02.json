@@ -1,0 +1,82 @@
+{
+ "sections": {
+  "custom-liquid": {
+   "type": "custom-liquid"
+  },
+  "disclosures": {
+   "type": "disclosures"
+  },
+  "email-signup-banner": {
+   "type": "email-signup-banner",
+   "blocks": {
+    "b0": {
+     "type": "heading"
+    },
+    "b1": {
+     "type": "paragraph"
+    },
+    "b2": {
+     "type": "email_form"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "featured-blog": {
+   "type": "featured-blog"
+  },
+  "featured-collection": {
+   "type": "featured-collection"
+  },
+  "featured-product": {
+   "type": "featured-product",
+   "blocks": {
+    "b0": {
+     "type": "text",
+     "settings": {
+      "text": "{{ section.settings.product.vendor }}",
+      "text_style": "uppercase"
+     }
+    },
+    "b1": {
+     "type": "title"
+    },
+    "b2": {
+     "type": "price"
+    },
+    "b3": {
+     "type": "variant_picker"
+    },
+    "b4": {
+     "type": "quantity_selector"
+    },
+    "b5": {
+     "type": "buy_buttons"
+    },
+    "b6": {
+     "type": "share"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6"
+   ]
+  }
+ },
+ "order": [
+  "custom-liquid",
+  "disclosures",
+  "email-signup-banner",
+  "featured-blog",
+  "featured-collection",
+  "featured-product"
+ ]
+}
