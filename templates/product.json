@@ -16,43 +16,83 @@
           "type": "text",
           "settings": {
             "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "text_style": "uppercase",
+            "gmc_mt": 0,
+            "gmc_mb": 0
           }
         },
         "title": {
           "type": "title",
-          "settings": {}
+          "settings": {
+            "gmc_mt": 0,
+            "gmc_mb": 0
+          }
         },
         "price": {
           "type": "price",
-          "settings": {}
+          "settings": {
+            "gmc_mt": 0,
+            "gmc_mb": 0,
+            "gmc_price_order": "compare_first",
+            "gmc_price_color": "",
+            "gmc_compare_color": "",
+            "gmc_hide_sale_badge": false
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
             "picker_type": "button",
-            "swatch_shape": "circle"
+            "swatch_shape": "circle",
+            "type_1": "auto",
+            "label_1": "",
+            "type_2": "auto",
+            "label_2": "",
+            "type_3": "auto",
+            "label_3": "",
+            "swatch_size": 36,
+            "swatch_radius": "circle",
+            "swatch_colors": "",
+            "full_width_dropdown": false,
+            "gmc_mt": 0,
+            "gmc_mb": 0
           }
         },
         "quantity_selector": {
           "type": "quantity_selector",
-          "settings": {}
+          "disabled": true,
+          "settings": {
+            "gmc_mt": 0,
+            "gmc_mb": 0
+          }
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
+            "skip_cart": false,
+            "price_in_button": false,
+            "uppercase": false,
+            "button_color": "",
+            "button_text_color": "#ffffff",
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_gift_card_recipient": true,
+            "gmc_mt": 0,
+            "gmc_mb": 0
           }
         },
         "description": {
           "type": "description",
-          "settings": {}
+          "settings": {
+            "gmc_mt": 0,
+            "gmc_mb": 0
+          }
         },
         "share": {
           "type": "share",
           "settings": {
-            "share_label": "Share"
+            "share_label": "Share",
+            "gmc_mt": 0,
+            "gmc_mb": 0
           }
         }
       },
@@ -78,15 +118,513 @@
         "image_zoom": "lightbox",
         "hide_variants": true,
         "enable_video_looping": false,
+        "gmc_variant_first": true,
+        "gmc_thumbs_d": 4,
+        "gmc_thumbs_m": 3,
+        "gmc_pagination": "none",
+        "gmc_dot_color": "#000000",
+        "gmc_hide_arrows": false,
+        "gmc_slide_gap": 0,
+        "gmc_peek": 0,
+        "gmc_badge_pos": "bottom_left",
+        "gmc_badge_size": "m",
         "padding_top": 36,
-        "padding_bottom": 12
+        "padding_bottom": 12,
+        "gmc_hide_on": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "gmc_extras": {
+      "type": "gmc-product-extras",
+      "blocks": {
+        "eta": {
+          "type": "estimated_delivery",
+          "settings": {
+            "text": "Order today and get it between [start_date] and [end_date]",
+            "min_days": 4,
+            "max_days": 8,
+            "icon": "truck",
+            "align": "left",
+            "date_format": "short",
+            "day_names": "",
+            "month_names": "",
+            "skip_weekends": false,
+            "mb": 12
+          }
+        },
+        "cp": {
+          "type": "shipping_checkpoints",
+          "settings": {
+            "step1": "Ordered",
+            "icon1": "package",
+            "from1": 0,
+            "to1": 0,
+            "bottom1": "[start_date]",
+            "step2": "Shipped",
+            "icon2": "building-warehouse",
+            "from2": 1,
+            "to2": 2,
+            "bottom2": "[start_date]",
+            "step3": "In transit",
+            "icon3": "truck",
+            "from3": 3,
+            "to3": 6,
+            "bottom3": "[start_date]",
+            "step4": "Delivered",
+            "icon4": "home",
+            "from4": 4,
+            "to4": 8,
+            "bottom4": "[end_date]",
+            "date_format": "short",
+            "day_names": "",
+            "month_names": "",
+            "skip_weekends": false,
+            "accent": "",
+            "mb": 12
+          }
+        },
+        "pay": {
+          "type": "payment_badges",
+          "settings": {
+            "types": "",
+            "align": "flex-start",
+            "mb": 12,
+            "pay_visa": false,
+            "pay_master": false,
+            "pay_american_express": false,
+            "pay_discover": false,
+            "pay_diners_club": false,
+            "pay_jcb": false,
+            "pay_paypal": false,
+            "pay_apple_pay": false,
+            "pay_google_pay": false,
+            "pay_shopify_pay": false,
+            "pay_amazon": false,
+            "pay_klarna": false,
+            "pay_afterpay": false,
+            "pay_ideal": false,
+            "pay_bancontact": false,
+            "pay_sofort": false,
+            "pay_maestro": false,
+            "pay_unionpay": false,
+            "pay_alipay": false,
+            "pay_venmo": false,
+            "pay_dankort": false,
+            "pay_elo": false,
+            "pay_forbrugsforeningen": false
+          }
+        }
+      },
+      "block_order": [
+        "eta",
+        "cp",
+        "pay"
+      ],
+      "settings": {
+        "under_buttons": true,
+        "timeline_under": true,
+        "hide_on": "",
+        "gmc_scheme": "",
+        "gmc_display_on": "all"
+      }
+    },
+    "gmc_qb": {
+      "type": "gmc-quantity-breaks",
+      "blocks": {
+        "t1": {
+          "type": "tier",
+          "settings": {
+            "qty": 1,
+            "label": "Buy 1",
+            "discount_type": "percent",
+            "percent": 0,
+            "note": "",
+            "benefit": "",
+            "caption": "",
+            "price_text": "",
+            "compare_text": "",
+            "badge": "",
+            "gift_variant": "",
+            "gift_text": "Free gift included"
+          }
+        },
+        "t2": {
+          "type": "tier",
+          "settings": {
+            "qty": 2,
+            "label": "Buy 2",
+            "discount_type": "percent",
+            "percent": 10,
+            "note": "",
+            "benefit": "You save [amount_saved]",
+            "caption": "",
+            "price_text": "[price] total",
+            "compare_text": "",
+            "badge": "",
+            "gift_variant": "",
+            "gift_text": "Free gift included"
+          }
+        },
+        "t3": {
+          "type": "tier",
+          "settings": {
+            "qty": 3,
+            "label": "Buy 3",
+            "discount_type": "percent",
+            "percent": 15,
+            "note": "",
+            "benefit": "You save [amount_saved_rounded]",
+            "caption": "Only [price_each] each for [quantity] items",
+            "price_text": "",
+            "compare_text": "was [compare_price]",
+            "badge": "Best value",
+            "gift_variant": "67707160363082",
+            "gift_text": "Free gift"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "move_above_atc": true,
+        "heading": "Buy more, save more",
+        "style": "normal",
+        "preselect": 1,
+        "unit_pickers": true,
+        "unit_label": "Item",
+        "gmc_scheme": "",
+        "gmc_display_on": "all"
+      }
+    },
+    "gmc_bd": {
+      "type": "gmc-bundle-deals",
+      "blocks": {
+        "a": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "percent": 5
+          }
+        },
+        "b": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "percent": 0
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "disabled": true,
+      "settings": {
+        "heading": "Bundle",
+        "heading_size": "h2",
+        "text": "",
+        "button": "Add bundle to cart",
+        "layout": "row",
+        "discount_type": "percent",
+        "discount_percent": 10,
+        "discount_code": "",
+        "discount": "",
+        "total_text": "Total",
+        "save_text": "You save [saved]",
+        "skip_cart": false,
+        "prices_under": true,
+        "live_prices": true,
+        "hide_on": "",
+        "gmc_pad_top": 0,
+        "gmc_pad_bottom": 0,
+        "gmc_max_width": 0,
+        "gmc_bg_color": "",
+        "gmc_bg_gradient": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_scheme": "",
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "gmc_sub": {
+      "type": "gmc-subscription",
+      "settings": {
+        "one_time": "One-time purchase",
+        "subscribe": "Subscribe & save",
+        "note": "Cancel or skip any time",
+        "gmc_scheme": "",
+        "gmc_display_on": "all"
+      }
+    },
+    "gmc_sticky": {
+      "type": "gmc-sticky-atc",
+      "settings": {
+        "label": "Add to cart",
+        "action": "add_to_cart",
+        "price_in_button": false,
+        "price_btn_desktop": true,
+        "price_btn_mobile": true,
+        "button_color": "",
+        "button_text_color": "#ffffff",
+        "show_when": "scroll",
+        "transparent": false,
+        "full_width_mobile": false,
+        "full_width_desktop": false,
+        "transparent_desktop": false,
+        "transparent_mobile": false,
+        "picker": "combined",
+        "picker_desktop": true,
+        "picker_mobile": true,
+        "img_desktop": true,
+        "img_mobile": false,
+        "title_desktop": true,
+        "title_mobile": true,
+        "price_desktop": true,
+        "price_mobile": true,
+        "show_rating": false,
+        "rating_desktop": true,
+        "rating_mobile": true,
+        "star_color": "",
+        "stars_label": "",
+        "show_sale": false,
+        "sale_desktop": true,
+        "sale_mobile": true,
+        "badge": "",
+        "gmc_scheme": "",
+        "gmc_display_on": "all"
+      }
+    },
+    "gmc_icons": {
+      "type": "gmc-icon-bar",
+      "blocks": {
+        "i1": {
+          "type": "item",
+          "settings": {
+            "icon_name": "truck",
+            "filled": false,
+            "title": "Fast shipping",
+            "text": "Tracked delivery on every order",
+            "link": ""
+          }
+        },
+        "i2": {
+          "type": "item",
+          "settings": {
+            "icon_name": "shield-check",
+            "filled": false,
+            "title": "Secure checkout",
+            "text": "Your payment details stay protected",
+            "link": ""
+          }
+        },
+        "i3": {
+          "type": "item",
+          "settings": {
+            "icon_name": "refresh",
+            "filled": false,
+            "title": "Easy returns",
+            "text": "Change your mind? We make it simple",
+            "link": ""
+          }
+        },
+        "i4": {
+          "type": "item",
+          "settings": {
+            "icon_name": "headset",
+            "filled": false,
+            "title": "Real support",
+            "text": "Questions answered by a person",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4"
+      ],
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "intro": "",
+        "columns": 4,
+        "columns_m": 2,
+        "gap": 15,
+        "icon_size": 40,
+        "icon_color": "#000000",
+        "item_layout": "stack",
+        "filled_icons": false,
+        "show_cards": false,
+        "card_scheme": "",
+        "as_slider": false,
+        "mobile_slider": false,
+        "peek": 0,
+        "slider_arrows": true,
+        "slider_dots": true,
+        "align": "center",
+        "full_width": false,
+        "pad": 36,
+        "gmc_pad_top": 0,
+        "gmc_pad_bottom": 0,
+        "gmc_max_width": 0,
+        "gmc_bg_color": "",
+        "gmc_bg_gradient": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_scheme": "",
+        "gmc_display_on": "all",
+        "gmc_card_tint": 0,
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "gmc_wave": {
+      "type": "gmc-section-divider",
+      "settings": {
+        "shape": "wave",
+        "bg": "",
+        "height": 80,
+        "flip_h": false,
+        "flip_v": false,
+        "color": "#e5e7eb",
+        "use_schemes": false,
+        "shape_scheme": "",
+        "bg_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "style": "solid",
+        "w": 1,
+        "pad": 16,
+        "hide_on": "",
+        "gmc_pad_top": 0,
+        "gmc_pad_bottom": 0,
+        "gmc_max_width": 0,
+        "gmc_bg_color": "",
+        "gmc_bg_gradient": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_scheme": "",
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     },
     "disclosures": {
       "type": "disclosures",
       "settings": {
+        "heading": "Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
         "padding_top": 36,
-        "padding_bottom": 0
+        "padding_bottom": 0,
+        "gmc_hide_on": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "gmc_reviews": {
+      "type": "gmc-reviews",
+      "blocks": {
+        "summary": {
+          "type": "rating_summary",
+          "settings": {
+            "count_label": "reviews"
+          }
+        },
+        "btn": {
+          "type": "write_review_button",
+          "settings": {
+            "link": "",
+            "label": "Write a review",
+            "secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "summary",
+        "btn"
+      ],
+      "settings": {
+        "heading": "Customer reviews",
+        "heading_size": "h1",
+        "align": "center",
+        "width": "narrow",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "gmc_rv": {
+      "type": "gmc-recently-viewed",
+      "settings": {
+        "heading": "Recently viewed",
+        "max": 6,
+        "hide_on": "",
+        "gmc_pad_top": 0,
+        "gmc_pad_bottom": 0,
+        "gmc_max_width": 0,
+        "gmc_bg_color": "",
+        "gmc_bg_gradient": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_scheme": "",
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     },
     "related-products": {
@@ -104,186 +642,20 @@
         "show_vendor": false,
         "show_rating": false,
         "padding_top": 36,
-        "padding_bottom": 28
+        "padding_bottom": 28,
+        "gmc_hide_on": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
-    },
-    "gmc_sticky": {
-      "type": "gmc-sticky-atc",
-      "settings": {
-        "picker": "combined",
-        "price_in_button": false,
-        "img_desktop": true
-      }
-    },
-    "gmc_qb": {
-      "type": "gmc-quantity-breaks",
-      "blocks": {
-        "t1": {
-          "type": "tier",
-          "settings": {
-            "qty": 1,
-            "label": "Buy 1"
-          }
-        },
-        "t2": {
-          "type": "tier",
-          "settings": {
-            "qty": 2,
-            "label": "Buy 2",
-            "percent": 10,
-            "benefit": "You save [amount_saved]",
-            "price_text": "[price] total"
-          }
-        },
-        "t3": {
-          "type": "tier",
-          "settings": {
-            "qty": 3,
-            "label": "Buy 3",
-            "percent": 15,
-            "gift_variant": "67707160363082",
-            "gift_text": "Free gift",
-            "benefit": "You save [amount_saved_rounded]",
-            "caption": "Only [price_each] each for [quantity] items",
-            "badge": "Best value",
-            "compare_text": "was [compare_price]"
-          }
-        }
-      },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3"
-      ],
-      "settings": {
-        "heading": "Buy more, save more",
-        "unit_pickers": true
-      }
-    },
-    "gmc_bd": {
-      "type": "gmc-bundle-deals",
-      "blocks": {
-        "a": {
-          "type": "product",
-          "settings": {
-            "percent": 5
-          }
-        },
-        "b": {
-          "type": "product",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "a",
-        "b"
-      ],
-      "settings": {
-        "heading": "Bundle",
-        "layout": "row",
-        "discount_type": "percent",
-        "discount_percent": 10
-      }
-    },
-    "gmc_sub": {
-      "type": "gmc-subscription",
-      "settings": {}
-    },
-    "gmc_reviews": {
-      "type": "gmc-reviews",
-      "blocks": {
-        "summary": {
-          "type": "rating_summary",
-          "settings": {}
-        },
-        "btn": {
-          "type": "write_review_button",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "summary",
-        "btn"
-      ],
-      "settings": {}
-    },
-    "gmc_extras": {
-      "type": "gmc-product-extras",
-      "blocks": {
-        "eta": {
-          "type": "estimated_delivery",
-          "settings": {}
-        },
-        "cp": {
-          "type": "shipping_checkpoints",
-          "settings": {}
-        },
-        "pay": {
-          "type": "payment_badges",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "eta",
-        "cp",
-        "pay"
-      ],
-      "settings": {}
-    },
-    "gmc_icons": {
-      "type": "gmc-icon-bar",
-      "blocks": {
-        "i1": {
-          "type": "item",
-          "settings": {
-            "icon_name": "truck",
-            "title": "Fast shipping",
-            "text": "Tracked delivery on every order"
-          }
-        },
-        "i2": {
-          "type": "item",
-          "settings": {
-            "icon_name": "shield-check",
-            "title": "Secure checkout",
-            "text": "Your payment details stay protected"
-          }
-        },
-        "i3": {
-          "type": "item",
-          "settings": {
-            "icon_name": "refresh",
-            "title": "Easy returns",
-            "text": "Change your mind? We make it simple"
-          }
-        },
-        "i4": {
-          "type": "item",
-          "settings": {
-            "icon_name": "headset",
-            "title": "Real support",
-            "text": "Questions answered by a person"
-          }
-        }
-      },
-      "block_order": [
-        "i1",
-        "i2",
-        "i3",
-        "i4"
-      ],
-      "settings": {}
-    },
-    "gmc_wave": {
-      "type": "gmc-section-divider",
-      "settings": {
-        "shape": "wave",
-        "color": "#e5e7eb"
-      }
-    },
-    "gmc_rv": {
-      "type": "gmc-recently-viewed",
-      "settings": {}
     }
   },
   "order": [
