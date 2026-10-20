@@ -1,10 +1,10 @@
 {%- render 'gmc-scheme' -%}
 <div class="gmc-acct color-{{ section.settings.color_scheme }} gradient"><div class="page-width page-width--narrow" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
-<p><a href="{{ routes.account_url }}">&larr; Back to account</a></p>
+<p><a class="link gmc-acct-link" href="{{ routes.account_url }}">&larr; Back to account</a></p>
 <h1 class="h2">Order {{ order.name }}</h1>
 <p>Placed on {{ order.created_at | time_tag: format: 'date' }}{%- if order.cancelled %} &middot; Cancelled {{ order.cancelled_at | time_tag: format: 'date' }}{%- endif -%}</p>
 <table class="gmc-acct__tbl"><thead><tr><th>Product</th><th>SKU</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead><tbody>
-{%- for line_item in order.line_items -%}<tr><td>{%- if line_item.url != blank -%}<a href="{{ line_item.url }}">{{ line_item.title | escape }}</a>{%- else -%}{{ line_item.title | escape }}{%- endif -%}{%- unless line_item.product.has_only_default_variant -%}<br><small>{{ line_item.variant.title | escape }}</small>{%- endunless -%}{%- if line_item.fulfillment != blank -%}<br><small>Fulfilled {{ line_item.fulfillment.created_at | time_tag: format: 'date' }}</small>{%- endif -%}</td><td>{{ line_item.sku }}</td><td>{{ line_item.final_price | money }}</td><td>{{ line_item.quantity }}</td><td>{{ line_item.final_line_price | money }}</td></tr>{%- endfor -%}
+{%- for line_item in order.line_items -%}<tr><td>{%- if line_item.url != blank -%}<a class="link gmc-acct-link" href="{{ line_item.url }}">{{ line_item.title | escape }}</a>{%- else -%}{{ line_item.title | escape }}{%- endif -%}{%- unless line_item.product.has_only_default_variant -%}<br><small>{{ line_item.variant.title | escape }}</small>{%- endunless -%}{%- if line_item.fulfillment != blank -%}<br><small>Fulfilled {{ line_item.fulfillment.created_at | time_tag: format: 'date' }}</small>{%- endif -%}</td><td>{{ line_item.sku }}</td><td>{{ line_item.final_price | money }}</td><td>{{ line_item.quantity }}</td><td>{{ line_item.final_line_price | money }}</td></tr>{%- endfor -%}
 </tbody><tfoot>
 <tr><th colspan="4" scope="row">Subtotal</th><td>{{ order.line_items_subtotal_price | money }}</td></tr>
 {%- for discount in order.cart_level_discount_applications -%}<tr><th colspan="4" scope="row">{{ discount.title }}</th><td>-{{ discount.total_allocated_amount | money }}</td></tr>{%- endfor -%}

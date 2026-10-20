@@ -5,10 +5,10 @@
   {%- if form.errors -%}<div class="gmc-acct__err" role="alert" tabindex="-1"><strong>{{ 'Please fix the following' }}</strong>{{ form.errors | default_errors }}</div>{%- endif -%}
   <div class="field"><input class="field__input" type="email" id="CustomerEmail" name="customer[email]" autocomplete="email" autocapitalize="off" placeholder="Email" required><label class="field__label" for="CustomerEmail">Email</label></div>
   {%- if form.password_needed -%}<div class="field"><input class="field__input" type="password" id="CustomerPassword" name="customer[password]" autocomplete="current-password" placeholder="Password" required><label class="field__label" for="CustomerPassword">Password</label></div>
-  <p><a href="#recover" data-gmc-toggle="#recover">Forgot your password?</a></p>{%- endif -%}
+  <p><a class="link gmc-acct-link" href="#recover" data-gmc-toggle="#recover">Forgot your password?</a></p>{%- endif -%}
   <input type="hidden" name="return_to" value="{{ routes.account_url }}">
   <button class="button">Sign in</button>
-  <p><a href="{{ routes.account_register_url }}">Create account</a></p>
+  <p><a class="link gmc-acct-link" href="{{ routes.account_register_url }}">Create account</a></p>
 {%- endform -%}
 <div id="recover" hidden>
   <h2 class="h3">Reset your password</h2>

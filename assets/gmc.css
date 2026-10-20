@@ -243,3 +243,4 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 @media (min-width:750px){.shopify-section .gmc-pe,.shopify-section .gmc-qb,.shopify-section .gmc-sub,.shopify-section .gmc-pm{padding-left:3rem;padding-right:3rem}}
 :not(.field)>.field__input::placeholder{opacity:1;color:rgba(var(--color-foreground),.6)}
 
+.gmc-acct-link{display:inline-block;padding:.9rem 0}

@@ -8,7 +8,7 @@
   <div class="field"><input class="field__input" type="email" id="RegisterForm-email" name="customer[email]" autocomplete="email" placeholder="Email" required><label class="field__label" for="RegisterForm-email">Email</label></div>
   <div class="field"><input class="field__input" type="password" id="RegisterForm-password" name="customer[password]" autocomplete="new-password" placeholder="Password" required><label class="field__label" for="RegisterForm-password">Password</label></div>
   <button class="button">Create</button>
-  <p><a href="{{ routes.account_login_url }}">Already have an account? Log in</a></p>
+  <p><a class="link gmc-acct-link" href="{{ routes.account_login_url }}">Already have an account? Log in</a></p>
 {%- endform -%}
 </div></div>
 {% schema %}

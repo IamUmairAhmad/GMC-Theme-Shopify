@@ -1,13 +1,13 @@
 {%- render 'gmc-scheme' -%}
 <div class="gmc-acct color-{{ section.settings.color_scheme }} gradient"><div class="page-width page-width--narrow" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
-<div class="gmc-acct__head"><h1 class="h2">My account</h1><a href="{{ routes.account_logout_url }}">Log out</a></div>
+<div class="gmc-acct__head"><h1 class="h2">My account</h1><a class="link gmc-acct-link" href="{{ routes.account_logout_url }}">Log out</a></div>
 <div class="gmc-acct__grid">
   <div>
     <h2 class="h3">Order history</h2>
     {%- paginate customer.orders by 20 -%}
       {%- if customer.orders.size > 0 -%}
         <table class="gmc-acct__tbl"><thead><tr><th>Order</th><th>Date</th><th>Payment</th><th>Fulfilment</th><th>Total</th></tr></thead><tbody>
-        {%- for order in customer.orders -%}<tr><td><a href="{{ order.customer_url }}">{{ order.name }}</a></td><td>{{ order.created_at | time_tag: format: 'date' }}</td><td>{{ order.financial_status_label }}</td><td>{{ order.fulfillment_status_label }}</td><td>{{ order.total_price | money }}</td></tr>{%- endfor -%}
+        {%- for order in customer.orders -%}<tr><td><a class="link gmc-acct-link" href="{{ order.customer_url }}">{{ order.name }}</a></td><td>{{ order.created_at | time_tag: format: 'date' }}</td><td>{{ order.financial_status_label }}</td><td>{{ order.fulfillment_status_label }}</td><td>{{ order.total_price | money }}</td></tr>{%- endfor -%}
         </tbody></table>
         {%- if paginate.pages > 1 -%}{%- render 'pagination', paginate: paginate -%}{%- endif -%}
       {%- else -%}<p>You haven't placed any orders yet.</p>{%- endif -%}
@@ -17,7 +17,7 @@
     <h2 class="h3">Account details</h2>
     <p>{{ customer.name | escape }}<br>{{ customer.email }}</p>
     {%- if customer.default_address != blank -%}<p>{{ customer.default_address | format_address }}</p>{%- endif -%}
-    <p><a href="{{ routes.account_addresses_url }}">View addresses ({{ customer.addresses_count }})</a></p>
+    <p><a class="link gmc-acct-link" href="{{ routes.account_addresses_url }}">View addresses ({{ customer.addresses_count }})</a></p>
   </div>
 </div>
 </div></div>

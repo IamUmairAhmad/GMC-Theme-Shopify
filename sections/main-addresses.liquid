@@ -1,6 +1,6 @@
 {%- render 'gmc-scheme' -%}
 <div class="gmc-acct color-{{ section.settings.color_scheme }} gradient"><div class="page-width page-width--narrow" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
-<p><a href="{{ routes.account_url }}">&larr; Back to account</a></p>
+<p><a class="link gmc-acct-link" href="{{ routes.account_url }}">&larr; Back to account</a></p>
 <h1 class="h2">Addresses</h1>
 {%- paginate customer.addresses by 5 -%}
 <details class="gmc-acct__new"><summary class="button button--secondary">Add a new address</summary>

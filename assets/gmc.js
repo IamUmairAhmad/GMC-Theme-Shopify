@@ -458,6 +458,7 @@ document.addEventListener('DOMContentLoaded',function(){var d=document.querySele
       if(pp)pp.hidden=off;
     }
     function render(){
+      if(!slides.length)return;
       chrome();syncDots();
       if(destroyed()){tr.style.transform='';vp.style.height='';slides.forEach(function(s){s.removeAttribute('aria-hidden');});return;}
       if(mode==='fade'){slides.forEach(function(s,k){s.classList.toggle('is-active',k===idx);s.setAttribute('aria-hidden',k===idx?'false':'true');});}
