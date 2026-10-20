@@ -2191,7 +2191,7 @@
         "type": "color_scheme",
         "id": "card_color_scheme",
         "label": "t:sections.all.colors.label",
-        "default": "scheme-2"
+        "default": "scheme-4"
       },
       {
         "type": "header",
@@ -2326,7 +2326,7 @@
         "type": "color_scheme",
         "id": "collection_card_color_scheme",
         "label": "t:sections.all.colors.label",
-        "default": "scheme-2"
+        "default": "scheme-4"
       },
       {
         "type": "header",
@@ -2461,7 +2461,7 @@
         "type": "color_scheme",
         "id": "blog_card_color_scheme",
         "label": "t:sections.all.colors.label",
-        "default": "scheme-2"
+        "default": "scheme-4"
       },
       {
         "type": "header",
@@ -2914,13 +2914,13 @@
         "type": "color_scheme",
         "id": "sale_badge_color_scheme",
         "label": "t:settings_schema.badges.settings.sale_badge_color_scheme.label",
-        "default": "scheme-5"
+        "default": "scheme-4"
       },
       {
         "type": "color_scheme",
         "id": "sold_out_badge_color_scheme",
         "label": "t:settings_schema.badges.settings.sold_out_badge_color_scheme.label",
-        "default": "scheme-3"
+        "default": "scheme-4"
       },
       {
         "type": "range",
@@ -3401,7 +3401,7 @@
         "type": "color_scheme",
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",
-        "default": "scheme-1"
+        "default": "scheme-4"
       }
     ]
   },

@@ -44,7 +44,7 @@
     "card_style": "standard",
     "card_image_padding": 0,
     "card_text_alignment": "left",
-    "card_color_scheme": "scheme-2",
+    "card_color_scheme": "scheme-4",
     "card_border_thickness": 0,
     "card_border_opacity": 10,
     "card_corner_radius": 0,
@@ -55,7 +55,7 @@
     "collection_card_style": "standard",
     "collection_card_image_padding": 0,
     "collection_card_text_alignment": "left",
-    "collection_card_color_scheme": "scheme-2",
+    "collection_card_color_scheme": "scheme-4",
     "collection_card_border_thickness": 0,
     "collection_card_border_opacity": 10,
     "collection_card_corner_radius": 0,
@@ -66,7 +66,7 @@
     "blog_card_style": "standard",
     "blog_card_image_padding": 0,
     "blog_card_text_alignment": "left",
-    "blog_card_color_scheme": "scheme-2",
+    "blog_card_color_scheme": "scheme-4",
     "blog_card_border_thickness": 0,
     "blog_card_border_opacity": 10,
     "blog_card_corner_radius": 0,
@@ -104,7 +104,7 @@
     "badge_position": "bottom left",
     "badge_corner_radius": 40,
     "sale_badge_color_scheme": "scheme-4",
-    "sold_out_badge_color_scheme": "scheme-3",
+    "sold_out_badge_color_scheme": "scheme-4",
     "brand_headline": "<strong>Business Information</strong>",
     "brand_description": "<ul><li><strong>Business Name:</strong> GMC Theme</li><li><strong>Business Email:</strong> support@gmctheme.com</li><li><strong>Business Phone:</strong> +1 (123)-456-7891</li><li><strong>Business Hours:</strong> Monday – Friday, 09:00 AM – 5:00 PM Eastern Time (ET)</li><li><strong>Business Address:</strong> 1114 Central Ave, St. Petersburg, FL 33705, United States</li></ul>",
     "brand_image_width": 100,
@@ -125,7 +125,7 @@
     "show_vendor": false,
     "show_cart_note": false,
     "cart_drawer_collection": "",
-    "cart_color_scheme": "scheme-1",
+    "cart_color_scheme": "scheme-4",
     "gmc_wish_on": true,
     "gmc_cmp_on": true,
     "gmc_cmp_page": "/pages/compare",
@@ -134,13 +134,13 @@
       "main-password-header": {
         "type": "main-password-header",
         "settings": {
-          "color_scheme": "scheme-1"
+          "color_scheme": "scheme-4"
         }
       },
       "main-password-footer": {
         "type": "main-password-footer",
         "settings": {
-          "color_scheme": "scheme-1"
+          "color_scheme": "scheme-4"
         }
       },
       "cart-drawer": {
@@ -227,7 +227,7 @@
         "settings": {
           "email_label": "Email address",
           "button_label": "Subscribe",
-          "gmc_scheme": "",
+          "gmc_scheme": "scheme-4",
           "gmc_display_on": "all"
         }
       },
@@ -254,13 +254,24 @@
           "icon": "",
           "ripple": true,
           "hide_on": "",
-          "gmc_scheme": "",
+          "gmc_scheme": "scheme-4",
           "gmc_display_on": "all"
         }
       }
     },
     "content_for_index": [],
     "color_schemes": {
+      "scheme-4": {
+        "settings": {
+          "background": "#121212",
+          "background_gradient": "",
+          "text": "#ffffff",
+          "button": "#ffffff",
+          "button_label": "#121212",
+          "secondary_button_label": "#ffffff",
+          "shadow": "#121212"
+        }
+      },
       "scheme-1": {
         "settings": {
           "background": "#faf8f4",
@@ -290,17 +301,6 @@
           "text": "#ffffff",
           "button": "#ffffff",
           "button_label": "#000000",
-          "secondary_button_label": "#ffffff",
-          "shadow": "#121212"
-        }
-      },
-      "scheme-4": {
-        "settings": {
-          "background": "#121212",
-          "background_gradient": "",
-          "text": "#ffffff",
-          "button": "#ffffff",
-          "button_label": "#121212",
           "secondary_button_label": "#ffffff",
           "shadow": "#121212"
         }
@@ -424,7 +424,7 @@
       "card_style": "standard",
       "card_image_padding": 0,
       "card_text_alignment": "left",
-      "card_color_scheme": "scheme-2",
+      "card_color_scheme": "scheme-4",
       "card_border_thickness": 0,
       "card_border_opacity": 10,
       "card_corner_radius": 0,
@@ -435,7 +435,7 @@
       "collection_card_style": "standard",
       "collection_card_image_padding": 0,
       "collection_card_text_alignment": "left",
-      "collection_card_color_scheme": "scheme-2",
+      "collection_card_color_scheme": "scheme-4",
       "collection_card_border_thickness": 0,
       "collection_card_border_opacity": 10,
       "collection_card_corner_radius": 0,
@@ -446,7 +446,7 @@
       "blog_card_style": "standard",
       "blog_card_image_padding": 0,
       "blog_card_text_alignment": "left",
-      "blog_card_color_scheme": "scheme-2",
+      "blog_card_color_scheme": "scheme-4",
       "blog_card_border_thickness": 0,
       "blog_card_border_opacity": 10,
       "blog_card_corner_radius": 0,
@@ -484,7 +484,7 @@
       "badge_position": "bottom left",
       "badge_corner_radius": 40,
       "sale_badge_color_scheme": "scheme-4",
-      "sold_out_badge_color_scheme": "scheme-3",
+      "sold_out_badge_color_scheme": "scheme-4",
       "brand_headline": "",
       "brand_description": "<p></p>",
       "brand_image_width": 100,
@@ -505,18 +505,18 @@
       "show_vendor": false,
       "show_cart_note": false,
       "cart_drawer_collection": "",
-      "cart_color_scheme": "scheme-1",
+      "cart_color_scheme": "scheme-4",
       "sections": {
         "main-password-header": {
           "type": "main-password-header",
           "settings": {
-            "color_scheme": "scheme-1"
+            "color_scheme": "scheme-4"
           }
         },
         "main-password-footer": {
           "type": "main-password-footer",
           "settings": {
-            "color_scheme": "scheme-1"
+            "color_scheme": "scheme-4"
           }
         }
       }
