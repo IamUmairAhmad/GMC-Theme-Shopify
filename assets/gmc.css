@@ -88,7 +88,7 @@ label.gmc-swatch,label.gmc-imgsw{width:var(--gmc-sw-size,36px);height:var(--gmc-
 
 /* Bottom dock: floating controls stack above the sticky add-to-cart bar (--gmc-dock is its live height) */
 :root{--gmc-dock:0px}
-.gmc-satc{padding-bottom:calc(.8rem + env(safe-area-inset-bottom,0px))}
+.gmc-satc{padding-bottom:calc(1.3rem + env(safe-area-inset-bottom,0px))}
 body.gmc-sticky-on .gmc-scta{display:none}
 @media(max-width:749px){
   .gmc-scta{max-width:calc(100vw - 2.4rem)}
