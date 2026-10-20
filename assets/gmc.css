@@ -230,7 +230,7 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 /* Standalone inputs (not wrapped in Dawn's .field) still get a visible border and background */
 :not(.field)>input.field__input,:not(.field)>textarea.field__input,:not(.field)>select.field__input{border:var(--inputs-border-width,1px) solid rgba(var(--color-foreground),.55);background:rgb(var(--color-background));border-radius:var(--inputs-radius,0)}
 /* Comfortable tap targets on touch screens */
-@media (hover:none) and (pointer:coarse),(max-width:749px){
+@media (hover:none) and (pointer:coarse),(max-width:989px){
   .copyright__content a{display:inline-block;padding:.9rem .4rem}
   .gmc-sl__dot,.gmc-ms__dot{position:relative}
   .gmc-sl__dot::after,.gmc-ms__dot::after{content:"";position:absolute;inset:-7px}
