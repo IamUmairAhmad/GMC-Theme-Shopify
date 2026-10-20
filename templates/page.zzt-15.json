@@ -1,0 +1,17 @@
+{
+ "sections": {
+  "gmc-section-divider": {
+   "type": "gmc-section-divider",
+   "settings": {
+    "shape": "diagonal_left",
+    "use_schemes": true,
+    "shape_scheme": "scheme-5",
+    "bg_scheme": "scheme-1",
+    "height": 120
+   }
+  }
+ },
+ "order": [
+  "gmc-section-divider"
+ ]
+}

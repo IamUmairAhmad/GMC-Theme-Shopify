@@ -1,0 +1,10 @@
+{
+ "sections": {
+  "gmc-sections-group": {
+   "type": "gmc-sections-group"
+  }
+ },
+ "order": [
+  "gmc-sections-group"
+ ]
+}

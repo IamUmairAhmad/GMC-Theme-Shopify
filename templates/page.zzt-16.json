@@ -1,0 +1,30 @@
+{
+ "sections": {
+  "gmc-section-group": {
+   "type": "gmc-section-group",
+   "blocks": {
+    "b0": {
+     "type": "_gmc-group",
+     "blocks": [
+      {
+       "type": "_gmc-text"
+      },
+      {
+       "type": "_gmc-button"
+      }
+     ]
+    },
+    "b1": {
+     "type": "_gmc-image"
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1"
+   ]
+  }
+ },
+ "order": [
+  "gmc-section-group"
+ ]
+}
