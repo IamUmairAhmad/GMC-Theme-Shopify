@@ -312,12 +312,17 @@
     },
     "gmc_popup_enabled": true,
     "gmc_popup_preview": "testing",
-    "gmc_popup_mode": "email",
+    "gmc_popup_mode": "offer",
     "gmc_popup_display": "center",
     "gmc_popup_countdown": 10,
     "gmc_popup_prefix": "Limited offer",
     "gmc_popup_suffix": "Ends soon",
-    "gmc_popup_dismiss": "No thanks"
+    "gmc_popup_dismiss": "No thanks",
+    "gmc_popup_code": "WELCOME10",
+    "gmc_popup_btn": "Shop now",
+    "gmc_popup_link": "shopify://collections/all",
+    "gmc_popup_copy": "Copy code",
+    "gmc_popup_copied": "Copied!"
   },
   "presets": {
     "GMC Theme": {
