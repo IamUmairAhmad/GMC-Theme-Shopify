@@ -18,7 +18,7 @@
     assign qb_multi = true
   endif
 -%}
-<div class="gmc-qb gmc-qb--{{ qb_style }}" id="gmc-qb-{{ section.id }}" data-price="{{ qb_unit }}" data-cmp="{{ qb_cmp_unit }}" data-multi="{{ qb_multi }}" style="--gmc-qb-cols:{{ section.blocks.size }}">
+<div class="gmc-qb gmc-qb--{{ qb_style }}" id="gmc-qb-{{ section.id }}" data-price="{{ qb_unit }}" data-cmp="{{ qb_cmp_unit }}" data-multi="{{ qb_multi }}" data-move="{{ section.settings.move_above_atc }}" style="--gmc-qb-cols:{{ section.blocks.size }}">
   {%- if section.settings.heading != blank -%}<p class="gmc-qb__title">{{ section.settings.heading | escape }}</p>{%- endif -%}
   {%- for block in section.blocks -%}
     {%- liquid
@@ -97,10 +97,16 @@
   .gmc-qb--vertical .gmc-qb__main{flex-direction:column;text-align:center;align-items:center;height:100%}
   .gmc-qb--vertical .gmc-qb__price{align-items:center}.gmc-qb--vertical .gmc-qb__badge{position:absolute;top:-.8rem;left:50%;transform:translateX(-50%);white-space:nowrap}
   .gmc-qb--vertical .gmc-qb__units{grid-template-columns:1fr}
+  .gmc-qb-moved .product__info-container .product-form__quantity{display:none}.product__info-container>.gmc-qb{margin:1.6rem 0 1.2rem}
   @media(max-width:480px){.gmc-qb--vertical{grid-template-columns:1fr}.gmc-qb--vertical .gmc-qb__main{flex-direction:row;text-align:left}}
 </style>
 <script>
   (function(){var w=document.getElementById('gmc-qb-{{ section.id }}');if(!w)return;
+  if(w.dataset.move==='true'){try{var info=document.querySelector('section[id^="MainProduct-"] .product__info-container');
+    if(info){var tgt=info.querySelector(':scope > .product-form__quantity');
+      if(!tgt){var pf=info.querySelector('product-form');while(pf&&pf.parentElement!==info)pf=pf.parentElement;tgt=pf;}
+      if(tgt){info.insertBefore(w,tgt);document.documentElement.classList.add('gmc-qb-moved');var sec=w.closest('.shopify-section');
+        var host=document.getElementById('shopify-section-{{ section.id }}');if(host)host.style.display='none';}}}catch(e){}}
   var FMT={{ shop.money_format | json }};
   function fm(c){var f=String(FMT).replace(/<[^>]*>/g,''),re=/\{\{\s*(\w+)\s*\}\}/,m=f.match(re);
     function fd(n,p,t,d){n=(n/100).toFixed(p);var a=n.split('.');return a[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g,'$1'+t)+(a[1]?d+a[1]:'');}
@@ -138,6 +144,13 @@
     ]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "move_above_atc",
+      "label": "Show above the Add to cart button",
+      "info": "Moves the tiers into the product info, between the variant picker and the buttons, and hides the separate quantity box.",
+      "default": true
+    },
     {
       "type": "text",
       "id": "heading",
