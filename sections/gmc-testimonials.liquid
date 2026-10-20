@@ -1,6 +1,3 @@
-{%- if request.visual_preview_mode -%}
-  {%- render 'gmc-visual-preview', look: 'quotes', title: 'Testimonials' -%}
-{%- else -%}
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one testimonial.' -%}{%- endif -%}
