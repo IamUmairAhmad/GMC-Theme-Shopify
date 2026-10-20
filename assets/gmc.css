@@ -269,7 +269,7 @@ label.gmc-vcard{display:inline-flex;flex-direction:column;align-items:center;gap
 shopify-account a:focus-visible,shopify-account button:focus-visible,.product__media-toggle:focus-visible,.header__icon:focus-visible{outline:2px solid rgb(var(--color-foreground));outline-offset:3px}
 
 /* Colour swatches stay visible on dark colour schemes: a light ring around every swatch (so a black swatch never merges with the background) and a clearer selected state */
-.swatch{border:.15rem solid rgba(var(--color-foreground),.45)}
+.swatch,.swatch-input__input+.swatch-input__label .swatch{border:.15rem solid rgba(var(--color-foreground),.45)}
 .swatch-input__input+.swatch-input__label{outline-offset:.3rem}
 .swatch-input__input:checked+.swatch-input__label,.swatch-input__input:active+.swatch-input__label{outline:.2rem solid rgb(var(--color-foreground))}
 .swatch-input__input:checked+.swatch-input__label .swatch{border-color:rgb(var(--color-foreground))}
