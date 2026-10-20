@@ -64,7 +64,7 @@
         "t": {
           "type": "text",
           "settings": {
-            "text": "<p>Browse the full range, from everyday essentials to gifts.</p>"
+            "text": "<p>A short introduction to your store and what you offer.</p>"
           }
         },
         "b": {
@@ -120,8 +120,8 @@
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": true,
-        "quick_add": "standard",
+        "show_rating": false,
+        "quick_add": "none",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
         "padding_top": 44,
@@ -141,20 +141,20 @@
         "h": {
           "type": "heading",
           "settings": {
-            "heading": "Shop with confidence",
+            "heading": "Made with care",
             "heading_size": "h1"
           }
         },
         "t": {
           "type": "text",
           "settings": {
-            "text": "<p>Secure checkout, clear policies and friendly support on every order.</p>"
+            "text": "<p>Share your story, your values, or what sets your products apart.</p>"
           }
         },
         "b": {
           "type": "button",
           "settings": {
-            "button_label": "Shop all",
+            "button_label": "Our story",
             "button_link": "shopify://collections/all",
             "button_style_secondary": false,
             "button_label_2": "",
