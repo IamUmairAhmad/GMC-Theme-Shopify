@@ -91,7 +91,7 @@
   .gmc-ss__pill input:focus-visible+span{outline:2px solid rgb(var(--color-foreground));outline-offset:3px}
   .gmc-ss__row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:1.2rem 2rem;align-items:start}
   @media(max-width:480px){.gmc-ss__row{grid-template-columns:1fr}}
-  .gmc-ss__sel{position:relative}.gmc-ss__sel select{appearance:none;-webkit-appearance:none;width:100%;box-sizing:border-box;padding:1rem 3.4rem 1rem 1.2rem;font:inherit;font-size:1.4rem;color:rgb(var(--color-foreground));background:transparent;border:1px solid rgba(var(--color-foreground),.55);border-radius:var(--inputs-radius,.4rem);cursor:pointer;min-height:4.4rem}
+  .gmc-ss__sel{position:relative}.gmc-ss__sel select{text-overflow:ellipsis;appearance:none;-webkit-appearance:none;width:100%;box-sizing:border-box;padding:1rem 3.4rem 1rem 1.2rem;font:inherit;font-size:1.4rem;color:rgb(var(--color-foreground));background:transparent;border:1px solid rgba(var(--color-foreground),.55);border-radius:var(--inputs-radius,.4rem);cursor:pointer;min-height:4.4rem}
   .gmc-ss__sel select:disabled{opacity:.55;cursor:not-allowed}.gmc-ss__sel select option{color:#111;background:#fff}
   .gmc-ss__sel::after{content:"";position:absolute;right:1.4rem;top:50%;width:.7rem;height:.7rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-70%) rotate(45deg);pointer-events:none}
   .gmc-ss__sel select:focus-visible{outline:2px solid rgb(var(--color-foreground));outline-offset:2px}
@@ -128,7 +128,7 @@
     String(sys.dataset.sizes||'').split(/\n/).forEach(function(l){l=l.trim();if(!l)return;var i=l.indexOf(':'),k=i>0?l.slice(0,i).trim().toLowerCase():'';
       if(k&&fits.indexOf(k)>-1)by[k]=split(l.slice(i+1));else gen=gen.concat(split(l));});
     return {gen:gen,by:by,spec:Object.keys(by).length>0};}
-  function put(n,v){if(window.gmcField)window.gmcField(n,v);}
+  function put(n,v){if(window.gmcField)window.gmcField('properties['+n+']',v);}
   function checked(a){for(var i=0;i<a.length;i++)if(a[i].checked)return a[i];return null;}
   function render(keep){
     var f=checked(fitEls),s=checked(sysEls),fv=f?f.value:'',prev=keep?sel.value:'';
