@@ -4,39 +4,106 @@
 {%- render 'gmc-scheme' -%}
 {%- render 'gmc-section-extras' -%}
 {%- if section.blocks.size == 0 -%}{%- render 'gmc-empty', msg: 'Add at least one item block.' -%}{%- endif -%}
+{%- liquid
+  assign gap = section.settings.gap
+  assign m_only = false
+  if section.settings.mobile_slider and section.settings.as_slider == false
+    assign m_only = true
+  endif
+  assign ib_slide = false
+  assign ib_attrs = true
+  if section.settings.as_slider
+    assign ib_slide = true
+  endif
+-%}
 {%- comment -%} GMC Theme: trust badge / icon bar (original code) {%- endcomment -%}
-<div class="page-width gmc-iconbar" style="--cols:{{ section.settings.columns }};--cols-m:{{ section.settings.columns_m }};--ic:{{ section.settings.icon_color }};text-align:{{ section.settings.align }}">
-  {%- if section.settings.heading != blank -%}<h2 class="gmc-iconbar__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
-  {%- capture gmc_icon_items -%}
+<div class="{% unless section.settings.full_width %}page-width {% endunless %}gmc-iconbar{% if section.settings.full_width %} gmc-iconbar--full{% endif %}{% if m_only %} gmc-iconbar--ms{% endif %}" style="--cols:{{ section.settings.columns }};--cols-m:{{ section.settings.columns_m }};--ic:{{ section.settings.icon_color }};--gmc-gap:{{ gap }}px;text-align:{{ section.settings.align }}">
+  {%- if section.settings.heading != blank -%}<h2 class="gmc-iconbar__title {{ section.settings.heading_size | default: 'h1' }}">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+  {%- if section.settings.intro != blank -%}<div class="gmc-iconbar__intro rte">{{ section.settings.intro }}</div>{%- endif -%}
+  {%- capture ib_items -%}
     {%- for block in section.blocks -%}
-      <li class="gmc-iconbar__item{% if section.settings.as_slider %} gmc-sl__s{% endif %}{% if section.settings.show_cards %} color-{{ section.settings.card_scheme }} gradient{% endif %}" {{ block.shopify_attributes }}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="gmc-iconbar__a">{%- endif -%}
-        {%- if block.settings.icon_name != blank -%}<span class="gmc-iconbar__ic" style="color:var(--ic)">{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: section.settings.filled_icons -%}</span>{%- elsif block.settings.icon != blank -%}
-          <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.icon.alt | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
+      {%- liquid
+        assign use_filled = false
+        if section.settings.filled_icons or block.settings.filled
+          assign use_filled = true
+        endif
+      -%}
+      <li class="gmc-iconbar__item{% if ib_slide %} gmc-sl__s{% endif %}{% if section.settings.show_cards %} color-{{ section.settings.card_scheme }} gradient{% endif %}"{% if ib_attrs %} {{ block.shopify_attributes }}{% endif %}>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="gmc-iconbar__a">{%- endif -%}
+        {%- if block.settings.icon_name != blank -%}<span class="gmc-iconbar__ic">{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: use_filled -%}</span>{%- elsif block.settings.icon != blank -%}
+          <img src="{{ block.settings.icon | image_url: width: 200 }}" alt="{{ block.settings.icon.alt | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
         {%- endif -%}
-        <strong>{{ block.settings.title | escape }}</strong>
-        {%- if block.settings.text != blank -%}<span>{{ block.settings.text | escape }}</span>{%- endif -%}
+        <span class="gmc-iconbar__copy"><strong>{{ block.settings.title | escape }}</strong>{%- if block.settings.text != blank -%}<span class="gmc-iconbar__tx">{{ block.settings.text | escape }}</span>{%- endif -%}</span>
       {%- if block.settings.link != blank -%}</a>{%- endif -%}</li>
     {%- endfor -%}
   {%- endcapture -%}
   {%- if section.settings.as_slider -%}
-    <div class="gmc-sl gmc-iconbar__sl gmc-iconbar__list--{{ section.settings.item_layout }}" data-gmc-slider data-mode="slide" data-autoplay="{{ section.settings.gmc_slider_autoplay }}" data-loop="true" data-dots="{{ section.settings.slider_dots }}" data-arrows="{{ section.settings.slider_arrows }}" data-drag="true" data-perview="{{ section.settings.columns }}" data-perview-m="{{ section.settings.columns_m }}" style="--per:{{ section.settings.columns }};--per-m:{{ section.settings.columns_m }};--gmc-gap:1.6rem;--gmc-peek:{{ section.settings.peek }}px;--gmc-dot:rgb(var(--color-foreground))">
-      <div class="gmc-sl__vp"><ul class="gmc-sl__tr gmc-iconbar__list" role="list">{{ gmc_icon_items }}</ul></div>
+    <div class="gmc-sl gmc-iconbar__sl gmc-iconbar__list--{{ section.settings.item_layout }}" data-gmc-slider data-mode="slide" data-autoplay="{{ section.settings.gmc_slider_autoplay }}" data-loop="true" data-dots="{{ section.settings.slider_dots }}" data-arrows="{{ section.settings.slider_arrows }}" data-drag="true" data-perview="{{ section.settings.columns }}" data-perview-m="{{ section.settings.columns_m }}" style="--per:{{ section.settings.columns }};--per-m:{{ section.settings.columns_m }};--gmc-gap:{{ gap }}px;--gmc-peek:{{ section.settings.peek }}px;--gmc-dot:rgb(var(--color-foreground))" role="region" aria-label="{{ section.settings.heading | default: 'Icon bar' | escape }}">
+      <div class="gmc-sl__vp"><ul class="gmc-sl__tr gmc-iconbar__list" role="list">{{ ib_items }}</ul></div>
     </div>
   {%- else -%}
-    <ul class="gmc-iconbar__list gmc-iconbar__list--{{ section.settings.item_layout }}" role="list">{{ gmc_icon_items }}</ul>
+    <ul class="gmc-iconbar__list gmc-iconbar__list--{{ section.settings.item_layout }}{% if m_only %} gmc-iconbar__d{% endif %}" role="list">{{ ib_items }}</ul>
+    {%- if m_only -%}
+      {%- assign ib_slide = true -%}
+      {%- assign ib_attrs = false -%}
+      {%- capture ib_items_m -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign use_filled = false
+            if section.settings.filled_icons or block.settings.filled
+              assign use_filled = true
+            endif
+          -%}
+          <li class="gmc-iconbar__item gmc-sl__s{% if section.settings.show_cards %} color-{{ section.settings.card_scheme }} gradient{% endif %}">{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="gmc-iconbar__a">{%- endif -%}
+            {%- if block.settings.icon_name != blank -%}<span class="gmc-iconbar__ic">{%- render 'gmc-icon', name: block.settings.icon_name, size: section.settings.icon_size, filled: use_filled -%}</span>{%- elsif block.settings.icon != blank -%}
+              <img src="{{ block.settings.icon | image_url: width: 200 }}" alt="{{ block.settings.icon.alt | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
+            {%- endif -%}
+            <span class="gmc-iconbar__copy"><strong>{{ block.settings.title | escape }}</strong>{%- if block.settings.text != blank -%}<span class="gmc-iconbar__tx">{{ block.settings.text | escape }}</span>{%- endif -%}</span>
+          {%- if block.settings.link != blank -%}</a>{%- endif -%}</li>
+        {%- endfor -%}
+      {%- endcapture -%}
+      <div class="gmc-sl gmc-iconbar__sl gmc-iconbar__m gmc-iconbar__list--{{ section.settings.item_layout }}" data-gmc-slider data-mode="slide" data-autoplay="{{ section.settings.gmc_slider_autoplay }}" data-loop="false" data-dots="{{ section.settings.slider_dots }}" data-arrows="{{ section.settings.slider_arrows }}" data-arrows-pos="below" data-pag-pos="under" data-drag="true" data-perview="{{ section.settings.columns }}" data-perview-m="{{ section.settings.columns_m }}" style="--per:{{ section.settings.columns }};--per-m:{{ section.settings.columns_m }};--gmc-gap:{{ gap }}px;--gmc-peek:{{ section.settings.peek }}px;--gmc-dot:rgb(var(--color-foreground))" role="region" aria-label="{{ section.settings.heading | default: 'Icon bar' | escape }}">
+        <div class="gmc-sl__vp"><ul class="gmc-sl__tr gmc-iconbar__list" role="list">{{ ib_items_m }}</ul></div>
+      </div>
+    {%- endif -%}
   {%- endif -%}
 </div>
 <style>
-  .gmc-iconbar__list--side .gmc-iconbar__a,.gmc-iconbar__list--side .gmc-iconbar__item{display:flex;gap:1rem;align-items:center;text-align:left}.gmc-iconbar__a{color:inherit;text-decoration:none;display:block}@media(max-width:749px){.gmc-iconbar__list{grid-template-columns:repeat(var(--cols-m,2),1fr)!important}}
   .gmc-iconbar{padding-top:{{ section.settings.pad }}px;padding-bottom:{{ section.settings.pad }}px}
-  .gmc-iconbar__title{text-align:center;margin:0 0 2rem}
-  .gmc-iconbar__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:1.5rem;text-align:center}
+  .gmc-iconbar--full{padding-left:1.5rem;padding-right:1.5rem}
+  .gmc-iconbar__title{margin:0 0 1.2rem}
+  .gmc-iconbar__intro{margin:0 auto 2rem;max-width:72rem}
+  .gmc-iconbar__intro > :first-child{margin-top:0}
+  .gmc-iconbar__intro > :last-child{margin-bottom:0}
+  .gmc-iconbar__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:var(--gmc-gap,15px)}
   .gmc-iconbar__item{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+  .gmc-iconbar__a{color:inherit;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:.4rem;width:100%}
+  .gmc-iconbar__ic{color:var(--ic);display:inline-flex;line-height:0}
+  .gmc-iconbar__copy{display:flex;flex-direction:column;gap:.2rem;min-width:0}
+  .gmc-iconbar__tx{opacity:.75;font-size:.9em}
   .gmc-iconbar__item img{object-fit:contain}
   .gmc-iconbar__item.gradient{padding:1.2rem;border-radius:var(--text-boxes-radius,8px)}
   .gmc-iconbar__sl .gmc-iconbar__list{display:flex!important;grid-template-columns:none!important}
-  .gmc-iconbar__item span{opacity:.75;font-size:.9em}
-  @media(max-width:749px){.gmc-iconbar__list{grid-template-columns:repeat(2,1fr)}}
+  .gmc-iconbar__list--side .gmc-iconbar__a,
+  .gmc-iconbar__list--side .gmc-iconbar__item:not(:has(.gmc-iconbar__a)){display:grid;grid-template-columns:auto 1fr;column-gap:1rem;row-gap:.2rem;align-items:center;justify-items:start;text-align:left}
+  .gmc-iconbar__list--side .gmc-iconbar__copy{grid-column:1 / -1}
+  .gmc-iconbar__list--side :is(.gmc-iconbar__ic,img){grid-column:1;grid-row:1 / span 2;align-self:center}
+  .gmc-iconbar__list--side :is(.gmc-iconbar__a,.gmc-iconbar__item):has(.gmc-iconbar__ic) .gmc-iconbar__copy,
+  .gmc-iconbar__list--side :is(.gmc-iconbar__a,.gmc-iconbar__item):has(img) .gmc-iconbar__copy{grid-column:2;grid-row:1 / span 2;align-self:center}
+  .gmc-iconbar[style*="text-align:left"] .gmc-iconbar__list--stack :is(.gmc-iconbar__item,.gmc-iconbar__a){align-items:flex-start;text-align:left}
+  @media(min-width:750px){
+    .gmc-iconbar--full{padding-left:2rem;padding-right:2rem}
+    .gmc-iconbar__m{display:none!important}
+  }
+  @media(max-width:749px){
+    .gmc-iconbar__list{grid-template-columns:repeat(var(--cols-m,2),1fr)}
+    .gmc-iconbar--ms .gmc-iconbar__d{display:none!important}
+    .gmc-iconbar__m.gmc-sl--arr-below{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"vp vp vp" "prev dots next";align-items:center;column-gap:.8rem;padding-bottom:0}
+    .gmc-iconbar__m .gmc-sl__vp{grid-area:vp}
+    .gmc-iconbar__m.gmc-sl--arr-below .gmc-sl__dots{grid-area:dots;display:flex;position:static;margin:1.2rem 0 0}
+    .gmc-iconbar__m.gmc-sl--arr-below .gmc-sl__a{position:static;transform:none;margin-top:1.2rem;width:3.6rem;height:3.6rem;background:rgba(128,128,128,.2);color:inherit}
+    .gmc-iconbar__m.gmc-sl--arr-below .gmc-sl__a--prev{grid-area:prev;left:auto}
+    .gmc-iconbar__m.gmc-sl--arr-below .gmc-sl__a--next{grid-area:next;right:auto}
+  }
 </style>
 {%- endif -%}
 {% schema %}
@@ -51,10 +118,36 @@
       "label": "Heading"
     },
     {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Text"
+    },
+    {
       "type": "range",
       "id": "columns",
-      "min": 2,
-      "max": 6,
+      "min": 1,
+      "max": 10,
+      "step": 1,
       "label": "Columns",
       "default": 4
     },
@@ -66,6 +159,16 @@
       "step": 1,
       "label": "Columns on mobile",
       "default": 2
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Space between items",
+      "default": 15
     },
     {
       "type": "range",
@@ -121,15 +224,22 @@
       "type": "checkbox",
       "id": "as_slider",
       "label": "Slide the icons",
-      "info": "Uses the column counts above. Arrows, dots and autoplay are in Slider options.",
+      "info": "Uses the column counts above on both desktop and mobile. Arrows, dots and autoplay are in Slider options.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_slider",
+      "label": "Slide on mobile only",
+      "info": "Used when Slide the icons is off. Phones get one sliding row with dots and arrows underneath. Desktop stays a grid.",
       "default": false
     },
     {
       "type": "range",
       "id": "peek",
       "min": 0,
-      "max": 80,
-      "step": 4,
+      "max": 150,
+      "step": 2,
       "unit": "px",
       "label": "Peek of the next icon",
       "info": "Used when icons slide. 0 shows only the full columns.",
@@ -162,6 +272,13 @@
         }
       ],
       "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full page width",
+      "info": "Stretches past the theme page width. Leave this off when a max content width is set.",
+      "default": false
     },
     {
       "type": "range",
@@ -373,6 +490,13 @@
           "info": "From the built-in 2,500-icon library, e.g. truck, shield-check. See assets/gmc-icon-list.txt"
         },
         {
+          "type": "checkbox",
+          "id": "filled",
+          "label": "Filled icon",
+          "info": "Fills this icon. The section Filled icons setting fills every icon.",
+          "default": false
+        },
+        {
           "type": "image_picker",
           "id": "icon",
           "label": "Or icon image"
@@ -397,17 +521,21 @@
       ]
     }
   ],
-  "max_blocks": 8,
+  "max_blocks": 12,
   "presets": [
     {
       "name": "Icon bar",
       "blocks": [
         {
-          "type": "item"
+          "type": "item",
+          "settings": {
+            "icon_name": "truck"
+          }
         },
         {
           "type": "item",
           "settings": {
+            "icon_name": "refresh",
             "title": "Easy returns",
             "text": "Your returns message"
           }
@@ -415,6 +543,7 @@
         {
           "type": "item",
           "settings": {
+            "icon_name": "lock",
             "title": "Secure payment",
             "text": "SSL encrypted"
           }
@@ -422,6 +551,7 @@
         {
           "type": "item",
           "settings": {
+            "icon_name": "headset",
             "title": "24/7 support",
             "text": "We're here to help"
           }
