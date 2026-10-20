@@ -126,6 +126,9 @@
     "show_cart_note": false,
     "cart_drawer_collection": "",
     "cart_color_scheme": "scheme-1",
+    "gmc_wish_on": true,
+    "gmc_cmp_on": true,
+    "gmc_cmp_page": "/pages/compare",
     "customer_account_menu": "customer-account-main-menu",
     "sections": {
       "main-password-header": {
@@ -231,7 +234,11 @@
       "gmc-scroll-top": {
         "type": "gmc-scroll-top",
         "settings": {
-          "gmc_scheme": "",
+          "after": 600,
+          "place": "theme",
+          "offset_x": 0,
+          "offset_y": 0,
+          "gmc_scheme": "scheme-4",
           "gmc_display_on": "all"
         }
       },
@@ -256,7 +263,7 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#FAF8F4",
+          "background": "#faf8f4",
           "background_gradient": "",
           "text": "#121212",
           "button": "#121212",
@@ -308,11 +315,19 @@
           "secondary_button_label": "#ffffff",
           "shadow": "#121212"
         }
+      },
+      "scheme-c0b62350-45f0-4e81-a4be-9659ee13fc01": {
+        "settings": {
+          "background": "#faf8f4",
+          "background_gradient": "",
+          "text": "#121212",
+          "button": "#121212",
+          "button_label": "#ffffff",
+          "secondary_button_label": "#121212",
+          "shadow": "#121212"
+        }
       }
-    },
-    "gmc_wish_on": true,
-    "gmc_cmp_on": true,
-    "gmc_cmp_page": "/pages/compare"
+    }
   },
   "presets": {
     "GMC Theme": {

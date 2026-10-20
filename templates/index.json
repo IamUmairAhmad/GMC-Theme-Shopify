@@ -22,11 +22,15 @@
             "button_label": "Shop all",
             "link": "shopify://collections/all",
             "button_style_secondary": false,
+            "atc_button_label": "",
+            "atc_product": "",
+            "atc_skip_cart": false,
             "show_text_box": true,
+            "gmc_clear_text": "white",
             "box_align": "middle-center",
             "text_alignment": "center",
             "text_alignment_mobile": "center",
-            "color_scheme": ""
+            "color_scheme": "scheme-4"
           }
         }
       },
@@ -37,18 +41,25 @@
         "layout": "full_bleed",
         "slide_height": "medium",
         "slider_visual": "counter",
+        "desktop_pagination_position": "under",
         "auto_rotate": true,
         "change_slides_speed": 5,
         "image_behavior": "none",
         "show_text_below": true,
+        "mobile_pagination_position": "under",
         "accessibility_info": "Slideshow about our brand",
         "gmc_hide_on": "",
         "gmc_bg_overlay": 0,
         "gmc_atc_product": "",
         "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
         "gmc_atc_align": "center",
         "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     },
     "rich_text_1": {
@@ -87,7 +98,7 @@
       "settings": {
         "desktop_content_position": "center",
         "content_alignment": "center",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-4",
         "full_width": true,
         "padding_top": 40,
         "padding_bottom": 52,
@@ -95,9 +106,14 @@
         "gmc_bg_overlay": 0,
         "gmc_atc_product": "",
         "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
         "gmc_atc_align": "center",
         "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     },
     "featured_collection": {
@@ -115,10 +131,12 @@
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-4",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
+        "stretch_cards": false,
+        "badges": "all",
         "show_vendor": false,
         "show_rating": true,
         "quick_add": "standard",
@@ -130,9 +148,69 @@
         "gmc_bg_overlay": 0,
         "gmc_atc_product": "",
         "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
         "gmc_atc_align": "center",
         "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "rich_text_XeXMcV": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_Xgxyhw": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>About Our Brand</p>",
+            "heading_size": "h1"
+          }
+        },
+        "text_UDEten": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+          }
+        },
+        "button_99Cwqe": {
+          "type": "button",
+          "settings": {
+            "button_label": "Visit About Us",
+            "button_link": "shopify://pages/about-us",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_Xgxyhw",
+        "text_UDEten",
+        "button_99Cwqe"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-4",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52,
+        "gmc_hide_on": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     },
     "rich_text_2": {
@@ -171,7 +249,7 @@
       "settings": {
         "desktop_content_position": "center",
         "content_alignment": "center",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-4",
         "full_width": true,
         "padding_top": 40,
         "padding_bottom": 52,
@@ -179,9 +257,14 @@
         "gmc_bg_overlay": 0,
         "gmc_atc_product": "",
         "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
         "gmc_atc_align": "center",
         "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     },
     "featured_product": {
@@ -190,29 +273,82 @@
         "title": {
           "type": "title",
           "settings": {
-            "heading_size": "h1"
+            "heading_size": "h1",
+            "align": "left",
+            "uppercase": false,
+            "gmc_mt": 0,
+            "gmc_mb": 0
           }
         },
         "price": {
           "type": "price",
-          "settings": {}
+          "settings": {
+            "gmc_mt": 0,
+            "gmc_mb": 0,
+            "gmc_price_order": "compare_first",
+            "gmc_price_color": "",
+            "gmc_compare_color": "",
+            "gmc_hide_sale_badge": false
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
             "picker_type": "button",
-            "swatch_shape": "circle"
+            "swatch_shape": "circle",
+            "type_1": "auto",
+            "label_1": "",
+            "type_2": "auto",
+            "label_2": "",
+            "type_3": "auto",
+            "label_3": "",
+            "swatch_size": 36,
+            "swatch_radius": "circle",
+            "swatch_colors": "",
+            "full_width_dropdown": false,
+            "gmc_mt": 0,
+            "gmc_mb": 0
           }
         },
         "quantity_selector": {
           "type": "quantity_selector",
-          "settings": {}
+          "settings": {
+            "offers": false,
+            "offer_heading": "Bundle and save",
+            "offer_style": "stack",
+            "offer_pick": "0",
+            "offer_q1": 1,
+            "offer_l1": "Buy [qty]",
+            "offer_b1": "",
+            "offer_c1": "",
+            "offer_q2": 2,
+            "offer_l2": "Buy [qty]",
+            "offer_b2": "Popular",
+            "offer_c2": "",
+            "offer_q3": 3,
+            "offer_l3": "Buy [qty]",
+            "offer_b3": "",
+            "offer_c3": "",
+            "offer_q4": 0,
+            "offer_l4": "",
+            "offer_b4": "",
+            "offer_c4": "",
+            "gmc_mt": 0,
+            "gmc_mb": 0
+          }
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_gift_card_recipient": true,
+            "skip_cart": false,
+            "price_in_button": false,
+            "uppercase": false,
+            "button_color": "",
+            "button_text_color": "#ffffff",
+            "gmc_mt": 0,
+            "gmc_mb": 0
           }
         }
       },
@@ -224,7 +360,8 @@
         "buy_buttons"
       ],
       "settings": {
-        "color_scheme": "scheme-1",
+        "product": "gmc-demo-cap",
+        "color_scheme": "scheme-4",
         "secondary_background": false,
         "media_size": "medium",
         "constrain_to_viewport": true,
@@ -233,11 +370,252 @@
         "image_zoom": "lightbox",
         "hide_variants": false,
         "enable_video_looping": false,
+        "mobile_radius": 0,
+        "full_media_width": false,
         "padding_top": 36,
         "padding_bottom": 36,
         "gmc_hide_on": "",
         "gmc_bg_overlay": 0,
-        "product": "gmc-demo-cap"
+        "gmc_display_on": "all",
+        "gmc_atc_show": false,
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "image_with_text_FHAb8x": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_tCkryx": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text",
+            "heading_size": "h1"
+          }
+        },
+        "text_ApFhHm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_F6T4ez": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_tCkryx",
+        "text_ApFhHm",
+        "button_F6T4ez"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_full_media_width": false,
+        "mobile_direction": "normal",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-4",
+        "color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "gmc_hide_on": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "image_with_text_dzK8zy": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_fgYmhz": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text",
+            "heading_size": "h1"
+          }
+        },
+        "text_dgXtEK": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_CXiKkm": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_fgYmhz",
+        "text_dgXtEK",
+        "button_CXiKkm"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_full_media_width": false,
+        "mobile_direction": "normal",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-4",
+        "color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "gmc_hide_on": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "image_with_text_gbPL6p": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_XpDN7g": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text",
+            "heading_size": "h1"
+          }
+        },
+        "text_njB9aB": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_fEwKTD": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_XpDN7g",
+        "text_njB9aB",
+        "button_fEwKTD"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_full_media_width": false,
+        "mobile_direction": "normal",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-4",
+        "color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "gmc_hide_on": "",
+        "gmc_bg_overlay": 0,
+        "gmc_atc_product": "",
+        "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
+        "gmc_atc_align": "center",
+        "gmc_swipe_mobile": false,
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
+      }
+    },
+    "gmc_faq_wtgRDr": {
+      "type": "gmc-faq",
+      "blocks": {
+        "question_fJ7NXU": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Replace this with your own answer.</p>"
+          }
+        },
+        "question_QjQxCp": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Replace this with your own answer.</p>"
+          }
+        },
+        "question_nbDXfV": {
+          "type": "question",
+          "settings": {
+            "question": "How can I contact you?",
+            "answer": "<p>Replace this with your own answer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_fJ7NXU",
+        "question_QjQxCp",
+        "question_nbDXfV"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "heading": "Frequently asked questions",
+        "heading_size": "h1",
+        "subheading": "",
+        "align": "center",
+        "style": "lined",
+        "width": "narrow",
+        "open_first": false,
+        "seo": true,
+        "color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     },
     "newsletter": {
@@ -267,17 +645,25 @@
         "email_form"
       ],
       "settings": {
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-4",
         "full_width": true,
+        "button_type": "arrow",
+        "solid_label": "Sign up",
+        "button_secondary": false,
         "padding_top": 40,
         "padding_bottom": 52,
         "gmc_hide_on": "",
         "gmc_bg_overlay": 0,
         "gmc_atc_product": "",
         "gmc_atc_label": "Add to cart",
+        "gmc_atc_skip": false,
         "gmc_atc_align": "center",
         "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
+        "gmc_slider_autoplay": 0,
+        "gmc_display_on": "all",
+        "gmc_anchor": "",
+        "gmc_pair_with": "",
+        "gmc_pair_rev": false
       }
     }
   },
@@ -285,8 +671,13 @@
     "slideshow",
     "rich_text_1",
     "featured_collection",
+    "rich_text_XeXMcV",
     "rich_text_2",
     "featured_product",
+    "image_with_text_FHAb8x",
+    "image_with_text_dzK8zy",
+    "image_with_text_gbPL6p",
+    "gmc_faq_wtgRDr",
     "newsletter"
   ]
 }
