@@ -57,29 +57,6 @@
     "b2"
    ]
   },
-  "gmc-product-extras": {
-   "type": "gmc-product-extras",
-   "blocks": {
-    "b0": {
-     "type": "urgency"
-    },
-    "b1": {
-     "type": "estimated_delivery"
-    },
-    "b2": {
-     "type": "benefits"
-    },
-    "b3": {
-     "type": "payment_badges"
-    }
-   },
-   "block_order": [
-    "b0",
-    "b1",
-    "b2",
-    "b3"
-   ]
-  },
   "gmc-product-features": {
    "type": "gmc-product-features",
    "blocks": {
@@ -110,29 +87,12 @@
     "b1",
     "b2"
    ]
-  },
-  "gmc-product-more": {
-   "type": "gmc-product-more",
-   "blocks": {
-    "b0": {
-     "type": "complimentary"
-    },
-    "b1": {
-     "type": "clickable_discount"
-    }
-   },
-   "block_order": [
-    "b0",
-    "b1"
-   ]
   }
  },
  "order": [
   "gmc-page-music",
   "gmc-parallax-hero",
   "gmc-pricing-table",
-  "gmc-product-extras",
-  "gmc-product-features",
-  "gmc-product-more"
+  "gmc-product-features"
  ]
 }

@@ -69,9 +69,6 @@
     "b1",
     "b2"
    ]
-  },
-  "gmc-sticky-atc": {
-   "type": "gmc-sticky-atc"
   }
  },
  "order": [
@@ -79,7 +76,6 @@
   "gmc-section-divider",
   "gmc-section-group",
   "gmc-sections-group",
-  "gmc-shoppable-image",
-  "gmc-sticky-atc"
+  "gmc-shoppable-image"
  ]
 }

@@ -1,36 +1,5 @@
 {
  "sections": {
-  "gmc-quantity-breaks": {
-   "type": "gmc-quantity-breaks",
-   "blocks": {
-    "b0": {
-     "type": "tier"
-    },
-    "b1": {
-     "type": "tier",
-     "settings": {
-      "qty": 2,
-      "label": "Buy 2"
-     }
-    },
-    "b2": {
-     "type": "tier",
-     "settings": {
-      "qty": 3,
-      "label": "Buy 3",
-      "badge": "Best value"
-     }
-    }
-   },
-   "block_order": [
-    "b0",
-    "b1",
-    "b2"
-   ]
-  },
-  "gmc-reading-time": {
-   "type": "gmc-reading-time"
-  },
   "gmc-recently-viewed": {
    "type": "gmc-recently-viewed"
   },
@@ -52,28 +21,10 @@
     "b1",
     "b2"
    ]
-  },
-  "gmc-reviews": {
-   "type": "gmc-reviews",
-   "blocks": {
-    "b0": {
-     "type": "rating_summary"
-    },
-    "b1": {
-     "type": "write_review_button"
-    }
-   },
-   "block_order": [
-    "b0",
-    "b1"
-   ]
   }
  },
  "order": [
-  "gmc-quantity-breaks",
-  "gmc-reading-time",
   "gmc-recently-viewed",
-  "gmc-results",
-  "gmc-reviews"
+  "gmc-results"
  ]
 }

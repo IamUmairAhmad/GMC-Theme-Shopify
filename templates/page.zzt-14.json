@@ -3,9 +3,6 @@
   "page": {
    "type": "page"
   },
-  "quick-order-list": {
-   "type": "quick-order-list"
-  },
   "rich-text": {
    "type": "rich-text",
    "blocks": {
@@ -46,7 +43,6 @@
  },
  "order": [
   "page",
-  "quick-order-list",
   "rich-text",
   "slideshow",
   "video"

@@ -1,16 +1,5 @@
 {
  "sections": {
-  "announcement-bar": {
-   "type": "announcement-bar",
-   "blocks": {
-    "b0": {
-     "type": "announcement"
-    }
-   },
-   "block_order": [
-    "b0"
-   ]
-  },
   "apps": {
    "type": "apps"
   },
@@ -80,7 +69,6 @@
   }
  },
  "order": [
-  "announcement-bar",
   "apps",
   "collage",
   "collapsible-content",

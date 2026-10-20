@@ -3,9 +3,6 @@
   "gmc-sticky-cta": {
    "type": "gmc-sticky-cta"
   },
-  "gmc-subscription": {
-   "type": "gmc-subscription"
-  },
   "gmc-testimonials": {
    "type": "gmc-testimonials",
    "blocks": {
@@ -112,7 +109,6 @@
  },
  "order": [
   "gmc-sticky-cta",
-  "gmc-subscription",
   "gmc-testimonials",
   "gmc-ticker",
   "gmc-tiktok-videos",

@@ -3,28 +3,6 @@
   "custom-liquid": {
    "type": "custom-liquid"
   },
-  "disclosures": {
-   "type": "disclosures"
-  },
-  "email-signup-banner": {
-   "type": "email-signup-banner",
-   "blocks": {
-    "b0": {
-     "type": "heading"
-    },
-    "b1": {
-     "type": "paragraph"
-    },
-    "b2": {
-     "type": "email_form"
-    }
-   },
-   "block_order": [
-    "b0",
-    "b1",
-    "b2"
-   ]
-  },
   "featured-blog": {
    "type": "featured-blog"
   },
@@ -73,8 +51,6 @@
  },
  "order": [
   "custom-liquid",
-  "disclosures",
-  "email-signup-banner",
   "featured-blog",
   "featured-collection",
   "featured-product"
