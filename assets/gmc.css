@@ -275,3 +275,7 @@ shopify-account a:focus-visible,shopify-account button:focus-visible,.product__m
 .swatch-input__input:checked+.swatch-input__label .swatch{border-color:rgb(var(--color-foreground))}
 label.gmc-swatch,label.gmc-imgsw{border:.2rem solid rgba(var(--color-foreground),.55)!important}
 .product-form__input--pill input[type=radio]:checked+label.gmc-swatch{border-color:rgb(var(--color-foreground))!important}
+
+/* Recently viewed / wishlist / compare card titles follow the scheme's text colour (white on Color Scheme 4) */
+.gmc-sc__t,.gmc-sc__t:hover,.gmc-sc__t:visited{color:rgb(var(--color-foreground))}
+.gmc-sc__p{color:rgb(var(--color-foreground))}
