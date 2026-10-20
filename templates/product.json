@@ -60,7 +60,6 @@
         },
         "quantity_selector": {
           "type": "quantity_selector",
-          "disabled": true,
           "settings": {
             "gmc_mt": 0,
             "gmc_mb": 0
@@ -83,6 +82,7 @@
         "description": {
           "type": "description",
           "settings": {
+            "gmc_desc_pos": "info",
             "gmc_mt": 0,
             "gmc_mb": 0
           }
@@ -202,7 +202,6 @@
         "g1",
         "g2"
       ],
-      "disabled": true,
       "settings": {
         "move_into_info": true,
         "fittings": "Men, Women",
