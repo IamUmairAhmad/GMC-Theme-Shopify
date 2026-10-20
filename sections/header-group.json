@@ -15,7 +15,7 @@
       "type": "gmc-ticker",
       "disabled": true,
       "settings": {
-        "bg": "#121212",
+        "bg": "#000000",
         "fg": "#ffffff",
         "speed": 30,
         "size": 14,
