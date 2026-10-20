@@ -309,7 +309,15 @@
           "shadow": "#121212"
         }
       }
-    }
+    },
+    "gmc_popup_enabled": true,
+    "gmc_popup_preview": "testing",
+    "gmc_popup_mode": "email",
+    "gmc_popup_display": "center",
+    "gmc_popup_countdown": 10,
+    "gmc_popup_prefix": "Limited offer",
+    "gmc_popup_suffix": "Ends soon",
+    "gmc_popup_dismiss": "No thanks"
   },
   "presets": {
     "GMC Theme": {
