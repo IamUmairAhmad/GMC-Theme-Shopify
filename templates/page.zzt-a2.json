@@ -1,0 +1,18 @@
+{
+ "sections": {
+  "main-account": {
+   "type": "main-account"
+  },
+  "main-addresses": {
+   "type": "main-addresses"
+  },
+  "main-order": {
+   "type": "main-order"
+  }
+ },
+ "order": [
+  "main-account",
+  "main-addresses",
+  "main-order"
+ ]
+}
