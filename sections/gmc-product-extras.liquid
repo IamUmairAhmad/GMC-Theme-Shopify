@@ -7,7 +7,7 @@
 <div class="gmc-pe {% render 'gmc-vis', hide: section.settings.hide_on %}">
 <script type="application/json" class="gmc-vdata">[{%- for pv in product.variants -%}{"id":{{ pv.id }},"a":{{ pv.available | json }},"q":{% if pv.inventory_management != blank %}{{ pv.inventory_quantity | default: 0 }}{% else %}null{% endif %}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]</script>
 {%- for block in section.blocks -%}
-  <div class="gmc-pe__b" style="margin-bottom:{{ block.settings.mb }}px" {{ block.shopify_attributes }}>
+  <div class="gmc-pe__b" style="margin-bottom:{{ block.settings.mb }}px"{% if section.settings.under_buttons and block.type == 'estimated_delivery' %} data-gmc-under="2"{% elsif section.settings.under_buttons and block.type == 'payment_badges' %} data-gmc-under="1"{% endif %} {{ block.shopify_attributes }}>
   {%- case block.type -%}{%- when 'urgency' -%}
       <p class="gmc-pe__urg" data-gmc-urg data-threshold="{{ block.settings.threshold }}" data-fallback="{{ block.settings.fallback | escape }}" {% unless v.inventory_management != blank and v.inventory_quantity > 0 and v.inventory_quantity <= block.settings.threshold or block.settings.fallback != blank and v.available %}hidden{% endunless %}>{%- if v.inventory_management != blank and v.inventory_quantity > 0 and v.inventory_quantity <= block.settings.threshold -%}🔥 Only {{ v.inventory_quantity }} left in stock — order soon{%- elsif v.available -%}{{ block.settings.fallback | escape }}{%- endif -%}</p>
     {%- when 'inventory' -%}
@@ -91,7 +91,17 @@
   </div>
 {%- endfor -%}
 </div>
-<style>.gmc-pe__urg{color:#b91c1c;font-weight:600;margin:0}.gmc-pe__stock{color:#16a34a;margin:0}.gmc-pe__eta,.gmc-pe__ts,.gmc-pe__ti{margin:0}.gmc-pe__ben{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}.gmc-pe__ben li:before{content:"✅ "}.gmc-pe__cp{list-style:none;display:flex;justify-content:space-between;text-align:center;padding:0;margin:0}.gmc-pe__bs{display:inline-block;background:#f59e0b;color:#111;font-weight:700;padding:3px 12px;border-radius:var(--badge-corner-radius,99px);font-size:1.2rem}.gmc-pe__sz summary{cursor:pointer;font-weight:600;text-decoration:underline}.gmc-pe__cf{display:grid;gap:.4rem;font-weight:600}.gmc-pe__cf[data-invalid] .field__input,.gmc-pe__cf[data-invalid] .gmc-pe__pill span{border-color:#b91c1c}.gmc-pe__cferr{color:#b91c1c;font-weight:400}.gmc-pe__pills{display:flex;gap:.6rem;flex-wrap:wrap}.gmc-pe__pill input{position:absolute;opacity:0;pointer-events:none}.gmc-pe__pill span{display:inline-block;padding:.7rem 1.4rem;border:1px solid rgba(var(--color-foreground),.3);border-radius:99px;cursor:pointer;font-weight:400}.gmc-pe__pill input:checked+span{background:rgb(var(--color-foreground));color:rgb(var(--color-background));border-color:rgb(var(--color-foreground))}.gmc-pe__pill input:focus-visible+span{outline:2px solid currentColor;outline-offset:2px}.gmc-pe__ra{display:flex;align-items:center;gap:1rem}.gmc-pe__stack{display:flex}.gmc-pe__stack img{border-radius:50%;border:2px solid rgb(var(--color-background));margin-left:-10px;object-fit:cover}.gmc-pe__stack img:first-child{margin-left:0}.gmc-pe__bc{font-size:1.2rem;opacity:.75}
+{%- if section.settings.under_buttons -%}
+<script>
+(function(){try{var w=document.currentScript.previousElementSibling;if(!w)return;var items=[].slice.call(w.querySelectorAll('[data-gmc-under]'));if(!items.length)return;
+var info=document.querySelector('[id^="MainProduct-"] .product__info-container');if(!info)return;
+var anchor=info.querySelector(':scope > .gmc-buy');if(!anchor){var pf=info.querySelector('product-form');while(pf&&pf.parentElement!==info)pf=pf.parentElement;anchor=pf;}
+if(!anchor)return;var box=info.querySelector(':scope > .gmc-under');if(!box){box=document.createElement('div');box.className='gmc-under';anchor.parentNode.insertBefore(box,anchor.nextSibling);}
+items.sort(function(a,b){return a.dataset.gmcUnder-b.dataset.gmcUnder;}).forEach(function(i){box.appendChild(i);});
+var host=w.closest('.shopify-section');if(host&&!w.querySelector('.gmc-pe__b')){host.style.display='none';}}catch(e){}})();
+</script>
+{%- endif -%}
+<style>.gmc-under{margin:1.2rem 0}.gmc-under>.gmc-pe__b{margin-bottom:.8rem!important}.gmc-pe__urg{color:#b91c1c;font-weight:600;margin:0}.gmc-pe__stock{color:#16a34a;margin:0}.gmc-pe__eta,.gmc-pe__ts,.gmc-pe__ti{margin:0}.gmc-pe__ben{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}.gmc-pe__ben li:before{content:"✅ "}.gmc-pe__cp{list-style:none;display:flex;justify-content:space-between;text-align:center;padding:0;margin:0}.gmc-pe__bs{display:inline-block;background:#f59e0b;color:#111;font-weight:700;padding:3px 12px;border-radius:var(--badge-corner-radius,99px);font-size:1.2rem}.gmc-pe__sz summary{cursor:pointer;font-weight:600;text-decoration:underline}.gmc-pe__cf{display:grid;gap:.4rem;font-weight:600}.gmc-pe__cf[data-invalid] .field__input,.gmc-pe__cf[data-invalid] .gmc-pe__pill span{border-color:#b91c1c}.gmc-pe__cferr{color:#b91c1c;font-weight:400}.gmc-pe__pills{display:flex;gap:.6rem;flex-wrap:wrap}.gmc-pe__pill input{position:absolute;opacity:0;pointer-events:none}.gmc-pe__pill span{display:inline-block;padding:.7rem 1.4rem;border:1px solid rgba(var(--color-foreground),.3);border-radius:99px;cursor:pointer;font-weight:400}.gmc-pe__pill input:checked+span{background:rgb(var(--color-foreground));color:rgb(var(--color-background));border-color:rgb(var(--color-foreground))}.gmc-pe__pill input:focus-visible+span{outline:2px solid currentColor;outline-offset:2px}.gmc-pe__ra{display:flex;align-items:center;gap:1rem}.gmc-pe__stack{display:flex}.gmc-pe__stack img{border-radius:50%;border:2px solid rgb(var(--color-background));margin-left:-10px;object-fit:cover}.gmc-pe__stack img:first-child{margin-left:0}.gmc-pe__bc{font-size:1.2rem;opacity:.75}
 .gmc-pe__comp{display:flex;gap:1rem;align-items:center;padding:.9rem 1.1rem;border:1px dashed rgba(var(--color-foreground),.35);border-radius:var(--text-boxes-radius);cursor:pointer}.gmc-pe__comp img{border-radius:var(--media-radius);object-fit:cover}
 .gmc-pe__code{display:flex;gap:1rem;align-items:center;width:100%;padding:.9rem 1.2rem;border:2px dashed {{ settings.gmc_accent }};border-radius:10px;background:transparent;color:inherit;font:inherit;cursor:pointer;text-align:left}.gmc-pe__code b{background:{{ settings.gmc_accent }};color:#fff;padding:2px 10px;border-radius:6px}.gmc-pe__code small{margin-left:auto;opacity:.65}
 .gmc-pe__link{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;color:inherit;font:inherit}.gmc-pe__dlg{max-width:560px;width:92vw;border:0;border-radius:var(--text-boxes-radius);padding:2rem;position:relative}.gmc-pe__dlg::backdrop{background:rgba(0,0,0,.55)}.gmc-pe__dx{position:absolute;top:.5rem;right:1rem;background:none;border:0;font-size:2.6rem;cursor:pointer}
@@ -120,6 +130,13 @@
     ]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "under_buttons",
+      "label": "Show delivery estimate and payment icons under the buy buttons",
+      "info": "Moves those two blocks into the product info, directly below Add to cart and Buy it now. Other blocks stay where they are.",
+      "default": true
+    },
     {
       "type": "select",
       "id": "hide_on",

@@ -51,53 +51,6 @@
         "gmc_slider_autoplay": 0
       }
     },
-    "collection_list": {
-      "type": "collection-list",
-      "blocks": {
-        "featured_collection_d6zyhq": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": ""
-          }
-        },
-        "featured_collection_HUpE6P": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": ""
-          }
-        },
-        "featured_collection_xN7BQ8": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": ""
-          }
-        }
-      },
-      "block_order": [
-        "featured_collection_d6zyhq",
-        "featured_collection_HUpE6P",
-        "featured_collection_xN7BQ8"
-      ],
-      "settings": {
-        "title": "Shop by collection",
-        "heading_size": "h1",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "gmc_hide_on": "",
-        "gmc_bg_overlay": 0,
-        "gmc_atc_product": "",
-        "gmc_atc_label": "Add to cart",
-        "gmc_atc_align": "center",
-        "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
-      }
-    },
     "rich_text_1": {
       "type": "rich-text",
       "blocks": {
@@ -111,7 +64,7 @@
         "t": {
           "type": "text",
           "settings": {
-            "text": "<p>A short introduction to your store and what you offer.</p>"
+            "text": "<p>Browse the full range, from everyday essentials to gifts.</p>"
           }
         },
         "b": {
@@ -188,21 +141,21 @@
         "h": {
           "type": "heading",
           "settings": {
-            "heading": "Made with care",
+            "heading": "Shop with confidence",
             "heading_size": "h1"
           }
         },
         "t": {
           "type": "text",
           "settings": {
-            "text": "<p>Share your story, your values, or what sets your products apart.</p>"
+            "text": "<p>Secure checkout, clear policies and friendly support on every order.</p>"
           }
         },
         "b": {
           "type": "button",
           "settings": {
-            "button_label": "Our story",
-            "button_link": "shopify://collections/all",
+            "button_label": "Contact us",
+            "button_link": "shopify://pages/contact",
             "button_style_secondary": false,
             "button_label_2": "",
             "button_link_2": "",
@@ -271,7 +224,7 @@
         "buy_buttons"
       ],
       "settings": {
-                "color_scheme": "scheme-1",
+        "color_scheme": "scheme-1",
         "secondary_background": false,
         "media_size": "medium",
         "constrain_to_viewport": true,
@@ -283,218 +236,8 @@
         "padding_top": 36,
         "padding_bottom": 36,
         "gmc_hide_on": "",
-        "gmc_bg_overlay": 0
-      }
-    },
-    "rich_text_3": {
-      "type": "rich-text",
-      "blocks": {
-        "h": {
-          "type": "heading",
-          "settings": {
-            "heading": "Why shoppers choose us",
-            "heading_size": "h1"
-          }
-        },
-        "t": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Highlight a few reasons to buy from your store.</p>"
-          }
-        },
-        "b": {
-          "type": "button",
-          "settings": {
-            "button_label": "Learn more",
-            "button_link": "shopify://collections/all",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "h",
-        "t",
-        "b"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-1",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52,
-        "gmc_hide_on": "",
         "gmc_bg_overlay": 0,
-        "gmc_atc_product": "",
-        "gmc_atc_label": "Add to cart",
-        "gmc_atc_align": "center",
-        "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
-      }
-    },
-    "image_with_text_ENN4LW": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_FKjqgM": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image with text",
-            "heading_size": "h1"
-          }
-        },
-        "text_HnygVH": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "text_style": "body"
-          }
-        },
-        "button_Nc8AiX": {
-          "type": "button",
-          "settings": {
-            "button_label": "Button label",
-            "button_link": "",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_FKjqgM",
-        "text_HnygVH",
-        "button_Nc8AiX"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "image_behavior": "none",
-        "content_layout": "no-overlap",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "gmc_hide_on": "",
-        "gmc_bg_overlay": 0,
-        "gmc_atc_product": "",
-        "gmc_atc_label": "Add to cart",
-        "gmc_atc_align": "center",
-        "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
-      }
-    },
-    "image_with_text_xE3cEC": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_VUR49q": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image with text",
-            "heading_size": "h1"
-          }
-        },
-        "text_mtLN6T": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "text_style": "body"
-          }
-        },
-        "button_8V4rT6": {
-          "type": "button",
-          "settings": {
-            "button_label": "Button label",
-            "button_link": "",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_VUR49q",
-        "text_mtLN6T",
-        "button_8V4rT6"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "text_first",
-        "image_behavior": "none",
-        "content_layout": "no-overlap",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "gmc_hide_on": "",
-        "gmc_bg_overlay": 0,
-        "gmc_atc_product": "",
-        "gmc_atc_label": "Add to cart",
-        "gmc_atc_align": "center",
-        "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
-      }
-    },
-    "image_with_text_LziAkG": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_mBdRzK": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image with text",
-            "heading_size": "h1"
-          }
-        },
-        "text_k7CFU4": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "text_style": "body"
-          }
-        },
-        "button_aLxPFk": {
-          "type": "button",
-          "settings": {
-            "button_label": "Button label",
-            "button_link": "",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_mBdRzK",
-        "text_k7CFU4",
-        "button_aLxPFk"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "image_behavior": "none",
-        "content_layout": "no-overlap",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36,
-        "gmc_hide_on": "",
-        "gmc_bg_overlay": 0,
-        "gmc_atc_product": "",
-        "gmc_atc_label": "Add to cart",
-        "gmc_atc_align": "center",
-        "gmc_swipe_mobile": false,
-        "gmc_slider_autoplay": 0
+        "product": "gmc-demo-cap"
       }
     },
     "newsletter": {
@@ -540,15 +283,10 @@
   },
   "order": [
     "slideshow",
-    "collection_list",
     "rich_text_1",
     "featured_collection",
     "rich_text_2",
     "featured_product",
-    "rich_text_3",
-    "image_with_text_ENN4LW",
-    "image_with_text_xE3cEC",
-    "image_with_text_LziAkG",
     "newsletter"
   ]
 }
