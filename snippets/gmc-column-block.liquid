@@ -5,62 +5,104 @@
 {%- assign b = block.settings -%}
 {%- case block.type -%}
   {%- when 'heading' -%}
-    {%- case b.size -%}
-      {%- when 'h1' -%}<h1 class="gmc-cb__h" style="text-align:{{ b.align | default: 'left' }}">{{ b.heading | escape }}</h1>
-      {%- when 'h3' -%}<h3 class="gmc-cb__h" style="text-align:{{ b.align | default: 'left' }}">{{ b.heading | escape }}</h3>
-      {%- else -%}<h2 class="gmc-cb__h" style="text-align:{{ b.align | default: 'left' }}">{{ b.heading | escape }}</h2>
-    {%- endcase -%}
+    <h2 class="gmc-cb__h gmc-cb__h--{{ b.size | default: 'h1' }}">{{ b.heading | escape }}</h2>
   {%- when 'richtext' -%}
-    <div class="rte" style="text-align:{{ b.align | default: 'left' }}">{{ b.text }}</div>
+    <div class="rte gmc-cb__rt gmc-cb__rt--{{ b.text_style | default: 'body' }}">{{ b.text }}</div>
   {%- when 'rating_stars' -%}
-    <p class="gmc-cb__stars" style="text-align:{{ b.align | default: 'left' }}">
-      {%- if b.link != blank -%}<a href="{{ b.link }}">{%- endif -%}
-      <span style="color:{{ b.color | default: '#f5a623' }}" aria-label="{{ b.stars }} out of 5">{%- for n in (1..5) -%}{%- if n <= b.stars -%}★{%- else -%}<span style="opacity:.25">★</span>{%- endif -%}{%- endfor -%}</span>
-      {{ b.label | escape }}
-      {%- if b.link != blank -%}</a>{%- endif -%}
+    {%- liquid
+      assign star_fill = b.stars | times: 20
+      assign star_href = b.link
+      if star_href == blank and b.scroll_id != blank
+        assign star_href = b.scroll_id | remove: '#' | prepend: '#'
+      endif
+    -%}
+    <p class="gmc-cb__stars" style="--star:{{ b.color | default: '#f5a623' }};--star-bg:{{ b.bg_color | default: '#ececec' }};--star-size:{{ b.size | default: 16 }}px">
+      {%- if star_href != blank -%}<a href="{{ star_href }}">{%- endif -%}
+      <span class="gmc-cb__starbox{% if b.bg_style == 'outlined' %} gmc-cb__starbox--line{% endif %}" style="--fill:{{ star_fill }}%" role="img" aria-label="{{ b.stars }} out of 5">
+        <span class="gmc-cb__starbg" aria-hidden="true">★★★★★</span>
+        <span class="gmc-cb__starfg" aria-hidden="true">★★★★★</span>
+      </span>
+      {%- if b.label != blank -%}<span class="gmc-cb__starlabel">{{ b.label | escape }}</span>{%- endif -%}
+      {%- if star_href != blank -%}</a>{%- endif -%}
     </p>
   {%- when 'buttons' -%}
-    <div class="gmc-cb__btns" style="justify-content:{% if b.align == 'center' %}center{% elsif b.align == 'right' %}flex-end{% else %}flex-start{% endif %}">
+    <div class="gmc-cb__btns{% if b.full_width %} gmc-cb__btns--full{% endif %}">
       {%- if b.label_1 != blank -%}<a class="button{% if b.secondary_1 %} button--secondary{% endif %}" {% if b.link_1 == blank %}role="link" aria-disabled="true"{% else %}href="{{ b.link_1 }}"{% endif %}>{{ b.label_1 | escape }}</a>{%- endif -%}
       {%- if b.label_2 != blank -%}<a class="button{% if b.secondary_2 %} button--secondary{% endif %}" {% if b.link_2 == blank %}role="link" aria-disabled="true"{% else %}href="{{ b.link_2 }}"{% endif %}>{{ b.label_2 | escape }}</a>{%- endif -%}
     </div>
   {%- when 'atc_button' -%}
-    <div style="text-align:{{ b.align | default: 'left' }}">{%- render 'gmc-inline-atc', product: b.product, label: b.label, skip: b.skip, align: b.align -%}</div>
+    {%- render 'gmc-inline-atc', product: b.product, label: b.label, skip: b.skip, align: b.align -%}
   {%- when 'text_with_icon' -%}
-    <div class="gmc-cb__tis" style="text-align:{{ b.align | default: 'left' }}">
-      {%- if b.text_1 != blank or b.icon_1 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_1, size: 20 -%} {{ b.text_1 | escape }}</p>{%- endif -%}
-      {%- if b.text_2 != blank or b.icon_2 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_2, size: 20 -%} {{ b.text_2 | escape }}</p>{%- endif -%}
-      {%- if b.text_3 != blank or b.icon_3 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_3, size: 20 -%} {{ b.text_3 | escape }}</p>{%- endif -%}
+    <div class="gmc-cb__tis gmc-cb__tis--{{ b.direction | default: 'horizontal' }}{% if b.enable_bg %} gmc-cb__tis--bg{% endif %}{% if b.width == 'fit-content' %} gmc-cb__tis--fit{% endif %}" style="--tx:{{ b.text_color | default: '#121212' }};--ic:{{ b.icon_color | default: '#121212' }};--isz:{{ b.icon_scale | default: 120 | divided_by: 100.0 }};--ts:{{ b.size_desktop | default: 16 }}px;--tsm:{{ b.size_mobile | default: 14 }}px;--gap:{{ b.stack_gap | default: 12 }}px;--bg:{{ b.bg_color | default: '#F3F3F3' }};--br:{{ b.corner_radius | default: 12 }}px;--pad:{{ b.padding | default: 12 }}px;--bw:{{ b.border_size | default: 0 }}px;--bc:{{ b.border_color | default: '#B7B7B7' }}">
+      {%- if b.text_1 != blank or b.icon_1 != blank or b.image_1 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_1, image: b.image_1, size: 20, filled: b.filled_1 -%} {{ b.text_1 | escape }}</p>{%- endif -%}
+      {%- if b.text_2 != blank or b.icon_2 != blank or b.image_2 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_2, image: b.image_2, size: 20, filled: b.filled_2 -%} {{ b.text_2 | escape }}</p>{%- endif -%}
+      {%- if b.text_3 != blank or b.icon_3 != blank or b.image_3 != blank -%}<p>{%- render 'gmc-icon', name: b.icon_3, image: b.image_3, size: 20, filled: b.filled_3 -%} {{ b.text_3 | escape }}</p>{%- endif -%}
     </div>
   {%- when 'icon_with_text' -%}
-    <div class="gmc-cb__iwt gmc-cb__iwt--{{ b.position }}" style="text-align:{{ b.align | default: 'left' }}">
-      <span class="gmc-cb__ic">{%- render 'gmc-icon', name: b.icon_name, image: b.image, size: b.icon_size, filled: b.filled -%}</span>
-      <span>
-        {%- if b.title != blank -%}<strong>{{ b.title | escape }}</strong>{%- endif -%}
-        {%- if b.text != blank -%}<span class="gmc-cb__sub">{{ b.text | escape }}</span>{%- endif -%}
-      </span>
+    <div class="gmc-cb__iwt gmc-cb__iwt--{{ b.position | default: 'left' }}">
+      <span class="gmc-cb__ic" style="color:{{ b.icon_color | default: 'inherit' }}">{%- render 'gmc-icon', name: b.icon_name, image: b.image, size: b.icon_size, filled: b.filled -%}</span>
+      {%- if b.position == 'title' -%}
+        {%- if b.title != blank -%}<strong class="gmc-cb__ih gmc-cb__ih--{{ b.title_size | default: 'h3' }}">{{ b.title | escape }}</strong>{%- endif -%}
+        {%- if b.text != blank -%}<div class="rte gmc-cb__sub">{{ b.text }}</div>{%- endif -%}
+      {%- else -%}
+        <span class="gmc-cb__copy">
+          {%- if b.title != blank -%}<strong class="gmc-cb__ih gmc-cb__ih--{{ b.title_size | default: 'h3' }}">{{ b.title | escape }}</strong>{%- endif -%}
+          {%- if b.text != blank -%}<div class="rte gmc-cb__sub">{{ b.text }}</div>{%- endif -%}
+        </span>
+      {%- endif -%}
     </div>
   {%- when 'image' -%}
-    {%- if b.image != blank -%}
-      <div style="width:{{ b.width }}%;{% if b.align == 'center' %}margin-inline:auto;{% elsif b.align == 'right' %}margin-left:auto;{% endif %}">
+    <div class="gmc-cb__media" style="width:{{ b.width | default: 100 }}%">
+      {%- if b.image != blank -%}
         {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 800, 1200', alt: b.image.alt, style: 'width:100%;height:auto;border-radius:' | append: b.radius | append: 'px' }}
-      </div>
-    {%- endif -%}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg gmc-cb__ph' }}
+      {%- endif -%}
+    </div>
   {%- when 'video' -%}
-    {%- if b.video != blank -%}
-      <div class="gmc-cb__vid" style="width:{{ b.width }}%;border-radius:{{ b.radius }}px">
-        <video playsinline preload="metadata" {% if b.autoplay %}autoplay muted{% endif %}{% if b.loop %} loop{% endif %}{% if b.image != blank %} poster="{{ b.image | image_url: width: 1200 }}"{% endif %}{% unless b.autoplay %} controls{% endunless %}>
+    {%- liquid
+      assign show_play = false
+      if b.play or b.autoplay == false
+        assign show_play = true
+      endif
+      assign show_ui = false
+      if show_play or b.sound or b.timeline
+        assign show_ui = true
+      endif
+    -%}
+    <div class="gmc-cb__media gmc-cb__vid{% if b.ripple and show_play %} gmc-cb__vid--ripple{% endif %}" style="width:{{ b.width | default: 100 }}%;border-radius:{{ b.radius | default: 0 }}px"{% if show_ui %} data-gmc-vid{% endif %}>
+      {%- if b.video != blank -%}
+        <video playsinline preload="metadata" {% if b.autoplay %}autoplay muted{% endif %}{% if b.loop %} loop{% endif %}{% if b.image != blank %} poster="{{ b.image | image_url: width: 1200 }}"{% endif %}{% unless show_ui %} controls{% endunless %}>
           {%- for source in b.video.sources -%}{%- if source.format == 'mp4' -%}<source src="{{ source.url }}" type="video/mp4">{%- endif -%}{%- endfor -%}
         </video>
-      </div>
-    {%- endif -%}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg gmc-cb__ph' }}
+      {%- endif -%}
+      {%- if show_ui and b.video != blank -%}
+        <div class="gmc-cb__vc">
+          {%- if show_play -%}<button type="button" data-gmc-vplay aria-label="Play or pause">{% if b.autoplay %}❚❚{% else %}▶{% endif %}</button>{%- endif -%}
+          {%- if b.sound -%}<button type="button" data-gmc-vsound aria-label="Sound on or off">🔇</button>{%- endif -%}
+          {%- if b.timeline -%}<i class="gmc-cb__vt"><b></b></i>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
   {%- when 'accordion' -%}
-    <details class="gmc-cb__acc">
-      <summary>{{ b.heading | escape }}</summary>
-      <div class="rte">{{ b.content }}</div>
+    <details class="gmc-cb__acc gmc-cb__acc--{{ b.heading_size | default: 'medium' }}{% if b.top_border == false %} gmc-cb__acc--plain{% endif %}">
+      <summary>
+        <span class="gmc-cb__acc-t">
+          {%- if b.custom_icon != blank -%}
+            <img src="{{ b.custom_icon | image_url: width: 80 }}" width="20" height="20" alt="" loading="lazy">
+          {%- elsif b.icon != blank -%}
+            {%- render 'gmc-icon', name: b.icon, size: 20, filled: b.filled -%}
+          {%- endif -%}
+          <span>{{ b.heading | default: b.page.title | escape }}</span>
+        </span>
+        <span class="gmc-cb__acc-i gmc-cb__acc-i--{{ b.collapse_icon | default: 'caret' }}" aria-hidden="true"></span>
+      </summary>
+      <div class="rte">{{ b.content }}{{ b.page.content }}</div>
     </details>
   {%- when 'payment_badges' -%}
-    <ul class="gmc-cb__pay" role="list" style="justify-content:{% if b.align == 'center' %}center{% elsif b.align == 'right' %}flex-end{% else %}flex-start{% endif %}">
+    <ul class="gmc-cb__pay" role="list">
       {%- if b.types != blank -%}
         {%- assign pay_list = b.types | split: ',' -%}
         {%- for type in pay_list -%}
@@ -73,15 +115,27 @@
       {%- endif -%}
     </ul>
   {%- when 'email_signup' -%}
+    {%- if b.heading != blank -%}<h3 class="gmc-cb__mail-h">{{ b.heading | escape }}</h3>{%- endif -%}
+    {%- if b.subtext != blank -%}<div class="rte gmc-cb__mail-sub">{{ b.subtext }}</div>{%- endif -%}
     {%- form 'customer', class: 'gmc-cb__mail' -%}
       {%- if form.posted_successfully? -%}
         <p role="status">{{ b.success | escape }}</p>
-      {%- else -%}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <label class="visually-hidden" for="gmc-cb-email-{{ block.id }}">{{ b.label | escape }}</label>
-        <input id="gmc-cb-email-{{ block.id }}" type="email" name="contact[email]" required placeholder="{{ b.label | escape }}" autocomplete="email">
-        <button class="button" type="submit">{{ b.button | escape }}</button>
+      {%- elsif form.errors -%}
+        <p role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
       {%- endif -%}
+      {%- unless form.posted_successfully? -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="gmc-cb__mail-row{% if b.button_type == 'arrow' %} gmc-cb__mail-row--arrow{% endif %}">
+          <label class="visually-hidden" for="gmc-cb-email-{{ block.id }}">{{ b.label | escape }}</label>
+          <input id="gmc-cb-email-{{ block.id }}" type="email" name="contact[email]" value="{{ form.email }}" required placeholder="{{ b.label | escape }}" autocomplete="email"{% if form.errors %} aria-invalid="true"{% endif %}>
+          {%- if b.button_type == 'arrow' -%}
+            <button class="gmc-cb__arrow" type="submit" aria-label="{{ b.button | escape }}">{%- render 'gmc-icon', name: 'arrow-right', size: 18 -%}</button>
+          {%- endif -%}
+        </div>
+        {%- unless b.button_type == 'arrow' -%}
+          <button class="button{% if b.secondary %} button--secondary{% endif %}" type="submit">{{ b.button | escape }}</button>
+        {%- endunless -%}
+      {%- endunless -%}
     {%- endform -%}
   {%- when 'custom_liquid' -%}
     <div class="rte">{{ b.custom_liquid }}</div>
