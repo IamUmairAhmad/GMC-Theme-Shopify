@@ -44,7 +44,7 @@
     -%}
     <div class="gmc-qb__opt" {{ block.shopify_attributes }} data-qty="{{ q }}" data-type="{{ dtype | default: 'percent' }}" data-pct="{{ block.settings.percent | default: 0 }}" data-fixed="{{ fixed_c }}">
       <label class="gmc-qb__main">
-        <input type="radio" name="gmc-qb-{{ section.id }}" value="{{ q }}" data-gift="{{ block.settings.gift_variant | strip }}" {% if forloop.index == qb_pre %}checked{% endif %}>
+        <input type="radio" name="gmc-qb-{{ section.id }}" value="{{ q }}" data-gift="{{ block.settings.gift_variant | strip | escape }}" {% if forloop.index == qb_pre %}checked{% endif %}>
         {%- if block.settings.image != blank and qb_style != 'compact' -%}<span class="gmc-qb__img">{{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60, 120', alt: block.settings.image.alt | default: '' }}</span>{%- endif -%}
         <span class="gmc-qb__label">
           <strong data-tpl="{{ block.settings.label | escape }}">{% render 'gmc-qb-text', text: block.settings.label, qty: q, total: total, cmp: cmp_total %}</strong>

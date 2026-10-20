@@ -12,7 +12,7 @@
       <button type="button" class="gmc-vp__play" aria-label="Play video">▶</button>
     {%- elsif section.settings.video_url != blank -%}
       {%- assign u = section.settings.video_url.id -%}
-      {%- if section.settings.video_url.type == 'youtube' -%}<iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/{{ u }}?rel=0" allowfullscreen title="Video"></iframe>{%- else -%}<iframe loading="lazy" src="https://player.vimeo.com/video/{{ u }}" allowfullscreen title="Video"></iframe>{%- endif -%}
+      {%- if section.settings.video_url.type == 'youtube' -%}<iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/{{ u | url_encode }}?rel=0" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Video"></iframe>{%- else -%}<iframe loading="lazy" src="https://player.vimeo.com/video/{{ u | url_encode }}" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Video"></iframe>{%- endif -%}
     {%- endif -%}
   </div>
 </div>

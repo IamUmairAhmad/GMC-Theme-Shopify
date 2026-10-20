@@ -709,7 +709,7 @@
         <modal-dialog id="PopupModal-{{ block.id }}" class="product-popup-modal" {{ block.shopify_attributes }}>
           <div
             role="dialog"
-            aria-label="{{ block.settings.text }}"
+            aria-label="{{ block.settings.text | escape }}"
             aria-modal="true"
             class="product-popup-modal__content"
             tabindex="-1"

@@ -10,7 +10,7 @@
   {%- when 'not_cart' -%}{%- if pg != 'cart' -%}{%- assign allowed = true -%}{%- endif -%}
 {%- endcase -%}
 {%- if settings.gmc_popup_enabled and pg != 'password' and pg != 'customers/login' and allowed -%}
-<div class="gmc-pop gmc-pop--{{ settings.gmc_popup_display }}" id="gmc-pop" hidden role="dialog" aria-modal="true" aria-labelledby="gmc-pop-h" data-trigger="{{ settings.gmc_popup_trigger }}" data-delay="{{ settings.gmc_popup_delay | times: 1000 }}" data-freq="{{ settings.gmc_popup_freq }}" data-preview="{{ settings.gmc_popup_preview }}" data-ok-image="{{ settings.gmc_popup_ok_image }}">
+<div class="gmc-pop gmc-pop--{{ settings.gmc_popup_display }}" id="gmc-pop" hidden role="dialog" aria-modal="true" aria-labelledby="gmc-pop-h" data-trigger="{{ settings.gmc_popup_trigger }}" data-delay="{{ settings.gmc_popup_delay | times: 1000 }}" data-freq="{{ settings.gmc_popup_freq }}" data-preview="{{ settings.gmc_popup_preview }}" data-ok-image="{{ settings.gmc_popup_ok_image | escape }}">
   <div class="gmc-pop__box{% if settings.gmc_popup_image != blank %} gmc-pop__box--img gmc-pop__box--img-{{ settings.gmc_popup_image_side | default: 'start' }}{% endif %}">
     <button type="button" class="gmc-pop__x" data-gmc-close aria-label="Close">×</button>
     {%- if settings.gmc_popup_image != blank -%}<div class="gmc-pop__im">{{ settings.gmc_popup_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: '' }}</div>{%- endif -%}
@@ -33,7 +33,7 @@
           {%- endif -%}
         {%- endform -%}
       {%- elsif settings.gmc_popup_link != blank -%}
-        <a class="button" href="{{ settings.gmc_popup_link }}">{{ settings.gmc_popup_btn | escape }}</a>
+        <a class="button" href="{{ settings.gmc_popup_link | escape }}">{{ settings.gmc_popup_btn | escape }}</a>
       {%- endif -%}
       {%- if settings.gmc_popup_dismiss != blank -%}<button type="button" class="link gmc-pop__dismiss" data-gmc-close>{{ settings.gmc_popup_dismiss | escape }}</button>{%- endif -%}
     </div>

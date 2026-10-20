@@ -3,7 +3,7 @@
   var W='gmc_wish',R='gmc_rv',C='gmc_cmp';
   function get(k){try{return JSON.parse(localStorage.getItem(k)||'[]');}catch(e){return [];}}
   function set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-  function esc(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML;}
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
   function fetchP(h){return fetch('/products/'+encodeURIComponent(h)+'.js').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});}
   function cardHtml(p,extra){var img=p.featured_image?'<img src="'+esc(p.featured_image.replace(/(\.[a-z]+)(\?|$)/i,'_500x$1$2'))+'" alt="'+esc(p.title)+'" loading="lazy" width="500">':'';
     return '<div class="gmc-sc"><a href="'+esc(p.url)+'" class="gmc-sc__im">'+img+'</a><a href="'+esc(p.url)+'" class="gmc-sc__t">'+esc(p.title)+'</a><div class="gmc-sc__p">'+(p.compare_at_price>p.price?'<s>'+gmcMoney(p.compare_at_price)+'</s> ':'')+gmcMoney(p.price)+'</div>'+(extra||'')+'</div>';}

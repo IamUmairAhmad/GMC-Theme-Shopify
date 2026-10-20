@@ -8,7 +8,7 @@
 <div class="page-width gmc-tt {% render 'gmc-vis', hide: section.settings.hide_on %}">
   {%- if section.settings.heading != blank -%}<h2 style="text-align:center">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div class="gmc-tt__row">{%- for block in section.blocks -%}{%- assign parts = block.settings.url | split: '/video/' -%}{%- if parts.size > 1 -%}{%- assign vid = parts[1] | split: '?' | first | split: '/' | first -%}
-    <div class="gmc-tt__item" {{ block.shopify_attributes }}><iframe src="https://www.tiktok.com/player/v1/{{ vid }}?music_info=0&description=0&rel=0" loading="lazy" allow="fullscreen" title="TikTok video {{ forloop.index }}"></iframe></div>{%- endif -%}{%- endfor -%}</div>
+    <div class="gmc-tt__item" {{ block.shopify_attributes }}><iframe src="https://www.tiktok.com/player/v1/{{ vid | url_encode }}?music_info=0&description=0&rel=0" loading="lazy" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" title="TikTok video {{ forloop.index }}"></iframe></div>{%- endif -%}{%- endfor -%}</div>
 </div>
 <style>.gmc-tt{padding-top:36px;padding-bottom:36px}.gmc-tt__row{display:flex;gap:1.2rem;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:1.5rem;padding-bottom:.6rem}.gmc-tt__item{flex:none;width:min(300px,78vw);aspect-ratio:9/16;scroll-snap-align:start;border-radius:var(--text-boxes-radius);overflow:hidden;background:#000}.gmc-tt__item iframe{width:100%;height:100%;border:0}</style>
 {%- endif -%}

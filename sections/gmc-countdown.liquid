@@ -5,7 +5,7 @@
 {%- render 'gmc-section-extras' -%}
 <div class="gmc-cd {% render 'gmc-vis', hide: section.settings.hide_on %}" id="gmc-cd-{{ section.id }}" style="background:{{ section.settings.bg }};color:{{ section.settings.fg }}">
   <p class="gmc-cd__t">{{ section.settings.text | escape }}</p>
-  <div class="gmc-cd__n" data-end="{{ section.settings.end }}" data-mode="{{ section.settings.mode }}" data-min="{{ section.settings.minutes }}"><b data-u="d">00</b>d <b data-u="h">00</b>h <b data-u="m">00</b>m <b data-u="s">00</b>s</div>
+  <div class="gmc-cd__n" data-end="{{ section.settings.end | escape }}" data-mode="{{ section.settings.mode }}" data-min="{{ section.settings.minutes }}"><b data-u="d">00</b>d <b data-u="h">00</b>h <b data-u="m">00</b>m <b data-u="s">00</b>s</div>
 </div>
 <style>.gmc-cd{text-align:center;padding:1.4rem 1rem}.gmc-cd__t{margin:0 0 .4rem;font-weight:600}.gmc-cd__n{font-size:2.4rem;font-variant-numeric:tabular-nums}</style>
 <script>(function(){var el=document.querySelector('#gmc-cd-{{ section.id }} .gmc-cd__n');if(!el)return;var end;

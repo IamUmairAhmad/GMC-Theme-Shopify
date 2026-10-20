@@ -31,7 +31,7 @@ window.gmcT=window.gmcT||function(k){return (window.GMC&&GMC.t&&GMC.t[k])||'';};
 (function(){var m=window.GMC&&GMC.mega;if(!m||!m.img)return;
   document.querySelectorAll('.mega-menu__content .mega-menu__list').forEach(function(ul){
     if(ul.querySelector('.gmc-mega-promo'))return;
-    var li=document.createElement('li'),a=document.createElement('a');a.className='gmc-mega-promo';a.href=m.link||'#';
+    var li=document.createElement('li'),a=document.createElement('a');a.className='gmc-mega-promo';a.href=/^\s*(javascript|data|vbscript):/i.test(m.link||'')?'#':(m.link||'#');
     var im=document.createElement('img');im.src=m.img;im.alt='';im.loading='lazy';a.appendChild(im);
     if(m.head){var sp=document.createElement('span');sp.textContent=m.head;a.appendChild(sp);}
     li.appendChild(a);ul.appendChild(li);
