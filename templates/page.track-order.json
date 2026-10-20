@@ -11,7 +11,9 @@
   "sections": {
     "main": {
       "type": "gmc-track-your-order",
-      "settings": {}
+      "settings": {
+        "phone_placeholder": "+1 (123)-456-7891"
+      }
     }
   },
   "order": [
